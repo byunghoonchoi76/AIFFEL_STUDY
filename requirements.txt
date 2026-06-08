@@ -1,0 +1,40 @@
+# ========== Core ==========
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+tqdm>=4.65.0
+
+# ========== Day 1: VAE ==========
+# (torch 기본 포함)
+
+# ========== Day 2: DDPM ==========
+diffusers>=0.21.0
+accelerate>=0.21.0
+
+# ========== Day 3: Score-Based Model ==========
+scipy>=1.10.0
+
+# ========== Day 4: RAG + Agentic AI ==========
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-community>=0.0.10
+langchain-chroma>=0.1.0
+openai>=1.10.0
+chromadb>=0.4.0
+tiktoken>=0.5.0
+
+# RAG 고급 기법
+rank-bm25>=0.2.2          # BM25 Hybrid Search
+sentence-transformers>=2.2.0  # Reranking
+
+# RAG 평가
+ragas>=0.1.0
+
+# Agentic AI
+langgraph>=0.0.30
+pyautogen>=0.2.0
+
+# ========== Notebook ==========
+jupyter>=1.0.0
+ipywidgets>=8.0.0
