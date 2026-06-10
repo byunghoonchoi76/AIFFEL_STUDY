@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>전문 의학지식 데이터 EDA 리포트</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --ink:#11201c; --paper:#f6f4ee; --card:#fffdf8;
+  --line:#d8d2c4; --mut:#6b7771;
+  --c1:#0d6b5e; --c2:#c2543d; --c3:#3a5f8a; --c4:#d9a441;
+  --c1soft:#7fb5ac; --c2soft:#e0a08f; --c3soft:#9bb0c9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,BlinkMacSystemFont,system-ui,'Malgun Gothic',sans-serif;
+  line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* ===== HERO ===== */
+.hero{
+  padding:72px 24px 40px; max-width:1080px;margin:0 auto;
+  border-bottom:2px solid var(--ink);
+}
+.eyebrow{
+  font-size:12px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--c1);font-weight:700;margin-bottom:18px;
+}
+.hero h1{
+  font-size:clamp(34px,6vw,60px);line-height:1.02;font-weight:800;
+  letter-spacing:-.02em;margin-bottom:20px;
+}
+.hero h1 em{font-style:normal;color:var(--c2)}
+.hero p{font-size:17px;color:var(--mut);max-width:620px}
+.meta{display:flex;gap:28px;margin-top:26px;flex-wrap:wrap;font-size:13px;color:var(--mut)}
+.meta b{color:var(--ink);font-weight:700}
+
+/* ===== KPI band ===== */
+.kpis{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);
+  margin:0;
+}
+.kpi{background:var(--card);padding:26px 22px}
+.kpi .n{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:12px;color:var(--mut);margin-top:6px;letter-spacing:.02em}
+.kpi .n span{font-size:.5em;color:var(--c1);font-weight:700}
+
+/* ===== sections ===== */
+section{padding:54px 0;border-bottom:1px solid var(--line)}
+.shead{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+.snum{font-size:13px;font-weight:800;color:var(--c2);font-variant-numeric:tabular-nums}
+.shead h2{font-size:25px;font-weight:800;letter-spacing:-.01em}
+.sdesc{color:var(--mut);font-size:15px;max-width:680px;margin-bottom:30px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.chart-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.chart-sub{font-size:12px;color:var(--mut);margin-bottom:16px}
+.cbox{position:relative;height:300px}
+.cbox.tall{height:380px}
+
+/* insight callouts */
+.insight{
+  background:linear-gradient(0deg,var(--card),var(--card));
+  border-left:3px solid var(--c1);padding:16px 20px;margin-top:18px;
+  font-size:14px;
+}
+.insight b{color:var(--c1)}
+.insight.warn{border-left-color:var(--c2)} .insight.warn b{color:var(--c2)}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-weight:700}
+td.num{text-align:right}
+tr:last-child td{border-bottom:none}
+.bar-cell{position:relative}
+.bar-cell .bg{position:absolute;left:0;top:50%;transform:translateY(-50%);height:60%;background:var(--c1soft);opacity:.4;border-radius:2px;z-index:0}
+.bar-cell span{position:relative;z-index:1}
+
+.tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:.03em}
+.tag.ko{background:#e8f1ef;color:var(--c1)} .tag.en{background:#f3e9e6;color:var(--c2)}
+
+/* takeaways */
+.tk{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tk .item{background:var(--card);border:1px solid var(--line);padding:22px;border-radius:3px}
+.tk .item h3{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.tk .item h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--c2)}
+.tk .item p{font-size:13.5px;color:var(--mut)}
+
+footer{padding:36px 0 60px;color:var(--mut);font-size:12.5px;text-align:center}
+
+@media(max-width:760px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .grid2{grid-template-columns:1fr}
+  .tk{grid-template-columns:1fr}
+  .hero{padding-top:48px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">AI-Hub · 전문 의학지식 데이터 · 탐색적 데이터 분석</div>
+  <h1>의학 지식 <em>13만 건</em>,<br>무엇으로 이루어졌나</h1>
+  <p>원천 문서·학습 QA·검증 QA 3계층을 진료과, 문제 유형, 언어, 텍스트 길이 축으로 해부한다. 환자용 쉬운 말 변환 파이프라인 설계를 위한 사전 점검.</p>
+  <div class="meta">
+    <div><b>13개</b> 진료과</div>
+    <div><b>3계층</b> TS / TL / VL</div>
+    <div><b>2개</b> 언어 (국문·영문)</div>
+    <div>분석일 <b>2026.06.10</b></div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:0;padding-bottom:0">
+<div class="kpis" style="margin-top:0">
+  <div class="kpi"><div class="n">112,257</div><div class="l">원천 문서 (TS)</div></div>
+  <div class="kpi"><div class="n">12,228</div><div class="l">학습 QA (TL)</div></div>
+  <div class="kpi"><div class="n">1,528</div><div class="l">검증 QA (VL)</div></div>
+  <div class="kpi"><div class="n">8.0<span>:1</span></div><div class="l">TL : VL 비율</div></div>
+</div>
+</div>
+
+<div class="wrap">
+
+<section>
+  <div class="shead"><span class="snum">01</span><h2>진료과별 분포</h2></div>
+  <p class="sdesc">외과·기타·신경과·정신건강의학과가 QA의 절반 이상을 차지한다. 학습/검증 분할은 진료과별로 대체로 8:1 비율을 유지해 층화(stratified)가 잘 되어 있다.</p>
+  <div class="card">
+    <div class="chart-title">진료과별 학습 QA 수 (TL)</div>
+    <div class="chart-sub">막대 색상은 검증셋(VL) 동반 비율 — 전 과목 균형 분할 확인</div>
+    <div class="cbox tall"><canvas id="c_domain"></canvas></div>
+  </div>
+  <div class="insight"><b>편중 주의.</b> 방사선종양학과(92건)·의료법규(104건)·병리과(120건)는 표본이 적다. 진료과 균형 평가가 필요하면 이 3개 과는 별도 처리하거나 통합 분석 권장.</div>
+</section>
+
+<section>
+  <div class="shead"><span class="snum">02</span><h2>문제 유형 구성</h2></div>
+  <p class="sdesc">QA는 객관식·단답형·서술형 3종. 객관식이 압도적(76%)이며, 답변 길이가 유형을 결정한다 — 이 차이가 파이프라인에서 데이터의 역할을 가른다.</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="chart-title">유형별 QA 분포 (TL)</div>
+      <div class="chart-sub">전체 12,228건 기준</div>
+      <div class="cbox"><canvas id="c_qtype"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="chart-title">유형별 평균 답변 길이</div>
+      <div class="chart-sub">글자 수 — 서술형만 38배 길다</div>
+      <div class="cbox"><canvas id="c_alen"></canvas></div>
+    </div>
+  </div>
+  <div class="insight"><b>핵심 활용점.</b> 서술형(평균 271자, 1,547건)이 "전문 용어 + 풀이"를 모두 포함 → <b>쉬운 말 변환 Few-shot 소스</b>로 직결. 객관식은 정답 라벨이 명확해 <b>LLM-as-Judge 평가셋</b>으로 최적.</div>
+</section>
+
+<section>
+  <div class="shead"><span class="snum">03</span><h2>진료과 × 유형 교차</h2></div>
+  <p class="sdesc">서술형 자원이 어느 과에 몰려 있는지가 변환 학습의 출발점이다. 기타·정신건강의학과·외과 순으로 서술형이 풍부하다.</p>
+  <div class="card">
+    <div class="chart-title">진료과별 문제 유형 누적 구성 (TL)</div>
+    <div class="chart-sub">서술형(진한 색) 비중이 높은 과일수록 변환 예시 추출에 유리</div>
+    <div class="cbox tall"><canvas id="c_stack"></canvas></div>
+  </div>
+</section>
+
+<section>
+  <div class="shead"><span class="snum">04</span><h2>원천 문서 · 출처와 언어</h2></div>
+  <p class="sdesc">원천데이터 11.2만 건은 RAG 지식 베이스의 후보다. 온라인 의료정보 사이트가 74%로 가장 평이하고, 가이드라인·논문은 전문적이고 길다.</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="chart-title">언어 구성</div>
+      <div class="chart-sub">영문이 63% — 국문 변환 시 번역 레이어 고려</div>
+      <div class="cbox"><canvas id="c_lang"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="chart-title">출처별 평균 문서 길이</div>
+      <div class="chart-sub">글자 수 — 청크 전략 설계 기준</div>
+      <div class="cbox"><canvas id="c_len"></canvas></div>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+  <div class="card">
+    <table>
+      <thead><tr><th>출처 카테고리</th><th>언어</th><th class="num">문서 수</th><th class="num">평균 길이</th></tr></thead>
+      <tbody id="ts_table"></tbody>
+    </table>
+  </div>
+  <div class="insight warn"><b>RAG 설계 함의.</b> 영문 국제기관 가이드라인(평균 6,005자)과 국문 온라인 정보(1,751자)는 길이 격차가 3배 이상. 단일 청크 크기로 묶으면 정보 손실 — <b>출처별 가변 청킹</b> 또는 길이 정규화가 필요하다.</div>
+</section>
+
+<section>
+  <div class="shead"><span class="snum">05</span><h2>문서 생성 연도</h2></div>
+  <p class="sdesc">2016년과 2023년에 수집이 집중됐다. 최신성은 확보됐으나 특정 연도 쏠림이 있어 시계열 편향에 유의.</p>
+  <div class="card">
+    <div class="chart-title">연도별 원천 문서 수</div>
+    <div class="chart-sub">2016 / 2023년 대량 수집 — 두 해가 전체의 절반 가까이</div>
+    <div class="cbox"><canvas id="c_year"></canvas></div>
+  </div>
+</section>
+
+<section style="border-bottom:none">
+  <div class="shead"><span class="snum">06</span><h2>프로젝트 적용 결론</h2></div>
+  <p class="sdesc">EDA가 가리키는 세 가지 설계 결정.</p>
+  <div class="tk">
+    <div class="item"><h3><span class="dot"></span>변환 소스</h3><p>서술형 1,547건을 "전문 답변 → 쉬운 말" 변환 Few-shot 풀로 사용. 기타·정신건강·외과에 집중 분포.</p></div>
+    <div class="item"><h3><span class="dot"></span>RAG 베이스</h3><p>원천 11.2만 건을 벡터화해 grounding. 출처별 길이 편차 때문에 가변 청킹 필수.</p></div>
+    <div class="item"><h3><span class="dot"></span>평가셋</h3><p>객관식 9,259건의 정답 라벨로 의미 보존 자동 검증(LLM-as-Judge). VL은 일반화 측정 전용.</p></div>
+  </div>
+</section>
+
+</div>
+
+<footer>AI-Hub 전문 의학지식 데이터 · EDA Report · Mini AIFFELthon</footer>
+
+<script>
+const D = {"totals": {"ts": 112257, "tl": 12228, "vl": 1528, "depts": 13, "ko": 41801, "en": 70456}, "dom_labels": ["외과", "예방의학", "정신건강의학과", "신경과신경외과", "피부과", "안과", "이비인후과", "비뇨의학과", "방사선종양학과", "병리과", "마취통증의학과", "의료법규", "기타"], "tl_dom": [3018, 595, 1564, 1731, 612, 612, 445, 798, 92, 120, 733, 104, 1804], "vl_dom": [366, 80, 225, 202, 70, 72, 65, 84, 9, 16, 103, 10, 226], "qt_labels": ["객관식", "단답형", "서술형"], "tl_qt": [9259, 1422, 1547], "vl_qt": [1123, 198, 207], "qt_alen": [22, 7, 271], "stack_q1": [2466, 536, 1149, 1357, 419, 413, 317, 652, 61, 49, 615, 75, 1150], "stack_q2": [344, 27, 168, 215, 97, 89, 80, 50, 12, 8, 62, 17, 253], "stack_q3": [208, 32, 247, 159, 96, 110, 48, 96, 19, 63, 56, 12, 401], "ts_cat_labels": ["영문 온라인 의료 정보 제공 사이트", "국문 온라인 의료 정보 제공 사이트", "영문 국제기관 가이드라인", "영문 학술 논문 및 저널", "국문 기타", "국문 학회 가이드라인", "국문 학술 논문 및 저널", "국문 의학 교과서", "영문 기타", "영문 학회 가이드라인", "영문 의학 교과서"], "ts_cat_vals": [48591, 34484, 12062, 9789, 4890, 1298, 970, 159, 6, 6, 2], "ts_cat_lang": ["EN", "KO", "EN", "EN", "KO", "KO", "KO", "KO", "EN", "EN", "EN"], "ts_cat_len": [3268, 1751, 6005, 3664, 536, 781, 1575, 3885, 1141, 911, 6026], "ts_dom": [112257, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "year_labels": ["2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"], "year_vals": [106, 150, 97, 163, 181, 214, 252, 287, 327, 378, 505, 382, 696, 887, 901, 1311, 16628, 989, 1070, 936, 833, 955, 765, 38084, 6513]};
+Chart.defaults.font.family = "'Pretendard','Apple SD Gothic Neo',sans-serif";
+Chart.defaults.color = '#6b7771';
+const INK='#11201c', C1='#0d6b5e', C2='#c2543d', C3='#3a5f8a', C4='#d9a441';
+const grid={color:'#e4ded2'};
+
+// 01 진료과 분포 (가로 막대, TL)
+new Chart(c_domain,{type:'bar',data:{labels:D.dom_labels,datasets:[{label:'학습 QA',data:D.tl_dom,backgroundColor:C1,borderRadius:3}]},
+ options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+   tooltip:{callbacks:{afterLabel:(ctx)=>'검증 QA: '+D.vl_dom[ctx.dataIndex]+'건'}}},
+   scales:{x:{grid,ticks:{font:{size:11}}},y:{grid:{display:false},ticks:{font:{size:12}}}}}});
+
+// 02 q_type doughnut
+new Chart(c_qtype,{type:'doughnut',data:{labels:D.qt_labels,datasets:[{data:D.tl_qt,backgroundColor:[C3,C4,C2],borderColor:'#fffdf8',borderWidth:3}]},
+ options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{font:{size:13},padding:16,usePointStyle:true,pointStyle:'circle'}},
+   tooltip:{callbacks:{label:(ctx)=>ctx.label+': '+ctx.raw.toLocaleString()+'건 ('+(ctx.raw/D.totals.tl*100).toFixed(0)+'%)'}}}}});
+
+// 02 answer length
+new Chart(c_alen,{type:'bar',data:{labels:D.qt_labels,datasets:[{data:D.qt_alen,backgroundColor:[C3,C4,C2],borderRadius:3}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>ctx.raw+'자'}}},
+   scales:{y:{grid,title:{display:true,text:'평균 글자 수',font:{size:11}}},x:{grid:{display:false},ticks:{font:{size:13}}}}}});
+
+// 03 stacked
+new Chart(c_stack,{type:'bar',data:{labels:D.dom_labels,datasets:[
+  {label:'객관식',data:D.stack_q1,backgroundColor:C3,borderRadius:2},
+  {label:'단답형',data:D.stack_q2,backgroundColor:C4,borderRadius:2},
+  {label:'서술형',data:D.stack_q3,backgroundColor:C2,borderRadius:2}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{usePointStyle:true,pointStyle:'circle',font:{size:12},padding:14}}},
+   scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:11},maxRotation:50,minRotation:50}},y:{stacked:true,grid}}}});
+
+// 04 lang
+new Chart(c_lang,{type:'doughnut',data:{labels:['영문 (EN)','국문 (KO)'],datasets:[{data:[D.totals.en,D.totals.ko],backgroundColor:[C2,C1],borderColor:'#fffdf8',borderWidth:3}]},
+ options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{font:{size:13},padding:16,usePointStyle:true,pointStyle:'circle'}},
+   tooltip:{callbacks:{label:(ctx)=>ctx.label+': '+ctx.raw.toLocaleString()+'건 ('+(ctx.raw/D.totals.ts*100).toFixed(0)+'%)'}}}}});
+
+// 04 length by source (top categories with meaningful counts)
+const lenIdx = D.ts_cat_vals.map((v,i)=>i).filter(i=>D.ts_cat_vals[i]>=100);
+new Chart(c_len,{type:'bar',data:{labels:lenIdx.map(i=>D.ts_cat_labels[i]),datasets:[{data:lenIdx.map(i=>D.ts_cat_len[i]),
+  backgroundColor:lenIdx.map(i=>D.ts_cat_lang[i]==='EN'?C2:C1),borderRadius:3}]},
+ options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>ctx.raw.toLocaleString()+'자'}}},
+   scales:{x:{grid,title:{display:true,text:'평균 글자 수',font:{size:11}}},y:{grid:{display:false},ticks:{font:{size:10.5}}}}}});
+
+// 04 table
+const maxV = Math.max(...D.ts_cat_vals);
+const tb = document.getElementById('ts_table');
+D.ts_cat_labels.forEach((lab,i)=>{
+  const v=D.ts_cat_vals[i], lang=D.ts_cat_lang[i], len=D.ts_cat_len[i];
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td>'+lab+'</td>'+
+    '<td><span class="tag '+(lang==='EN'?'en':'ko')+'">'+lang+'</span></td>'+
+    '<td class="num bar-cell"><div class="bg" style="width:'+(v/maxV*100)+'%"></div><span>'+v.toLocaleString()+'</span></td>'+
+    '<td class="num">'+len.toLocaleString()+'자</td>';
+  tb.appendChild(tr);
+});
+
+// 05 year
+new Chart(c_year,{type:'bar',data:{labels:D.year_labels,datasets:[{data:D.year_vals,backgroundColor:(ctx)=>{const y=D.year_labels[ctx.dataIndex];return (y==='2016'||y==='2023')?C2:C1soft();},borderRadius:2}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>ctx.raw.toLocaleString()+'건'}}},
+   scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{grid,type:'logarithmic',title:{display:true,text:'문서 수 (로그)',font:{size:11}}}}}});
+function C1soft(){return '#7fb5ac';}
+</script>
+</body>
+</html>
