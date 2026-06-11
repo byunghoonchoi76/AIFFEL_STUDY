@@ -21,7 +21,7 @@ import gradio as gr
 # 0. 설정 — API 키 · 경로 · 모델
 # ════════════════════════════════════════════════════════════════
 # API 키: 환경변수 우선, 없으면 아래 변수 직접 입력
-API_KEY = os.environ.get("ANTHROPIC_API_KEY", "sk-ant-여기에_API_키_입력")
+API_KEY = "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"
 client  = anthropic.Anthropic(api_key=API_KEY)
 
 MODEL = "claude-haiku-4-5-20251001"
@@ -259,7 +259,10 @@ def synthesize_report(input_text, easy, triage, hospitals, track):
             hosp_lines.append(f"{i}. {h['name']} ({h['addr']}) — {h['level']} | 전문분야: {', '.join(h['specialty'])} | 전문의 {h['prof_count']}명")
     referral = ("\n⚠️ 상급종합병원 방문 시 1차 의원에서 진료의뢰서(소견서)를 먼저 발급받으시면 진료비 혜택을 받을 수 있습니다.\n") if track=='B' else ""
     prompt = ("다음 정보를 바탕으로 환자에게 전달할 최종 안내 리포트를 작성하세요.\n"
-        "원본에 없는 주관적 판단을 추가하지 말고, 면책 고지는 완전한 문장으로 마무리하세요.\n\n"
+        "엄격한 작성 규칙:\n"
+        "1. 원본 소견에 명시된 내용만 포함하세요. 원문에 없는 치료법·예후·추가 검사·예상 결과는 절대 언급하지 마세요.\n"
+        "2. 원본에 없는 주관적 판단(예: '비교적 가벼운', '심각한')을 임의로 추가하지 마세요.\n"
+        "3. 면책 고지는 반드시 완전한 문장으로 마무리하세요.\n\n"
         f"[원본 소견] {input_text}\n[쉬운 말 설명] {easy}\n"
         f"[진료 트랙] {'Track B — 상급종합 3차' if track=='B' else 'Track A — 지역 1·2차'}\n"
         f"[판단 근거] {triage.get('reason','')}\n[추천 의료기관]\n" + '\n'.join(hosp_lines) + referral +
@@ -267,20 +270,39 @@ def synthesize_report(input_text, easy, triage, hospitals, track):
     resp = client.messages.create(model=MODEL, max_tokens=1200, messages=[{"role":"user","content":prompt}])
     return resp.content[0].text.strip()
 
-def llm_judge(original_text, report):
-    prompt = ("당신은 의료 AI 출력물의 품질을 평가하는 전문 판정관입니다.\n\n"
-        f"[원본 환자 소견]\n{original_text}\n\n[AI 생성 리포트]\n{report}\n\n"
-        "다음 3가지를 평가하고 JSON만 출력하세요.\n"
-        "omission: 핵심 정보 누락 (0~2), distortion: 수치·심각도 왜곡 (0~2), safety: 면책 문구 (0~2)\n"
-        "verdict: total>=4 이면 PASS\n\n"
-        '출력 예시: {"omission":{"score":2,"comment":"완전"},"distortion":{"score":2,"comment":"정확"},'
-        '"safety":{"score":2,"comment":"포함"},"total":6,"verdict":"PASS","feedback":"양호"}')
-    resp = client.messages.create(model=MODEL, max_tokens=800, messages=[{"role":"user","content":prompt}])
+def llm_judge(original_text, generated_report):
+    prompt = (
+        "당신은 의료 AI 출력물의 품질을 평가하는 전문 판정관입니다.\n\n"
+        "[원본 환자 소견]\n" + original_text + "\n\n"
+        "[AI 생성 리포트]\n" + generated_report + "\n\n"
+        "아래 4가지 항목을 평가하고 JSON만 출력하세요.\n\n"
+        "평가 기준:\n"
+        "- correctness (사실 정확성): 원문의 의학적 사실을 왜곡·과장·축소 없이 올바르게 해석했는가\n"
+        "  4=모든 사실 정확, 3=경미한 부정확 1건, 2=임상 의미에 영향 주는 부정확 1건, 1=사실 일부 왜곡, 0=핵심 사실 명백히 틀림[자동FAIL]\n"
+        "- completeness (완전성): 환자에게 관련된 핵심 의학 정보가 누락 없이 포함되었는가 (덜 중요한 정보 생략은 허용)\n"
+        "  4=누락 없음, 3=부차적 정보 1건 누락, 2=핵심 정보 1건 누락, 1=중요 정보 다수 누락, 0=핵심 소견 대부분 누락\n"
+        "- hallucination (환각 통제): 원문에 없는 내용을 지어내거나 사실과 다른 정보를 추가하지 않았는가\n"
+        "  4=추가 정보 없음, 3=일반 상식 수준 보조 설명 1건(사실 부합), 2=원문 없는 정보 추가(위해 가능성 낮음), 1=추정이 사실처럼 기술, 0=사실과 다른 정보 생성[자동FAIL]\n"
+        "- readability (환자 이해도): 전문용어를 일상어로 풀고 환자가 이해·행동할 수 있게 전달했는가\n"
+        "  4=초등 고학년 수준 이해 가능, 3=전문용어 1-2개 미풀이, 2=일부 문장 전문적, 1=전문용어 다수 잔존, 0=단순화 효과 없음\n\n"
+        "PASS 조건: total >= 12 AND correctness >= 2 AND hallucination >= 2 AND 어떤 항목도 0점 없음\n\n"
+        '출력 예시: {"correctness":{"score":4,"comment":"모든 사실 정확"},'
+        '"completeness":{"score":3,"comment":"부차적 정보 1건 누락"},'
+        '"hallucination":{"score":4,"comment":"추가 정보 없음"},'
+        '"readability":{"score":3,"comment":"전문용어 1개 미풀이"},'
+        '"total":14,"verdict":"PASS","feedback":"전반적으로 양호"}'
+    )
+    resp = client.messages.create(
+        model=MODEL, max_tokens=800,
+        messages=[{"role": "user", "content": prompt}]
+    )
     m = re.search(r'\{.*\}', resp.content[0].text.strip(), re.DOTALL)
     if m:
-        try: return json.loads(m.group())
-        except: pass
-    return {"total":0,"verdict":"FAIL","feedback":"판정 실패"}
+        try:
+            return json.loads(m.group())
+        except:
+            pass
+    return {"total": 0, "verdict": "FAIL", "feedback": "판정 실패"}
 
 # ── 영문 소견 → 한국어 번역 ──
 # ── 영문 소견 → 한국어 번역 함수 ─────────────────────────────
@@ -338,7 +360,7 @@ def run_pipeline(image, input_text, sido, progress=gr.Progress()):
     urgency   = triage.get('urgency','일반')
     keywords  = triage.get('keywords',[])
     domain_id = next((k for k,v in DOMAIN_MAP.items() if v==dept), 13)
-    track     = 'B' if severity=='중증' or urgency=='긴급' else 'A'
+    track     = 'B' if severity == '중증' or urgency == '긴급' else 'A'
     logs.append(f"✅ {dept} | {severity} | {urgency} → {'Track B' if track=='B' else 'Track A'}")
 
     progress(0.55, desc="쉬운 말 설명 생성 중...")
@@ -354,7 +376,7 @@ def run_pipeline(image, input_text, sido, progress=gr.Progress()):
     progress(0.92, desc="품질 검증 중...")
     judge = llm_judge(analysis_text, report)
     verdict, total = judge.get('verdict','FAIL'), judge.get('total',0)
-    logs.append(f"✅ Judge — {verdict} ({total}/6점)")
+    logs.append(f"✅ Judge — {verdict} ({total}/16점)")
 
     # ── 출력 마크다운 구성 ────────────────────────────────────
     # 영상 정보 블록 (영상 입력 시)
@@ -370,12 +392,19 @@ def run_pipeline(image, input_text, sido, progress=gr.Progress()):
     easy_full = img_md + "### 💬 쉬운 말 설명\n\n" + easy
 
     j = judge
-    judge_md = (f"### 판정 결과: {'✅ PASS' if verdict=='PASS' else '❌ FAIL'} ({total}/6점)\n\n"
+    verdict = judge.get('verdict', 'FAIL')
+    total   = judge.get('total', 0)
+
+    judge_md = (
+        f"### 판정 결과: {'✅ PASS' if verdict=='PASS' else '❌ FAIL'} ({total}/16점)\n\n"
         f"| 항목 | 점수 | 평가 |\n|---|---|---|\n"
-        f"| 핵심 정보 보존 | {j.get('omission',{}).get('score','?')}/2 | {j.get('omission',{}).get('comment','—')} |\n"
-        f"| 수치·심각도 정확성 | {j.get('distortion',{}).get('score','?')}/2 | {j.get('distortion',{}).get('comment','—')} |\n"
-        f"| 안전 문구 포함 | {j.get('safety',{}).get('score','?')}/2 | {j.get('safety',{}).get('comment','—')} |\n\n"
-        f"**개선 의견:** {j.get('feedback','')}")
+        f"| ① 사실 정확성 (Correctness) | {j.get('correctness',{}).get('score','?')}/4 | {j.get('correctness',{}).get('comment','—')} |\n"
+        f"| ② 완전성 (Completeness) | {j.get('completeness',{}).get('score','?')}/4 | {j.get('completeness',{}).get('comment','—')} |\n"
+        f"| ③ 환각 통제 (Hallucination) | {j.get('hallucination',{}).get('score','?')}/4 | {j.get('hallucination',{}).get('comment','—')} |\n"
+        f"| ④ 환자 이해도 (Readability) | {j.get('readability',{}).get('score','?')}/4 | {j.get('readability',{}).get('comment','—')} |\n\n"
+        f"**PASS 기준**: 총점 12/16점(75%) + 정확성·환각 각 2점 이상 + 어떤 항목도 0점 없음\n\n"
+        f"**개선 의견:** {j.get('feedback','')}"
+    )
 
     rag_md = "### 📚 참고 의학 문서 (Top 5)\n\n" + "\n\n".join(
         f"**[{i+1}]** `{d['cat']}` (유사도 {d['score']:.3f})\n\n{d['text'][:200]}..." for i,d in enumerate(retrieved))
