@@ -1,0 +1,8 @@
+[정답 질환] Cardiomegaly;Pulmonary Artery
+[검사 사유] Preop bariatric surgery.
+
+[한국어 소견서]
+경계선 범위의 심비대(borderline cardiomegaly). 정중선 흉골절개(midline sternotomy) [비식별]. 폐동맥(pulmonary arteries) 확대. 폐야 명확. 하부 [비식별] [비식별] [비식별].
+
+[원문 findings]
+Borderline cardiomegaly. Midline sternotomy XXXX. Enlarged pulmonary arteries. Clear lungs. Inferior XXXX XXXX XXXX.

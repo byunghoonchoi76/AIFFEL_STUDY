@@ -1,0 +1,8 @@
+[정답 질환] Pulmonary Atelectasis;Spondylosis;Arthritis
+[검사 사유] Preop lumbar surgery
+
+[한국어 소견서]
+심장 윤곽(cardiac contours)은 정상입니다. [비식별] 폐저부 무기폐(basilar atelectasis)가 있습니다. 폐(lungs)는 명확합니다. 흉추 척추증(thoracic spondylosis)이 있습니다. 하부 경추 [비식별] 관절염(arthritis)이 있습니다.
+
+[원문 findings]
+The cardiac contours are normal. XXXX basilar atelectasis. The lungs are clear. Thoracic spondylosis. Lower cervical XXXX arthritis.

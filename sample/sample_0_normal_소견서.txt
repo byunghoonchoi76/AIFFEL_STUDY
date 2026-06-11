@@ -1,0 +1,8 @@
+[정답 질환] normal
+[검사 사유] Positive TB test
+
+[한국어 소견서]
+심장 음영(cardiac silhouette)과 종격동(mediastinum) 크기는 정상 범위 내입니다. 폐부종(pulmonary edema)은 없습니다. 국소 경화(focal consolidation)는 없습니다. 흉막 삼출액(pleural effusion)의 증거는 없습니다. 기흉(pneumothorax)의 증거는 없습니다.
+
+[원문 findings]
+The cardiac silhouette and mediastinum size are within normal limits. There is no pulmonary edema. There is no focal consolidation. There are no XXXX of a pleural effusion. There is no evidence of pneumothorax.

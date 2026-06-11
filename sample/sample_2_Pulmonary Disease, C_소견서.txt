@@ -1,0 +1,8 @@
+[정답 질환] Pulmonary Disease, Chronic Obstructive;Bullous Emphysema;Pulmonary Fibrosis;Cicatrix;Opacity;Opacity;Opacity;Opacity
+[검사 사유] XXXX-year-old XXXX with XXXX.
+
+[한국어 소견서]
+만성폐쇄성폐질환(COPD)과 기포성폐기종(bullous emphysema)과 일치하는 양측 확산성 간질성(interstitial) 및 폐포성(alveolar) 음영이 있습니다. 좌측 폐첨부에 불규칙한 음영이 있으며, 좌측 폐첨부의 공동성 병변(cavitary lesion)을 나타낼 수 있습니다. 우상엽에 선상 음영이 있으며, [비식별] 반흔(scarring)이 있습니다. 심종격동(cardiomediastinal) 윤곽은 크기와 형태가 정상입니다. 기흉(pneumothorax)이나 큰 흉막삼출(pleural effusion)은 없습니다.
+
+[원문 findings]
+There are diffuse bilateral interstitial and alveolar opacities consistent with chronic obstructive lung disease and bullous emphysema. There are irregular opacities in the left lung apex, that could represent a cavitary lesion in the left lung apex.There are streaky opacities in the right upper lobe, XXXX scarring. The cardiomediastinal silhouette is normal in size and contour. There is no pneumothorax or large pleural effusion.

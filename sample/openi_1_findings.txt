@@ -1,0 +1,4 @@
+[Problems] Cardiomegaly;Pulmonary Artery
+
+[Findings]
+Borderline cardiomegaly. Midline sternotomy XXXX. Enlarged pulmonary arteries. Clear lungs. Inferior XXXX XXXX XXXX.
