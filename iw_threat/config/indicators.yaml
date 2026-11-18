@@ -1,0 +1,39 @@
+# 위협징후목록 (샘플) — 공개 교리 일반론 기반 예시값. 정보사 목록 확보 시 이 파일만 교체.
+# lr      : 우도비 P(징후|가설 참) / P(징후|평시). 1보다 클수록 진단력 높음, 평시 흔한 징후는 1에 가깝게.
+# tau_days: 시의성 감쇠 시간상수(일). 관측 후 tau_days가 지나면 가중치가 약 37%로 감소.
+# equipment: 영상 판독 표적 종류와 매칭되는 장비 분류 코드
+# min_delta: 기준기간 대비 증가 수량 임계값(영상 규칙 매칭용)
+
+meta:
+  version: "0.1-sample"
+  basis: "공개 교리 일반론 기반 예시 (실제 운용값 아님)"
+
+grades:            # 위협 점수 → 등급 (하한값 기준, 내림차순)
+  - {name: 심각, min: 0.75}
+  - {name: 경계, min: 0.50}
+  - {name: 주의, min: 0.25}
+  - {name: 관심, min: 0.0}
+
+hypotheses:
+  - id: H_ATTACK
+    name: 공격 준비
+    prior: 0.02
+    impact: 1.0
+    indicators:
+      - {id: I_ARMOR_MASS,   name: 기갑·기계화 장비 전방 집결, lr: 6.0, tau_days: 7,  equipment: [tank, ifv, apc], min_delta: 10}
+      - {id: I_BRIDGING,     name: 도하·공병 장비 전방 이동,   lr: 8.0, tau_days: 7,  equipment: [bridging, engineer], min_delta: 2}
+      - {id: I_ARTY_POS,     name: 포병 진지 점령·증강,       lr: 5.0, tau_days: 5,  equipment: [artillery, mlrs], min_delta: 4}
+      - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 2.5, tau_days: 10, equipment: [truck, fuel_truck], min_delta: 20}
+      - {id: I_MEDICAL,      name: 야전 의무시설 전개,        lr: 7.0, tau_days: 10, equipment: [field_hospital], min_delta: 1}
+      - {id: I_COMMAND_POST, name: 전방 지휘소 전개,          lr: 4.0, tau_days: 7,  equipment: [command_vehicle], min_delta: 2}
+      - {id: I_AIR_DEFENSE,  name: 방공 자산 전방 배치,       lr: 3.5, tau_days: 7,  equipment: [sam, aaa], min_delta: 2}
+      - {id: I_PATTERN_DEV,  name: 평시 훈련 패턴과 상이한 활동, lr: 3.0, tau_days: 14, equipment: [], min_delta: 0}
+
+  - id: H_EXERCISE
+    name: 대규모 훈련
+    prior: 0.10
+    impact: 0.2
+    indicators:
+      - {id: I_ARMOR_MASS,   name: 기갑·기계화 장비 전방 집결, lr: 3.0, tau_days: 7,  equipment: [tank, ifv, apc], min_delta: 10}
+      - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 2.0, tau_days: 10, equipment: [truck, fuel_truck], min_delta: 20}
+      - {id: I_EX_ANNOUNCED, name: 훈련 공표·통상 훈련 시기,   lr: 6.0, tau_days: 30, equipment: [], min_delta: 0}

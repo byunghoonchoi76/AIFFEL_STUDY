@@ -1,0 +1,23 @@
+# 첩보 평가 6×6 체계(Admiralty Code) → 가중치 환산표 (예시값, 분석관 협의로 보정)
+reliability:      # 출처 신뢰도
+  A: 1.00   # 완전 신뢰
+  B: 0.85   # 대체로 신뢰
+  C: 0.70   # 상당히 신뢰
+  D: 0.45   # 대체로 불신
+  E: 0.20   # 불신
+  F: 0.50   # 판단 불가 (중립)
+credibility:      # 정보 신빙성
+  1: 1.00   # 타 출처로 확인
+  2: 0.85   # 사실일 가능성 높음
+  3: 0.65   # 사실일 가능성 있음
+  4: 0.40   # 의심스러움
+  5: 0.15   # 사실일 가능성 낮음
+  6: 0.50   # 판단 불가 (중립)
+
+# 출처 유형별 기본 등급 (문서에 등급이 없을 때 적용)
+defaults:
+  IMINT: {reliability: B, credibility: 2}    # 영상 판독 결과
+  HUMINT: {reliability: C, credibility: 3}
+  SIGINT: {reliability: B, credibility: 2}
+  OSINT: {reliability: C, credibility: 3}
+  DOCTRINE: {reliability: A, credibility: 1}

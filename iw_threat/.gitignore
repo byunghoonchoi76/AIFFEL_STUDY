@@ -1,0 +1,6 @@
+.env
+models/
+data/uploads/
+data/samples/targets_sample.csv
+__pycache__/
+.pytest_cache/
