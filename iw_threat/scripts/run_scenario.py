@@ -3,6 +3,7 @@
 산출: data/sim/<시나리오>/result.json, 분석보고서_<시나리오>.docx (+ 추이 그래프 png)
 """
 import argparse
+import json
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -24,9 +25,11 @@ def main():
     ap.add_argument("--d-day", default=None, help="D일 (YYYY-MM-DD, 기본: 오늘)")
     a = ap.parse_args()
     d_day = datetime.fromisoformat(a.d_day).astimezone() if a.d_day else None
+    summary = []
     with httpx.Client(base_url=a.api, timeout=900) as client:
         for path in a.scenarios:
             res = run_scenario(client, path, a.out, d_day, a.step, a.seed)
+            summary.append(summarize(res))
             ev = res["evaluation"]
             out = Path(a.out) / res["scenario"]["id"] / f"분석보고서_{res['scenario']['id']}.docx"
             build_report(res, out)
@@ -35,6 +38,20 @@ def main():
                      f"오경보 {ev.get('false_alarm_count', '-')}회" if "false_alarm_count" in ev else "경보 없음")
                   + f", 부대 식별 정확도 {ev['identification']['accuracy']:.0%}")
             print(f"  보고서: {out}\n")
+    Path(a.out).mkdir(parents=True, exist_ok=True)
+    (Path(a.out) / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"종합: {Path(a.out) / 'summary.json'}")
+
+
+def summarize(res: dict) -> dict:
+    ev, s = res["evaluation"], res["series"]
+    return {"id": res["scenario"]["id"], "name": res["scenario"]["name"], "truth": ev["truth"],
+            "final_most_probable": ev["final_most_probable"], "final_correct": ev["final_correct"],
+            "final_grade": ev["final_grade"], "final_confidence": ev["final_confidence"],
+            "final_probabilities": s[-1]["probabilities"], "max_attack_probability": ev["max_attack_probability"],
+            "warning_lead_days": ev.get("warning_lead_days"), "false_alarm_count": ev.get("false_alarm_count"),
+            "identification_accuracy": ev["identification"]["accuracy"],
+            "series": [{"day": x["day"], "grade": x["grade"], **x["probabilities"]} for x in s]}
 
 
 if __name__ == "__main__":

@@ -100,7 +100,12 @@ def evaluate(sc: Scenario, series: list[dict]) -> dict:
     most_probable = max(final["probabilities"], key=final["probabilities"].get)
     warn = [s for s in series if GRADE_ORDER.get(s["grade"], 0) >= GRADE_ORDER["경계"]]
     attack_p = [s["probabilities"].get("공격 준비", 0.0) for s in series]
-    ev = {"truth": truth_h, "final_most_probable": most_probable, "final_correct": most_probable == truth_h,
+    if truth_h in final["probabilities"]:
+        correct = most_probable == truth_h
+    else:   # 정답이 '없음'(평시·기만): 어떤 가설도 50% 미만이고 등급이 경계 미만이어야 정답
+        correct = max(final["probabilities"].values()) < 0.5 and GRADE_ORDER.get(final["grade"], 0) < GRADE_ORDER["경계"]
+        most_probable = most_probable if max(final["probabilities"].values()) >= 0.5 else "없음(모든 가설 50% 미만)"
+    ev = {"truth": truth_h, "final_most_probable": most_probable, "final_correct": correct,
           "final_grade": final["grade"], "final_confidence": final["confidence"],
           "max_attack_probability": round(max(attack_p), 4)}
     if truth_h == "공격 준비":

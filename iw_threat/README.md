@@ -107,6 +107,7 @@ python scripts/orbat_benchmark.py --units 80 --seed 1 --scan   # 스캔 PDF(OCR 
 python scripts/run_scenario.py scenarios/attack_prep.yaml scenarios/large_exercise.yaml --step 2
 ```
 
+- 시나리오 5종: 공격 준비(`attack_prep`), 대규모 훈련(`large_exercise`), 평시(`peacetime`), 기만·위장 집결(`deception`), 정보 공백(`info_gap`)
 - `scenarios/*.yaml`: 가상 부대·주둔지, 부대 **활동 일정**(수량 변화·이동), 분석관이 쓰는 첩보 문장(오정보 포함), 정답(의도·D일)
   - 생성기는 위협징후목록(지표·우도비·임계값)을 참조하지 않음 → 평가 순환 방지
 - 관측 잡음: 위성 관측 누락·구름일·판독 수량 오차·좌표 오차·장비 탐지 누락·오탐
