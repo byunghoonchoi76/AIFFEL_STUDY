@@ -43,7 +43,8 @@ def main():
         w.writerows(rows)
     print(f"CSV: {out} ({len(rows)}행)")
     if not a.csv_only:
-        print(httpx.post(f"{a.api}/targets", json=rows, timeout=60).json())
+        r = httpx.post(f"{a.api}/targets", json=rows, timeout=60)
+        print(r.status_code, r.text[:2000])
 
 
 if __name__ == "__main__":

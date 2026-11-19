@@ -42,7 +42,8 @@ def insert_target_events(events: list[dict]) -> int:
         cur.executemany(
             """INSERT INTO target_events(area_id, observed_at, equipment_type, count, geom, image_ref, source_id)
                VALUES (%(area_id)s, %(observed_at)s, %(equipment_type)s, %(count)s,
-                       CASE WHEN %(lon)s IS NULL THEN NULL ELSE ST_SetSRID(ST_MakePoint(%(lon)s, %(lat)s), 4326) END,
+                       CASE WHEN %(lon)s::double precision IS NULL OR %(lat)s::double precision IS NULL THEN NULL
+                            ELSE ST_SetSRID(ST_MakePoint(%(lon)s::double precision, %(lat)s::double precision), 4326) END,
                        %(image_ref)s, %(source_id)s)""",
             events,
         )
