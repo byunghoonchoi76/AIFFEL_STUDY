@@ -125,6 +125,7 @@ def evaluate(units: list[dict], recs) -> dict:
         "parent_accuracy(table)": round(par_ok / max(len(par_cand), 1), 3),
         "false_units": len(false_units),
         "records_with_issues": sum(1 for r in recs if r.issues),
+        "outliers_flagged": sum(1 for r in recs if any("이상치" in i for i in r.issues)),
     }
 
 

@@ -5,7 +5,7 @@ import math
 import re
 from dataclasses import asdict, dataclass, field
 
-from .patterns import ECHELON_RANK, find_mgrs, find_units, ocr_fix_mgrs, symbol_echelon, unit_key
+from .patterns import ECHELON_RANK, find_mgrs, find_units, fix_mgrs_cell, ocr_fix_mgrs, symbol_echelon, unit_key
 from .pdf_extract import Box, Image, Line, PdfContent, Table
 
 KOREA_BBOX = (33.0, 124.0, 43.5, 131.5)   # 한반도 주변 위경도 범위(좌표 오인식 차단)
@@ -101,6 +101,9 @@ def from_tables(doc: str, tables: list[Table], images: list[Image], radius: floa
             src = cell("location") or loc
             # 셀 안 줄바꿈으로 좌표가 끊긴 경우 대비: 공백 제거 후 재시도
             hits = find_mgrs(src, KOREA_BBOX) or find_mgrs(re.sub(r"\s+", "", src), KOREA_BBOX)
+            if not hits and t.ocr:
+                hits = (find_mgrs(fix_mgrs_cell(cell("location") or ""), KOREA_BBOX)
+                        or find_mgrs(ocr_fix_mgrs(re.sub(r"\s+", "", src)), KOREA_BBOX))
             if hits:
                 h = hits[0]
                 r.mgrs, r.lat, r.lon, r.mgrs_precision_m = h.mgrs, h.lat, h.lon, h.precision_m
@@ -110,6 +113,8 @@ def from_tables(doc: str, tables: list[Table], images: list[Image], radius: floa
                 r.issues.append("위치 열에 유효한 MGRS 없음")
             r.equipment, r.count, r.as_of, r.remark = cell("equipment"), cell("count"), cell("as_of"), cell("remark")
             r.images = _near_images(t.page, t.bbox, images, radius)
+            if t.ocr:
+                r.issues.append("OCR 표 추출 — 원문 대조 필요")
             recs.append(r)
     return recs
 
@@ -176,8 +181,22 @@ def _km(a: OrbatRecord, b: OrbatRecord) -> float:
     return 6371 * 2 * math.asin(math.sqrt(h))
 
 
-def validate(recs: list[OrbatRecord], conflict_km: float = 1.0) -> list[dict]:
+def _flag_outliers(recs: list[OrbatRecord], max_km: float) -> None:
+    """문서 내 좌표 중앙값에서 max_km 이상 떨어진 좌표 표시 (OCR 오인식으로 엉뚱한 곳이 된 좌표 검출)."""
+    pts = sorted((r.lat, r.lon) for r in recs if r.lat is not None)
+    if len(pts) < 5:
+        return
+    lat = sorted(p[0] for p in pts)[len(pts) // 2]
+    lon = sorted(p[1] for p in pts)[len(pts) // 2]
+    center = OrbatRecord("", 0, "", "", "", lat=lat, lon=lon)
+    for r in recs:
+        if r.lat is not None and _km(center, r) > max_km:
+            r.issues.append(f"좌표 이상치: 문서 중심에서 {_km(center, r):.0f}km")
+
+
+def validate(recs: list[OrbatRecord], conflict_km: float = 1.0, outlier_km: float = 150.0) -> list[dict]:
     """레코드별 문제 표시 + 같은 부대 간 충돌 목록 반환."""
+    _flag_outliers(recs, outlier_km)
     by_key: dict[str, list[OrbatRecord]] = {}
     for r in recs:
         if r.unit_key:

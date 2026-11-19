@@ -22,6 +22,7 @@ class Table:
     index: int
     rows: list[list[str]]
     bbox: Box
+    ocr: bool = False
 
 
 @dataclass
@@ -96,7 +97,9 @@ def extract_pdf(path: str | Path, image_dir: str | Path | None = None, min_image
             # 스캔 쪽: 텍스트층이 거의 없으면 OCR (줄 단위 위치 포함)
             if n_chars < 20:
                 out.ocr_pages.append(pno)
-                out.lines.extend(_ocr_lines(page, pno, ocr_lang))
+                o_lines, o_tables = _ocr_page(page, pno, ocr_lang, start_index=len([t for t in out.tables if t.page == pno]))
+                out.lines.extend(o_lines)
+                out.tables.extend(o_tables)
 
             # 이미지 (단대호·사진 후보)
             if image_dir:
@@ -143,6 +146,8 @@ def normalize_ocr_text(t: str) -> str:
     t = re.sub(r"(?<=[가-힣])\s+(?=[가-힣])", "", t)
     t = re.sub(r"제\s*([\d\s.,']+?)(?=[가-힣])", lambda m: "제" + re.sub(r"\D", "", m.group(1)), t)   # '제9 0.01' → '제9001'
     t = re.sub(r"제\s+(?=\d)", "제", t)
+    t = re.sub(r"(?<![A-Z0-9])A\s?(?=\d[\d\s]{1,5}[가-힣])", "제", t)   # '제'를 'A'로 읽은 경우
+    t = re.sub(r"(?<=\d)\s+(?=\d{1,3}[가-힣])", "", t)            # '900 4가상' → '9004가상'
     t = re.sub(r"(?<=\b\d)\s(?=\d\b)", "", t)          # '9 0 4 4' → '9044'
     t = re.sub(r"(?<=\d)\s+(?=[가-힣])", "", t)            # '9044 가상' → '9044가상'
     return t
@@ -169,4 +174,129 @@ def _ocr_lines(page, pno: int, lang: str, dpi: int = 300) -> list[Line]:
         y1 = max(data["top"][i] + data["height"][i] for i in idx) / scale
         text = normalize_ocr_text(" ".join(data["text"][i] for i in idx))
         lines.append(Line(pno, text, (x0, y0, x1, y1), ocr=True))
+    return lines
+
+
+# ── 스캔 표: 괘선 검출 → 열 단위 OCR → 행 배정 ──
+COORD_HEADER = ("좌표", "위치", "MGRS", "주둔")
+MGRS_WHITELIST = "0123456789ABCDEFGHJKLMNPQRSTUVWXYZ "
+
+
+def _line_positions(dark, axis: int, min_run: int) -> list[int]:
+    """axis=1: 가로선의 y 위치들, axis=0: 세로선의 x 위치들 (min_run 픽셀 이상 연속된 어두운 선)."""
+    import numpy as np
+
+    d = dark if axis == 1 else dark.T
+    pad = np.zeros((d.shape[0], 1), dtype=bool)
+    edges = np.diff(np.hstack([pad, d, pad]).astype(np.int8), axis=1)
+    hits = []
+    for r in np.where((edges != 0).any(axis=1))[0]:
+        st, en = np.where(edges[r] == 1)[0], np.where(edges[r] == -1)[0]
+        if len(st) and (en - st).max() >= min_run:
+            hits.append(int(r))
+    pos, grp = [], []
+    for r in hits:                                   # 굵은 선의 인접 픽셀 행을 하나로 묶음
+        if grp and r - grp[-1] > 2:
+            pos.append(sum(grp) // len(grp))
+            grp = []
+        grp.append(r)
+    if grp:
+        pos.append(sum(grp) // len(grp))
+    return pos
+
+
+def _detect_grid(gray, min_run: int):
+    """가로선 3개·세로선 3개 이상이면 표 격자로 판단 → (가로선 y들, 세로선 x들)."""
+    import numpy as np
+
+    dark = np.array(gray) < 128
+    hs = _line_positions(dark, 1, min_run)
+    if len(hs) < 3:
+        return None
+    y0, y1 = hs[0], hs[-1]
+    vs = _line_positions(dark[y0:y1 + 1], 0, max(int((y1 - y0) * 0.6), 20))   # 표 높이의 60% 이상 세로선
+    if len(vs) < 3:
+        return None
+    return hs, vs
+
+
+def _ocr_column(img, x0: int, x1: int, hs: list[int], coord: bool, lang: str) -> list[str]:
+    """열 하나를 통째로 OCR한 뒤 단어를 y 위치로 행에 배정 (칸마다 OCR하는 것보다 수십 배 빠름)."""
+    import pytesseract
+
+    col = img.crop((x0 + 3, hs[0], x1 - 2, hs[-1]))
+    if coord:
+        cfg, lg = f"--psm 6 -c tessedit_char_whitelist={MGRS_WHITELIST.replace(' ', '')}", "eng"
+    else:
+        cfg, lg = "--psm 6", lang
+    data = pytesseract.image_to_data(col, lang=lg, config=cfg, output_type=pytesseract.Output.DICT)
+    cells = [[] for _ in range(len(hs) - 1)]
+    for i, w in enumerate(data["text"]):
+        if not w.strip():
+            continue
+        yc = hs[0] + data["top"][i] + data["height"][i] / 2
+        for r in range(len(hs) - 1):
+            if hs[r] <= yc < hs[r + 1]:
+                cells[r].append((data["left"][i], w))
+                break
+    return [" ".join(w for _, w in sorted(c)) for c in cells]
+
+
+def _ocr_page(page, pno: int, lang: str, dpi: int = 300, start_index: int = 0) -> tuple[list[Line], list[Table]]:
+    """스캔 쪽: 표 격자가 있으면 표는 열 단위 OCR로 Table 생성, 나머지 영역은 줄 단위 OCR."""
+    import numpy as np
+    from PIL import Image as PILImage
+
+    scale = dpi / 72
+    pix = page.get_pixmap(dpi=dpi)
+    gray = PILImage.frombytes("RGB", (pix.width, pix.height), pix.samples).convert("L")
+    tables: list[Table] = []
+    grid = _detect_grid(gray, min_run=int(dpi * 0.6))
+    text_img = gray
+    if grid:
+        hs, vs = grid
+        clean = PILImage.fromarray(_remove_rules(gray, min_run=int(dpi * 0.15)))   # 칸 안 글자만 남김
+        header = [normalize_ocr_text(t) for t in _ocr_column_header(clean, vs, hs, lang)]
+        cols = []
+        for ci in range(len(vs) - 1):
+            coord = any(k.lower() in header[ci].lower() for k in COORD_HEADER)
+            col = _ocr_column(clean, vs[ci], vs[ci + 1], hs, coord, lang)
+            cols.append([c.replace(" ", "") if coord else normalize_ocr_text(c) for c in col])
+        rows = [list(r) for r in zip(*cols)]
+        rows[0] = header
+        bbox = (vs[0] / scale, hs[0] / scale, vs[-1] / scale, hs[-1] / scale)
+        tables.append(Table(pno, start_index, rows, bbox, ocr=True))
+        a = np.array(gray)
+        a[hs[0]:hs[-1] + 1, vs[0]:vs[-1] + 1] = 255              # 표 영역은 줄 OCR에서 제외
+        text_img = PILImage.fromarray(a)
+    return _ocr_lines_from_image(text_img, pno, lang, scale), tables
+
+
+def _ocr_column_header(img, vs: list[int], hs: list[int], lang: str) -> list[str]:
+    import pytesseract
+
+    out = []
+    for ci in range(len(vs) - 1):
+        cell = img.crop((vs[ci] + 3, hs[0] + 2, vs[ci + 1] - 2, hs[1] - 1))
+        out.append(pytesseract.image_to_string(cell, lang=lang, config="--psm 7").strip())
+    return out
+
+
+def _ocr_lines_from_image(gray, pno: int, lang: str, scale: float) -> list[Line]:
+    import pytesseract
+    from PIL import Image as PILImage
+
+    img = PILImage.fromarray(_remove_rules(gray, min_run=int(scale * 72 * 0.6)))
+    data = pytesseract.image_to_data(img, lang=lang, config="--psm 6", output_type=pytesseract.Output.DICT)
+    groups: dict[tuple, list[int]] = {}
+    for i, w in enumerate(data["text"]):
+        if w.strip():
+            groups.setdefault((data["block_num"][i], data["par_num"][i], data["line_num"][i]), []).append(i)
+    lines = []
+    for idx in groups.values():
+        x0 = min(data["left"][i] for i in idx) / scale
+        y0 = min(data["top"][i] for i in idx) / scale
+        x1 = max(data["left"][i] + data["width"][i] for i in idx) / scale
+        y1 = max(data["top"][i] + data["height"][i] for i in idx) / scale
+        lines.append(Line(pno, normalize_ocr_text(" ".join(data["text"][i] for i in idx)), (x0, y0, x1, y1), ocr=True))
     return lines

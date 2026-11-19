@@ -52,7 +52,7 @@ def find_mgrs(text: str, bbox: tuple[float, float, float, float] | None = None) 
 # OCR 오인식 보정: 위치별로 문자 자리에 찍힌 숫자를 흔한 혼동 문자로 치환
 _OCR_MGRS_RE = re.compile(r"(?<!\d)(\d{2})([A-Z0-9])\s?([A-Z0-9])([A-Z0-9])\s?(\d{5}\s?\d{5}|\d{4}\s?\d{4}|\d{6}|\d{4})(?!\d)")
 _BAND_FIX = {"5": "S", "7": "T"}                                   # 한반도: S(32~40°N), T(40~48°N)
-_SQ_FIX = {"0": "D", "6": "G", "8": "B", "5": "S", "2": "Z", "4": "A"}
+_SQ_FIX = {"0": "D", "6": "G", "8": "B", "5": "S", "2": "Z", "4": "A", "1": "H"}   # MGRS 격자 문자에는 I·O가 없음
 
 
 def ocr_fix_mgrs(text: str) -> str:
@@ -65,6 +65,26 @@ def ocr_fix_mgrs(text: str) -> str:
             return m.group(0)
         return f" {zone}{band}{c1}{c2}{digits.replace(' ', '')} "
     return _OCR_MGRS_RE.sub(fix, text.upper())
+
+
+def fix_mgrs_cell(cell: str) -> str:
+    """좌표 칸(OCR) 하나를 MGRS로 복원: 끝의 짝수 자리 숫자=동·북 좌표, 그 앞 2글자=100km 격자,
+    맨 앞 2자리=구역, 사이 잡음(S→8·5 오인식, 중복 문자)=위도대(한반도는 S/T)."""
+    t = re.sub(r"[^A-Z0-9]", "", cell.upper())
+    m = re.search(r"([A-Z0-9]{2})(\d{4,10})$", t)
+    if not m or len(m.group(2)) % 2 or len(t) < 7:
+        return cell
+    zone, band_part = t[:2], t[2:m.start()]
+    if not zone.isdigit() or not band_part:
+        return cell
+    if any(ch in "S85" for ch in band_part):
+        band = "S"
+    elif any(ch in "T7" for ch in band_part):
+        band = "T"
+    else:
+        band = band_part[-1]
+    sq = "".join(_SQ_FIX.get(ch, ch) for ch in m.group(1))
+    return f"{zone}{band}{sq}{m.group(2)}"
 
 
 # ── 제대 ──

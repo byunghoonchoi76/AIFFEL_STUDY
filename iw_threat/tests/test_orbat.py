@@ -92,3 +92,12 @@ def test_ocr_normalization_and_mgrs_fix():
     fixed = ocr_fix_mgrs("주둔지 525DH1000020000")                      # S→5 오인식
     assert [h.mgrs for h in find_mgrs(fixed)] == ["52SDH1000020000"]
     assert [h.mgrs for h in find_mgrs(ocr_fix_mgrs("5250H1000020000"))] == ["52SDH1000020000"]   # D→0
+
+
+def test_fix_mgrs_cell_from_ocr_confusions():
+    from app.orbat.patterns import fix_mgrs_cell
+    assert fix_mgrs_cell("528CG7418210714") == "52SCG7418210714"     # S→8
+    assert fix_mgrs_cell("52S8CH7133280136") == "52SCH7133280136"    # S 중복 인식
+    assert fix_mgrs_cell("528SDG8063376992") == "52SDG8063376992"
+    assert fix_mgrs_cell("52S0H1000020000") == "52SDH1000020000"     # D→0
+    assert fix_mgrs_cell("좌표 미상") == "좌표 미상"
