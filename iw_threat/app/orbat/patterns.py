@@ -49,6 +49,24 @@ def find_mgrs(text: str, bbox: tuple[float, float, float, float] | None = None) 
     return hits
 
 
+# OCR 오인식 보정: 위치별로 문자 자리에 찍힌 숫자를 흔한 혼동 문자로 치환
+_OCR_MGRS_RE = re.compile(r"(?<!\d)(\d{2})([A-Z0-9])\s?([A-Z0-9])([A-Z0-9])\s?(\d{5}\s?\d{5}|\d{4}\s?\d{4}|\d{6}|\d{4})(?!\d)")
+_BAND_FIX = {"5": "S", "7": "T"}                                   # 한반도: S(32~40°N), T(40~48°N)
+_SQ_FIX = {"0": "D", "6": "G", "8": "B", "5": "S", "2": "Z", "4": "A"}
+
+
+def ocr_fix_mgrs(text: str) -> str:
+    """'525DH...'(S→5), '5250H...'(D→0) 같은 OCR 혼동을 MGRS 형식으로 보정한 문자열 반환."""
+    def fix(m):
+        zone, band, c1, c2, digits = m.groups()
+        band = _BAND_FIX.get(band, band)
+        c1, c2 = _SQ_FIX.get(c1, c1), _SQ_FIX.get(c2, c2)
+        if not (band.isalpha() and c1.isalpha() and c2.isalpha()):
+            return m.group(0)
+        return f" {zone}{band}{c1}{c2}{digits.replace(' ', '')} "
+    return _OCR_MGRS_RE.sub(fix, text.upper())
+
+
 # ── 제대 ──
 ECHELONS = ["군", "군단", "사단", "여단", "연대", "대대", "중대", "소대"]   # 상위 → 하위
 ECHELON_RANK = {e: i for i, e in enumerate(ECHELONS)}

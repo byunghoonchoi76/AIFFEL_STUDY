@@ -63,6 +63,20 @@ python scripts/parse_orbat_pdf.py 문서.pdf --out data/orbat/문서명
 - 스캔 쪽은 Tesseract OCR로 처리 (정확도 낮음 — 검토 필수)
 - **`data/orbat/`는 git에서 제외됨. 비밀 문서는 MS-C931 안에서만 처리**
 
+정확도 실측 (정답을 아는 가상 전투서열 PDF 자동 생성 후 비교):
+
+```bash
+python scripts/orbat_benchmark.py --units 80 --seed 1          # 텍스트 PDF
+python scripts/orbat_benchmark.py --units 80 --seed 1 --scan   # 스캔 PDF(OCR 경로)
+```
+
+| 경로 | 부대 식별 | 좌표 10m 이내 | 제대 | 상급부대 | 쪽당 처리 |
+|---|---|---|---|---|---|
+| 텍스트 PDF (3회) | 100% | 100% | 100% | 100% | 약 0.1초 |
+| 스캔 PDF (200dpi, 표 글자 6.5pt) | 48.7% | 45% | 100% | 90% | 약 2.8초 |
+
+스캔 개선 과제: 표 칸 단위 OCR(좌표 칸은 숫자·영문만 허용), '제'·'DH' 등 오인식 보정 확대
+
 ## 테스트
 
 ```bash

@@ -5,7 +5,7 @@ import math
 import re
 from dataclasses import asdict, dataclass, field
 
-from .patterns import ECHELON_RANK, find_mgrs, find_units, symbol_echelon, unit_key
+from .patterns import ECHELON_RANK, find_mgrs, find_units, ocr_fix_mgrs, symbol_echelon, unit_key
 from .pdf_extract import Box, Image, Line, PdfContent, Table
 
 KOREA_BBOX = (33.0, 124.0, 43.5, 131.5)   # 한반도 주변 위경도 범위(좌표 오인식 차단)
@@ -124,9 +124,15 @@ def from_text(doc: str, lines: list[Line], images: list[Image], radius: float, l
         pls.sort(key=lambda l: (round(l.bbox[1], 0), l.bbox[0]))
         for i, ln in enumerate(pls):
             hits = find_mgrs(ln.text, KOREA_BBOX)
+            ocr_fixed = False
+            if not hits and ln.ocr:
+                hits = find_mgrs(ocr_fix_mgrs(ln.text), KOREA_BBOX)
+                ocr_fixed = bool(hits)
             if not hits:
                 continue
             units = find_units(ln.text)
+            # OCR로 읽은 표 행: 한 줄에 부대가 2개 이상이면 첫째=부대, 둘째=상급부대
+            ocr_row = ln.ocr and len(units) >= 2
             ctx = ln.text
             if not units:
                 for prev in reversed(pls[max(0, i - look_back):i]):
@@ -135,7 +141,11 @@ def from_text(doc: str, lines: list[Line], images: list[Image], radius: float, l
                         ctx = f"{prev.text} / {ln.text}"
                         break
             for h in hits:
-                if units:
+                if ocr_row:
+                    u = units[0]
+                    r = OrbatRecord(doc, page, "ocr_row", u.raw, u.key, u.echelon, "name" if u.echelon else None,
+                                    parent_raw=units[1].raw, parent_key=units[1].key)
+                elif units:
                     # 좌표 바로 앞에 나온 부대명 우선
                     before = [u for u in units if u.span[0] < h.span[0]] if ctx == ln.text else units
                     u = (before or units)[-1]
@@ -144,6 +154,8 @@ def from_text(doc: str, lines: list[Line], images: list[Image], radius: float, l
                     r = OrbatRecord(doc, page, "text", "", "", issues=["부대명 미식별 — 수동 지정 필요"])
                 r.mgrs, r.lat, r.lon, r.mgrs_precision_m = h.mgrs, h.lat, h.lon, h.precision_m
                 r.quote, r.bbox = ctx, ln.bbox
+                if ln.ocr:
+                    r.issues.append("OCR 추출 — 원문 대조 필요" + (" (좌표 문자 보정)" if ocr_fixed else ""))
                 compact = re.sub(r"\s+", "", ln.text[: h.span[0]] or ln.text)
                 r.location_type = next((t for t in LOCATION_TYPES if t in compact), None)
                 if not r.echelon:

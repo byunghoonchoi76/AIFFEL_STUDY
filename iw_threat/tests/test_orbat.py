@@ -81,3 +81,14 @@ def test_parse_synthetic_pdf(tmp_path):
     locs = {r.location_type for r in recs if r.unit_key == "902가상전차여단"}
     assert locs == {"주둔지", "예비진지"}
     assert not [c for c in conflicts if c["type"] == "위치"]          # 유형이 다른 위치는 충돌 아님
+
+
+def test_ocr_normalization_and_mgrs_fix():
+    from app.orbat.patterns import ocr_fix_mgrs
+    from app.orbat.pdf_extract import normalize_ocr_text
+
+    assert normalize_ocr_text("제 9 0 4 4 가 상 전 차 연대") == "제9044가상전차연대"
+    assert normalize_ocr_text("제9 0.01가상기계화사단") == "제9001가상기계화사단"
+    fixed = ocr_fix_mgrs("주둔지 525DH1000020000")                      # S→5 오인식
+    assert [h.mgrs for h in find_mgrs(fixed)] == ["52SDH1000020000"]
+    assert [h.mgrs for h in find_mgrs(ocr_fix_mgrs("5250H1000020000"))] == ["52SDH1000020000"]   # D→0
