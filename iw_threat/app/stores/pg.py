@@ -78,6 +78,11 @@ def delete_targets(area_id: str) -> int:
         return c.execute("DELETE FROM target_events WHERE area_id=%s", (area_id,)).rowcount
 
 
+def delete_documents(area_id: str) -> int:
+    with conn() as c:
+        return c.execute("DELETE FROM documents WHERE area_id=%s", (area_id,)).rowcount
+
+
 def insert_assessment(area_id: str, as_of: datetime, top: str, score: float, grade: str,
                       confidence: str, result: dict, narrative: dict, model_info: dict) -> int:
     with conn() as c:

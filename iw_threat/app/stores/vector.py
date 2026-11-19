@@ -42,3 +42,8 @@ class VectorStore:
         res = self.client.query_points(self.col, query=vector, limit=k,
                                        query_filter=qm.Filter(must=must) if must else None)
         return [{**p.payload, "score": p.score} for p in res.points]
+
+    def delete_area(self, area_id: str) -> bool:
+        self.client.delete(self.col, points_selector=qm.FilterSelector(filter=qm.Filter(
+            must=[qm.FieldCondition(key="area_id", match=qm.MatchValue(value=area_id))])))
+        return True

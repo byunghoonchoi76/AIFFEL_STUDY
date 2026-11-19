@@ -101,6 +101,19 @@ python scripts/orbat_benchmark.py --units 80 --seed 1 --scan   # 스캔 PDF(OCR 
 
 가상 샘플: `python scripts/seed_orbat_sample.py && python scripts/seed_sample.py --reset`
 
+## 합성 시나리오 → 분석보고서
+
+```bash
+python scripts/run_scenario.py scenarios/attack_prep.yaml scenarios/large_exercise.yaml --step 2
+```
+
+- `scenarios/*.yaml`: 가상 부대·주둔지, 부대 **활동 일정**(수량 변화·이동), 분석관이 쓰는 첩보 문장(오정보 포함), 정답(의도·D일)
+  - 생성기는 위협징후목록(지표·우도비·임계값)을 참조하지 않음 → 평가 순환 방지
+- 관측 잡음: 위성 관측 누락·구름일·판독 수량 오차·좌표 오차·장비 탐지 누락·오탐
+- 실행: 지역 데이터 정리 → 전투서열·표적·첩보 API 적재 → D-30~D일 날짜별 평가(마지막 날만 해설 생성)
+- 산출: `data/sim/<id>/분석보고서_<id>.docx`(종합 판단·위협도 추이 그래프·부대별 변화·징후별 분석·근거·분석관 검토란
+  + 부록 정답 대비 평가: 경보 선행일수/오경보 일수, 최종 가설 정답 여부, 표적→부대 식별 정확도), `result.json`
+
 ## 테스트
 
 ```bash

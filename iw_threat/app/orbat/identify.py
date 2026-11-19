@@ -10,7 +10,7 @@ DEFAULT_RADIUS_M = 3000
 
 # 장비 종류 ↔ 부대 병종(부대명에 포함된 단어) 친화도: 일치하면 같은 거리라도 우선
 EQUIP_UNIT_HINT = {
-    "tank": ("전차", "기갑", "기계화"), "ifv": ("기계화", "보병"), "apc": ("기계화", "보병"),
+    "tank": ("전차", "기갑", "기계화"), "ifv": ("기계화", "전차", "기갑", "보병"), "apc": ("기계화", "전차", "기갑", "보병"),
     "artillery": ("포병",), "mlrs": ("포병", "방사포"), "bridging": ("공병", "도하"), "engineer": ("공병",),
     "field_hospital": ("의무",), "command_vehicle": (), "truck": ("수송", "군수", "보급"),
     "fuel_truck": ("수송", "군수", "유류"), "sam": ("방공", "고사"), "aaa": ("방공", "고사"),
@@ -34,16 +34,15 @@ def affinity(equipment: str | None, unit_name: str) -> bool:
 
 def rank_candidates(cands: list[dict], equipment: str | None = None) -> list[dict]:
     """cands: [{unit_key, name, echelon, dist_m, radius_m, ...}] → 점수 오름차순.
-    점수 = 거리/반경 (반경 안이면 1 이하), 장비-병종 일치 시 절반으로 가중.
-    같은 점수면 하위 제대(더 구체적인 부대)를 우선."""
+    반경은 '후보 자격'(반경 안인지)에만 쓰고, 순위는 실제 거리(m)로 정함 — 반경이 큰 상급부대가
+    가까운 하급부대를 이기는 왜곡 방지. 장비-병종 일치 시 거리를 절반으로 가중. 같은 점수면 하위 제대 우선."""
     from .patterns import ECHELON_RANK
 
     out = []
     for c in cands:
-        ratio = c["dist_m"] / max(c["radius_m"], 1)
         aff = affinity(equipment, c["name"])
         out.append({**c, "within": c["dist_m"] <= c["radius_m"], "affinity": aff,
-                    "score": round(ratio * (0.5 if aff else 1.0), 4)})
+                    "score": round(c["dist_m"] * (0.5 if aff else 1.0), 1)})
     out.sort(key=lambda c: (c["score"], -ECHELON_RANK.get(c.get("echelon") or "", -1)))
     return out
 

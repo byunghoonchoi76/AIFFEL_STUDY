@@ -58,6 +58,7 @@ class TargetEvent(BaseModel):
 class AssessRequest(BaseModel):
     area_id: str
     as_of: datetime
+    explain: bool = True          # False: 해설(LLM) 생략 — 날짜별 반복 평가 시 시간 단축
 
     _tz = field_validator("as_of")(lambda v: to_aware(v))
 
@@ -116,6 +117,15 @@ def delete_targets(area_id: str):
     return {"deleted": n}
 
 
+@app.delete("/documents")
+def delete_documents(area_id: str):
+    """지역의 첩보 문서 삭제 (벡터 DB 청크 + 문서 메타). 시나리오 재실행 전 정리용."""
+    n_vec = deps()["vector"].delete_area(area_id)
+    n_doc = pg.delete_documents(area_id)
+    pg.audit("system", "delete_documents", {"area_id": area_id, "documents": n_doc})
+    return {"documents": n_doc, "vector_deleted": n_vec}
+
+
 @app.post("/orbat/load")
 def orbat_load(file: UploadFile = File(...), mode: Literal["auto", "all"] = Form("auto"),
                to_graph: bool = Form(True)):
@@ -151,7 +161,7 @@ def orbat_identify(lat: float, lon: float, equipment: str | None = None):
 @app.post("/assess")
 def assess(req: AssessRequest):
     d = deps()
-    return run_assessment(req.area_id, req.as_of, vector=d["vector"], llm=d["llm"])
+    return run_assessment(req.area_id, req.as_of, vector=d["vector"], llm=d["llm"], explain=req.explain)
 
 
 @app.get("/assessments/{aid}")

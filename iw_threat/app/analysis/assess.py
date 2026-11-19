@@ -28,7 +28,7 @@ def _report_chunks(vector, area_id: str, as_of: datetime, lookback_days: int, k:
     ) for h in hits if h.get("reported_at")]
 
 
-def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> dict:
+def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, explain: bool = True) -> dict:
     t0 = time.perf_counter()
     s = get_settings()
     as_of = to_aware(as_of)
@@ -79,7 +79,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
 
     # 4) 근거 기반 해설 (교리 검색 + 근거 검증)
     narrative = {"summary": template_summary(result) if result.top.contributions else None, "sentences": [], "dropped": 0}
-    if vector is not None and llm is not None and result.top.contributions:
+    if explain and vector is not None and llm is not None and result.top.contributions:
         q = embed_query(" ".join(c.name for c in result.top.contributions))
         doctrine = label_doctrine([{"ref": f"chunk:{d['chunk_id']}", "text": d["text"]}
                                    for d in vector.search(q, s.doctrine_top_k, source_types=["DOCTRINE"])])
