@@ -40,7 +40,7 @@ def explanation_prompt(result: AssessmentResult, ev_map: dict[str, list[dict]], 
     blocks = []
     for c in top.contributions:
         refs = "\n".join(f"    {d['id']}: {d['text']}" for d in ev_map.get(c.indicator_id, []))
-        blocks.append(f"- indicator_id={c.indicator_id} '{c.name}': {_strength_word(c.strength)} 확인됨, "
+        blocks.append(f"- indicator_id={c.indicator_id} '{c.name}': {_strength_word(c.strength)} 식별됨, "
                       f"출처 {'/'.join(c.source_types)}\n  근거:\n{refs}")
     doc = "\n".join(f"{d['id']}: {d['text']}" for d in doctrine) or "(교리 근거 없음)"
     system = (
@@ -59,7 +59,7 @@ def explanation_prompt(result: AssessmentResult, ev_map: dict[str, list[dict]], 
     )
     user = (
         f"평가 결과: 가설 '{top.name}', 확률 {top.probability:.0%}, 등급 {result.grade}, 분석 신뢰도 {result.confidence}\n\n"
-        "확인된 징후와 근거:\n" + "\n".join(blocks) + f"\n\n교리 근거:\n{doc}\n\n"
+        "식별된 징후와 근거:\n" + "\n".join(blocks) + f"\n\n교리 근거:\n{doc}\n\n"
         'JSON으로 답하라: {"summary": {"text": "...", "citations": ["E1"]}, '
         '"sentences": [{"indicator_id": "I_...", "text": "...", "citations": ["E1"]}]}'
     )
@@ -139,7 +139,7 @@ def template_sentences(result: AssessmentResult, ev_map: dict[str, list[dict]], 
         ev = ev_map[c.indicator_id]
         out.append({
             "indicator_id": c.indicator_id,
-            "text": f"{c.name} 징후가 {_strength_word(c.strength)} 확인됨 ({'/'.join(c.source_types)}: {ev[0]['text']})",
+            "text": f"{c.name} 징후가 {_strength_word(c.strength)} 식별됨 ({'/'.join(c.source_types)}: {ev[0]['text']})",
             "citations": [d["ref"] for d in ev], "generated": "template",
         })
     return out
