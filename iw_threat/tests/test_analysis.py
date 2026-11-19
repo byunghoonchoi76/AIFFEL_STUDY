@@ -8,7 +8,7 @@ import pytest
 
 from app.analysis.catalog import load_catalog, load_grading
 from app.analysis.change import TargetRow, detect_changes
-from app.analysis.explain import build_evidence_map, verify_sentences
+from app.analysis.explain import build_evidence_map, label_doctrine, template_sentences, verify_sentences
 from app.analysis.matching import ReportChunk, hits_to_evidence, match_imagery, quote_in_text
 from app.analysis.scoring import Evidence, assess, evidence_weight, indicator_strength
 from app.ingest.chunk import chunk_text
@@ -85,17 +85,28 @@ def test_llm_hits_require_verbatim_quote_and_known_indicator():
 
 
 def test_verify_sentences_requires_indicator_matched_citations():
-    ev_map = {"I_MEDICAL": [{"id": "targets:field_hospital:1", "text": "x"}],
-              "I_ARMOR_MASS": [{"id": "targets:tank:2", "text": "y"}]}
+    ev_map = {"I_MEDICAL": [{"id": "E1", "ref": "targets:field_hospital:1", "text": "x"}],
+              "I_ARMOR_MASS": [{"id": "E2", "ref": "targets:tank:2,3", "text": "y"}]}
+    doctrine = label_doctrine([{"ref": "chunk:d1:0", "text": "교리"}])
     kept, dropped = verify_sentences(
-        [{"indicator_id": "I_MEDICAL", "text": "의무시설 전개", "citations": ["targets:field_hospital:1"]},
-         {"indicator_id": "I_MEDICAL", "text": "전차 근거를 끌어다 씀", "citations": ["targets:tank:2"]},
-         {"indicator_id": "I_ARMOR_MASS", "text": "교리 인용", "citations": ["chunk:d1:0"]},
+        [{"indicator_id": "I_MEDICAL", "text": "의무시설 전개", "citations": ["[E1]"]},     # 괄호 변형 허용
+         {"indicator_id": "I_MEDICAL", "text": "전차 근거를 끌어다 씀", "citations": ["E2"]},
+         {"indicator_id": "I_ARMOR_MASS", "text": "교리 인용", "citations": ["D1"]},
          {"indicator_id": "I_ARMOR_MASS", "text": "근거 없음", "citations": []},
-         {"indicator_id": "I_UNKNOWN", "text": "모르는 지표", "citations": ["chunk:d1:0"]}],
-        ev_map, {"chunk:d1:0"},
+         {"indicator_id": "I_UNKNOWN", "text": "모르는 지표", "citations": ["D1"]}],
+        ev_map, doctrine,
     )
     assert [s["text"] for s in kept] == ["의무시설 전개", "교리 인용"] and len(dropped) == 3
+    assert kept[0]["citations"] == ["targets:field_hospital:1"] and kept[1]["citations"] == ["chunk:d1:0"]
+
+
+def test_template_fills_uncovered_indicators():
+    evidence = [Evidence("I_MEDICAL", "IMINT", "s", "B", 2, NOW, "r1", quote="야전병원 0 → 2"),
+                Evidence("I_BRIDGING", "IMINT", "s", "B", 2, NOW, "r2", quote="도하 0 → 4")]
+    r = assess(CAT, evidence, GR, NOW)
+    m = build_evidence_map(r, evidence)
+    filled = template_sentences(r, m, covered={"I_MEDICAL"})
+    assert [f["indicator_id"] for f in filled] == ["I_BRIDGING"] and filled[0]["citations"] == ["r2"]
 
 
 def test_evidence_map_only_top_hypothesis_indicators():

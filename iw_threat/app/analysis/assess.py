@@ -11,7 +11,7 @@ from ..embed import embed_query
 from ..stores import pg
 from .catalog import load_catalog, load_grading
 from .change import detect_changes
-from .explain import build_evidence_map, explanation_prompt, verify_sentences
+from .explain import build_evidence_map, explanation_prompt, label_doctrine, template_sentences, verify_sentences
 from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery
 from .scoring import assess
 
@@ -66,16 +66,18 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
     narrative = {"sentences": [], "dropped": 0}
     if vector is not None and llm is not None and result.top.contributions:
         q = embed_query(" ".join(c.name for c in result.top.contributions))
-        doctrine = [{"id": f"chunk:{d['chunk_id']}", "text": d["text"]}
-                    for d in vector.search(q, s.doctrine_top_k, source_types=["DOCTRINE"])]
+        doctrine = label_doctrine([{"ref": f"chunk:{d['chunk_id']}", "text": d["text"]}
+                                   for d in vector.search(q, s.doctrine_top_k, source_types=["DOCTRINE"])])
         ev_map = build_evidence_map(result, evidence)
         system, user = explanation_prompt(result, ev_map, doctrine)
+        kept, dropped = [], []
         try:
             out = llm.chat_json(system, user, max_tokens=3000, reasoning_effort="medium")
-            kept, dropped = verify_sentences(out.get("sentences", []), ev_map, {d["id"] for d in doctrine})
-            narrative = {"sentences": kept, "dropped": len(dropped)}
+            kept, dropped = verify_sentences(out.get("sentences", []), ev_map, doctrine)
         except Exception as e:  # noqa: BLE001
             narrative["error"] = str(e)
+        filled = template_sentences(result, ev_map, {k["indicator_id"] for k in kept})
+        narrative.update({"sentences": kept + filled, "dropped": len(dropped), "template_filled": len(filled)})
 
     payload = {
         "changes": [asdict(c) for c in changes],
