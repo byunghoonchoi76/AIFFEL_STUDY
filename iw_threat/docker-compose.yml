@@ -83,7 +83,7 @@ services:
       LLM_BASE_URL: http://llm:8000/v1
       QDRANT_URL: http://qdrant:6333
       NEO4J_URI: bolt://neo4j:7687
-      PG_DSN: postgresql://iw:${POSTGRES_PASSWORD}@postgis:5432/iw
+      PG_HOST: postgis
       HF_HOME: /models
     volumes:
       - ./config:/app/config:ro

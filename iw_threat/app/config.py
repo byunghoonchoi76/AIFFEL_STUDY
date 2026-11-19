@@ -25,7 +25,13 @@ class Settings(BaseSettings):
     neo4j_user: str = "neo4j"
     neo4j_password: str = "change_me_neo4j"
 
-    pg_dsn: str = "postgresql://iw:change_me@localhost:5432/iw"
+    # 비밀번호에 @ : / 등 특수문자가 있어도 안전하도록 URL 대신 개별 항목으로 접속
+    pg_host: str = "localhost"
+    pg_port: int = 5432
+    pg_db: str = "iw"
+    pg_user: str = "iw"
+    postgres_password: str = "change_me"
+    pg_dsn: str | None = None  # 지정 시 위 항목보다 우선
 
     indicators_path: str = "config/indicators.yaml"
     grading_path: str = "config/source_grading.yaml"

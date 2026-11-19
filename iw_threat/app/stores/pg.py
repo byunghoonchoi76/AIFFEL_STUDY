@@ -12,7 +12,11 @@ from ..config import get_settings
 
 
 def conn():
-    return psycopg.connect(get_settings().pg_dsn, row_factory=dict_row, autocommit=True)
+    s = get_settings()
+    if s.pg_dsn:
+        return psycopg.connect(s.pg_dsn, row_factory=dict_row, autocommit=True)
+    return psycopg.connect(host=s.pg_host, port=s.pg_port, dbname=s.pg_db, user=s.pg_user,
+                           password=s.postgres_password, row_factory=dict_row, autocommit=True)
 
 
 def upsert_source(name: str, source_type: str, reliability: str) -> int:
