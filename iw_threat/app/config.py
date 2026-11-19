@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     llm_base_url: str = "http://localhost:8000/v1"
     llm_served_name: str = "gpt-oss"
     llm_timeout_s: float = 180.0
+    llm_concurrency: int = 8
 
     embed_model: str = "intfloat/multilingual-e5-large-instruct"
     embed_dim: int = 1024

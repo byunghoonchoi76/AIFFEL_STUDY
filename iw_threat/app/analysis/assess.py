@@ -1,6 +1,7 @@
 """평가 오케스트레이터: 변화 분석 → 지표 매칭(영상 규칙 + 텍스트 LLM) → 위협도 산정 → 근거 해설."""
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 from datetime import datetime, timedelta
 
@@ -37,15 +38,21 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
     # 2) 텍스트 첩보 → LLM 분류(인용문 원문 대조 검증)
     rejected_hits = 0
     if vector is not None and llm is not None:
-        for ch in _report_chunks(vector, area_id, as_of, s.report_lookback_days, s.report_top_k):
+        chunks = _report_chunks(vector, area_id, as_of, s.report_lookback_days, s.report_top_k)
+
+        def classify(ch):
             system, user = classification_prompt(ch, catalog)
             try:
-                hits = llm.chat_json(system, user).get("hits", [])
+                return ch, llm.chat_json(system, user, max_tokens=1024, reasoning_effort="low").get("hits", [])
             except Exception:  # noqa: BLE001
-                continue
-            ev = hits_to_evidence(ch, hits, catalog)
-            rejected_hits += len(hits) - len(ev)
-            evidence.extend(ev)
+                return ch, []
+
+        # vLLM 연속 배칭 활용: 동시 요청으로 처리량 확보
+        with ThreadPoolExecutor(max_workers=s.llm_concurrency) as pool:
+            for ch, hits in pool.map(classify, chunks):
+                ev = hits_to_evidence(ch, hits, catalog)
+                rejected_hits += len(hits) - len(ev)
+                evidence.extend(ev)
 
     # 3) 위협도 산정 (결정적 계산)
     result = assess(catalog, evidence, grading, as_of)
@@ -59,7 +66,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
         quotes = [{"id": e.ref, "text": e.quote} for e in evidence if e.quote]
         system, user = explanation_prompt(result, doctrine, quotes)
         try:
-            out = llm.chat_json(system, user, max_tokens=3000)
+            out = llm.chat_json(system, user, max_tokens=3000, reasoning_effort="medium")
             kept, dropped = verify_sentences(out.get("sentences", []), {d["id"] for d in doctrine + quotes})
             narrative = {"sentences": kept, "dropped": len(dropped)}
         except Exception as e:  # noqa: BLE001

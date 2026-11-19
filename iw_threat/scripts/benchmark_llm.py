@@ -12,7 +12,7 @@ PROMPT = ("다음 첩보를 읽고 적의 공격 준비 징후에 해당하는 �
           "보급차량 통행이 평소의 2배로 증가했다는 현지 보고가 있다.")
 
 
-def run(client: OpenAI, model: str, max_tokens: int) -> dict:
+def run(client: OpenAI, model: str, max_tokens: int, effort: str = "medium") -> dict:
     """gpt-oss는 추론(reasoning) 토큰을 먼저 생성하고 답변(content)을 생성함.
     - ttft: 첫 토큰(추론 포함)까지 시간
     - answer_latency: 첫 답변 문자가 화면에 보이기까지 시간
@@ -23,7 +23,7 @@ def run(client: OpenAI, model: str, max_tokens: int) -> dict:
     usage_tokens = None
     stream = client.chat.completions.create(
         model=model, messages=[{"role": "user", "content": PROMPT}], max_tokens=max_tokens,
-        temperature=0.0, stream=True, stream_options={"include_usage": True},
+        temperature=0.0, stream=True, stream_options={"include_usage": True}, reasoning_effort=effort,
     )
     for ev in stream:
         if ev.usage:
@@ -56,10 +56,11 @@ def main():
     ap.add_argument("--model", default="gpt-oss")
     ap.add_argument("--runs", type=int, default=3)
     ap.add_argument("--max-tokens", type=int, default=512)
+    ap.add_argument("--reasoning-effort", default="medium", choices=["low", "medium", "high"])
     a = ap.parse_args()
     client = OpenAI(base_url=a.base_url, api_key="not-needed")
-    run(client, a.model, 32)  # 워밍업
-    res = [run(client, a.model, a.max_tokens) for _ in range(a.runs)]
+    run(client, a.model, 32, a.reasoning_effort)  # 워밍업
+    res = [run(client, a.model, a.max_tokens, a.reasoning_effort) for _ in range(a.runs)]
     for i, r in enumerate(res, 1):
         print(f"run{i}: TTFT {r['ttft']:.2f}s, 첫 답변 {r['answer_latency']:.2f}s, "
               f"{r['tps']:.1f} tok/s, 전체 {r['total']:.2f}s, {r['tokens']} tokens")
