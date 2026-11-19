@@ -39,6 +39,8 @@ class Settings(BaseSettings):
 
     indicators_path: str = "config/indicators.yaml"
     grading_path: str = "config/source_grading.yaml"
+    readiness_path: str = "config/readiness.yaml"
+    readiness_history_days: int = 30
 
     # 변화 분석 창
     window_days: int = 7

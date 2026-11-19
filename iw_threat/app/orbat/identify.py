@@ -14,6 +14,8 @@ EQUIP_UNIT_HINT = {
     "artillery": ("포병",), "mlrs": ("포병", "방사포"), "bridging": ("공병", "도하"), "engineer": ("공병",),
     "field_hospital": ("의무",), "command_vehicle": (), "truck": ("수송", "군수", "보급"),
     "fuel_truck": ("수송", "군수", "유류"), "sam": ("방공", "고사"), "aaa": ("방공", "고사"),
+    "sof_vehicle": ("특수", "경보병", "저격", "정찰"), "submarine": ("해군", "잠수", "함대", "전대"),
+    "hovercraft": ("해군", "상륙", "함대", "전대"), "fighter": ("비행", "항공", "공군"),
 }
 
 

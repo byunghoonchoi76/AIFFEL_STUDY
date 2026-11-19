@@ -94,6 +94,15 @@ def insert_assessment(area_id: str, as_of: datetime, top: str, score: float, gra
         ).fetchone()["id"]
 
 
+def fetch_assessment_history(area_id: str, since: datetime, until: datetime) -> list[dict]:
+    """기준 시각별 최신 평가 1건씩 (재평가 시 마지막 결과 사용)."""
+    with conn() as c:
+        return c.execute(
+            """SELECT DISTINCT ON (as_of) as_of, threat_score, confidence, result
+               FROM assessments WHERE area_id=%s AND as_of > %s AND as_of <= %s
+               ORDER BY as_of, created_at DESC""", (area_id, since, until)).fetchall()
+
+
 def get_assessment(aid: int) -> dict | None:
     with conn() as c:
         return c.execute("SELECT * FROM assessments WHERE id=%s", (aid,)).fetchone()

@@ -15,6 +15,7 @@ EQUIP_KO = {
     "tank": "전차", "ifv": "보병전투차", "apc": "장갑차", "truck": "트럭", "fuel_truck": "유류차",
     "artillery": "야포", "mlrs": "방사포", "bridging": "도하장비", "engineer": "공병장비",
     "field_hospital": "야전병원", "command_vehicle": "지휘차량", "sam": "지대공미사일", "aaa": "대공포",
+    "sof_vehicle": "특수작전부대 차량", "submarine": "잠수함정", "hovercraft": "공기부양정", "fighter": "전투기",
 }
 
 

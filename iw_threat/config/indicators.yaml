@@ -44,3 +44,23 @@ hypotheses:
       - {id: I_ARMOR_MASS,   name: 기갑·기계화 장비 전방 집결, lr: 3.0, tau_days: 7,  equipment: [tank, ifv, apc], min_delta: 10, meaning: 공격 제대 집결 정황}
       - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 2.0, tau_days: 10, equipment: [truck, fuel_truck], min_delta: 20, meaning: 작전 지속지원 준비 정황}
       - {id: I_EX_ANNOUNCED, name: 훈련 공표·통상 훈련 시기,   lr: 6.0, tau_days: 30, equipment: [], min_delta: 0, meaning: 통상 훈련 활동 가능성}
+
+  # 진돗개(대침투·국지도발) 트랙용 — 예시값
+  - id: H_INFILTRATION
+    name: 침투·국지도발 준비
+    prior: 0.02
+    impact: 0.6
+    indicators:
+      - {id: I_SOF_FORWARD,  name: 특수작전부대 전방 이동,       lr: 6.0, tau_days: 5, equipment: [sof_vehicle], min_delta: 2, meaning: 침투 준비 정황}
+      - {id: I_SUB_SORTIE,   name: 잠수함정·공기부양정 기지 이탈, lr: 7.0, tau_days: 3, equipment: [submarine, hovercraft], min_delta: 1, meaning: 해상 침투 준비 정황}
+      - {id: I_INFIL_SIGN,   name: 침투 흔적·거동 수상자,        lr: 9.0, tau_days: 3, equipment: [], min_delta: 0, meaning: 침투 진행 정황}
+
+  # 두루미(적 항공기 위협) 트랙용 — 예시값
+  - id: H_AIR
+    name: 항공 도발 준비
+    prior: 0.02
+    impact: 0.5
+    indicators:
+      - {id: I_AIR_FORWARD,  name: 전투기 전방 기지 전개,        lr: 5.0, tau_days: 5, equipment: [fighter], min_delta: 4, meaning: 항공 도발 준비 정황}
+      - {id: I_AIR_SORTIE,   name: 비행 활동 급증,               lr: 4.0, tau_days: 2, equipment: [], min_delta: 0, meaning: 항공 위협 고조}
+      - {id: I_AIR_DEFENSE,  name: 방공 자산 전방 배치,          lr: 2.0, tau_days: 7, equipment: [sam, aaa], min_delta: 2, meaning: 공격 부대 방공 엄호 정황}

@@ -7,6 +7,8 @@ truth:
   intent: 기만(공격 의도 없음)
   hypothesis: 없음
   d_day: "D일 = 기만 활동 종료"
+  # 정답 태세 일정 [시작일, 단계] — 분석관(정보병과 예비역) 작성 예시
+  readiness: {watchcon: [[-30, 3]], jindogae: [[-30, 3]], durumi: [[-30, 3]]}
 period: {start: -60, end: 0}
 assess: {start: -30, end: 0}
 

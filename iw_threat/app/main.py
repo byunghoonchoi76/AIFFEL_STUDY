@@ -161,7 +161,16 @@ def orbat_identify(lat: float, lon: float, equipment: str | None = None):
 @app.post("/assess")
 def assess(req: AssessRequest):
     d = deps()
-    return run_assessment(req.area_id, req.as_of, vector=d["vector"], llm=d["llm"], explain=req.explain)
+    res = run_assessment(req.area_id, req.as_of, vector=d["vector"], llm=d["llm"], explain=req.explain)
+    from .analysis.readiness_service import current_readiness
+    res["readiness"] = current_readiness(req.area_id, req.as_of)   # 직전 평가 이력 포함 태세 건의
+    return res
+
+
+@app.get("/readiness")
+def readiness(area_id: str, as_of: datetime):
+    from .analysis.readiness_service import current_readiness
+    return current_readiness(area_id, as_of)
 
 
 @app.get("/assessments/{aid}")

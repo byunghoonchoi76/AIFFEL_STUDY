@@ -46,6 +46,31 @@ def threat_chart(series: list[dict], path: Path, title: str) -> Path:
     return path
 
 
+def readiness_chart(rd: dict, path: Path) -> Path:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    kr = _korean_font()
+    if kr:
+        plt.rcParams["font.family"] = kr
+    plt.rcParams["axes.unicode_minus"] = False
+    tracks = list(rd["tracks"].values())
+    fig, axs = plt.subplots(1, len(tracks), figsize=(7.4, 2.4), dpi=150, sharey=True)
+    for ax, tr in zip(axs if len(tracks) > 1 else [axs], tracks):
+        days = [r["day"] for r in tr["series"]]
+        ax.step(days, [r["truth"] for r in tr["series"]], where="post", color="#999", lw=2.2, label="정답" if kr else "Truth")
+        ax.step(days, [r["rec"] for r in tr["series"]], where="post", color="#C0392B", lw=1.4, label="건의" if kr else "Rec.")
+        ax.set_title(tr["name"] if kr else tr.get("name", ""), fontsize=9)
+        ax.set_yticks([1, 2, 3]); ax.invert_yaxis(); ax.grid(alpha=0.25)
+        ax.set_xlabel("D일 기준" if kr else "Day", fontsize=8)
+    (axs[0] if len(tracks) > 1 else axs).legend(fontsize=7, loc="lower left")
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
 def build_report(result: dict, out_path: str | Path) -> Path:
     from docx import Document
     from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -116,6 +141,25 @@ def build_report(result: dict, out_path: str | Path) -> Path:
     para("※ 본 보고서는 가상 부대·가상 지역의 합성 데이터로 자동 생성된 시험 보고서임", 8.5, False,
          WD_ALIGN_PARAGRAPH.CENTER, 10, (0xC0, 0x00, 0x00))
 
+    # ── 0. 태세 판단 건의 ──
+    rd = ev.get("readiness")
+    if rd:
+        h("태세 판단 건의 (발령은 지휘관 권한)")
+        rows = []
+        for tid, tr in rd["tracks"].items():
+            last = tr["series"][-1]
+            chg = [x for x in tr["series"] if x["action"] != "유지"]
+            hist = " → ".join(f"D{x['day']:+d} {x['name']}" for x in chg) or "변동 없음"
+            why = "; ".join(last["reasons"]) or (last["note"] or "기준 미달 — 현 태세 유지")
+            rows.append([tr["name"], f"{last['name']} {'(' + last['action'] + ')' if last['action'] != '유지' else ''}".strip(), why, hist])
+        table(["태세", "현재 건의", "근거", "건의 변동 이력"], rows, [2.0, 3.2, 6.8, 5.0])
+        dc = rd["tracks"].get("watchcon", {}).get("defcon_review_days", [])
+        para(("■ 데프콘 검토 필요 신호: " + ", ".join(f"D{x:+d}" for x in dc)) if dc else "■ 데프콘 검토 신호 없음", 9.5,
+             True, after=2, color=(0xC0, 0, 0) if dc else (0x44, 0x44, 0x44))
+        para(f"※ {rd['basis']} · 격상 즉시 / 하향은 낮은 조건 지속 시 · 신뢰도 부족 시 정보 수집 강화 건의", 8.5,
+             after=4, color=(0x66, 0x66, 0x66))
+        table(["지휘관 결심", "□ 건의대로 발령  □ 수정 발령(          )  □ 현 태세 유지", ], [["결심자 / 일시", ""]], [4.0, 13.0])
+
     # ── 1. 종합 판단 ──
     h("1. 종합 판단")
     probs = series[-1]["probabilities"]
@@ -181,5 +225,15 @@ def build_report(result: dict, out_path: str | Path) -> Path:
                           f"전투서열 {prep['orbat'].get('unit_rows')}개 부대"],
              ["평가 설정", f"D일 {sc['d_day'][:10]}, {sc['step']}일 간격, 난수 seed {sc['seed']}"]]
     table(["항목", "결과"], rows, [5.0, 12.0])
+    if rd:
+        para("태세 건의 vs 정답 태세 일정", 10.5, True, after=2)
+        trow = []
+        for tid, tr in rd["tracks"].items():
+            delay = "; ".join(f"{x['to']}: 정답 D{x['truth_day']:+d} / 건의 " + (f"D{x['rec_day']:+d} ({x['delay_days']:+d}일)" if x["rec_day"] is not None else "미건의")
+                              for x in tr["escalation_delays"]) or "-"
+            trow.append([tr["name"], f"{tr['match_rate']:.0%}", tr["over_days"], tr["under_days"], tr["level_changes"], delay])
+        table(["태세", "일치율", "과잉(일)", "미달(일)", "변동 횟수", "격상 시점 비교"], trow, [1.8, 1.6, 1.6, 1.6, 1.8, 8.6])
+        chart2 = readiness_chart(rd, out_path.with_name(out_path.stem + "_readiness.png"))
+        d.add_picture(str(chart2), width=Cm(16.5))
     d.save(out_path)
     return out_path

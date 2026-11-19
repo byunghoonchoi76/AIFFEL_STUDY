@@ -64,6 +64,8 @@ def assess_series(client, sc: Scenario, d_day: datetime, step: int, log=print) -
         probs = {h["name"]: h["probability"] for h in r["hypotheses"]}
         series.append({"day": day, "as_of": as_of.isoformat(), "grade": r["grade"], "confidence": r["confidence"],
                        "top_threat": r["top_hypothesis"], "probabilities": probs,
+                       "threats": {h["hypothesis_id"]: h["threat"] for h in r["hypotheses"]},
+                       "indicators": sorted({c["indicator_id"] for h in r["hypotheses"] for c in h["contributions"]}),
                        "n_indicators": len(r["hypotheses"][0]["contributions"]), "elapsed_s": r.get("elapsed_s")})
         log(f"  D{day:+d}  등급 {r['grade']:2s}  " + "  ".join(f"{k} {v:.0%}" for k, v in probs.items()))
         final = r
@@ -91,6 +93,37 @@ def identification_accuracy(client, sc: Scenario, out: Path, window_days: int = 
     n = max(len(sample), 1)
     return {"events": len(sample), "correct": ok, "wrong": wrong, "unidentified": miss,
             "accuracy": round(ok / n, 3), "errors": sorted(set(errors))[:10]}
+
+
+def readiness_eval(sc: Scenario, series: list[dict], readiness_path: str = "config/readiness.yaml") -> dict:
+    """태세 건의를 시간순으로 계산하고 시나리오 정답 태세 일정과 비교 (트랙별)."""
+    from app.analysis.readiness import Observation, load_readiness, recommend_all
+
+    tracks, basis = load_readiness(readiness_path)
+    obs = [Observation(x["day"], x["threats"], x["confidence"], set(x["indicators"]), f"D{x['day']:+d}") for x in series]
+    recs = recommend_all(tracks, obs)
+    truth_cfg = (sc.truth.get("readiness") or {})
+    out = {"basis": basis, "tracks": {}}
+    for t in tracks:
+        sched = sorted(truth_cfg.get(t.id, [[sc.assess[0], t.baseline]]))
+        truth_at = lambda day: next((lv for d0, lv in reversed(sched) if day >= d0), t.baseline)  # noqa: E731
+        rows = [{"day": r["day"], "rec": r["level"], "truth": truth_at(r["day"]), "action": r["action"],
+                 "name": r["level_name"], "reasons": r["reasons"], "note": r["note"], "defcon": r["defcon_review"]}
+                for r in recs[t.id]]
+        delays = []
+        for (d0, lv), prev in zip(sched[1:], sched[:-1]):
+            if lv < prev[1]:                                          # 정답상 격상 시점
+                first_ok = next((r["day"] for r in rows if r["rec"] <= lv), None)
+                delays.append({"to": t.name_of(lv), "truth_day": d0, "rec_day": first_ok,
+                               "delay_days": (first_ok - d0) if first_ok is not None else None})
+        changes = sum(1 for a, b in zip(rows, rows[1:]) if a["rec"] != b["rec"])
+        out["tracks"][t.id] = {
+            "name": t.name, "final": rows[-1]["name"], "final_truth": t.name_of(rows[-1]["truth"]),
+            "match_rate": round(sum(r["rec"] == r["truth"] for r in rows) / len(rows), 3),
+            "over_days": sum(r["rec"] < r["truth"] for r in rows), "under_days": sum(r["rec"] > r["truth"] for r in rows),
+            "level_changes": changes, "escalation_delays": delays,
+            "defcon_review_days": [r["day"] for r in rows if r["defcon"]], "series": rows}
+    return out
 
 
 def evaluate(sc: Scenario, series: list[dict]) -> dict:
@@ -130,6 +163,7 @@ def run_scenario(client, path: str | Path, out_dir: str | Path, d_day: datetime 
     series, final = assess_series(client, sc, d_day, step, log)
     ev = evaluate(sc, series)
     ev["identification"] = identification_accuracy(client, sc, out)
+    ev["readiness"] = readiness_eval(sc, series)
     result = {"scenario": {"id": sc.id, "name": sc.name, "area_id": sc.area_id, "truth": sc.truth,
                            "d_day": d_day.isoformat(), "seed": seed, "step": step},
               "prepare": prep, "series": series, "final": final, "evaluation": ev}
