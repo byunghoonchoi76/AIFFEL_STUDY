@@ -113,16 +113,27 @@ def _compact(ev_text: str) -> str:
     return ev_text
 
 
+def _overlaps(tok: str, toks: set[str]) -> bool:
+    return any(len(t) >= 2 and (tok in t or t in tok) for t in toks)
+
+
+def strip_restatement(text: str, name: str) -> str:
+    """'포병 진지 증강으로 화력 지원 강화' → '화력 지원 강화' (앞부분이 지표 이름을 다시 말한 경우만 제거)."""
+    m = re.match(r"(.+?)(?:으로|로)\s+(.+)", text)
+    if m and name:
+        head = _content_tokens(m.group(1))
+        if head and all(_overlaps(t, _content_tokens(name)) for t in head):
+            return m.group(2).strip()
+    return text
+
+
 def _is_echo(text: str, name: str) -> bool:
-    """해석이 지표 이름을 되풀이했는지(공백·기호 무시, 지표 이름 단어가 대부분 겹치면 되풀이로 봄)."""
-    norm = lambda x: re.sub(r"[\s·,.\-]", "", x)  # noqa: E731
+    """지표 이름 단어를 빼고 나면 새로운 내용이 남지 않는 경우 = 되풀이."""
     if not name:
         return False
-    a, b = norm(text), norm(name)
-    if a == b or a in b or b in a:
-        return True
-    tn, tt = _content_tokens(name), _content_tokens(text)
-    return bool(tn) and len(tt - tn) == 0
+    name_toks = _content_tokens(name)
+    rest = [t for t in _content_tokens(text) if not _overlaps(t, name_toks)]
+    return len(rest) == 0
 
 
 def verify_implications(items: list[dict] | None, ev_map: dict[str, list[dict]],
@@ -141,8 +152,10 @@ def verify_implications(items: list[dict] | None, ev_map: dict[str, list[dict]],
             reason = "숫자 포함(사실은 정형 문장에서만)"
         elif any(j in text for j in _JARGON):
             reason = "내부 용어 사용"
-        elif _is_echo(text, (names or {}).get(iid, "")):
-            reason = "지표 이름 되풀이"
+        else:
+            text = strip_restatement(text, (names or {}).get(iid, ""))
+            if _is_echo(text, (names or {}).get(iid, "")):
+                reason = "지표 이름 되풀이"
         if reason:
             dropped.append({**it, "_reason": reason})
         elif iid not in ok:

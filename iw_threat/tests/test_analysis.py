@@ -101,6 +101,10 @@ def test_implications_verified_and_lines_keep_exact_facts():
     names = {"I_BRIDGING": "도하·공병 장비 전방 이동"}
     ok2, dr2 = verify_implications([{"indicator_id": "I_BRIDGING", "text": "도하·공병 장비 전방 이동"}], m, names)
     assert not ok2 and dr2[0]["_reason"] == "지표 이름 되풀이"
+    names3 = {"I_MEDICAL": "야전 의무시설 전개", "I_BRIDGING": "도하·공병 장비 전방 이동"}
+    ok3, dr3 = verify_implications([{"indicator_id": "I_MEDICAL", "text": "야전 의무시설 전개로 부상자 처리 능력 강화"},
+                                    {"indicator_id": "I_BRIDGING", "text": "도하·공병 장비 이동으로 진입 경로 확보"}], m, names3)
+    assert ok3 == {"I_MEDICAL": "부상자 처리 능력 강화", "I_BRIDGING": "진입 경로 확보"} and not dr3
     meanings = {i: d.meaning for i, d in CAT.indicator_defs().items()}
     fb = {x["indicator_id"]: x for x in indicator_lines(r, m, {}, meanings)}
     assert fb["I_BRIDGING"]["text"].endswith("→ 하천 도하 공격 대비 정황") and fb["I_BRIDGING"]["generated"] == "template"
