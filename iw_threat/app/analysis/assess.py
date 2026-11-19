@@ -1,6 +1,7 @@
 """평가 오케스트레이터: 변화 분석 → 지표 매칭(영상 규칙 + 텍스트 LLM) → 위협도 산정 → 근거 해설."""
 from __future__ import annotations
 
+import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 from datetime import datetime, timedelta
@@ -10,7 +11,7 @@ from ..embed import embed_query
 from ..stores import pg
 from .catalog import load_catalog, load_grading
 from .change import detect_changes
-from .explain import explanation_prompt, verify_sentences
+from .explain import build_evidence_map, explanation_prompt, verify_sentences
 from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery
 from .scoring import assess
 
@@ -27,6 +28,7 @@ def _report_chunks(vector, area_id: str, as_of: datetime, lookback_days: int, k:
 
 
 def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> dict:
+    t0 = time.perf_counter()
     s = get_settings()
     as_of = to_aware(as_of)
     catalog, grading = load_catalog(s.indicators_path), load_grading(s.grading_path)
@@ -38,8 +40,10 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
 
     # 2) 텍스트 첩보 → LLM 분류(인용문 원문 대조 검증)
     rejected_hits = 0
+    n_chunks = 0
     if vector is not None and llm is not None:
         chunks = _report_chunks(vector, area_id, as_of, s.report_lookback_days, s.report_top_k)
+        n_chunks = len(chunks)
 
         def classify(ch):
             system, user = classification_prompt(ch, catalog)
@@ -64,11 +68,11 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
         q = embed_query(" ".join(c.name for c in result.top.contributions))
         doctrine = [{"id": f"chunk:{d['chunk_id']}", "text": d["text"]}
                     for d in vector.search(q, s.doctrine_top_k, source_types=["DOCTRINE"])]
-        quotes = [{"id": e.ref, "text": e.quote} for e in evidence if e.quote]
-        system, user = explanation_prompt(result, doctrine, quotes)
+        ev_map = build_evidence_map(result, evidence)
+        system, user = explanation_prompt(result, ev_map, doctrine)
         try:
             out = llm.chat_json(system, user, max_tokens=3000, reasoning_effort="medium")
-            kept, dropped = verify_sentences(out.get("sentences", []), {d["id"] for d in doctrine + quotes})
+            kept, dropped = verify_sentences(out.get("sentences", []), ev_map, {d["id"] for d in doctrine})
             narrative = {"sentences": kept, "dropped": len(dropped)}
         except Exception as e:  # noqa: BLE001
             narrative["error"] = str(e)
@@ -79,7 +83,10 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
         "hypotheses": [asdict(h) for h in result.hypotheses],
         "rejected_llm_hits": rejected_hits,
         "catalog_version": catalog.meta.get("version"),
+        "report_chunks_checked": n_chunks,
+        "elapsed_s": None,
     }
+    payload["elapsed_s"] = round(time.perf_counter() - t0, 2)
     aid = pg.insert_assessment(
         area_id, as_of, result.top.name, result.threat_score, result.grade, result.confidence,
         _jsonable(payload), narrative, {"llm": s.llm_served_name, "embed": s.embed_model},

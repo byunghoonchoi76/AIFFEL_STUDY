@@ -8,7 +8,7 @@ import pytest
 
 from app.analysis.catalog import load_catalog, load_grading
 from app.analysis.change import TargetRow, detect_changes
-from app.analysis.explain import verify_sentences
+from app.analysis.explain import build_evidence_map, verify_sentences
 from app.analysis.matching import ReportChunk, hits_to_evidence, match_imagery, quote_in_text
 from app.analysis.scoring import Evidence, assess, evidence_weight, indicator_strength
 from app.ingest.chunk import chunk_text
@@ -84,14 +84,27 @@ def test_llm_hits_require_verbatim_quote_and_known_indicator():
     assert quote_in_text("천막  3동이\n새로", chunk.text)
 
 
-def test_verify_sentences_drops_uncited():
+def test_verify_sentences_requires_indicator_matched_citations():
+    ev_map = {"I_MEDICAL": [{"id": "targets:field_hospital:1", "text": "x"}],
+              "I_ARMOR_MASS": [{"id": "targets:tank:2", "text": "y"}]}
     kept, dropped = verify_sentences(
-        [{"text": "근거 있음", "citations": ["chunk:a"]},
-         {"text": "근거 없음", "citations": []},
-         {"text": "허용 밖 근거", "citations": ["chunk:zzz"]}],
-        {"chunk:a"},
+        [{"indicator_id": "I_MEDICAL", "text": "의무시설 전개", "citations": ["targets:field_hospital:1"]},
+         {"indicator_id": "I_MEDICAL", "text": "전차 근거를 끌어다 씀", "citations": ["targets:tank:2"]},
+         {"indicator_id": "I_ARMOR_MASS", "text": "교리 인용", "citations": ["chunk:d1:0"]},
+         {"indicator_id": "I_ARMOR_MASS", "text": "근거 없음", "citations": []},
+         {"indicator_id": "I_UNKNOWN", "text": "모르는 지표", "citations": ["chunk:d1:0"]}],
+        ev_map, {"chunk:d1:0"},
     )
-    assert [s["text"] for s in kept] == ["근거 있음"] and len(dropped) == 2
+    assert [s["text"] for s in kept] == ["의무시설 전개", "교리 인용"] and len(dropped) == 3
+
+
+def test_evidence_map_only_top_hypothesis_indicators():
+    evidence = [ev("I_MEDICAL"), ev("I_EX_ANNOUNCED", stype="OSINT", key="n")]
+    evidence = [Evidence(e.indicator_id, e.source_type, e.source_key, e.reliability, e.credibility,
+                         e.observed_at, e.ref, quote="q") for e in evidence]
+    r = assess(CAT, evidence, GR, NOW)
+    m = build_evidence_map(r, evidence)
+    assert set(m) == {c.indicator_id for c in r.top.contributions}
 
 
 def test_chunk_respects_max_len():
