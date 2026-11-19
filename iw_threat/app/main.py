@@ -14,6 +14,16 @@ from .config import to_aware
 from .stores import pg
 
 app = FastAPI(title="징후·위협도 AI 추론 MVP")
+
+
+@app.exception_handler(Exception)
+async def _unhandled(request, exc: Exception):
+    """시제품 단계: 원인 파악을 위해 오류 유형·메시지를 응답에 포함 (운용 단계에서는 제거)."""
+    from fastapi.responses import JSONResponse
+    import logging
+
+    logging.getLogger("uvicorn.error").exception("unhandled error at %s", request.url.path)
+    return JSONResponse(status_code=500, content={"error": type(exc).__name__, "detail": str(exc)[:1000]})
 UPLOAD_DIR = Path("data/uploads")
 _deps: dict = {}
 
