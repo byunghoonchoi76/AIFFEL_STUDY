@@ -78,6 +78,22 @@ python scripts/orbat_benchmark.py --units 80 --seed 1 --scan   # 스캔 PDF(OCR 
 스캔 처리: 괘선 검출로 표 격자 인식 → 열 단위 OCR(좌표 열은 숫자·영문만 허용) → 행 배정,
 좌표 칸 복원(S→8·5, D→0, H→1 오인식 보정), 문서 중심에서 150km 이상 벗어난 좌표는 '좌표 이상치'로 표시
 
+## 전투서열 DB 적재 · 표적 → 부대 식별
+
+1. PDF 파싱 → `records.csv` 검토 (엑셀에서 `approve` 열을 추가해 Y 표시, 없으면 문제 없는 행만 적재)
+2. 적재: `curl -F file=@data/orbat/문서명/records.csv http://localhost:8080/orbat/load`
+   - PostGIS: `orbat_units`(부대·제대·상급) / `orbat_aliases`(표기 변형) / `orbat_garrisons`(주둔지 좌표·반경) / `orbat_equipment`
+   - Neo4j: `(:Unit)-[:예하]->(:Unit)`
+3. 조회: `GET /orbat/units`, `GET /orbat/identify?lat=38.02&lon=127.03&equipment=tank`
+4. 평가 시 자동 반영: 최근 7일 표적 좌표 → 반경 안 주둔지 부대 식별 → 근거 문구에 `[식별 부대: …]` 표기, 결과 `unit_attribution`
+
+식별 규칙 (`app/orbat/identify.py`)
+- 제대별 활동 반경: 군단 20km · 사단 10km · 여단 5km · 연대 3km · 대대 1.5km (+좌표 정밀도)
+- 점수 = 거리 ÷ 반경, 장비-병종 일치(전차↔전차·기갑·기계화, 야포↔포병, 도하장비↔공병 등) 시 가중
+- 반경 밖이면 '미식별'
+
+가상 샘플: `python scripts/seed_orbat_sample.py && python scripts/seed_sample.py --reset`
+
 ## 테스트
 
 ```bash

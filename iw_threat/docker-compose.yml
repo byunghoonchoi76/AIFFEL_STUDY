@@ -66,6 +66,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./db/postgis/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - ./db/postgis/02_orbat.sql:/docker-entrypoint-initdb.d/02_orbat.sql:ro
     ports:
       - "5432:5432"
     healthcheck:

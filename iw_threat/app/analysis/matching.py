@@ -98,3 +98,22 @@ def classification_prompt(chunk: ReportChunk, catalog: Catalog) -> tuple[str, st
     )
     user = f"첩보 원문:\n\"\"\"\n{chunk.text}\n\"\"\"\n\nJSON으로 답하라: {{\"hits\": [{{\"indicator_id\": str, \"quote\": str}}]}}"
     return system, user
+
+
+def annotate_with_units(evidence: list[Evidence], attribution: list[dict]) -> list[Evidence]:
+    """영상 근거 문구에 식별 부대를 덧붙임: '... (+27대) [식별 부대: 제9002가상전차여단(여단) 1.2km]'."""
+    from dataclasses import replace
+
+    by_eq: dict[str, list[dict]] = {}
+    for a in attribution:
+        if a["unit_key"]:
+            by_eq.setdefault(a["equipment"], []).append(a)
+    out = []
+    for e in evidence:
+        eq = e.ref.split(":")[1] if e.source_type == "IMINT" and e.ref.startswith("targets:") else None
+        units = sorted(by_eq.get(eq, []), key=lambda a: -a["max_count"])[:2] if eq else []
+        if units and e.quote:
+            tag = ", ".join(f"{u['unit_name']}({u['echelon'] or '제대 미상'}) {u['dist_km']}km" for u in units)
+            e = replace(e, quote=f"{e.quote} [식별 부대: {tag}]")
+        out.append(e)
+    return out

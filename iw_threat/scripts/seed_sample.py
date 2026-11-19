@@ -23,9 +23,16 @@ def build(as_of: datetime) -> list[dict]:
     return rows
 
 
+# 장비별 관측 위치(가상): seed_orbat_sample.py의 가상 부대 주둔지 부근
+POS = {"tank": (38.022, 127.028), "apc": (38.018, 127.033), "artillery": (37.991, 126.983),
+       "bridging": (38.012, 126.962), "truck": (37.982, 127.037), "field_hospital": (38.031, 126.992),
+       "command_vehicle": (38.048, 127.002)}
+
+
 def _row(t: datetime, eq: str, n: int) -> dict:
+    lat, lon = POS.get(eq, (38.0, 127.0))
     return {"area_id": "AREA-01", "observed_at": t.isoformat(), "equipment_type": eq, "count": n,
-            "lon": 127.0, "lat": 38.0, "image_ref": f"SAMPLE-{t:%Y%m%d}"}
+            "lon": lon, "lat": lat, "image_ref": f"SAMPLE-{t:%Y%m%d}"}
 
 
 def main():
@@ -33,6 +40,7 @@ def main():
     ap.add_argument("--api", default="http://localhost:8080")
     ap.add_argument("--as-of", default=datetime.now().astimezone().replace(microsecond=0).isoformat())
     ap.add_argument("--csv-only", action="store_true")
+    ap.add_argument("--reset", action="store_true", help="등록 전에 AREA-01 표적 삭제")
     a = ap.parse_args()
     rows = build(datetime.fromisoformat(a.as_of))
     out = Path(__file__).resolve().parents[1] / "data/samples/targets_sample.csv"
@@ -43,6 +51,8 @@ def main():
         w.writerows(rows)
     print(f"CSV: {out} ({len(rows)}행)")
     if not a.csv_only:
+        if a.reset:
+            print("삭제:", httpx.delete(f"{a.api}/targets", params={"area_id": "AREA-01"}, timeout=60).json())
         r = httpx.post(f"{a.api}/targets", json=rows, timeout=60)
         print(r.status_code, r.text[:2000])
 

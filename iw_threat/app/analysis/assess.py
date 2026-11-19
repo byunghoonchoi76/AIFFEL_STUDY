@@ -13,7 +13,7 @@ from .catalog import load_catalog, load_grading
 from .change import detect_changes
 from .explain import (build_evidence_map, explanation_prompt, indicator_lines, label_doctrine, template_summary,
                       verify_implications, verify_summary)
-from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery
+from .matching import ReportChunk, annotate_with_units, classification_prompt, hits_to_evidence, match_imagery
 from .scoring import assess
 
 
@@ -38,6 +38,14 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
     rows = pg.fetch_target_rows(area_id, as_of - timedelta(days=s.window_days + s.baseline_days), as_of)
     changes = detect_changes(rows, as_of, s.window_days, s.baseline_days)
     evidence = match_imagery(changes, catalog, grading)
+
+    # 1-1) 전투서열 기반 표적 → 부대 식별 (전투서열 DB가 적재된 경우)
+    attribution: list[dict] = []
+    from ..orbat import store as orbat_store
+    if orbat_store.has_data():
+        pts = pg.fetch_target_points(area_id, as_of - timedelta(days=s.window_days), as_of)
+        attribution = orbat_store.attribute_targets(pts)
+        evidence = annotate_with_units(evidence, attribution)
 
     # 2) 텍스트 첩보 → LLM 분류(인용문 원문 대조 검증)
     rejected_hits = 0
@@ -86,6 +94,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
 
     payload = {
         "changes": [asdict(c) for c in changes],
+        "unit_attribution": attribution,
         "evidence": [asdict(e) for e in evidence],
         "hypotheses": [asdict(h) for h in result.hypotheses],
         "rejected_llm_hits": rejected_hits,

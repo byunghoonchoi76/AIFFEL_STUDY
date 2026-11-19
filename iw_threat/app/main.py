@@ -109,6 +109,45 @@ def ingest(
         raise HTTPException(400, str(e)) from e
 
 
+@app.delete("/targets")
+def delete_targets(area_id: str):
+    n = pg.delete_targets(area_id)
+    pg.audit("system", "delete_targets", {"area_id": area_id, "deleted": n})
+    return {"deleted": n}
+
+
+@app.post("/orbat/load")
+def orbat_load(file: UploadFile = File(...), mode: Literal["auto", "all"] = Form("auto"),
+               to_graph: bool = Form(True)):
+    """검토된 records.csv 적재. auto: approve 열이 있으면 승인 행만, 없으면 문제 없는 행만."""
+    from .orbat import store
+
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    dest = UPLOAD_DIR / Path(file.filename).name
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+    rows = store.read_records_csv(dest, mode)
+    res = store.load_records(rows)
+    if to_graph:
+        res["graph_units"] = deps()["graph"].load_orbat(rows)
+    return res
+
+
+@app.get("/orbat/units")
+def orbat_units():
+    from .orbat import store
+    return store.list_units()
+
+
+@app.get("/orbat/identify")
+def orbat_identify(lat: float, lon: float, equipment: str | None = None):
+    from .orbat import store
+    res = store.identify(lat, lon, equipment)
+    if res["best"]:
+        res["parent_chain"] = store.parent_chain(res["best"]["unit_key"])
+    return res
+
+
 @app.post("/assess")
 def assess(req: AssessRequest):
     d = deps()

@@ -66,6 +66,10 @@ with tab_assess:
         st.dataframe(pd.DataFrame(res["hypotheses"][0]["contributions"]))
         st.subheader("영상 변화")
         st.dataframe(pd.DataFrame(res["changes"]))
+        if res.get("unit_attribution"):
+            st.subheader("표적 → 부대 식별 (전투서열)")
+            st.dataframe(pd.DataFrame(res["unit_attribution"])[
+                ["equipment", "unit_name", "echelon", "parent_key", "location_type", "dist_km", "affinity", "max_count"]])
         st.subheader("근거 기반 해설 (보고서 초안)")
         summ = res["narrative"].get("summary")
         if summ:

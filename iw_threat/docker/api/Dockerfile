@@ -13,3 +13,4 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 COPY app ./app
 COPY ui ./ui
 COPY config ./config
+COPY db ./db

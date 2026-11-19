@@ -64,6 +64,20 @@ def fetch_target_rows(area_id: str, since: datetime, until: datetime) -> list[Ta
     return [TargetRow(**r) for r in rows]
 
 
+def fetch_target_points(area_id: str, since: datetime, until: datetime) -> list[dict]:
+    """좌표가 있는 표적 이벤트 (부대 식별용)."""
+    with conn() as c:
+        return c.execute(
+            """SELECT id, equipment_type, observed_at, count, ST_Y(geom) AS lat, ST_X(geom) AS lon
+               FROM target_events WHERE area_id=%s AND observed_at > %s AND observed_at <= %s AND geom IS NOT NULL
+               ORDER BY observed_at""", (area_id, since, until)).fetchall()
+
+
+def delete_targets(area_id: str) -> int:
+    with conn() as c:
+        return c.execute("DELETE FROM target_events WHERE area_id=%s", (area_id,)).rowcount
+
+
 def insert_assessment(area_id: str, as_of: datetime, top: str, score: float, grade: str,
                       confidence: str, result: dict, narrative: dict, model_info: dict) -> int:
     with conn() as c:

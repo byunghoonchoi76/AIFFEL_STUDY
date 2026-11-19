@@ -40,3 +40,21 @@ class Graph:
                 rel = "".join(ch for ch in str(r.get("rel", "RELATED")).upper() if ch.isalnum() or ch == "_") or "RELATED"
                 sess.run(f"MATCH (a {{name:$h}}), (b {{name:$t}}) MERGE (a)-[x:`{rel}`]->(b) "
                          "SET x.chunk_id=$chunk", h=r.get("head"), t=r.get("tail"), chunk=chunk_id)
+
+    def load_orbat(self, rows: list[dict]) -> int:
+        """전투서열을 지식그래프에: (:Unit {key})-[:예하]->(:Unit), 별칭·제대 속성."""
+        n = 0
+        with self.driver.session() as sess:
+            for r in rows:
+                if not r.get("unit_key"):
+                    continue
+                sess.run("MERGE (u:Unit {key:$k}) SET u.name=$n, u.echelon=coalesce($e, u.echelon) "
+                         "WITH u UNWIND $aliases AS a SET u.aliases = coalesce(u.aliases, []) + "
+                         "CASE WHEN a IN coalesce(u.aliases, []) THEN [] ELSE [a] END",
+                         k=r["unit_key"], n=r.get("unit_raw") or r["unit_key"], e=r.get("echelon") or None,
+                         aliases=[r["unit_raw"]] if r.get("unit_raw") else [])
+                if r.get("parent_key"):
+                    sess.run("MERGE (p:Unit {key:$p}) WITH p MATCH (u:Unit {key:$k}) MERGE (u)-[:예하]->(p)",
+                             p=r["parent_key"], k=r["unit_key"])
+                n += 1
+        return n
