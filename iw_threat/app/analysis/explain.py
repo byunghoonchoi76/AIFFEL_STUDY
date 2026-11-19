@@ -10,7 +10,7 @@ import re
 
 from .scoring import AssessmentResult, Evidence
 
-STRENGTH_WORDS = [(0.7, "강하게"), (0.4, "상당히"), (0.0, "약하게")]
+STRENGTH_WORDS = [(0.7, "강하게"), (0.4, "다수"), (0.0, "약하게")]
 
 
 def _strength_word(s: float) -> str:
