@@ -85,18 +85,21 @@ def test_llm_hits_require_verbatim_quote_and_known_indicator():
 
 
 def test_verify_sentences_requires_indicator_matched_citations():
-    ev_map = {"I_MEDICAL": [{"id": "E1", "ref": "targets:field_hospital:1", "text": "x"}],
-              "I_ARMOR_MASS": [{"id": "E2", "ref": "targets:tank:2,3", "text": "y"}]}
-    doctrine = label_doctrine([{"ref": "chunk:d1:0", "text": "교리"}])
+    ev_map = {"I_MEDICAL": [{"id": "E1", "ref": "targets:field_hospital:1", "text": "영상 판독 야전병원 0대 → 2대"}],
+              "I_ARMOR_MASS": [{"id": "E2", "ref": "targets:tank:2,3", "text": "영상 판독 전차 13대 → 40대"}]}
+    doctrine = label_doctrine([{"ref": "chunk:d1:0", "text": "공격 전 기갑부대는 집결지를 점령한다"}])
+    names = {"I_MEDICAL": "야전 의무시설 전개", "I_ARMOR_MASS": "기갑·기계화 장비 전방 집결"}
     kept, dropped = verify_sentences(
-        [{"indicator_id": "I_MEDICAL", "text": "의무시설 전개", "citations": ["[E1]"]},     # 괄호 변형 허용
-         {"indicator_id": "I_MEDICAL", "text": "전차 근거를 끌어다 씀", "citations": ["E2"]},
-         {"indicator_id": "I_ARMOR_MASS", "text": "교리 인용", "citations": ["D1"]},
+        [{"indicator_id": "I_MEDICAL", "text": "I_MEDICAL: 야전병원 2개소 새로 확인됨", "citations": ["[E1]"]},   # 접두어·괄호 정리
+         {"indicator_id": "I_MEDICAL", "text": "전차 40대 근거를 끌어다 씀", "citations": ["E2"]},              # 다른 지표 근거
+         {"indicator_id": "I_ARMOR_MASS", "text": "교리상 집결지 점령 단계로 판단됨", "citations": ["D1"]},
+         {"indicator_id": "I_ARMOR_MASS", "text": "기갑·기계화 장비 전방 집결이 상당히 충족됨", "citations": ["E2"]},  # 상투 문장
          {"indicator_id": "I_ARMOR_MASS", "text": "근거 없음", "citations": []},
          {"indicator_id": "I_UNKNOWN", "text": "모르는 지표", "citations": ["D1"]}],
-        ev_map, doctrine,
+        ev_map, doctrine, names,
     )
-    assert [s["text"] for s in kept] == ["의무시설 전개", "교리 인용"] and len(dropped) == 3
+    assert [s["text"] for s in kept] == ["야전병원 2개소 새로 확인됨", "교리상 집결지 점령 단계로 판단됨"]
+    assert len(dropped) == 4
     assert kept[0]["citations"] == ["targets:field_hospital:1"] and kept[1]["citations"] == ["chunk:d1:0"]
 
 

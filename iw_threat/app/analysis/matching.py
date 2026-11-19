@@ -10,6 +10,21 @@ from .change import Change
 from .scoring import Evidence
 
 
+EQUIP_KO = {
+    "tank": "전차", "ifv": "보병전투차", "apc": "장갑차", "truck": "트럭", "fuel_truck": "유류차",
+    "artillery": "야포", "mlrs": "방사포", "bridging": "도하장비", "engineer": "공병장비",
+    "field_hospital": "야전병원", "command_vehicle": "지휘차량", "sam": "지대공미사일", "aaa": "대공포",
+}
+
+
+def equip_ko(code: str) -> str:
+    return EQUIP_KO.get(code, code)
+
+
+def _fmt(n: float) -> str:
+    return f"{n:g}"
+
+
 def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
                   source_key: str = "IMINT:default") -> list[Evidence]:
     """규칙 매칭: 장비 분류가 지표에 속하고 증가량이 임계값 이상이면 충족."""
@@ -24,7 +39,8 @@ def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
                     indicator_id=ind.id, source_type="IMINT", source_key=source_key,
                     reliability=rel, credibility=cred, observed_at=ch.latest_at,
                     ref=f"targets:{ch.equipment_type}:{','.join(map(str, ch.refs))}",
-                    quote=f"{ch.equipment_type} 기준 {ch.baseline_level} → 최근 {ch.recent_level} (Δ{ch.delta})",
+                    quote=(f"영상 판독 {equip_ko(ch.equipment_type)} 기준기간 평균 {_fmt(ch.baseline_level)}대 → "
+                           f"최근 {ch.recent_level}대 (+{_fmt(ch.delta)}대)"),
                 ))
     return out
 
@@ -67,11 +83,17 @@ def hits_to_evidence(chunk: ReportChunk, hits: list[dict], catalog: Catalog) -> 
 
 
 def classification_prompt(chunk: ReportChunk, catalog: Catalog) -> tuple[str, str]:
-    inds = "\n".join(f"- {i.id}: {i.name}" for i in catalog.indicator_defs().values())
+    inds = "\n".join(
+        f"- {i.id}: {i.name}" + (f" (관련: {', '.join(equip_ko(e) for e in i.equipment)})" if i.equipment else "")
+        for i in catalog.indicator_defs().values()
+    )
     system = (
-        "너는 군 정보 분석 보조자다. 주어진 첩보 문장이 아래 징후 지표에 해당하는지 판단한다.\n"
-        "규칙: 원문에 명시된 사실만 사용한다. quote는 원문에서 그대로 복사한 연속 구절이어야 한다. "
-        "해당 지표가 없으면 hits를 빈 배열로 둔다.\n"
+        "너는 군 정보 분석 보조자다. 주어진 첩보 원문의 문장마다 아래 징후 지표에 해당하는지 판단한다.\n"
+        "규칙:\n"
+        "1. 원문의 각 문장을 빠짐없이 검토하고, 해당하는 지표를 모두 찾는다(한 원문에서 여러 개 가능).\n"
+        "2. 원문에 명시된 사실만 사용한다. 추정·확대 해석 금지.\n"
+        "3. quote는 원문에서 그대로 복사한 연속 구절이어야 한다(글자 하나도 바꾸지 않음).\n"
+        "4. 해당 지표가 없으면 hits를 빈 배열로 둔다.\n"
         f"징후 지표 목록:\n{inds}"
     )
     user = f"첩보 원문:\n\"\"\"\n{chunk.text}\n\"\"\"\n\nJSON으로 답하라: {{\"hits\": [{{\"indicator_id\": str, \"quote\": str}}]}}"

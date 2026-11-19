@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     llm_served_name: str = "gpt-oss"
     llm_timeout_s: float = 180.0
     llm_concurrency: int = 8
+    # 첩보 분류 추론 강도: low(빠름) / medium(누락 감소, 권장)
+    classify_reasoning_effort: str = "medium"
     # 시간대 정보 없는 입력 시각의 기준 시간대
     default_tz: str = "Asia/Seoul"
 

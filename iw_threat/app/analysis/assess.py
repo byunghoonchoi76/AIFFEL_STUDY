@@ -48,7 +48,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
         def classify(ch):
             system, user = classification_prompt(ch, catalog)
             try:
-                return ch, llm.chat_json(system, user, max_tokens=1024, reasoning_effort="low").get("hits", [])
+                return ch, llm.chat_json(system, user, max_tokens=2048, reasoning_effort=s.classify_reasoning_effort).get("hits", [])
             except Exception:  # noqa: BLE001
                 return ch, []
 
@@ -73,7 +73,8 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
         kept, dropped = [], []
         try:
             out = llm.chat_json(system, user, max_tokens=3000, reasoning_effort="medium")
-            kept, dropped = verify_sentences(out.get("sentences", []), ev_map, doctrine)
+            names = {c.indicator_id: c.name for c in result.top.contributions}
+            kept, dropped = verify_sentences(out.get("sentences", []), ev_map, doctrine, names)
         except Exception as e:  # noqa: BLE001
             narrative["error"] = str(e)
         filled = template_sentences(result, ev_map, {k["indicator_id"] for k in kept})
