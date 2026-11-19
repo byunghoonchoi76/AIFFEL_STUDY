@@ -30,8 +30,23 @@ def haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     return 6371000 * 2 * math.asin(math.sqrt(h))
 
 
+GROUP_UNIT_HINT = {
+    "main_battle_tank": ("전차", "기갑", "기계화"), "light_armor": ("기계화", "전차", "기갑", "정찰", "보병"),
+    "artillery": ("포병",), "air_defense": ("방공", "고사"), "engineer": ("공병", "도하"),
+    "logistics": ("수송", "군수", "보급"), "missile": ("미사일", "로케트"), "aviation": ("경보병", "특수", "항공", "비행"),
+    "naval": ("경보병", "특수", "해군", "잠수"), "ew_signal": ("전자전", "통신"), "fortification": ("포병", "보병"),
+    "underground": ("미사일", "비행"), "c2": ("사령부", "군단", "사단"), "deception": ("기만",),
+}
+
+
 def affinity(equipment: str | None, unit_name: str) -> bool:
-    return bool(equipment) and any(w in unit_name for w in EQUIP_UNIT_HINT.get(equipment, ()))
+    if not equipment:
+        return False
+    hints = EQUIP_UNIT_HINT.get(equipment)
+    if hints is None:
+        from ..taxonomy import group_of
+        hints = GROUP_UNIT_HINT.get(group_of(equipment) or "", ())
+    return any(w in unit_name for w in hints)
 
 
 def rank_candidates(cands: list[dict], equipment: str | None = None) -> list[dict]:

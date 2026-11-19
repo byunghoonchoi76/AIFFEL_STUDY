@@ -140,6 +140,19 @@ python scripts/run_scenario.py scenarios/attack_prep.yaml scenarios/large_exerci
 - 시나리오 YAML의 `truth.readiness`(정답 태세 일정)와 비교: 일치율·과잉/미달 일수·변동 횟수·격상 시점 차이
 - 시나리오 7종: 위 5종 + 침투 도발(`infiltration`), 항공 도발(`air_provocation`)
 
+## 대항군 군단 연속 시나리오 (ATP 7-100.2 기반 설계 파일 반영)
+
+- `config/classes.yaml`: 탐지 대상 분류 체계 (그룹·상태·기만체 라벨 `decoy_<id>`, 상태 라벨 `<id>@<state>`) → `app/taxonomy.py`
+- `scenarios/opfor_corps/`: `orbat.yaml`(군단 편제 템플릿), `layout_rules.yaml`, `scenario_events.yaml`(P0~P5·PCS), `test_cases.yaml`
+- `sim/opfor.py`: 이벤트 → 관측 가능한 변화로 변환 (가상 좌표, 시험 설계 가정값 명시)
+- 지표 확장: 주둔지 이탈·야간 분산, HARTS 점유, 기만 활동, 전자전 전개, 공격대형·화력준비, 전술핵 사용 준비(H_NUCLEAR: TEL 출고·분산, 장거리 발사대, 무인기 정찰)
+- `app/orbat/echelon_estimate.py`: 장비 구성비로 부대 유형·제대 추정 (M2-echelon), 평가 결과 `unit_estimates`(전투서열 미식별 군집)
+- 시험 지표: M2-echelon·M3-warning(경보까지 재방문 횟수)·M4-decoy(기만체의 실표적 입력 비율) 산출, test_cases 대응표 (M1 등 탐지기 단계는 범위 외)
+
+```bash
+python scripts/run_scenario.py scenarios/opfor_corps --step 1
+```
+
 ## 테스트
 
 ```bash

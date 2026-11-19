@@ -27,14 +27,20 @@ hypotheses:
     prior: 0.02
     impact: 1.0
     indicators:
-      - {id: I_ARMOR_MASS,   name: 기갑·기계화 장비 전방 집결, lr: 6.0, tau_days: 7,  equipment: [tank, ifv, apc], min_delta: 10, meaning: 공격 제대 집결 정황, min_delta_by_echelon: {여단: 6, 대대: 3}}
-      - {id: I_BRIDGING,     name: 도하·공병 장비 전방 이동,   lr: 8.0, tau_days: 7,  equipment: [bridging, engineer], min_delta: 2, meaning: 하천 도하 공격 대비 정황}
-      - {id: I_ARTY_POS,     name: 포병 진지 점령·증강,       lr: 5.0, tau_days: 5,  equipment: [artillery, mlrs], min_delta: 4, meaning: 공격준비사격 대비 정황}
-      - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 2.5, tau_days: 10, equipment: [truck, fuel_truck], min_delta: 20, meaning: 작전 지속지원 준비 정황}
+      - {id: I_ARMOR_MASS,   name: 기갑·기계화 장비 전방 집결, lr: 6.0, tau_days: 7,  equipment: [tank, ifv, apc, group:main_battle_tank, group:light_armor], min_delta: 10, meaning: 공격 제대 집결 정황, min_delta_by_echelon: {여단: 6, 대대: 3}}
+      - {id: I_BRIDGING,     name: 도하·공병 장비 전방 이동,   lr: 8.0, tau_days: 7,  equipment: [bridging, engineer, group:engineer], min_delta: 2, meaning: 하천 도하 공격 대비 정황}
+      - {id: I_ARTY_POS,     name: 포병 진지 점령·증강,       lr: 5.0, tau_days: 5,  equipment: [artillery, mlrs, group:artillery], min_delta: 4, meaning: 공격준비사격 대비 정황}
+      - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 2.5, tau_days: 10, equipment: [truck, fuel_truck, supply_point], min_delta: 20, meaning: 작전 지속지원 준비 정황}
       - {id: I_MEDICAL,      name: 야전 의무시설 전개,        lr: 7.0, tau_days: 10, equipment: [field_hospital], min_delta: 1, meaning: 대규모 사상자 대비 의무지원 준비 정황}
-      - {id: I_COMMAND_POST, name: 전방 지휘소 전개,          lr: 4.0, tau_days: 7,  equipment: [command_vehicle], min_delta: 2, meaning: 전방 작전 지휘체계 구축 정황}
-      - {id: I_AIR_DEFENSE,  name: 방공 자산 전방 배치,       lr: 3.5, tau_days: 7,  equipment: [sam, aaa], min_delta: 2, meaning: 공격 부대 방공 엄호 정황}
+      - {id: I_COMMAND_POST, name: 전방 지휘소 전개,          lr: 4.0, tau_days: 7,  equipment: [command_vehicle, command_post], min_delta: 2, meaning: 전방 작전 지휘체계 구축 정황}
+      - {id: I_AIR_DEFENSE,  name: 방공 자산 전방 배치,       lr: 3.5, tau_days: 7,  equipment: [sam, aaa, group:air_defense], min_delta: 2, meaning: 공격 부대 방공 엄호 정황}
       - {id: I_PATTERN_DEV,  name: 평시 훈련 패턴과 상이한 활동, lr: 3.0, tau_days: 14, equipment: [], min_delta: 0, meaning: 평시 활동과 다른 이상 활동}
+      # classes.yaml 연계 지표 (ATP 7-100.2 기반 시나리오) — 예시값
+      - {id: I_DISPERSAL,    name: 주둔지 이탈·야간 분산 이동,  lr: 3.5, tau_days: 7, equipment: [march_column, camouflaged], min_delta: 2, meaning: 은밀 전개 정황}
+      - {id: I_HARTS_OCC,    name: 갱도포병진지 점유,          lr: 7.0, tau_days: 10, equipment: [harts@occupied], min_delta: 2, meaning: 화력 운용 준비 정황}
+      - {id: I_DECEPTION_ACT, name: 기만체·가짜 진지 조성,     lr: 1.5, tau_days: 10, equipment: [group:deception], min_delta: 3, meaning: 의도 은폐 활동}
+      - {id: I_EW_DEPLOY,    name: 전자전·통신 차량 전개,      lr: 3.0, tau_days: 5, equipment: [ew_vehicle], min_delta: 2, meaning: 전자전 공격 준비 정황}
+      - {id: I_ASSAULT,      name: 공격대형·화력준비 진지 형성, lr: 12.0, tau_days: 2, equipment: [formation_wedge_v_line, artillery_position], min_delta: 2, meaning: 공격 개시 정황}
       # 반대 징후 (lr < 1: 공격 가능성을 낮춤). discounts: 이 반대 증거가 신뢰를 깎는 대상 지표
       - {id: C_DECOY,        name: 모형·위장 장비 식별,          lr: 0.2,  tau_days: 10, equipment: [], counter: true, discounts: [I_ARMOR_MASS, I_BRIDGING, I_ARTY_POS], discount_factor: 0.7, meaning: 기만 전시 가능성}
       - {id: C_NO_LOGISTICS, name: 보급·연료 지원 부재,          lr: 0.35, tau_days: 7,  equipment: [], counter: true, meaning: 공격 지속능력 미비}
@@ -47,7 +53,7 @@ hypotheses:
     impact: 0.2
     indicators:
       - {id: I_ARMOR_MASS,   name: 기갑·기계화 장비 전방 집결, lr: 3.0, tau_days: 7,  equipment: [tank, ifv, apc], min_delta: 10, meaning: 공격 제대 집결 정황}
-      - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 2.0, tau_days: 10, equipment: [truck, fuel_truck], min_delta: 20, meaning: 작전 지속지원 준비 정황}
+      - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 2.0, tau_days: 10, equipment: [truck, fuel_truck, supply_point], min_delta: 20, meaning: 작전 지속지원 준비 정황}
       - {id: I_EX_ANNOUNCED, name: 훈련 공표·통상 훈련 시기,   lr: 6.0, tau_days: 30, equipment: [], min_delta: 0, meaning: 통상 훈련 활동 가능성}
       - {id: C_RETURN,       name: 부대 복귀·활동 종료 정황,     lr: 2.0, tau_days: 7, equipment: [], meaning: 훈련 종료 후 복귀 정황}   # 훈련 가설에는 지지 증거
 
@@ -57,9 +63,9 @@ hypotheses:
     prior: 0.02
     impact: 0.6
     indicators:
-      - {id: I_SOF_FORWARD,  name: 특수작전부대 전방 이동,       lr: 6.0, tau_days: 5, equipment: [sof_vehicle], min_delta: 2, meaning: 침투 준비 정황}
-      - {id: I_SUB_SORTIE,   name: 잠수함정·공기부양정 기지 이탈, lr: 7.0, tau_days: 3, equipment: [submarine, hovercraft], min_delta: 1, meaning: 해상 침투 준비 정황}
-      - {id: I_INFIL_SIGN,   name: 침투 흔적·거동 수상자,        lr: 9.0, tau_days: 3, equipment: [], min_delta: 0, meaning: 침투 진행 정황}
+      - {id: I_SOF_FORWARD,  name: 특수작전부대 전방 이동,       lr: 6.0, tau_days: 5, equipment: [sof_vehicle, aircraft_an2, helicopter_md500], min_delta: 2, meaning: 침투 준비 정황}
+      - {id: I_SUB_SORTIE,   name: 잠수함정·공기부양정 기지 이탈, lr: 7.0, tau_days: 3, equipment: [submarine, hovercraft, semi_submersible], min_delta: 1, meaning: 해상 침투 준비 정황}
+      - {id: I_INFIL_SIGN,   name: 침투 흔적·거동 수상자,        lr: 9.0, tau_days: 3, equipment: [tunnel_exit], min_delta: 1, meaning: 침투 진행 정황}
 
   # 두루미(적 항공기 위협) 트랙용 — 예시값
   - id: H_AIR
@@ -67,6 +73,16 @@ hypotheses:
     prior: 0.02
     impact: 0.5
     indicators:
-      - {id: I_AIR_FORWARD,  name: 전투기 전방 기지 전개,        lr: 5.0, tau_days: 5, equipment: [fighter], min_delta: 4, meaning: 항공 도발 준비 정황}
+      - {id: I_AIR_FORWARD,  name: 전투기 전방 기지 전개,        lr: 5.0, tau_days: 5, equipment: [fighter, aircraft_an2, helicopter_md500], min_delta: 4, meaning: 항공 도발 준비 정황}
       - {id: I_AIR_SORTIE,   name: 비행 활동 급증,               lr: 4.0, tau_days: 2, equipment: [], min_delta: 0, meaning: 항공 위협 고조}
-      - {id: I_AIR_DEFENSE,  name: 방공 자산 전방 배치,          lr: 2.0, tau_days: 7, equipment: [sam, aaa], min_delta: 2, meaning: 공격 부대 방공 엄호 정황}
+      - {id: I_AIR_DEFENSE,  name: 방공 자산 전방 배치,          lr: 2.0, tau_days: 7, equipment: [sam, aaa, group:air_defense], min_delta: 2, meaning: 공격 부대 방공 엄호 정황}
+
+  # 전술핵 위협 (STRAT2026·scenario_events P5) — 예시값
+  - id: H_NUCLEAR
+    name: 전술핵 사용 준비
+    prior: 0.01
+    impact: 1.0
+    indicators:
+      - {id: I_TEL_DISPERSAL, name: 이동식 발사대 지하기지 출고·분산, lr: 8.0, tau_days: 5, equipment: [tel_srbm, missile_support_vehicle, ugf_entrance@activity], min_delta: 2, meaning: 미사일 발사 준비 정황}
+      - {id: I_STRAT_TEL,     name: 장거리 발사대 이동,            lr: 3.0, tau_days: 5, equipment: [tel_strategic], min_delta: 1, meaning: 전략 억제 신호}
+      - {id: I_UAV_RECON,     name: 발사 전 무인기 정찰,           lr: 3.0, tau_days: 2, equipment: [uav], min_delta: 2, meaning: 표적 확인 정황}

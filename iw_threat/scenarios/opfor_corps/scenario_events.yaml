@@ -1,0 +1,80 @@
+# 연속 시나리오: 국면과 이벤트
+# time: D-day 기준 일(D), H-hour 기준 시간(H). classes는 classes.yaml id, layout은 layout_rules.yaml 경로.
+schema_version: 1
+strategy_baseline: realistic_strategy      # STRAT2026 현실적 군사전략
+strategy_excursion: target_strategy        # 목표 군사전략 (ISR·C2 통합 강화 변형)
+environment:
+  night_movement: true                     # A-12
+  adverse_weather_share: 0.3               # 시험 설계값
+phases:
+  - id: P0
+    name_ko: 평시 기준선
+    window: [D-30, D-15]
+  - id: P1
+    name_ko: 전쟁 준비·위기 고조
+    window: [D-14, D-1]
+  - id: P2
+    name_ko: 개전·돌파
+    window: [H, H+24]
+  - id: P3
+    name_ko: 종심 공격·전과확대
+    window: [H+24, D+5]
+  - id: P4
+    name_ko: 방어 전환·역습
+    window: [D+5, D+10]
+  - id: P5
+    name_ko: 전술핵 위협·제한핵전 분기
+    window: [after_P2, D+10]
+    branch: true
+  - id: PCS
+    name_ko: 대안정화 행동
+    window: [D-14, D+10]
+    concurrent: true
+
+events:
+  # ---------------- P0 ----------------
+  - {id: E0-1, phase: P0, unit: [inf_div_1, inf_div_2, mech_div_1], action: 주둔지 정상 활동, ref: "ATP 3장", classes: [truck, ifv_apc, tank_t55], signature: 차량 수·배열의 기준 패턴, sensors: [EO]}
+  - {id: E0-2, phase: P0, unit: [corps_arty_grp, inf_div_1, inf_div_2], action: HARTS·CBP·축성 전차호·Y형 벙커 비점유, ref: "ATP 7-86~7-96", classes: [harts, cbp_strongpoint, fortified_tank_position, y_bunker], state: unoccupied, layout: fortifications, sensors: [EO, SAR]}
+  - {id: E0-3, phase: P0, unit: [], action: 비행장 지하 격납고 운용, ref: "ATP 7-101~7-102", classes: [ugf_entrance], layout: fortifications.airfield_dispersal_tunnel, sensors: [EO]}
+  - {id: E0-4, phase: P0, unit: [missile_bn_1], action: 미사일 지하기지 출입 통제, ref: STRAT2026, classes: [ugf_entrance], state: no_activity, sensors: [EO, SAR]}
+  # ---------------- P1 ----------------
+  - {id: E1-1, phase: P1, unit: [inf_div_1, inf_div_2, mech_div_1], action: 주둔지 이탈·분산 야간 이동, ref: "ATP A-12, 1-75", classes: [march_column, truck, camouflaged], sensors: [SAR, EO], night: true}
+  - {id: E1-2, phase: P1, unit: [corps_arty_grp], action: HARTS 점유, ref: "ATP 7-87~7-91", classes: [harts, truck, aaa_zpu4], state: occupied, layout: fortifications.harts, sensors: [SAR]}
+  - {id: E1-3, phase: P1, unit: [tank_bde_1], action: 전차여단 집결지 전개, ref: "ATP C-10", classes: [tank_t62_chonma, tank_pokpung, tank_songun, tank_new_gen, light_tank, ifv_apc, sp_howitzer_122_152], layout: armor, sensors: [EO, SAR]}
+  - {id: E1-4, phase: P1, unit: [missile_bn_1], action: TEL 지하기지 출고·분산 (기만 TEL 동반), ref: "STRAT2026, ATP 9-41", classes: [tel_srbm, missile_support_vehicle, decoy], layout: deception, sensors: [SAR, EO]}
+  - {id: E1-5, phase: P1, unit: [deception_unit_1], action: 가짜 방어진지·가짜 기동로 조성, ref: "ATP 9-39~9-42", classes: [decoy], layout: deception, sensors: [EO, SAR]}
+  - {id: E1-6, phase: P1, unit: [light_inf_bde_1], action: 경보병·특작 전방 집결, AN-2 활동, ref: "ATP I장, B-13", classes: [aircraft_an2, helicopter_md500], sensors: [EO]}
+  - {id: E1-7, phase: P1, unit: [ad_units], action: 방공부대 전개, ref: "ATP D-6", classes: [aaa_zpu4, aaa_zu23_2, spaag_zsu234, aaa_s60_37mm, sam_launcher, radar, ad_cluster], layout: air_defense, sensors: [EO, SAR]}
+  - {id: E1-8, phase: P1, unit: [engr_rgt_bridge], action: 도하장비 전방 이동, ref: "ATP F장", classes: [bridge_pmp, ferry_gsp_k61], sensors: [EO]}
+  - {id: E1-9, phase: P1, unit: [], action: 대미 전략 억제 신호 (장거리 발사대 이동), ref: STRAT2026, classes: [tel_strategic, missile_support_vehicle], sensors: [EO, SAR], verify: true}
+  # ---------------- P2 ----------------
+  - {id: E2-1, phase: P2, time: [H-0.5, H], unit: [corps_arty_grp, inf_div_1, inf_div_2], action: 화력준비, ref: "ATP A-13, 6-14", classes: [artillery_position, mrl, towed_howitzer, sp_gun_170], layout: offensive_maneuver.penetration, sensors: [SAR, EO]}
+  - {id: E2-2, phase: P2, unit: [inf_div_1, inf_div_2], action: 돌파·돌입, ref: "ATP 6-14, 6-15, Table 2-1", classes: [tank_t55, ifv_apc, formation_wedge_v_line], layout: offensive_maneuver, sensors: [SAR]}
+  - {id: E2-3, phase: P2, unit: [light_inf_bde_1], action: 땅굴 출구 병력 출현, ref: "ATP 6-148~6-150", classes: [tunnel_exit], layout: tunnels, sensors: [EO]}
+  - {id: E2-4, phase: P2, unit: [light_inf_bde_1], action: 공중강습·공정 3단계, ref: "ATP B-14", classes: [aircraft_an2, helicopter_md500], layout: airborne, sensors: [EO]}
+  - {id: E2-5, phase: P2, unit: [light_inf_bde_1], action: 특작 분산공격 (후방 지휘·군수), ref: "ATP 6-71~6-72", classes: [command_post, supply_point], sensors: [EO]}
+  - {id: E2-6, phase: P2, unit: [ew_co_1], action: 전자전·GPS 재밍 차량 전개, ref: "ATP 9장, E장", classes: [ew_vehicle, radar], sensors: [EO]}
+  # ---------------- P3 ----------------
+  - {id: E3-1, phase: P3, unit: [mech_div_1], action: 2제대 초월, 행군 전위, ref: "ATP 5-138", classes: [march_column, ifv_apc, aaa_zpu4], layout: march_column.advance_guard, sensors: [SAR]}
+  - {id: E3-2, phase: P3, unit: [mech_div_1], action: 측위 경계, ref: "ATP 5-141", classes: [march_column], layout: march_column.flank_guard, sensors: [SAR]}
+  - {id: E3-3, phase: P3, unit: [engr_rgt_bridge, mech_div_1], action: 하천 도하 (연막 병행), ref: "ATP F-12~F-15, G-10", classes: [bridge_pmp, ferry_gsp_k61], layout: river_crossing, sensors: [SAR]}
+  - {id: E3-4, phase: P3, unit: [corps_arty_grp], action: 포병 1/3씩 추진, ref: "ATP A-14", classes: [artillery_position, sp_gun_170, truck], sensors: [SAR]}
+  - {id: E3-5, phase: P3, unit: [inf_div_1], action: 중대·소대 공격대형, ref: "ATP 6-33~6-40", classes: [formation_wedge_v_line], layout: small_unit_formations_m, sensors: [EO]}
+  - {id: E3-6, phase: P3, unit: [inf_div_2], action: 도시 공격·지하공간 이용, ref: "ATP 6장", classes: [tank_t55, ifv_apc], sensors: [EO, SAR]}
+  # ---------------- P4 ----------------
+  - {id: E4-1, phase: P4, unit: [inf_div_1, inf_div_2], action: 진지방어 편성, ref: "ATP 7-35~7-40", classes: [cbp_strongpoint], layout: defense, sensors: [SAR]}
+  - {id: E4-2, phase: P4, unit: [recon_bn_1], action: 전투전초·관측소, ref: "ATP 7-36", classes: [recon_brdm2], layout: defense.security_zone, sensors: [EO]}
+  - {id: E4-3, phase: P4, unit: [inf_div_1], action: 대전차 방어체계, ref: "ATP 7-43, 7-49", classes: [tank_t55], layout: defense, sensors: [EO]}
+  - {id: E4-4, phase: P4, unit: [corps_arty_grp, inf_div_1, inf_div_2], action: 포병 종심 배치, ref: "ATP A-16", classes: [mortar_120, artillery_position], layout: fires_positions.defense, sensors: [SAR]}
+  - {id: E4-5, phase: P4, unit: [tank_bde_1], action: 전차연대 역습 대기, ref: "ATP C-12, 7-58", classes: [tank_t62_chonma], layout: armor, sensors: [SAR]}
+  - {id: E4-6, phase: P4, unit: [deception_unit_1], action: 가짜 사격진지·전투진지, ref: "ATP 7장", classes: [decoy], layout: deception, sensors: [EO, SAR]}
+  # ---------------- P5 ----------------
+  - {id: E5-1, phase: P5, unit: [missile_bn_1], action: TEL 은닉지에서 발사진지로 이동, ref: STRAT2026, classes: [tel_srbm, missile_support_vehicle], sensors: [SAR], revisit: high, verify: true}
+  - {id: E5-2, phase: P5, unit: [missile_bn_1], action: 발사 전 보조 정찰 (무인기), ref: STRAT2026, classes: [uav], sensors: [EO], verify: true}
+  - {id: E5-3, phase: P5, unit: [deception_unit_1], action: 다수 기만 TEL 동시 노출, ref: "ATP 9-35, 9-41", classes: [decoy, tel_srbm], layout: deception, sensors: [SAR, EO]}
+  - {id: E5-4, phase: P5, unit: [nbc_bn_1], action: 제독·보호 전개, ref: "ATP G장", classes: [truck], sensors: [EO]}
+  # ---------------- PCS ----------------
+  - {id: ECS-1, phase: PCS, unit: [light_inf_bde_1], action: 특작 해상 침투 (어선 위장), ref: "ATP 1-75, I장", classes: [semi_submersible], sensors: [SAR]}
+  - {id: ECS-2, phase: PCS, unit: [corps_arty_grp], action: 포격에 따른 민간 피해·주민 이동, ref: "ATP 8-27~8-28", classes: [], sensors: [EO]}
+  - {id: ECS-3, phase: PCS, unit: [light_inf_bde_1], action: 비정규전·민간 차량 이용, ref: "ATP 8장", classes: [truck], sensors: [EO]}
+  - {id: ECS-4, phase: PCS, unit: [light_inf_bde_1], action: 헬기 피아 위장 (아군 도장), ref: "ATP B-13", classes: [helicopter_md500], sensors: [EO]}

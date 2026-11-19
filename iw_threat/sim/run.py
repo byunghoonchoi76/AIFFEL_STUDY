@@ -35,7 +35,7 @@ def prepare(client, sc: Scenario, d_day: datetime, out: Path, seed: int) -> dict
 
     targets = generate_targets(sc, d_day, seed)
     (out / "targets.json").write_text(json.dumps(targets, ensure_ascii=False, indent=1), encoding="utf-8")
-    ins = _ok(client.post("/targets", json=[{k: v for k, v in t.items() if k not in ("truth_unit", "false_positive", "day")}
+    ins = _ok(client.post("/targets", json=[{k: v for k, v in t.items() if k not in ("truth_unit", "false_positive", "decoy_truth", "day")}
                                             for t in targets]))
 
     docs = report_documents(sc, d_day)
@@ -77,7 +77,9 @@ def identification_accuracy(client, sc: Scenario, out: Path, window_days: int = 
     from app.orbat.patterns import unit_key
 
     targets = json.loads((out / "targets.json").read_text(encoding="utf-8"))
-    sample = [t for t in targets if not t["false_positive"] and sc.assess[1] - window_days < t["day"] <= sc.assess[1]]
+    in_orbat = {u.name for u in sc.units if u.in_orbat}
+    sample = [t for t in targets if not t["false_positive"] and not t.get("decoy_truth") and t["truth_unit"] in in_orbat
+              and sc.assess[1] - window_days < t["day"] <= sc.assess[1]]
     ok = miss = wrong = 0
     errors = []
     for t in sample:
@@ -150,9 +152,73 @@ def evaluate(sc: Scenario, series: list[dict]) -> dict:
     return ev
 
 
-def run_scenario(client, path: str | Path, out_dir: str | Path, d_day: datetime | None = None,
+def opfor_metrics(sc: Scenario, series: list[dict], final: dict, out: Path) -> dict:
+    """test_cases.yaml 지표 중 이 시스템이 담당하는 M2-echelon·M3-warning·M4-decoy 산출 + 시험 항목 대응표."""
+    import yaml
+
+    from app.orbat.echelon_estimate import estimate
+    from app.orbat.echelon_estimate import TYPE_INFO
+
+    targets = json.loads((out / "targets.json").read_text(encoding="utf-8"))
+    # M3-warning: 위기 고조 시작 후 첫 경보(경계 이상)까지의 관측(재방문) 횟수
+    ws = sc.truth.get("warning_start", sc.assess[0])
+    first = next((x["day"] for x in series if x["day"] >= ws and GRADE_ORDER.get(x["grade"], 0) >= GRADE_ORDER["경계"]), None)
+    obs_days = sorted({t["day"] for t in targets})
+    revisits = len([d for d in obs_days if ws <= d <= first]) if first is not None else None
+    # M4-decoy: 기만체가 실표적으로 입력된 비율 (탐지기 판별 모형 + 시스템 입력 기준)
+    dec = [t for t in targets if t.get("decoy_truth")]
+    dec_total = sum(t["count"] for t in dec)
+    dec_real = sum(t["count"] for t in dec if not t["equipment_type"].startswith("decoy_"))
+    # M2-echelon: 편제 템플릿 부대별 관측 장비(D-5~D-2 최대) → 유형 추정
+    rows, ok = [], 0
+    for u in (x for x in sc.units if x.template):
+        cnt: dict[str, float] = {}
+        for t in targets:
+            if t["truth_unit"] == u.name and -5 <= t["day"] <= -2 and not t["false_positive"] and not t.get("decoy_truth"):
+                cnt[t["equipment_type"]] = max(cnt.get(t["equipment_type"], 0), t["count"])
+        est = estimate(cnt)
+        hit = bool(est) and est["type"] == u.template
+        ok += hit
+        rows.append({"unit": u.name, "truth": TYPE_INFO[u.template][0], "estimate": est["type_ko"] if est else "추정 불가",
+                     "similarity": est["similarity"] if est else None, "strength_ratio": est["strength_ratio"] if est else None,
+                     "correct": hit})
+    n_tpl = max(len(rows), 1)
+    cov = []
+    tc_path = Path(sc.meta.get("test_cases", ""))
+    if tc_path.exists():
+        tc = yaml.safe_load(tc_path.read_text(encoding="utf-8"))
+        ours = {"M2-echelon": f"{ok / n_tpl:.0%}", "M3-warning": f"{revisits}회" if revisits is not None else "미탐",
+                "M4-decoy": f"{dec_real / dec_total:.0%}" if dec_total else "-"}
+        partial = {"M3-occupancy": "점유 라벨 활용(판별 정확도는 탐지기)", "M4-camouflage": "탐지기 재현율 가정 0.6 반영",
+                   "M3-tel": "TEL 출고·분산 징후 활용(추적 정확도는 탐지기)"}
+        for c in tc["test_cases"]:
+            got = [f"{m}={ours[m]}" for m in c["metrics"] if m in ours]
+            part = [f"{m}: {partial[m]}" for m in c["metrics"] if m in partial]
+            cov.append({"id": c["id"], "scene": c["scene"], "metrics": c["metrics"],
+                        "status": "평가" if got else ("일부 반영" if part else "탐지기 단계(범위 외)"),
+                        "result": "; ".join(got + part)})
+    return {"M2_echelon": {"accuracy": round(ok / n_tpl, 3), "target": 0.80, "units": rows},
+            "M3_warning": {"warning_start": ws, "first_warning_day": first, "revisits_to_detect": revisits, "target_max": 2},
+            "M4_decoy": {"decoys": dec_total, "as_real": dec_real, "decoy_as_real_rate": round(dec_real / dec_total, 3) if dec_total else None,
+                         "target_max": 0.20},
+            "unidentified_estimates": [{k: e[k] for k in ("type_ko", "echelon", "similarity", "strength_ratio", "lat", "lon")}
+                                       for e in final.get("unit_estimates", [])[:6]],
+            "test_case_coverage": cov}
+
+
+def _load(path) -> Scenario:
+    p = Path(path)
+    if isinstance(path, Scenario):
+        return path
+    if p.is_dir() and (p / "scenario_events.yaml").exists():
+        from .opfor import build_opfor_scenario
+        return build_opfor_scenario(p)
+    return load_scenario(p)
+
+
+def run_scenario(client, path, out_dir: str | Path, d_day: datetime | None = None,
                  step: int = 2, seed: int = 7, log=print) -> dict:
-    sc = load_scenario(path)
+    sc = _load(path)
     d_day = d_day or datetime.now().astimezone().replace(hour=0, minute=0, second=0, microsecond=0)
     out = Path(out_dir) / sc.id
     out.mkdir(parents=True, exist_ok=True)
@@ -164,7 +230,9 @@ def run_scenario(client, path: str | Path, out_dir: str | Path, d_day: datetime 
     ev = evaluate(sc, series)
     ev["identification"] = identification_accuracy(client, sc, out)
     ev["readiness"] = readiness_eval(sc, series)
-    result = {"scenario": {"id": sc.id, "name": sc.name, "area_id": sc.area_id, "truth": sc.truth,
+    if sc.meta.get("test_cases"):
+        ev["opfor"] = opfor_metrics(sc, series, final, out)
+    result = {"scenario": {"id": sc.id, "name": sc.name, "area_id": sc.area_id, "truth": sc.truth, "meta": sc.meta,
                            "d_day": d_day.isoformat(), "seed": seed, "step": step},
               "prepare": prep, "series": series, "final": final, "evaluation": ev}
     (out / "result.json").write_text(json.dumps(result, ensure_ascii=False, indent=1, default=str), encoding="utf-8")

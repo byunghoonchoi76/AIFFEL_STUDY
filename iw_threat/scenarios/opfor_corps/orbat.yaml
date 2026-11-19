@@ -1,0 +1,155 @@
+# 대항군 전투서열 (1개 군단, 북한군 교범 편제)
+# 수량은 ATP 7-100.2 3장 수치. 장비 키는 classes.yaml id 또는 교범 품목명.
+schema_version: 1
+force: opfor_corps
+echelon_templates:
+  infantry_division:
+    personnel: 12800
+    source: ATP7-100.2 3-43
+    forward_corps_augmentation: [artillery_battalion, military_police_battalion]  # 3-44, 3-48
+    equipment:
+      tank_t55_t62: 31
+      recoilless_rifle_b10_b11: 54
+      atgm_at3: 27
+      at_gun_76mm: 48
+      rpg7: 630
+      howitzer_152mm: 24
+      howitzer_122mm: 72
+      mrl_107mm: 27
+      mortar_120mm: 54
+      mortar_82mm: 99
+      mortar_60mm: 12
+      manpads_sa7b: 42
+      aaa_s60_57mm: 6
+      aaa_37mm: 12
+      aaa_zpu4: 87
+      hmg: 370
+    subunits: {infantry_regiment: 3}
+  tank_brigade:
+    personnel: 2500
+    source: ATP7-100.2 3-56
+    equipment:
+      tank_t55_t62: 93
+      ifv_apc: 58
+      recon_brdm2: 3
+      light_tank: 40
+      sp_howitzer_152mm: 18
+      sp_howitzer_122mm: 18
+      atgm_at3: 3
+      rpg7: 43
+      mortar_82mm: 9
+      manpads_sa7b: 12
+      aaa_vehicle_m1983_btr152: 6
+      aaa_37mm: 12
+      aaa_57mm_type80_zsu57: 6
+      radar_firecan: 3
+      truck_2_5t: 162
+      tank_recovery: 6
+  infantry_regiment:
+    personnel: 2500
+    source: ATP7-100.2 3-59
+    equipment:
+      recoilless_rifle_b10_b11: 9
+      atgm_at3: 12
+      at_gun_76mm: 6
+      rpg7: 174
+      manpads_sa7b: 12
+      howitzer_122mm: 18
+      mrl_107mm: 9
+      mortar_120mm: 18
+      mortar_82mm: 27
+      aaa_zpu4: 27
+      hmg: 84
+    subunits: {infantry_battalion: 3}
+  infantry_battalion:
+    personnel: 555
+    source: ATP7-100.2 3-62
+    equipment:
+      recoilless_rifle_b10_b11: 4
+      manpads_sa7b: 3
+      mortar_82mm: 9
+      rpg7: 54
+      ags17: 6
+      hmg: 8
+      lmg: 81
+    subunits: {infantry_company: 3}
+  infantry_company:
+    personnel: 120
+    source: ATP7-100.2 3-65
+    subunits: {infantry_platoon: 3}
+  infantry_platoon:
+    personnel: 39
+    source: ATP7-100.2 3-71
+    subunits: {infantry_squad: 3}
+  corps_artillery_group:
+    battalions: [3, 6]
+    source: ATP7-100.2 A-6, Table A-1
+    equipment:
+      sp_gun_170: 108
+      mrl_240mm: 108
+      aaa_14_5mm: 8
+      aaa_57mm: 36
+
+units:
+  - id: corps_hq
+    type: headquarters
+    command_posts: [main_cp, forward_cp, alternate_cp]
+    initial_zone: defense_zone_2
+  - id: inf_div_1
+    template: infantry_division
+    forward_corps: true
+    initial_zone: defense_zone_1
+    sector: west
+  - id: inf_div_2
+    template: infantry_division
+    forward_corps: true
+    initial_zone: defense_zone_1
+    sector: east
+  - id: mech_div_1
+    template: infantry_division
+    mounted: ifv_apc
+    initial_zone: defense_zone_2
+    role: second_echelon
+  - id: tank_bde_1
+    template: tank_brigade
+    initial_zone: defense_zone_2
+    role: exploitation_or_counterattack
+  - id: corps_arty_grp
+    template: corps_artillery_group
+    initial_zone: defense_zone_1_rear
+  - id: missile_bn_1
+    type: missile
+    equipment: [tel_srbm, missile_support_vehicle]
+    initial_zone: rear_area
+    basing: ugf
+    source: STRAT2026
+    verify: true
+  - id: ad_units
+    type: air_defense
+    equipment: [aaa_zpu4, aaa_s60_37mm, sam_launcher, radar]
+    initial_zone: dispersed
+  - id: light_inf_bde_1
+    type: sof_light_infantry
+    equipment: [aircraft_an2, helicopter_md500, semi_submersible]
+    initial_zone: forward_assembly
+    source: ATP7-100.2 Table I-1
+  - id: recon_bn_1
+    type: reconnaissance
+    equipment: [recon_brdm2, light_tank]
+    initial_zone: security_zone
+  - id: engr_rgt_bridge
+    type: engineer
+    equipment: [bridge_pmp, ferry_gsp_k61, truck]
+    initial_zone: defense_zone_1
+  - id: ew_co_1
+    type: electronic_warfare
+    equipment: [ew_vehicle]
+    initial_zone: dispersed
+  - id: nbc_bn_1
+    type: nbc_defense
+    initial_zone: defense_zone_2
+  - id: deception_unit_1
+    type: deception
+    note: 실 편제를 잃은 사령부를 기만부대로 활용 (9-40)
+    equipment: [decoy]
+    initial_zone: defense_zone_1

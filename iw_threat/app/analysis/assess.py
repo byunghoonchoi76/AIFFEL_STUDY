@@ -17,6 +17,33 @@ from .matching import ReportChunk, classification_prompt, hits_to_evidence, matc
 from .scoring import assess
 
 
+def estimate_unidentified(points: list[dict], link_km: float = 4.0) -> list[dict]:
+    """전투서열로 식별되지 않은 최근 표적을 거리 기준으로 묶어 장비 구성으로 부대 유형·제대 추정 (M2-echelon).
+    예) 주둔지를 떠나 집결지에 나타난 전차·장갑차 군집 → '전차여단(여단) 추정'."""
+    from ..orbat.echelon_estimate import estimate
+    from ..orbat.identify import haversine_m
+
+    clusters: list[dict] = []
+    for p in sorted(points, key=lambda x: -x["count"]):
+        if p.get("lat") is None:
+            continue
+        for c in clusters:
+            if haversine_m(p["lat"], p["lon"], c["lat"], c["lon"]) <= link_km * 1000:
+                break
+        else:
+            c = {"lat": p["lat"], "lon": p["lon"], "max": {}, "ids": []}
+            clusters.append(c)
+        c["max"][p["equipment_type"]] = max(c["max"].get(p["equipment_type"], 0), p["count"])
+        c["ids"].append(p["id"])
+    out = []
+    for c in clusters:
+        est = estimate(c["max"])
+        if est:
+            out.append({"lat": round(c["lat"], 5), "lon": round(c["lon"], 5), "equipment": c["max"],
+                        "event_ids": c["ids"][:50], **est})
+    return sorted(out, key=lambda e: -sum(e["equipment"].values()))
+
+
 def _report_chunks(vector, area_id: str, as_of: datetime, lookback_days: int, k: int) -> list[ReportChunk]:
     q = embed_query("적 부대 이동, 장비 집결, 보급 증가, 지휘소·의무시설 전개, 훈련 공표 관련 첩보")
     hits = vector.search(q, k, source_types=["HUMINT", "SIGINT", "OSINT"], area_id=area_id,
@@ -39,6 +66,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
     from ..orbat import store as orbat_store
     since = as_of - timedelta(days=s.window_days + s.baseline_days)
     attribution: list[dict] = []
+    unit_estimates: list[dict] = []
     baseline_mode = "area"
     if orbat_store.has_data():
         pts = pg.fetch_target_points(area_id, since, as_of)
@@ -47,6 +75,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         changes = detect_unit_changes(rows, unit_of, as_of, s.window_days, s.baseline_days)
         recent = [p for p in pts if p["observed_at"] > as_of - timedelta(days=s.window_days)]
         attribution = orbat_store.attribute_targets(recent)
+        unit_estimates = estimate_unidentified([p for p in recent if not unit_of.get(p["id"])])
         baseline_mode = "unit"
     else:
         rows = pg.fetch_target_rows(area_id, since, as_of)
@@ -102,6 +131,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         "baseline_mode": baseline_mode,
         "changes": [{**asdict(c), "ratio": c.ratio} for c in changes],
         "unit_attribution": attribution,
+        "unit_estimates": unit_estimates,
         "evidence": [asdict(e) for e in evidence],
         "hypotheses": [asdict(h) for h in result.hypotheses],
         "conflicts": [asdict(c) for c in result.conflicts],

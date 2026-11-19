@@ -187,6 +187,17 @@ def build_report(result: dict, out_path: str | Path) -> Path:
     else:
         para("평시 대비 증가가 식별된 부대 활동 없음", 9.5)
 
+    # ── 3-0. 미식별 군집 제대 추정 ──
+    if final.get("unit_estimates"):
+        h("3-0. 전투서열 미식별 표적 군집의 부대 유형 추정")
+        table(["추정 유형(제대)", "구성 유사도", "편제 대비 규모", "주요 장비(최대 관측)", "위치"],
+              [[f"{e['type_ko']}({e['echelon'] or '-'})", e["similarity"], f"{e['strength_ratio']:.0%}",
+                ", ".join(f"{k} {v}" for k, v in sorted(e["equipment"].items(), key=lambda kv: -kv[1])[:4]),
+                f"{e['lat']:.3f}, {e['lon']:.3f}"] for e in final["unit_estimates"][:6]],
+              [3.4, 2.0, 2.2, 6.4, 3.0])
+        para("※ 주둔지를 떠난 부대는 전투서열 주둔지로 식별되지 않으므로, 장비 구성비를 편제 템플릿(ATP 7-100.2 3장)과 비교해 유형·제대를 추정",
+             8.5, after=4, color=(0x66, 0x66, 0x66))
+
     # ── 3-1. 반대 징후 ──
     if final.get("conflicts"):
         h("3-1. 출처 간 모순 · 반대 징후")
@@ -233,6 +244,33 @@ def build_report(result: dict, out_path: str | Path) -> Path:
                           f"전투서열 {prep['orbat'].get('unit_rows')}개 부대"],
              ["평가 설정", f"D일 {sc['d_day'][:10]}, {sc['step']}일 간격, 난수 seed {sc['seed']}"]]
     table(["항목", "결과"], rows, [5.0, 12.0])
+    op = ev.get("opfor")
+    if op:
+        para("시험 지표 (test_cases.yaml 중 본 시스템 담당)", 10.5, True, after=2)
+        m2, m3, m4 = op["M2_echelon"], op["M3_warning"], op["M4_decoy"]
+        table(["지표", "결과", "목표", "판정"], [
+            ["M2-echelon 제대 추정 정확도", f"{m2['accuracy']:.0%}", f"≥ {m2['target']:.0%}", "충족" if m2["accuracy"] >= m2["target"] else "미달"],
+            ["M3-warning 경보까지 재방문 횟수", f"{m3['revisits_to_detect']}회 (D{m3['warning_start']:+d} 고조 시작 → D{m3['first_warning_day']:+d} 경보)"
+             if m3["revisits_to_detect"] is not None else "경보 없음", f"≤ {m3['target_max']}회",
+             "충족" if m3["revisits_to_detect"] is not None and m3["revisits_to_detect"] <= m3["target_max"] else "미달"],
+            ["M4-decoy 기만체의 실표적 입력 비율", f"{m4['decoy_as_real_rate']:.0%} ({m4['as_real']}/{m4['decoys']})" if m4["decoys"] else "-",
+             f"≤ {m4['target_max']:.0%}", "충족" if m4["decoy_as_real_rate"] is not None and m4["decoy_as_real_rate"] <= m4["target_max"] else "미달"],
+        ], [5.6, 5.4, 2.4, 3.6])
+        table(["부대", "정답 유형", "추정 유형", "유사도", "편제 대비"],
+              [[r["unit"], r["truth"], r["estimate"] + (" ✔" if r["correct"] else " ✘"), r["similarity"],
+                f"{r['strength_ratio']:.0%}" if r["strength_ratio"] else "-"] for r in m2["units"]], [4.4, 3.4, 3.8, 2.0, 2.4])
+        cov = op.get("test_case_coverage", [])
+        if cov:
+            n_eval = sum(c["status"] == "평가" for c in cov)
+            n_part = sum(c["status"] == "일부 반영" for c in cov)
+            para(f"시험 항목 대응: 전체 {len(cov)}건 중 평가 {n_eval}건 · 일부 반영 {n_part}건 · 탐지기 단계(범위 외) {len(cov) - n_eval - n_part}건",
+                 9.5, True, after=2)
+            table(["시험 ID", "장면", "지표", "대응", "결과"],
+                  [[c["id"], c["scene"], ", ".join(c["metrics"]), c["status"], c["result"]] for c in cov if c["status"] != "탐지기 단계(범위 외)"],
+                  [2.2, 4.0, 3.4, 2.0, 5.4])
+        a = result["scenario"].get("meta", {}).get("assumptions")
+        if a:
+            para("시험 설계 가정값: " + ", ".join(f"{k}={v}" for k, v in a.items()), 8, after=4, color=(0x66, 0x66, 0x66))
     if rd:
         para("태세 건의 vs 정답 태세 일정", 10.5, True, after=2)
         trow = []

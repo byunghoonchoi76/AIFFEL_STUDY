@@ -20,6 +20,8 @@ class Unit:
     garrison: tuple[float, float]
     location_type: str
     equipment: dict[str, int]
+    in_orbat: bool = True          # False: 전투서열 미등재(미상 부대) — 식별 불가 상황 재현
+    template: str | None = None    # 편제 템플릿 (제대 추정 평가용)
 
 
 @dataclass
@@ -30,6 +32,8 @@ class Activity:
     end: int
     to_count: int
     move_km: tuple[float, float] = (0.0, 0.0)
+    sensors: tuple[str, ...] = ("EO", "SAR")   # 구름·야간에는 SAR 가능 활동만 관측
+    event: str | None = None                   # 시나리오 이벤트 ID (scenario_events.yaml)
 
 
 @dataclass
@@ -55,6 +59,7 @@ class Scenario:
     units: list[Unit]
     activities: list[Activity]
     reports: list[Report] = field(default_factory=list)
+    meta: dict = field(default_factory=dict)
 
 
 def load_scenario(path: str | Path) -> Scenario:
@@ -83,22 +88,25 @@ def _progress(day: int, a: Activity) -> float:
 
 
 def true_state(sc: Scenario, day: int) -> list[dict]:
-    """해당 일의 부대별 장비 실제 수량·위치 (관측 잡음 전)."""
+    """해당 일의 부대별 장비 실제 수량·위치 (관측 잡음 전). 같은 부대·장비의 활동은 시간순으로 이어서 적용."""
     out = []
     for u in sc.units:
         eqs = set(u.equipment) | {a.equipment for a in sc.activities if a.unit == u.name}
         for eq in sorted(eqs):
-            base = u.equipment.get(eq, 0)
-            count, dn, de = float(base), 0.0, 0.0
-            for a in (x for x in sc.activities if x.unit == u.name and x.equipment == eq):
+            count, dn, de = float(u.equipment.get(eq, 0)), 0.0, 0.0
+            sensors: tuple[str, ...] = ("EO", "SAR")
+            for a in sorted((x for x in sc.activities if x.unit == u.name and x.equipment == eq), key=lambda x: x.start):
                 p = _progress(day, a)
-                count = base + (a.to_count - base) * p
-                dn, de = a.move_km[0] * p, a.move_km[1] * p
-            if count <= 0:
+                if p <= 0:
+                    break
+                count = count + (a.to_count - count) * p
+                dn, de = dn + a.move_km[0] * p, de + a.move_km[1] * p
+                sensors = a.sensors
+            if count <= 0.5:
                 continue
             lat = u.garrison[0] + dn / KM_PER_DEG_LAT
             lon = u.garrison[1] + de / (KM_PER_DEG_LAT * math.cos(math.radians(u.garrison[0])))
-            out.append({"unit": u.name, "equipment": eq, "count": count, "lat": lat, "lon": lon})
+            out.append({"unit": u.name, "equipment": eq, "count": count, "lat": lat, "lon": lon, "sensors": sensors})
     return out
 
 
@@ -116,31 +124,45 @@ def generate_targets(sc: Scenario, d_day: datetime, seed: int = 7) -> list[dict]
     rnd = random.Random(seed)
     nz = sc.noise
     out = []
+    cloud = set(nz.get("cloud_days", []))
+    adverse = nz.get("adverse_weather_share", 0.0)
     for day in range(sc.period[0], sc.period[1] + 1):
-        if day in set(nz.get("cloud_days", [])) or rnd.random() > nz.get("p_observe", 1.0):
+        if rnd.random() > nz.get("p_observe", 1.0):
             continue
+        cloudy = day in cloud or rnd.random() < adverse          # 악천후: SAR 가능 표적만 관측
         t = (d_day + timedelta(days=day)).replace(hour=10, minute=0, second=0, microsecond=0)
         for s in true_state(sc, day):
+            if cloudy and "SAR" not in s["sensors"]:
+                continue
             if rnd.random() < nz.get("p_miss", 0.0):
                 continue
             n = max(0, round(s["count"] * (1 + rnd.gauss(0, nz.get("count_rel_sd", 0.0)))))
+            if s["equipment"] == "camouflaged":                # 위장 표적은 일부만 탐지
+                n = sum(rnd.random() < nz.get("p_detect_camouflaged", 0.6) for _ in range(n))
             if n == 0:
                 continue
             lat, lon = _jitter(s["lat"], s["lon"], nz.get("position_sd_m", 0), rnd)
+            if s["equipment"].startswith("decoy_"):            # 탐지기 기만체 판별 모형: 일부는 실표적으로 오인
+                real = sum(rnd.random() > nz.get("p_decoy_recognized", 0.8) for _ in range(n))
+                if n - real:
+                    out.append(_event(sc, t, s["equipment"], n - real, lat, lon, day, s["unit"], decoy=True))
+                if real:
+                    out.append(_event(sc, t, s["equipment"][len("decoy_"):], real, lat, lon, day, s["unit"], decoy=True))
+                continue
             out.append(_event(sc, t, s["equipment"], n, lat, lon, day, s["unit"]))
         for u in sc.units:
             if rnd.random() < nz.get("false_positive_rate", 0.0):
                 lat, lon = _jitter(*u.garrison, 400, rnd)
-                out.append(_event(sc, t, rnd.choice(FP_EQUIPMENT), rnd.randint(1, 3), lat, lon, day, u.name, fp=True))
+                out.append(_event(sc, t, rnd.choice(nz.get("fp_equipment", FP_EQUIPMENT)), rnd.randint(1, 3), lat, lon, day, u.name, fp=True))
     return out
 
 
 def _event(sc: Scenario, t: datetime, eq: str, n: int, lat: float, lon: float, day: int,
-           unit: str, fp: bool = False) -> dict:
-    """truth_unit·false_positive는 평가용 정답 (API는 무시)."""
+           unit: str, fp: bool = False, decoy: bool = False) -> dict:
+    """truth_unit·false_positive·decoy_truth는 평가용 정답 (API는 무시)."""
     return {"area_id": sc.area_id, "observed_at": t.isoformat(), "equipment_type": eq, "count": n,
             "lat": round(lat, 6), "lon": round(lon, 6), "image_ref": f"SIM-{sc.id}-D{day:+d}",
-            "truth_unit": unit, "false_positive": fp, "day": day}
+            "truth_unit": unit, "false_positive": fp, "decoy_truth": decoy, "day": day}
 
 
 def report_documents(sc: Scenario, d_day: datetime) -> list[dict]:
@@ -162,6 +184,8 @@ def orbat_rows(sc: Scenario) -> list[dict]:
     conv = _mgrs.MGRS()
     rows = []
     for u in sc.units:
+        if not u.in_orbat:
+            continue
         m = conv.toMGRS(u.garrison[0], u.garrison[1], MGRSPrecision=5)
         rows.append({"doc": f"sim_{sc.id}", "page": "1", "source": "table", "unit_raw": u.name, "unit_key": unit_key(u.name),
                      "echelon": echelon_of(u.name) or "", "echelon_from": "name",

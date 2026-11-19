@@ -1,0 +1,54 @@
+# 분야별 세부 시험 시나리오와 평가지표
+# vary: 반복 시험 시 하나씩 바꾸는 변수. linked_events: scenario_events.yaml id.
+schema_version: 1
+default_vary: [spacing_jitter, camouflage, weather, gsd_m, look_angle]
+
+metrics:
+  M1-detect:      {stage: equipment,  name_ko: 클래스별 탐지, measure: mAP@0.5, target: {EO: 0.80, SAR: 0.70}}
+  M1-identify:    {stage: equipment,  name_ko: 기종 식별, measure: top1_accuracy, target: 0.85}
+  M1-robust:      {stage: equipment,  name_ko: 야간·악천후 강건성, measure: drop_vs_day_EO_pp, target_max: 10}
+  M2-echelon:     {stage: layout,     name_ko: 제대 추정, measure: accuracy, target: 0.80}
+  M2-formation:   {stage: layout,     name_ko: 대형·기동 형태 분류, measure: macro_f1, target: 0.75}
+  M2-defline:     {stage: layout,     name_ko: 방어선 추론, measure: position_error_km, target_max: 1.0}
+  M3-occupancy:   {stage: change,     name_ko: 점유 판별, measure: accuracy, target: 0.85}
+  M3-warning:     {stage: change,     name_ko: 징후 조기경보, measure: revisits_to_detect, target_max: 2}
+  M3-tel:         {stage: change,     name_ko: TEL 추적, measure: {recall: 0.70, position_error_m_max: 50}}
+  M4-decoy:       {stage: deception,  name_ko: 기만체 판별, measure: decoy_as_real_rate, target_max: 0.20}
+  M4-camouflage:  {stage: deception,  name_ko: 위장 표적, measure: recall, target: 0.60}
+  M4-clutter:     {stage: deception,  name_ko: 민간 클러터 오탐, measure: false_alarms_per_km2, target_max: 0.1}
+# 목표치는 초기 제안값이며 시험 주관 기관과 협의해 확정
+
+test_cases:
+  - {id: T-ORG-1, domain: force_structure, ref: "ATP 3장", scene: 보병사단 전체 장비 집결, layout: orbat.infantry_division, task: 장비 계수로 제대 추정, metrics: [M1-detect, M2-echelon], linked_events: [E1-1]}
+  - {id: T-ORG-2, domain: force_structure, ref: "ATP 3장", scene: 전차여단 vs 기계화사단, layout: orbat.tank_brigade, task: 장비 구성비로 부대 유형 분류, metrics: [M2-echelon], linked_events: [E1-3]}
+  - {id: T-ORG-3, domain: command_post, ref: "ATP 3장", scene: 주·전방·예비 지휘소, task: 지휘소 탐지·우선순위, metrics: [M1-detect], linked_events: [E2-5]}
+  - {id: T-DRL-1, domain: battle_drill, ref: "ATP 4장 조우시 조치", scene: 선두 소대 접촉 후 전개, layout: small_unit_formations_m.platoon, task: 대형 변화 탐지, metrics: [M2-formation, M3-warning], linked_events: [E3-5]}
+  - {id: T-DRL-2, domain: battle_drill, ref: "ATP 4장 상황적 돌파", scene: 장애물 개척로, task: 개척로·공병장비 탐지, metrics: [M1-detect], linked_events: [E2-2]}
+  - {id: T-DRL-3, domain: battle_drill, ref: "ATP 4장 접촉 단절, G-11", scene: 연막 속 철수, layout: obscurants, task: 연막 하 장비 탐지, metrics: [M1-robust], linked_events: [E3-3]}
+  - {id: T-DRL-4, domain: battle_drill, ref: "ATP 4장 전병과 방공", scene: 기동부대 동행 방공, task: 기동부대 속 방공화기 식별, metrics: [M1-identify], linked_events: [E3-1]}
+  - {id: T-DRL-5, domain: battle_drill, ref: "ATP 4장 복합지형", scene: 산악·도시 혼합, task: 지형 클러터 강건성, metrics: [M1-detect, M4-clutter], linked_events: [E3-6]}
+  - {id: T-RS-1, domain: reconnaissance, ref: "ATP 5장", scene: 정찰조·관측소, task: 소형·단독 표적 탐지, metrics: [M1-detect], linked_events: [E4-2]}
+  - {id: T-RS-2, domain: security, ref: "ATP 5-138", scene: 사단 전위 행군, layout: march_column.advance_guard, task: 종대 분할·방향·규모 추정, metrics: [M2-echelon, M2-formation], linked_events: [E3-1]}
+  - {id: T-RS-3, domain: security, ref: "ATP 5-141", scene: 측위·후위, layout: march_column.flank_guard, task: 본대·경계부대 구분, metrics: [M2-formation], linked_events: [E3-2]}
+  - {id: T-RS-4, domain: security, ref: "ATP 2-9, 7-35~7-37", scene: 방어 전 경계지대, layout: defense.security_zone, task: 경계선 추정으로 주방어선 추론, metrics: [M2-defline], linked_events: [E4-1]}
+  - {id: T-OFF-1, domain: offense, ref: "ATP 6-14", scene: 사단 돌파, layout: offensive_maneuver.penetration, task: 포병 밀도 지도로 주공 축 예측, metrics: [M2-formation, M3-warning], linked_events: [E2-1, E2-2]}
+  - {id: T-OFF-2, domain: offense, ref: "ATP 6-15", scene: 거점 돌입, layout: offensive_maneuver.thrust, task: 소규모 집중 탐지, metrics: [M2-formation], linked_events: [E2-2]}
+  - {id: T-OFF-3, domain: offense, ref: "ATP 6-12~6-19", scene: 포위·우회·침투·견제 배치, task: 배치 패턴으로 기동 형태 분류, metrics: [M2-formation], linked_events: [E3-1]}
+  - {id: T-OFF-4, domain: offense, ref: "ATP 6-48~6-72", scene: 통합공격 vs 분산공격, task: 공격 유형 판별, metrics: [M2-formation], linked_events: [E2-5]}
+  - {id: T-OFF-5, domain: offense, ref: "ATP Table 6-1", scene: 경계선 인근 땅굴 출구, layout: tunnels, task: 신규 굴착·토사 변화 탐지, metrics: [M3-warning], linked_events: [E2-3]}
+  - {id: T-DEF-1, domain: defense, ref: "ATP 7-39~7-40", scene: 사단 방어배치, layout: defense, task: 제대 구분·방어대 경계 추정, metrics: [M2-defline, M2-echelon], linked_events: [E4-1]}
+  - {id: T-DEF-2, domain: defense, ref: "ATP 7-23, C-12, 7-58", scene: 기동방어·역습, layout: armor, task: 예비대 위치·이동 추적, metrics: [M3-warning], linked_events: [E4-5]}
+  - {id: T-DEF-3, domain: defense, ref: "ATP 7-86~7-96", scene: HARTS·CBP·축성 전차호·Y형 벙커, layout: fortifications, task: 시설 탐지와 점유 판별, metrics: [M1-detect, M3-occupancy], linked_events: [E0-2, E1-2]}
+  - {id: T-CS-1, domain: counterstability, ref: "ATP 8장, I장", scene: 후방 침투·해상 위장, task: 민간 클러터 속 군용 표적, metrics: [M4-clutter, M1-detect], linked_events: [ECS-1, ECS-2, ECS-3, ECS-4]}
+  - {id: T-EIW-1, domain: eiw_deception, ref: "ATP 9-35~9-42", scene: 기만부대·기만체, layout: deception, task: 실표적/기만체 판별, metrics: [M4-decoy], linked_events: [E1-5, E4-6, E5-3]}
+  - {id: T-EIW-2, domain: eiw_c3d, ref: "ATP 1-75", scene: 위장망·지하 엄폐, task: 부분 노출 표적 탐지, metrics: [M4-camouflage], linked_events: [E1-1]}
+  - {id: T-EIW-3, domain: eiw_ew, ref: "ATP 9장, E장", scene: 레이더·재밍 차량, task: 안테나 형상 기반 식별, metrics: [M1-identify], linked_events: [E2-6]}
+  - {id: T-APX-A, domain: fires, ref: "ATP 부록 A", scene: 포병집단 배치, layout: fires_positions, task: 포병집단 제대 추정, metrics: [M2-echelon, M3-occupancy], linked_events: [E3-4, E4-4]}
+  - {id: T-APX-B, domain: aviation, ref: "ATP 부록 B", scene: 지하 격납고·공정, layout: airborne, task: 항공기·입구 탐지, metrics: [M1-detect], linked_events: [E0-3, E2-4]}
+  - {id: T-APX-C, domain: antitank, ref: "ATP 부록 C", scene: 전차 집결지·출발선, layout: armor, task: 전차 기종 식별, metrics: [M1-identify], linked_events: [E1-3]}
+  - {id: T-APX-D, domain: air_defense, ref: "ATP 부록 D", scene: 방공진지, layout: air_defense, task: 방공화기·미사일 발사대 식별, metrics: [M1-identify], linked_events: [E1-7]}
+  - {id: T-APX-F, domain: engineer, ref: "ATP 부록 F", scene: 도하, layout: river_crossing, task: 도하 지점·장비 탐지, metrics: [M1-detect, M3-warning], linked_events: [E3-3]}
+  - {id: T-APX-G, domain: cbrn_obscurant, ref: "ATP 부록 G", scene: 연막 차장, layout: obscurants, task: EO 실패 시 SAR 보완, metrics: [M1-robust], linked_events: [E5-4]}
+  - {id: T-APX-H, domain: logistics, ref: "ATP 부록 H", scene: 철도·도로 보급, task: 보급량 변화로 작전 임박 징후 판단, metrics: [M3-warning], linked_events: [E1-1]}
+  - {id: T-APX-I, domain: sof, ref: "ATP 부록 I", scene: AN-2·헬기·반잠수정, task: 소형 항공기·선박 식별, metrics: [M1-identify], linked_events: [E1-6, ECS-4]}
+  - {id: T-TEL-1, domain: strategy, ref: STRAT2026, scene: TEL 분산·이동·기만, layout: deception, task: TEL 탐지·추적과 기만 TEL 판별, metrics: [M3-tel, M4-decoy], linked_events: [E1-4, E5-1, E5-3], verify: true}
