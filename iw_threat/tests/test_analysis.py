@@ -8,8 +8,8 @@ import pytest
 
 from app.analysis.catalog import load_catalog, load_grading
 from app.analysis.change import TargetRow, detect_changes
-from app.analysis.explain import (build_evidence_map, label_doctrine, template_sentences, template_summary,
-                                  verify_sentences, verify_summary)
+from app.analysis.explain import (build_evidence_map, indicator_lines, template_summary, verify_implications,
+                                  verify_summary)
 from app.analysis.matching import ReportChunk, hits_to_evidence, match_imagery, quote_in_text
 from app.analysis.scoring import Evidence, assess, evidence_weight, indicator_strength
 from app.ingest.chunk import chunk_text
@@ -85,32 +85,24 @@ def test_llm_hits_require_verbatim_quote_and_known_indicator():
     assert quote_in_text("천막  3동이\n새로", chunk.text)
 
 
-def test_verify_sentences_requires_indicator_matched_citations():
-    ev_map = {"I_MEDICAL": [{"id": "E1", "ref": "targets:field_hospital:1", "text": "영상 판독 야전병원 0대 → 2대"}],
-              "I_ARMOR_MASS": [{"id": "E2", "ref": "targets:tank:2,3", "text": "영상 판독 전차 13대 → 40대"}]}
-    doctrine = label_doctrine([{"ref": "chunk:d1:0", "text": "공격 전 기갑부대는 집결지를 점령한다"}])
-    names = {"I_MEDICAL": "야전 의무시설 전개", "I_ARMOR_MASS": "기갑·기계화 장비 전방 집결"}
-    kept, dropped = verify_sentences(
-        [{"indicator_id": "I_MEDICAL", "text": "I_MEDICAL: 야전병원 2개소 새로 확인됨", "citations": ["[E1]"]},   # 접두어·괄호 정리
-         {"indicator_id": "I_MEDICAL", "text": "전차 40대 근거를 끌어다 씀", "citations": ["E2"]},              # 다른 지표 근거
-         {"indicator_id": "I_ARMOR_MASS", "text": "교리상 집결지 점령 단계로 판단됨", "citations": ["D1"]},
-         {"indicator_id": "I_ARMOR_MASS", "text": "기갑·기계화 장비 전방 집결이 상당히 충족됨", "citations": ["E2"]},  # 상투 문장
-         {"indicator_id": "I_ARMOR_MASS", "text": "근거 없음", "citations": []},
-         {"indicator_id": "I_UNKNOWN", "text": "모르는 지표", "citations": ["D1"]}],
-        ev_map, doctrine, names,
-    )
-    assert [s["text"] for s in kept] == ["야전병원 2개소 새로 확인됨", "교리상 집결지 점령 단계로 판단됨"]
-    assert len(dropped) == 4
-    assert kept[0]["citations"] == ["targets:field_hospital:1"] and kept[1]["citations"] == ["chunk:d1:0"]
-
-
-def test_template_fills_uncovered_indicators():
-    evidence = [Evidence("I_MEDICAL", "IMINT", "s", "B", 2, NOW, "r1", quote="야전병원 0 → 2"),
-                Evidence("I_BRIDGING", "IMINT", "s", "B", 2, NOW, "r2", quote="도하 0 → 4")]
+def test_implications_verified_and_lines_keep_exact_facts():
+    evidence = [Evidence("I_MEDICAL", "IMINT", "s", "B", 2, NOW, "r1",
+                         quote="영상 판독 야전병원 기준기간 평균 0대 → 최근 2대 (+2대)"),
+                Evidence("I_MEDICAL", "OSINT", "n", "C", 3, NOW, "chunk:d1:0", quote="천막 3동이 새로 설치되었다"),
+                Evidence("I_BRIDGING", "IMINT", "s", "B", 2, NOW, "r2",
+                         quote="영상 판독 도하장비 기준기간 평균 0대 → 최근 4대 (+4대)")]
     r = assess(CAT, evidence, GR, NOW)
     m = build_evidence_map(r, evidence)
-    filled = template_sentences(r, m, covered={"I_MEDICAL"})
-    assert [f["indicator_id"] for f in filled] == ["I_BRIDGING"] and filled[0]["citations"] == ["r2"]
+    ok, dropped = verify_implications(
+        [{"indicator_id": "I_MEDICAL", "text": "I_MEDICAL: 의무지원 준비 정황"},
+         {"indicator_id": "I_BRIDGING", "text": "도하장비 10대로 증가"},          # 숫자 → 제거(사실은 정형 문장 담당)
+         {"indicator_id": "I_UNKNOWN", "text": "모르는 지표"}], m)
+    assert ok == {"I_MEDICAL": "의무지원 준비 정황"} and len(dropped) == 2
+    lines = {x["indicator_id"]: x for x in indicator_lines(r, m, ok)}
+    med = lines["I_MEDICAL"]
+    assert "영상: 야전병원 0→2대" in med["text"] and "OSINT(C3)" in med["text"] and med["text"].endswith("→ 의무지원 준비 정황")
+    assert med["generated"] == "template+llm" and med["citations"] == ["r1", "chunk:d1:0"]
+    assert lines["I_BRIDGING"]["generated"] == "template" and "식별됨 — 영상: 도하장비 0→4대" in lines["I_BRIDGING"]["text"]
 
 
 def test_evidence_map_only_top_hypothesis_indicators():
@@ -150,6 +142,8 @@ def test_summary_verification_blocks_changed_probability():
     assert ok and ok["citations"] == ["r1", "r2"]
     assert verify_summary({"text": "야전병원·도하장비 증가로 공격 준비 가능성 99%로 판단됨", "citations": ids}, r, m, []) is None
     assert verify_summary({"text": "공격 준비 가능성 있음", "citations": ids}, r, m, []) is None   # 근거 내용 없음
+    wrong_n = {"text": f"영상 등 6개 출처에서 야전병원·도하장비 증가로 공격 준비 가능성 {pct}%로 판단됨", "citations": ids}
+    assert verify_summary(wrong_n, r, m, []) is None                                            # 출처 수 오기
     vague = {"text": f"출처 유형 1개, 핵심 징후 2개, 가설 '공격 준비' 확률 {pct}%로 판단됨", "citations": ids}
     assert verify_summary(vague, r, m, []) is None                                              # 징후를 구체적으로 안 밝힘
     t = template_summary(r)

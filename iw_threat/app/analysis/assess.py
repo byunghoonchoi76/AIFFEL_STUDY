@@ -11,8 +11,8 @@ from ..embed import embed_query
 from ..stores import pg
 from .catalog import load_catalog, load_grading
 from .change import detect_changes
-from .explain import (build_evidence_map, explanation_prompt, label_doctrine, template_sentences, template_summary,
-                      verify_sentences, verify_summary)
+from .explain import (build_evidence_map, explanation_prompt, indicator_lines, label_doctrine, template_summary,
+                      verify_implications, verify_summary)
 from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery
 from .scoring import assess
 
@@ -71,16 +71,16 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
                                    for d in vector.search(q, s.doctrine_top_k, source_types=["DOCTRINE"])])
         ev_map = build_evidence_map(result, evidence)
         system, user = explanation_prompt(result, ev_map, doctrine)
-        kept, dropped = [], []
+        implications, dropped = {}, []
         try:
-            out = llm.chat_json(system, user, max_tokens=3000, reasoning_effort=s.explain_reasoning_effort)
-            names = {c.indicator_id: c.name for c in result.top.contributions}
-            kept, dropped = verify_sentences(out.get("sentences", []), ev_map, doctrine, names)
+            out = llm.chat_json(system, user, max_tokens=2048, reasoning_effort=s.explain_reasoning_effort)
+            implications, dropped = verify_implications(out.get("implications"), ev_map)
             narrative["summary"] = verify_summary(out.get("summary"), result, ev_map, doctrine) or narrative["summary"]
         except Exception as e:  # noqa: BLE001
             narrative["error"] = str(e)
-        filled = template_sentences(result, ev_map, {k["indicator_id"] for k in kept})
-        narrative.update({"sentences": kept + filled, "dropped": len(dropped), "template_filled": len(filled),
+        lines = indicator_lines(result, ev_map, implications)
+        narrative.update({"sentences": lines, "dropped": len(dropped),
+                          "template_filled": sum(1 for x in lines if x["generated"] == "template"),
                           "dropped_samples": dropped[:3]})
 
     payload = {

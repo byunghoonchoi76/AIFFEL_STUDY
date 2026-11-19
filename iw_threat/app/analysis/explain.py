@@ -36,33 +36,31 @@ def label_doctrine(docs: list[dict]) -> list[dict]:
 
 
 def explanation_prompt(result: AssessmentResult, ev_map: dict[str, list[dict]], doctrine: list[dict]) -> tuple[str, str]:
+    """사실(수량·출처) 문장은 코드가 정형으로 만들고, LLM은 ① 종합 판단 ② 지표별 의미(해석)만 작성."""
     top = result.top
+    types = sorted({t for c in top.contributions for t in c.source_types})
     blocks = []
     for c in top.contributions:
         refs = "\n".join(f"    {d['id']}: {d['text']}" for d in ev_map.get(c.indicator_id, []))
-        blocks.append(f"- indicator_id={c.indicator_id} '{c.name}': {_strength_word(c.strength)} 식별됨, "
-                      f"출처 {'/'.join(c.source_types)}\n  근거:\n{refs}")
+        blocks.append(f"- indicator_id={c.indicator_id} '{c.name}' (출처 {'/'.join(c.source_types)})\n  근거:\n{refs}")
     doc = "\n".join(f"{d['id']}: {d['text']}" for d in doctrine) or "(교리 근거 없음)"
     system = (
-        "너는 군 정보 분석 보고서 초안 작성 보조자다. 반드시 한국어 개조식 문장으로 쓴다.\n"
+        "너는 군 정보 분석 보고서 초안 작성 보조자다. 반드시 한국어로 쓴다.\n"
         "규칙:\n"
-        "1. 계산된 등급·확률을 바꾸거나 새로 판단하지 않는다.\n"
-        "2. 지표 하나당 한 문장. indicator_id는 별도 필드에만 쓰고 text에는 넣지 않는다.\n"
-        "3. text에는 인용한 근거의 구체적 사실(장비 종류, 수량 변화, 출처 유형)을 반드시 포함한다.\n"
-        "   예) '영상 판독상 야전병원이 0대에서 2대로 늘었고 현지 보도도 천막 3동 설치를 전함 — 의무지원 준비 정황'\n"
-        "   지표 문장 끝에 가설 결론('공격 준비 가능성 있음')을 반복하지 말고, 그 징후가 뜻하는 바만 짧게 쓴다.\n"
-        "4. citations에는 그 지표 아래 나열된 근거 ID(E숫자) 또는 교리 ID(D숫자)만 그대로 넣는다.\n"
-        "5. 근거에 없는 수치·사실은 쓰지 않는다. '충족', 'LR', '강도' 같은 내부 계산 용어는 쓰지 않는다.\n"
-        "6. 최종 판단은 분석관이 하므로 '~로 판단됨', '~가능성 있음' 등 추정 표현을 쓴다.\n"
-        "7. summary는 전체 종합 판단 1문장: 출처 유형, 핵심 징후 2~3개를 장비·사실로 구체적으로, 가설과 확률(주어진 값 그대로)을 담고 "
-        "citations에 핵심 징후의 근거 ID를 넣는다.\n"
-        "   예) '영상·현지 보도 2개 출처에서 전차 집결(13→40대), 도하장비 전방 이동, 야전병원 설치가 동시에 식별되어 공격 준비 가능성 87%로 판단됨'"
+        "1. 계산된 등급·확률을 바꾸거나 새로 판단하지 않는다. 근거에 없는 사실은 쓰지 않는다.\n"
+        "2. implications: 지표마다 그 징후가 군사적으로 뜻하는 바를 30자 이내 구절로 쓴다. 숫자는 쓰지 않는다.\n"
+        "   예) '의무지원 준비 정황', '하천 도하 공격 대비 가능성', '공격 제대 화력 보강 정황'\n"
+        "3. summary: 전체 종합 판단 1문장. 출처 유형 수(주어진 값 그대로), 핵심 징후 2~3개를 장비·사실로 구체적으로, "
+        "가설과 확률(주어진 값 그대로)을 담고 citations에 핵심 징후의 근거 ID(E숫자)를 넣는다.\n"
+        "   예) '영상·현지 보도 2개 출처 유형에서 전차 집결, 도하장비 전방 이동, 야전병원 설치가 동시에 식별되어 공격 준비 가능성 87%로 판단됨'\n"
+        "4. '충족', 'LR', '강도' 같은 내부 계산 용어는 쓰지 않는다. 추정 표현('~로 판단됨', '~정황')을 쓴다."
     )
     user = (
-        f"평가 결과: 가설 '{top.name}', 확률 {top.probability:.0%}, 등급 {result.grade}, 분석 신뢰도 {result.confidence}\n\n"
+        f"평가 결과: 가설 '{top.name}', 확률 {top.probability:.0%}, 등급 {result.grade}, 분석 신뢰도 {result.confidence}, "
+        f"출처 유형 {len(types)}개({'/'.join(types)})\n\n"
         "식별된 징후와 근거:\n" + "\n".join(blocks) + f"\n\n교리 근거:\n{doc}\n\n"
         'JSON으로 답하라: {"summary": {"text": "...", "citations": ["E1"]}, '
-        '"sentences": [{"indicator_id": "I_...", "text": "...", "citations": ["E1"]}]}'
+        '"implications": [{"indicator_id": "I_...", "text": "..."}]}'
     )
     return system, user
 
@@ -99,49 +97,56 @@ def reflects_evidence(text: str, cited_texts: list[str], indicator_name: str = "
     return False
 
 
-def verify_sentences(sentences: list[dict], ev_map: dict[str, list[dict]],
-                     doctrine: list[dict], names: dict[str, str] | None = None) -> tuple[list[dict], list[dict]]:
-    """(통과, 제거). 통과 조건: 알려진 지표 + 인용 1개 이상 + 모든 인용이 그 지표 근거 또는 교리
-    + 문장이 인용 근거의 구체적 내용을 담음(지표 이름만 되풀이한 상투 문장 제거).
-    통과 문장의 citations는 원 참조(ref)로 변환."""
-    doc_refs = {d["id"]: d["ref"] for d in doctrine}
-    texts = {d["id"]: d["text"] for d in doctrine} | {d["id"]: d["text"] for v in ev_map.values() for d in v}
-    kept, dropped = [], []
-    for s in sentences:
-        iid = str(s.get("indicator_id") or "").strip()
-        cites = [_norm_id(c) for c in (s.get("citations") or [])]
-        text = re.sub(r"^\s*I_[A-Z_]+\s*[:：-]\s*", "", (s.get("text") or "").strip())
-        allowed = {d["id"]: d["ref"] for d in ev_map.get(iid, [])} | doc_refs
+_IMINT_RE = re.compile(r"영상 판독 (\S+) 기준기간 평균 ([\d.]+)대 → 최근 (\d+)대")
+
+
+def _compact(ev_text: str) -> str:
+    """근거 문구를 짧은 사실로: '영상: 전차 13→40대' / 'OSINT(C3): “…”'."""
+    m = _IMINT_RE.search(ev_text)
+    if m:
+        return f"영상: {m.group(1)} {m.group(2)}→{m.group(3)}대"
+    g = re.match(r"\[(\w+) (\w)(\d)\]\s*(.*)", ev_text)
+    if g:
+        body = g.group(4)
+        return f"{g.group(1)}({g.group(2)}{g.group(3)}): “{body[:45]}{'…' if len(body) > 45 else ''}”"
+    return ev_text
+
+
+def verify_implications(items: list[dict] | None, ev_map: dict[str, list[dict]]) -> tuple[dict[str, str], list[dict]]:
+    """지표별 의미 구절 검증: 알려진 지표, 30자 내외, 숫자·내부 용어 없음 (사실은 정형 문장이 담당)."""
+    ok, dropped = {}, []
+    for it in items or []:
+        iid = str(it.get("indicator_id") or "").strip()
+        text = re.sub(r"^\s*I_[A-Z_]+\s*[:：-]\s*", "", (it.get("text") or "").strip()).rstrip(".")
         reason = None
-        if not text:
-            reason = "빈 문장"
-        elif iid not in ev_map:
+        if iid not in ev_map:
             reason = f"알 수 없는 지표 {iid!r}"
-        elif not cites:
-            reason = "인용 없음"
-        elif not all(c in allowed for c in cites):
-            reason = f"허용되지 않은 인용 {[c for c in cites if c not in allowed]}"
-        elif not reflects_evidence(text, [texts[c] for c in cites], (names or {}).get(iid, "")):
-            reason = "내부 용어 사용" if any(j in text for j in _JARGON) else "근거 내용 미반영"
-        if reason is None:
-            kept.append({"indicator_id": iid, "text": text, "citations": [allowed[c] for c in cites],
-                         "generated": "llm"})
-        else:
-            dropped.append({**s, "_reason": reason})
-    return kept, dropped
+        elif not text or len(text) > 40:
+            reason = "길이 초과 또는 빈 구절"
+        elif re.search(r"\d", text):
+            reason = "숫자 포함(사실은 정형 문장에서만)"
+        elif any(j in text for j in _JARGON):
+            reason = "내부 용어 사용"
+        if reason:
+            dropped.append({**it, "_reason": reason})
+        elif iid not in ok:
+            ok[iid] = text
+    return ok, dropped
 
 
-def template_sentences(result: AssessmentResult, ev_map: dict[str, list[dict]], covered: set[str]) -> list[dict]:
-    """LLM 문장이 검증을 통과하지 못한 지표에 대해 계산 결과 기반 정형 문장 생성."""
+def indicator_lines(result: AssessmentResult, ev_map: dict[str, list[dict]], implications: dict[str, str]) -> list[dict]:
+    """지표별 해설: 사실은 코드가 근거에서 정형으로(수치 변조 불가), 의미는 검증된 LLM 구절로."""
     out = []
     for c in result.top.contributions:
-        if c.indicator_id in covered or not ev_map.get(c.indicator_id):
+        ev = ev_map.get(c.indicator_id, [])
+        if not ev:
             continue
-        ev = ev_map[c.indicator_id]
+        facts = "; ".join(_compact(d["text"]) for d in ev)
+        meaning = implications.get(c.indicator_id)
         out.append({
             "indicator_id": c.indicator_id,
-            "text": f"{c.name} 징후가 {_strength_word(c.strength)} 식별됨 ({'/'.join(c.source_types)}: {ev[0]['text']})",
-            "citations": [d["ref"] for d in ev], "generated": "template",
+            "text": f"{c.name} 징후 {_strength_word(c.strength)} 식별됨 — {facts}" + (f" → {meaning}" if meaning else ""),
+            "citations": [d["ref"] for d in ev], "generated": "template+llm" if meaning else "template",
         })
     return out
 
@@ -168,6 +173,10 @@ def verify_summary(summary: dict | None, result: AssessmentResult, ev_map: dict[
         return None
     if _word_overlap(text, [allowed[c]["text"] for c in cites]) < 2:   # 핵심 징후를 구체적으로 2개 이상 언급해야 함
         return None
+    n_types = len({t for c in result.top.contributions for t in c.source_types})
+    for m in re.findall(r"(\d+)\s*개\s*(?:출처|정보원)", text):
+        if int(m) != n_types:                           # 출처 수를 틀리게 쓴 경우 차단
+            return None
     pct = round(result.top.probability * 100)
     for m in re.findall(r"(\d+(?:\.\d+)?)\s*%", text):
         if abs(float(m) - pct) > 1:                     # 확률을 바꿔 쓴 경우 차단
