@@ -11,7 +11,8 @@ from ..embed import embed_query
 from ..stores import pg
 from .catalog import load_catalog, load_grading
 from .change import detect_changes
-from .explain import build_evidence_map, explanation_prompt, label_doctrine, template_sentences, verify_sentences
+from .explain import (build_evidence_map, explanation_prompt, label_doctrine, template_sentences, template_summary,
+                      verify_sentences, verify_summary)
 from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery
 from .scoring import assess
 
@@ -63,7 +64,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
     result = assess(catalog, evidence, grading, as_of)
 
     # 4) 근거 기반 해설 (교리 검색 + 근거 검증)
-    narrative = {"sentences": [], "dropped": 0}
+    narrative = {"summary": template_summary(result) if result.top.contributions else None, "sentences": [], "dropped": 0}
     if vector is not None and llm is not None and result.top.contributions:
         q = embed_query(" ".join(c.name for c in result.top.contributions))
         doctrine = label_doctrine([{"ref": f"chunk:{d['chunk_id']}", "text": d["text"]}
@@ -72,9 +73,10 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
         system, user = explanation_prompt(result, ev_map, doctrine)
         kept, dropped = [], []
         try:
-            out = llm.chat_json(system, user, max_tokens=3000, reasoning_effort="medium")
+            out = llm.chat_json(system, user, max_tokens=3000, reasoning_effort=s.explain_reasoning_effort)
             names = {c.indicator_id: c.name for c in result.top.contributions}
             kept, dropped = verify_sentences(out.get("sentences", []), ev_map, doctrine, names)
+            narrative["summary"] = verify_summary(out.get("summary"), result, ev_map, doctrine) or narrative["summary"]
         except Exception as e:  # noqa: BLE001
             narrative["error"] = str(e)
         filled = template_sentences(result, ev_map, {k["indicator_id"] for k in kept})

@@ -67,6 +67,9 @@ with tab_assess:
         st.subheader("영상 변화")
         st.dataframe(pd.DataFrame(res["changes"]))
         st.subheader("근거 기반 해설 (보고서 초안)")
+        summ = res["narrative"].get("summary")
+        if summ:
+            st.info(f"**종합 판단** · {summ['text']}")
         for s in res["narrative"].get("sentences", []):
             st.markdown(f"- {s['text']}  \n  <small>근거: {', '.join(s['citations'])}</small>", unsafe_allow_html=True)
         st.caption(f"근거 미확인으로 제거된 문장 {res['narrative'].get('dropped', 0)}개 · "

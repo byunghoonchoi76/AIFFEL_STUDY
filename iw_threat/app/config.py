@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     llm_concurrency: int = 8
     # 첩보 분류 추론 강도: low(빠름) / medium(누락 감소, 권장)
     classify_reasoning_effort: str = "medium"
+    # 해설 생성 추론 강도: low(빠름, 권장) / medium(문장 품질↑, 시간↑)
+    explain_reasoning_effort: str = "low"
     # 시간대 정보 없는 입력 시각의 기준 시간대
     default_tz: str = "Asia/Seoul"
 

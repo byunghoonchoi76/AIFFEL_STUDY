@@ -49,15 +49,19 @@ def explanation_prompt(result: AssessmentResult, ev_map: dict[str, list[dict]], 
         "1. 계산된 등급·확률을 바꾸거나 새로 판단하지 않는다.\n"
         "2. 지표 하나당 한 문장. indicator_id는 별도 필드에만 쓰고 text에는 넣지 않는다.\n"
         "3. text에는 인용한 근거의 구체적 사실(장비 종류, 수량 변화, 출처 유형)을 반드시 포함한다.\n"
-        "   예) '영상 판독상 야전병원이 0개소에서 2개소로 늘었고 현지 보도도 천막 3동 설치를 전함 — 의무지원 준비 가능성 있음'\n"
+        "   예) '영상 판독상 야전병원이 0대에서 2대로 늘었고 현지 보도도 천막 3동 설치를 전함 — 의무지원 준비 정황'\n"
+        "   지표 문장 끝에 가설 결론('공격 준비 가능성 있음')을 반복하지 말고, 그 징후가 뜻하는 바만 짧게 쓴다.\n"
         "4. citations에는 그 지표 아래 나열된 근거 ID(E숫자) 또는 교리 ID(D숫자)만 그대로 넣는다.\n"
         "5. 근거에 없는 수치·사실은 쓰지 않는다. '충족', 'LR', '강도' 같은 내부 계산 용어는 쓰지 않는다.\n"
-        "6. 최종 판단은 분석관이 하므로 '~로 판단됨', '~가능성 있음' 등 추정 표현을 쓴다."
+        "6. 최종 판단은 분석관이 하므로 '~로 판단됨', '~가능성 있음' 등 추정 표현을 쓴다.\n"
+        "7. summary는 전체 종합 판단 1문장: 출처 유형 수, 핵심 징후 2~3개, 가설과 확률(주어진 값 그대로)을 담고 "
+        "citations에 핵심 징후의 근거 ID를 넣는다."
     )
     user = (
         f"평가 결과: 가설 '{top.name}', 확률 {top.probability:.0%}, 등급 {result.grade}, 분석 신뢰도 {result.confidence}\n\n"
         "충족 지표와 근거:\n" + "\n".join(blocks) + f"\n\n교리 근거:\n{doc}\n\n"
-        'JSON으로 답하라: {"sentences": [{"indicator_id": "I_...", "text": "...", "citations": ["E1"]}]}'
+        'JSON으로 답하라: {"summary": {"text": "...", "citations": ["E1"]}, '
+        '"sentences": [{"indicator_id": "I_...", "text": "...", "citations": ["E1"]}]}'
     )
     return system, user
 
@@ -129,3 +133,36 @@ def template_sentences(result: AssessmentResult, ev_map: dict[str, list[dict]], 
             "citations": [d["ref"] for d in ev], "generated": "template",
         })
     return out
+
+
+def verify_summary(summary: dict | None, result: AssessmentResult, ev_map: dict[str, list[dict]],
+                   doctrine: list[dict]) -> dict | None:
+    """종합 판단 검증: 인용이 실제 근거·교리 ID이고, 근거 내용을 담고, 문장 속 백분율이 계산값과 같아야 통과."""
+    if not summary or not (summary.get("text") or "").strip():
+        return None
+    text = summary["text"].strip()
+    allowed = {d["id"]: d for v in ev_map.values() for d in v} | {d["id"]: d for d in doctrine}
+    cites = [_norm_id(c) for c in (summary.get("citations") or [])]
+    if not cites or not all(c in allowed for c in cites):
+        return None
+    if not reflects_evidence(text, [allowed[c]["text"] for c in cites]):
+        return None
+    pct = round(result.top.probability * 100)
+    for m in re.findall(r"(\d+(?:\.\d+)?)\s*%", text):
+        if abs(float(m) - pct) > 1:                     # 확률을 바꿔 쓴 경우 차단
+            return None
+    return {"text": text, "citations": [allowed[c]["ref"] for c in cites], "generated": "llm"}
+
+
+def template_summary(result: AssessmentResult) -> dict:
+    """종합 판단 정형 문장 (LLM 요약이 검증을 통과하지 못했을 때)."""
+    top = result.top
+    types = sorted({t for c in top.contributions for t in c.source_types})
+    key = [c.name for c in top.contributions[:3]]
+    if not key:
+        text = f"충족된 징후가 없어 '{top.name}' 가능성은 사전 수준({top.probability:.0%})으로 판단됨."
+    else:
+        text = (f"{len(types)}개 출처 유형({'/'.join(types)})에서 {', '.join(key)} 등 {len(top.contributions)}개 징후가 "
+                f"식별되어 '{top.name}' 가능성 {top.probability:.0%}(등급 {result.grade}, 분석 신뢰도 {result.confidence})로 판단됨.")
+    refs = [r for c in top.contributions[:3] for r in c.refs]
+    return {"text": text, "citations": refs, "generated": "template"}

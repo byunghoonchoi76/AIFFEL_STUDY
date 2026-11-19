@@ -8,7 +8,8 @@ import pytest
 
 from app.analysis.catalog import load_catalog, load_grading
 from app.analysis.change import TargetRow, detect_changes
-from app.analysis.explain import build_evidence_map, label_doctrine, template_sentences, verify_sentences
+from app.analysis.explain import (build_evidence_map, label_doctrine, template_sentences, template_summary,
+                                  verify_sentences, verify_summary)
 from app.analysis.matching import ReportChunk, hits_to_evidence, match_imagery, quote_in_text
 from app.analysis.scoring import Evidence, assess, evidence_weight, indicator_strength
 from app.ingest.chunk import chunk_text
@@ -136,3 +137,18 @@ def test_parse_hwpx(tmp_path):
     p = tmp_path / "a.hwpx"
     p.write_bytes(buf.getvalue())
     assert parse_hwpx(p) == "첫 문단\n둘&셋"
+
+
+def test_summary_verification_blocks_changed_probability():
+    evidence = [Evidence("I_MEDICAL", "IMINT", "s", "B", 2, NOW, "r1", quote="영상 판독 야전병원 0대 → 2대"),
+                Evidence("I_BRIDGING", "IMINT", "s", "B", 2, NOW, "r2", quote="영상 판독 도하장비 0대 → 4대")]
+    r = assess(CAT, evidence, GR, NOW)
+    m = build_evidence_map(r, evidence)
+    pct = round(r.top.probability * 100)
+    ids = [m["I_MEDICAL"][0]["id"], m["I_BRIDGING"][0]["id"]]
+    ok = verify_summary({"text": f"야전병원·도하장비 증가로 공격 준비 가능성 {pct}%로 판단됨", "citations": ids}, r, m, [])
+    assert ok and ok["citations"] == ["r1", "r2"]
+    assert verify_summary({"text": "야전병원·도하장비 증가로 공격 준비 가능성 99%로 판단됨", "citations": ids}, r, m, []) is None
+    assert verify_summary({"text": "공격 준비 가능성 있음", "citations": ids}, r, m, []) is None   # 근거 내용 없음
+    t = template_summary(r)
+    assert f"{r.top.probability:.0%}" in t["text"] and t["generated"] == "template"
