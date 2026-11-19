@@ -145,3 +145,18 @@ def attribute_targets(points: list[dict]) -> list[dict]:
         a["max_count"] = max(a["max_count"], p["count"])
         a["event_ids"].append(p["id"])
     return sorted(agg.values(), key=lambda a: (a["equipment"], a["unit_key"] is None, -a["max_count"]))
+
+
+def identify_events(points: list[dict]) -> dict[int, dict | None]:
+    """이벤트 id → 최적 부대(없으면 None). 같은 좌표·장비는 캐시."""
+    cache: dict[tuple, dict | None] = {}
+    out: dict[int, dict | None] = {}
+    for p in points:
+        if p.get("lat") is None:
+            out[p["id"]] = None
+            continue
+        k = (round(p["lat"], 5), round(p["lon"], 5), p["equipment_type"])
+        if k not in cache:
+            cache[k] = identify(p["lat"], p["lon"], p["equipment_type"])["best"]
+        out[p["id"]] = cache[k]
+    return out

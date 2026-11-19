@@ -10,10 +10,10 @@ from ..config import get_settings, to_aware
 from ..embed import embed_query
 from ..stores import pg
 from .catalog import load_catalog, load_grading
-from .change import detect_changes
+from .change import TargetRow, detect_changes, detect_unit_changes
 from .explain import (build_evidence_map, explanation_prompt, indicator_lines, label_doctrine, template_summary,
                       verify_implications, verify_summary)
-from .matching import ReportChunk, annotate_with_units, classification_prompt, hits_to_evidence, match_imagery
+from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery
 from .scoring import assess
 
 
@@ -35,17 +35,23 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
     catalog, grading = load_catalog(s.indicators_path), load_grading(s.grading_path)
 
     # 1) 영상 판독 표적 변화 → 규칙 매칭
-    rows = pg.fetch_target_rows(area_id, as_of - timedelta(days=s.window_days + s.baseline_days), as_of)
-    changes = detect_changes(rows, as_of, s.window_days, s.baseline_days)
-    evidence = match_imagery(changes, catalog, grading)
-
-    # 1-1) 전투서열 기반 표적 → 부대 식별 (전투서열 DB가 적재된 경우)
-    attribution: list[dict] = []
+    #    전투서열 DB가 있으면 표적을 부대별로 나눠 '부대별 평시 기준선'과 비교, 없으면 지역 단위 비교
     from ..orbat import store as orbat_store
+    since = as_of - timedelta(days=s.window_days + s.baseline_days)
+    attribution: list[dict] = []
+    baseline_mode = "area"
     if orbat_store.has_data():
-        pts = pg.fetch_target_points(area_id, as_of - timedelta(days=s.window_days), as_of)
-        attribution = orbat_store.attribute_targets(pts)
-        evidence = annotate_with_units(evidence, attribution)
+        pts = pg.fetch_target_points(area_id, since, as_of)
+        unit_of = orbat_store.identify_events(pts)
+        rows = [TargetRow(p["id"], p["equipment_type"], p["observed_at"], p["count"]) for p in pts]
+        changes = detect_unit_changes(rows, unit_of, as_of, s.window_days, s.baseline_days)
+        recent = [p for p in pts if p["observed_at"] > as_of - timedelta(days=s.window_days)]
+        attribution = orbat_store.attribute_targets(recent)
+        baseline_mode = "unit"
+    else:
+        rows = pg.fetch_target_rows(area_id, since, as_of)
+        changes = detect_changes(rows, as_of, s.window_days, s.baseline_days)
+    evidence = match_imagery(changes, catalog, grading)
 
     # 2) 텍스트 첩보 → LLM 분류(인용문 원문 대조 검증)
     rejected_hits = 0
@@ -93,7 +99,8 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
                           "dropped_samples": dropped[:3]})
 
     payload = {
-        "changes": [asdict(c) for c in changes],
+        "baseline_mode": baseline_mode,
+        "changes": [{**asdict(c), "ratio": c.ratio} for c in changes],
         "unit_attribution": attribution,
         "evidence": [asdict(e) for e in evidence],
         "hypotheses": [asdict(h) for h in result.hypotheses],

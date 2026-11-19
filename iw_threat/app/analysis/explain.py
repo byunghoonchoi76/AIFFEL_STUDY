@@ -105,7 +105,7 @@ def _compact(ev_text: str) -> str:
     """근거 문구를 짧은 사실로: '영상: 전차 13→40대' / 'OSINT(C3): “…”'."""
     m = _IMINT_RE.search(ev_text)
     if m:
-        u = re.search(r"\[식별 부대: ([^\]]+)\]", ev_text)
+        u = re.search(r"\[식별 부대: ([^\]]+)\]", ev_text)   # 부대명·거리·평시 대비 배수
         return f"영상: {m.group(1)} {m.group(2)}→{m.group(3)}대" + (f" ({u.group(1)})" if u else "")
     g = re.match(r"\[(\w+) (\w)(\d)\]\s*(.*)", ev_text)
     if g:

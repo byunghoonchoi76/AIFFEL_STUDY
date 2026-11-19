@@ -25,6 +25,15 @@ def _fmt(n: float) -> str:
     return f"{n:g}"
 
 
+def _imagery_quote(ch: Change) -> str:
+    q = (f"영상 판독 {equip_ko(ch.equipment_type)} 기준기간 평균 {_fmt(ch.baseline_level)}대 → "
+         f"최근 {ch.recent_level}대 (+{_fmt(ch.delta)}대)")
+    if ch.unit_key:
+        base = "평시 대비 " + (f"{ch.ratio}배" if ch.ratio else "신규 출현")
+        q += f" [식별 부대: {ch.unit_name}({ch.echelon or '제대 미상'}) {ch.dist_km}km, {base}]"
+    return q
+
+
 def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
                   source_key: str = "IMINT:default") -> list[Evidence]:
     """규칙 매칭: 장비 분류가 지표에 속하고 증가량이 임계값 이상이면 충족."""
@@ -39,8 +48,7 @@ def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
                     indicator_id=ind.id, source_type="IMINT", source_key=source_key,
                     reliability=rel, credibility=cred, observed_at=ch.latest_at,
                     ref=f"targets:{ch.equipment_type}:{','.join(map(str, ch.refs))}",
-                    quote=(f"영상 판독 {equip_ko(ch.equipment_type)} 기준기간 평균 {_fmt(ch.baseline_level)}대 → "
-                           f"최근 {ch.recent_level}대 (+{_fmt(ch.delta)}대)"),
+                    quote=_imagery_quote(ch),
                 ))
     return out
 
@@ -98,22 +106,3 @@ def classification_prompt(chunk: ReportChunk, catalog: Catalog) -> tuple[str, st
     )
     user = f"첩보 원문:\n\"\"\"\n{chunk.text}\n\"\"\"\n\nJSON으로 답하라: {{\"hits\": [{{\"indicator_id\": str, \"quote\": str}}]}}"
     return system, user
-
-
-def annotate_with_units(evidence: list[Evidence], attribution: list[dict]) -> list[Evidence]:
-    """영상 근거 문구에 식별 부대를 덧붙임: '... (+27대) [식별 부대: 제9002가상전차여단(여단) 1.2km]'."""
-    from dataclasses import replace
-
-    by_eq: dict[str, list[dict]] = {}
-    for a in attribution:
-        if a["unit_key"]:
-            by_eq.setdefault(a["equipment"], []).append(a)
-    out = []
-    for e in evidence:
-        eq = e.ref.split(":")[1] if e.source_type == "IMINT" and e.ref.startswith("targets:") else None
-        units = sorted(by_eq.get(eq, []), key=lambda a: -a["max_count"])[:2] if eq else []
-        if units and e.quote:
-            tag = ", ".join(f"{u['unit_name']}({u['echelon'] or '제대 미상'}) {u['dist_km']}km" for u in units)
-            e = replace(e, quote=f"{e.quote} [식별 부대: {tag}]")
-        out.append(e)
-    return out

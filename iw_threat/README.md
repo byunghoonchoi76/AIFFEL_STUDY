@@ -85,7 +85,10 @@ python scripts/orbat_benchmark.py --units 80 --seed 1 --scan   # 스캔 PDF(OCR 
    - PostGIS: `orbat_units`(부대·제대·상급) / `orbat_aliases`(표기 변형) / `orbat_garrisons`(주둔지 좌표·반경) / `orbat_equipment`
    - Neo4j: `(:Unit)-[:예하]->(:Unit)`
 3. 조회: `GET /orbat/units`, `GET /orbat/identify?lat=38.02&lon=127.03&equipment=tank`
-4. 평가 시 자동 반영: 최근 7일 표적 좌표 → 반경 안 주둔지 부대 식별 → 근거 문구에 `[식별 부대: …]` 표기, 결과 `unit_attribution`
+4. 평가 시 자동 반영 (**부대별 평시 기준선**): 기준기간+최근 표적을 모두 부대별로 나눠 부대마다 최근 최대 vs 평시 평균을 비교
+   → 근거 문구 `[식별 부대: 제○여단(여단) 0.3km, 평시 대비 3.1배]`, 결과 `baseline_mode: unit`, `changes[].unit_name·ratio`, `unit_attribution`
+   - 지역 평균에서는 서로 다른 부대 수량이 섞여 증가가 가려질 수 있음 → 부대 단위로 분리해 비교
+   - 전투서열 DB가 없으면 지역 단위 비교(`baseline_mode: area`)
 
 식별 규칙 (`app/orbat/identify.py`)
 - 제대별 활동 반경: 군단 20km · 사단 10km · 여단 5km · 연대 3km · 대대 1.5km (+좌표 정밀도)

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from app.analysis.catalog import load_catalog, load_grading
-from app.analysis.change import TargetRow, detect_changes
+from app.analysis.change import TargetRow, detect_changes, detect_unit_changes
 from app.analysis.explain import (build_evidence_map, indicator_lines, template_summary, verify_implications,
                                   verify_summary)
 from app.analysis.matching import ReportChunk, hits_to_evidence, match_imagery, quote_in_text
@@ -158,3 +158,23 @@ def test_summary_verification_blocks_changed_probability():
     assert verify_summary(vague, r, m, []) is None                                              # 징후를 구체적으로 안 밝힘
     t = template_summary(r)
     assert f"{r.top.probability:.0%}" in t["text"] and t["generated"] == "template"
+
+
+def test_unit_baseline_reveals_surge_hidden_in_area_average():
+    """A부대(평시 30대 유지)와 B부대(평시 5대 → 20대)가 섞이면 지역 평균은 왜곡되지만 부대별로는 B의 4배 증가가 드러남."""
+    rows, unit_of, i = [], {}, 0
+    for d in (25, 20, 15, 10):
+        for uk, n in (("A", 30), ("B", 5)):
+            i += 1; rows.append(TargetRow(i, "tank", NOW - timedelta(days=d), n))
+            unit_of[i] = {"unit_key": uk, "name": f"제{uk}가상부대", "echelon": "여단", "dist_m": 500}
+    for uk, n in (("A", 30), ("B", 20)):
+        i += 1; rows.append(TargetRow(i, "tank", NOW - timedelta(days=1), n))
+        unit_of[i] = {"unit_key": uk, "name": f"제{uk}가상부대", "echelon": "여단", "dist_m": 500}
+    area = detect_changes(rows, NOW)[0]
+    assert area.baseline_level == 17.5 and area.recent_level == 30          # 서로 다른 부대가 섞인 값
+    units = {c.unit_key: c for c in detect_unit_changes(rows, unit_of, NOW)}
+    assert units["B"].delta == 15 and units["B"].ratio == 4.0 and units["A"].delta == 0
+    ids = {e.indicator_id for e in match_imagery([units["B"]], CAT, GR)}
+    assert ids == {"I_ARMOR_MASS"}
+    q = match_imagery([units["B"]], CAT, GR)[0].quote
+    assert "[식별 부대: 제B가상부대(여단) 0.5km, 평시 대비 4.0배]" in q

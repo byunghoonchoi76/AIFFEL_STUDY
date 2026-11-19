@@ -69,7 +69,7 @@ def fetch_target_points(area_id: str, since: datetime, until: datetime) -> list[
     with conn() as c:
         return c.execute(
             """SELECT id, equipment_type, observed_at, count, ST_Y(geom) AS lat, ST_X(geom) AS lon
-               FROM target_events WHERE area_id=%s AND observed_at > %s AND observed_at <= %s AND geom IS NOT NULL
+               FROM target_events WHERE area_id=%s AND observed_at > %s AND observed_at <= %s
                ORDER BY observed_at""", (area_id, since, until)).fetchall()
 
 
