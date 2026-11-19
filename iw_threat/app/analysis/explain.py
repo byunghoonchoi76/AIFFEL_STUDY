@@ -48,7 +48,8 @@ def explanation_prompt(result: AssessmentResult, ev_map: dict[str, list[dict]], 
         "너는 군 정보 분석 보고서 초안 작성 보조자다. 반드시 한국어로 쓴다.\n"
         "규칙:\n"
         "1. 계산된 등급·확률을 바꾸거나 새로 판단하지 않는다. 근거에 없는 사실은 쓰지 않는다.\n"
-        "2. implications: 지표마다 그 징후가 군사적으로 뜻하는 바를 30자 이내 구절로 쓴다. 숫자는 쓰지 않는다.\n"
+        "2. implications: 지표마다 그 징후가 군사적으로 뜻하는 바(적의 의도·준비 단계)를 30자 이내 구절로 쓴다. "
+        "지표 이름을 그대로 되풀이하지 않는다. 숫자는 쓰지 않는다.\n"
         "   예) '의무지원 준비 정황', '하천 도하 공격 대비 가능성', '공격 제대 화력 보강 정황'\n"
         "3. summary: 전체 종합 판단 1문장. 출처 유형 수(주어진 값 그대로), 핵심 징후 2~3개를 장비·사실로 구체적으로, "
         "가설과 확률(주어진 값 그대로)을 담고 citations에 핵심 징후의 근거 ID(E숫자)를 넣는다.\n"
@@ -112,8 +113,21 @@ def _compact(ev_text: str) -> str:
     return ev_text
 
 
-def verify_implications(items: list[dict] | None, ev_map: dict[str, list[dict]]) -> tuple[dict[str, str], list[dict]]:
-    """지표별 의미 구절 검증: 알려진 지표, 30자 내외, 숫자·내부 용어 없음 (사실은 정형 문장이 담당)."""
+def _is_echo(text: str, name: str) -> bool:
+    """해석이 지표 이름을 되풀이했는지(공백·기호 무시, 지표 이름 단어가 대부분 겹치면 되풀이로 봄)."""
+    norm = lambda x: re.sub(r"[\s·,.\-]", "", x)  # noqa: E731
+    if not name:
+        return False
+    a, b = norm(text), norm(name)
+    if a == b or a in b or b in a:
+        return True
+    tn, tt = _content_tokens(name), _content_tokens(text)
+    return bool(tn) and len(tt - tn) == 0
+
+
+def verify_implications(items: list[dict] | None, ev_map: dict[str, list[dict]],
+                        names: dict[str, str] | None = None) -> tuple[dict[str, str], list[dict]]:
+    """지표별 의미 구절 검증: 알려진 지표, 30자 내외, 숫자·내부 용어 없음, 지표 이름 되풀이 아님."""
     ok, dropped = {}, []
     for it in items or []:
         iid = str(it.get("indicator_id") or "").strip()
@@ -127,6 +141,8 @@ def verify_implications(items: list[dict] | None, ev_map: dict[str, list[dict]])
             reason = "숫자 포함(사실은 정형 문장에서만)"
         elif any(j in text for j in _JARGON):
             reason = "내부 용어 사용"
+        elif _is_echo(text, (names or {}).get(iid, "")):
+            reason = "지표 이름 되풀이"
         if reason:
             dropped.append({**it, "_reason": reason})
         elif iid not in ok:
@@ -134,8 +150,10 @@ def verify_implications(items: list[dict] | None, ev_map: dict[str, list[dict]])
     return ok, dropped
 
 
-def indicator_lines(result: AssessmentResult, ev_map: dict[str, list[dict]], implications: dict[str, str]) -> list[dict]:
-    """지표별 해설: 사실은 코드가 근거에서 정형으로(수치 변조 불가), 의미는 검증된 LLM 구절로."""
+def indicator_lines(result: AssessmentResult, ev_map: dict[str, list[dict]], implications: dict[str, str],
+                    meanings: dict[str, str] | None = None) -> list[dict]:
+    """지표별 해설: 사실은 코드가 근거에서 정형으로(수치 변조 불가),
+    의미는 검증된 LLM 구절 → 없으면 위협징후목록의 meaning(분석관 관리) 순으로 사용."""
     out = []
     for c in result.top.contributions:
         ev = ev_map.get(c.indicator_id, [])
@@ -143,10 +161,13 @@ def indicator_lines(result: AssessmentResult, ev_map: dict[str, list[dict]], imp
             continue
         facts = "; ".join(_compact(d["text"]) for d in ev)
         meaning = implications.get(c.indicator_id)
+        source = "template+llm" if meaning else "template"
+        if not meaning and meanings and meanings.get(c.indicator_id):
+            meaning = meanings[c.indicator_id]
         out.append({
             "indicator_id": c.indicator_id,
             "text": f"{c.name} 징후 {_strength_word(c.strength)} 식별됨 — {facts}" + (f" → {meaning}" if meaning else ""),
-            "citations": [d["ref"] for d in ev], "generated": "template+llm" if meaning else "template",
+            "citations": [d["ref"] for d in ev], "generated": source,
         })
     return out
 

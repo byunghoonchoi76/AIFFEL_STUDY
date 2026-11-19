@@ -98,6 +98,12 @@ def test_implications_verified_and_lines_keep_exact_facts():
          {"indicator_id": "I_BRIDGING", "text": "도하장비 10대로 증가"},          # 숫자 → 제거(사실은 정형 문장 담당)
          {"indicator_id": "I_UNKNOWN", "text": "모르는 지표"}], m)
     assert ok == {"I_MEDICAL": "의무지원 준비 정황"} and len(dropped) == 2
+    names = {"I_BRIDGING": "도하·공병 장비 전방 이동"}
+    ok2, dr2 = verify_implications([{"indicator_id": "I_BRIDGING", "text": "도하·공병 장비 전방 이동"}], m, names)
+    assert not ok2 and dr2[0]["_reason"] == "지표 이름 되풀이"
+    meanings = {i: d.meaning for i, d in CAT.indicator_defs().items()}
+    fb = {x["indicator_id"]: x for x in indicator_lines(r, m, {}, meanings)}
+    assert fb["I_BRIDGING"]["text"].endswith("→ 하천 도하 공격 대비 정황") and fb["I_BRIDGING"]["generated"] == "template"
     lines = {x["indicator_id"]: x for x in indicator_lines(r, m, ok)}
     med = lines["I_MEDICAL"]
     assert "영상: 야전병원 0→2대" in med["text"] and "OSINT(C3)" in med["text"] and med["text"].endswith("→ 의무지원 준비 정황")

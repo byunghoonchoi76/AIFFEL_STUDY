@@ -15,6 +15,7 @@ class Indicator:
     tau_days: float
     equipment: tuple[str, ...] = ()
     min_delta: int = 0
+    meaning: str = ""
 
 
 @dataclass(frozen=True)
@@ -75,6 +76,7 @@ def load_catalog(path: str | Path) -> Catalog:
             Indicator(
                 id=i["id"], name=i["name"], lr=float(i["lr"]), tau_days=float(i["tau_days"]),
                 equipment=tuple(i.get("equipment", [])), min_delta=int(i.get("min_delta", 0)),
+                meaning=str(i.get("meaning", "")),
             )
             for i in h["indicators"]
         )

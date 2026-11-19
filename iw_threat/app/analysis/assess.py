@@ -74,11 +74,12 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
         implications, dropped = {}, []
         try:
             out = llm.chat_json(system, user, max_tokens=2048, reasoning_effort=s.explain_reasoning_effort)
-            implications, dropped = verify_implications(out.get("implications"), ev_map)
+            names = {c.indicator_id: c.name for c in result.top.contributions}
+            implications, dropped = verify_implications(out.get("implications"), ev_map, names)
             narrative["summary"] = verify_summary(out.get("summary"), result, ev_map, doctrine) or narrative["summary"]
         except Exception as e:  # noqa: BLE001
             narrative["error"] = str(e)
-        lines = indicator_lines(result, ev_map, implications)
+        lines = indicator_lines(result, ev_map, implications, {i: d.meaning for i, d in catalog.indicator_defs().items()})
         narrative.update({"sentences": lines, "dropped": len(dropped),
                           "template_filled": sum(1 for x in lines if x["generated"] == "template"),
                           "dropped_samples": dropped[:3]})
