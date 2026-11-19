@@ -1,0 +1,82 @@
+"""영상 판독 표적 이력 기반 변화 분석 (순수 함수)."""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from statistics import mean
+
+
+@dataclass(frozen=True)
+class TargetRow:
+    id: int
+    equipment_type: str
+    observed_at: datetime
+    count: int
+    source_id: int | None = None
+
+
+@dataclass
+class Change:
+    equipment_type: str
+    baseline_level: float
+    recent_level: int
+    delta: float
+    latest_at: datetime
+    refs: list[int]
+    unit_key: str | None = None        # 부대별 기준선일 때 식별 부대 (None = 미식별·지역 단위)
+    unit_name: str | None = None
+    echelon: str | None = None
+    dist_km: float | None = None
+    baseline_obs: int = 0              # 기준기간 관측 횟수 (0이면 평시 자료 없음)
+
+    @property
+    def ratio(self) -> float | None:
+        """평시 대비 배수 (평시 평균이 0이면 None)."""
+        return round(self.recent_level / self.baseline_level, 1) if self.baseline_level > 0 else None
+
+
+def detect_changes(rows: list[TargetRow], as_of: datetime, window_days: int = 7, baseline_days: int = 30) -> list[Change]:
+    """최근 창(as_of-window, as_of]의 최대 수량과 그 이전 기준기간 평균 수량을 비교."""
+    w_start = as_of - timedelta(days=window_days)
+    b_start = w_start - timedelta(days=baseline_days)
+    by_eq: dict[str, list[TargetRow]] = {}
+    for r in rows:
+        by_eq.setdefault(r.equipment_type, []).append(r)
+
+    out: list[Change] = []
+    for eq, rs in by_eq.items():
+        recent = [r for r in rs if w_start < r.observed_at <= as_of]
+        if not recent:
+            continue
+        base = [r.count for r in rs if b_start < r.observed_at <= w_start]
+        baseline = mean(base) if base else 0.0
+        peak = max(recent, key=lambda r: r.count)
+        out.append(Change(
+            equipment_type=eq, baseline_level=round(baseline, 2), recent_level=peak.count,
+            delta=round(peak.count - baseline, 2),
+            latest_at=max(r.observed_at for r in recent),
+            refs=[r.id for r in recent], baseline_obs=len(base),
+        ))
+    out.sort(key=lambda c: c.delta, reverse=True)
+    return out
+
+
+def detect_unit_changes(rows: list[TargetRow], unit_of: dict[int, dict | None], as_of: datetime,
+                        window_days: int = 7, baseline_days: int = 30) -> list[Change]:
+    """부대별 평시 기준선: 표적 이벤트를 식별 부대별로 나눠, 부대마다 최근 vs 평시를 비교.
+    unit_of: 이벤트 id → 식별 결과({unit_key, name, echelon, dist_m}) 또는 None(미식별)."""
+    groups: dict[str | None, list[TargetRow]] = {}
+    for r in rows:
+        u = unit_of.get(r.id)
+        groups.setdefault(u["unit_key"] if u else None, []).append(r)
+    out: list[Change] = []
+    for key, rs in groups.items():
+        info = next((unit_of[r.id] for r in rs if unit_of.get(r.id)), None)
+        for ch in detect_changes(rs, as_of, window_days, baseline_days):
+            if info:
+                ch.unit_key, ch.unit_name, ch.echelon = key, info["name"], info.get("echelon")
+                dists = [unit_of[i]["dist_m"] for i in ch.refs if unit_of.get(i)]
+                ch.dist_km = round(min(dists) / 1000, 2) if dists else None
+            out.append(ch)
+    out.sort(key=lambda c: c.delta, reverse=True)
+    return out

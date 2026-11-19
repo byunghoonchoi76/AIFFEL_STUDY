@@ -1,0 +1,31 @@
+# 합성 시나리오: 침투·국지도발 (진돗개 트랙 시험) — 가상 부대·가상 지역
+id: infiltration
+name: 침투 도발
+area_id: SIM-INF
+truth:
+  intent: 해상·지상 침투
+  hypothesis: 침투·국지도발 준비
+  d_day: "D일 = 침투 개시"
+  # 정답 태세 일정 [시작일, 단계] — 분석관 작성 예시
+  readiness: {watchcon: [[-30, 3]], jindogae: [[-30, 3], [-4, 2], [-1, 1]], durumi: [[-30, 3]]}
+period: {start: -60, end: 0}
+assess: {start: -30, end: 0}
+
+noise: {p_observe: 0.85, cloud_days: [-29, -13], count_rel_sd: 0.10, p_miss: 0.08, false_positive_rate: 0.03, position_sd_m: 150}
+
+units:
+  - {name: 제9601가상경보병여단, parent: null, garrison: [37.750, 126.650], location_type: 주둔지, equipment: {sof_vehicle: 3}}
+  - {name: 제9602가상잠수함전대, parent: null, garrison: [37.720, 126.600], location_type: 기지, equipment: {submarine: 4, hovercraft: 6}}
+
+activities:
+  - {unit: 제9601가상경보병여단, equipment: sof_vehicle, from: -8, to: -3, to_count: 12, move_km: [-2.0, -1.0]}
+  - {unit: 제9602가상잠수함전대, equipment: submarine, from: -5, to: -2, to_count: 1, move_km: [0, 0]}     # 기지 이탈 → 남은 수 감소
+  - {unit: 제9602가상잠수함전대, equipment: hovercraft, from: -6, to: -3, to_count: 14, move_km: [-0.8, -0.3]}
+
+reports:
+  - {day: -6, source: HUMINT, name: 협조자 E, reliability: C, credibility: 3, truth: true,
+     text: "협조자는 경보병 부대원들이 민간 복장을 지급받고 해안 쪽으로 이동했다는 소문을 전했다."}
+  - {day: -3, source: SIGINT, name: 통신 관측, reliability: B, credibility: 2, truth: true,
+     text: "잠수함정 기지 주변 통신이 끊긴 뒤 소형 함정들이 야간에 기지를 이탈한 정황이 관측되었다."}
+  - {day: -1, source: HUMINT, name: 해안 감시 보고, reliability: B, credibility: 2, truth: true,
+     text: "해안 경계 초소는 새벽에 해안가 모래밭에서 침투 흔적으로 보이는 발자국과 거동 수상자를 발견했다고 보고했다."}

@@ -1,0 +1,41 @@
+# 합성 시나리오: 정보 공백 — 실제 공격 준비이지만 기상 악화로 영상 관측이 적고 첩보도 거의 없음
+id: info_gap
+name: 정보 공백(공격 준비)
+area_id: SIM-GAP
+truth:
+  intent: 공격
+  hypothesis: 공격 준비
+  d_day: "D일 = 공격 개시"
+  # 정답 태세 일정 [시작일, 단계] — 분석관(정보병과 예비역) 작성 예시
+  readiness: {watchcon: [[-30, 3], [-7, 2], [-3, 1]], jindogae: [[-30, 3]], durumi: [[-30, 3]]}
+period: {start: -60, end: 0}
+assess: {start: -30, end: 0}
+
+noise:
+  p_observe: 0.55            # 장마·운용 제약으로 관측 기회 감소
+  cloud_days: [-25, -24, -18, -17, -11, -10, -4, -3]
+  count_rel_sd: 0.15
+  p_miss: 0.15
+  false_positive_rate: 0.03
+  position_sd_m: 200
+
+units:
+  - {name: 제9501가상보병사단, parent: null, garrison: [38.450, 127.900], location_type: 사령부, equipment: {command_vehicle: 2}}
+  - {name: 제9502가상전차여단, parent: 제9501가상보병사단, garrison: [38.420, 127.940], location_type: 주둔지, equipment: {tank: 12, apc: 8}}
+  - {name: 제9503가상포병연대, parent: 제9501가상보병사단, garrison: [38.405, 127.870], location_type: 주둔지, equipment: {artillery: 6}}
+  - {name: 제9504가상공병대대, parent: 제9501가상보병사단, garrison: [38.430, 127.850], location_type: 주둔지, equipment: {}}
+  - {name: 제9505가상수송대대, parent: 제9501가상보병사단, garrison: [38.400, 127.920], location_type: 주둔지, equipment: {truck: 25, fuel_truck: 4}}
+  - {name: 제9506가상의무대대, parent: 제9501가상보병사단, garrison: [38.440, 127.890], location_type: 주둔지, equipment: {}}
+
+activities:   # 공격 준비 시나리오와 같은 활동
+  - {unit: 제9502가상전차여단, equipment: tank, from: -20, to: -5, to_count: 40, move_km: [2.5, 1.5]}
+  - {unit: 제9502가상전차여단, equipment: apc, from: -18, to: -5, to_count: 24, move_km: [2.5, 1.5]}
+  - {unit: 제9503가상포병연대, equipment: artillery, from: -10, to: -3, to_count: 16, move_km: [1.2, 0.5]}
+  - {unit: 제9504가상공병대대, equipment: bridging, from: -7, to: -3, to_count: 4, move_km: [0.6, 0.4]}
+  - {unit: 제9505가상수송대대, equipment: truck, from: -15, to: -2, to_count: 70, move_km: [0.5, 0.5]}
+  - {unit: 제9506가상의무대대, equipment: field_hospital, from: -5, to: -2, to_count: 2, move_km: [0.3, 0.2]}
+  - {unit: 제9501가상보병사단, equipment: command_vehicle, from: -6, to: -2, to_count: 6, move_km: [1.5, 0.5]}
+
+reports:
+  - {day: -2, source: OSINT, name: 현지 주민 증언, reliability: D, credibility: 4, truth: true,
+     text: "주민 한 명은 밤사이 트럭 소리가 잦았던 것 같다고 말했다."}

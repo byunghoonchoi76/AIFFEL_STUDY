@@ -1,0 +1,51 @@
+# 경보·감시태세 건의 기준 — ※ 예시 기준. 단계 구분·발령 기준은 실제 기준(정보사·합참·작전사)으로 교체
+# 시스템은 '건의'만 하며 발령은 지휘관·해당 기관 권한
+basis: "예시 기준 (실제 발령 기준 아님)"
+
+tracks:
+  - id: watchcon
+    name: 워치콘
+    scope: 대북 정보감시태세 (전반적 위협)
+    hypotheses: all                  # 모든 위협 가설 중 최고 위협 점수 사용
+    baseline: 3
+    level_names: {3: 워치콘 3, 2: 워치콘 2, 1: 워치콘 1}
+    levels:                          # 숫자가 작을수록 높은 태세, 위협 점수 = 가설 확률 × 영향도
+      - {level: 1, label: 위협 임박, min_threat: 0.75, min_confidence: 중}
+      - {level: 2, label: 위협 증가, min_threat: 0.50, min_confidence: 하}
+      - {level: 3, label: 평시 감시, min_threat: 0.0}
+    downgrade_hold_days: 4           # 하향은 낮은 조건이 이 기간 지속될 때만 (관측 공백에 의한 흔들림 방지)
+    decisive:                        # 결정적 징후 조합: 모두 식별되면 확률과 무관하게 해당 단계 이상
+      - {indicators: [I_BRIDGING, I_MEDICAL], min_level: 2, note: 도하장비·야전 의무시설 동시 전개}
+      - {indicators: [I_BRIDGING, I_ARTY_POS, I_COMMAND_POST], min_level: 1, note: 도하·포병 진지·전방 지휘소 동시 전개}
+    defcon_review: {at_level: 1, min_confidence: 상}   # 데프콘은 건의하지 않고 '검토 필요' 신호만
+
+  - id: jindogae
+    name: 진돗개
+    scope: 대침투·국지도발 경계태세
+    hypotheses: [H_INFILTRATION]
+    baseline: 3
+    level_names: {3: 진돗개 셋, 2: 진돗개 둘, 1: 진돗개 하나}
+    levels:
+      - {level: 1, label: 침투 확실·발생, min_threat: 0.45, min_confidence: 중}
+      - {level: 2, label: 침투 징후, min_threat: 0.25, min_confidence: 하}
+      - {level: 3, label: 평시 경계, min_threat: 0.0}
+    downgrade_hold_days: 3
+    decisive:
+      - {indicators: [I_SUB_SORTIE, I_SOF_FORWARD], min_level: 2, note: 잠수함정 기지 이탈·특수작전부대 전방 이동 동시 식별}
+      - {indicators: [I_INFIL_SIGN], min_level: 1, note: 침투 흔적·거동 수상자 식별}
+
+  - id: durumi
+    name: 두루미
+    scope: 적 항공기 위협 경계태세
+    hypotheses: [H_AIR]
+    baseline: 3
+    level_names: {3: 두루미 미발령, 2: 두루미 경계(예시), 1: 두루미 발령(예시)}
+    levels:
+      - {level: 1, label: 항공 위협 임박, min_threat: 0.40, min_confidence: 중}
+      - {level: 2, label: 항공 활동 증가, min_threat: 0.20, min_confidence: 하}
+      - {level: 3, label: 평시, min_threat: 0.0}
+    downgrade_hold_days: 2
+    decisive:
+      - {indicators: [I_AIR_FORWARD, I_AIR_SORTIE], min_level: 1, note: 전투기 전방 전개·비행 활동 급증 동시 식별}
+
+low_confidence_action: 정보 수집 강화   # 상위 단계 점수는 넘었으나 분석 신뢰도 부족 시 건의

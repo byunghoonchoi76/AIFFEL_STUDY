@@ -1,0 +1,172 @@
+"""합성 시나리오 정의 로딩 + 데이터 생성 (영상 표적·첩보 문서·전투서열).
+생성기는 위협징후목록(지표·우도비·임계값)을 참조하지 않는다 — 평가 순환 방지."""
+from __future__ import annotations
+
+import math
+import random
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+from pathlib import Path
+
+import yaml
+
+KM_PER_DEG_LAT = 111.32
+
+
+@dataclass
+class Unit:
+    name: str
+    parent: str | None
+    garrison: tuple[float, float]
+    location_type: str
+    equipment: dict[str, int]
+
+
+@dataclass
+class Activity:
+    unit: str
+    equipment: str
+    start: int
+    end: int
+    to_count: int
+    move_km: tuple[float, float] = (0.0, 0.0)
+
+
+@dataclass
+class Report:
+    day: int
+    source: str
+    name: str
+    reliability: str
+    credibility: int
+    truth: bool
+    text: str
+
+
+@dataclass
+class Scenario:
+    id: str
+    name: str
+    area_id: str
+    truth: dict
+    period: tuple[int, int]
+    assess: tuple[int, int]
+    noise: dict
+    units: list[Unit]
+    activities: list[Activity]
+    reports: list[Report] = field(default_factory=list)
+
+
+def load_scenario(path: str | Path) -> Scenario:
+    raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+    return Scenario(
+        id=raw["id"], name=raw["name"], area_id=raw["area_id"], truth=raw["truth"],
+        period=(raw["period"]["start"], raw["period"]["end"]),
+        assess=(raw["assess"]["start"], raw["assess"]["end"]),
+        noise=raw.get("noise", {}),
+        units=[Unit(u["name"], u.get("parent"), tuple(u["garrison"]), u.get("location_type", "주둔지"),
+                    dict(u.get("equipment") or {})) for u in raw["units"]],
+        activities=[Activity(a["unit"], a["equipment"], a["from"], a["to"], a["to_count"],
+                             tuple(a.get("move_km", (0, 0)))) for a in raw.get("activities", [])],
+        reports=[Report(r["day"], r["source"], r["name"], r["reliability"], int(r["credibility"]),
+                        bool(r.get("truth", True)), r["text"]) for r in raw.get("reports", [])],
+    )
+
+
+# ── 활동 → 날짜별 '실제' 상태 ──
+def _progress(day: int, a: Activity) -> float:
+    if day <= a.start:
+        return 0.0
+    if day >= a.end:
+        return 1.0
+    return (day - a.start) / max(a.end - a.start, 1)
+
+
+def true_state(sc: Scenario, day: int) -> list[dict]:
+    """해당 일의 부대별 장비 실제 수량·위치 (관측 잡음 전)."""
+    out = []
+    for u in sc.units:
+        eqs = set(u.equipment) | {a.equipment for a in sc.activities if a.unit == u.name}
+        for eq in sorted(eqs):
+            base = u.equipment.get(eq, 0)
+            count, dn, de = float(base), 0.0, 0.0
+            for a in (x for x in sc.activities if x.unit == u.name and x.equipment == eq):
+                p = _progress(day, a)
+                count = base + (a.to_count - base) * p
+                dn, de = a.move_km[0] * p, a.move_km[1] * p
+            if count <= 0:
+                continue
+            lat = u.garrison[0] + dn / KM_PER_DEG_LAT
+            lon = u.garrison[1] + de / (KM_PER_DEG_LAT * math.cos(math.radians(u.garrison[0])))
+            out.append({"unit": u.name, "equipment": eq, "count": count, "lat": lat, "lon": lon})
+    return out
+
+
+# ── 관측 모델(잡음) ──
+def _jitter(lat: float, lon: float, sd_m: float, rnd: random.Random) -> tuple[float, float]:
+    dn, de = rnd.gauss(0, sd_m) / 1000, rnd.gauss(0, sd_m) / 1000
+    return (lat + dn / KM_PER_DEG_LAT, lon + de / (KM_PER_DEG_LAT * math.cos(math.radians(lat))))
+
+
+FP_EQUIPMENT = ["truck", "tank", "artillery", "apc"]
+
+
+def generate_targets(sc: Scenario, d_day: datetime, seed: int = 7) -> list[dict]:
+    """영상 판독 표적 이벤트 (관측 누락·구름·수량 오차·좌표 오차·오탐 포함)."""
+    rnd = random.Random(seed)
+    nz = sc.noise
+    out = []
+    for day in range(sc.period[0], sc.period[1] + 1):
+        if day in set(nz.get("cloud_days", [])) or rnd.random() > nz.get("p_observe", 1.0):
+            continue
+        t = (d_day + timedelta(days=day)).replace(hour=10, minute=0, second=0, microsecond=0)
+        for s in true_state(sc, day):
+            if rnd.random() < nz.get("p_miss", 0.0):
+                continue
+            n = max(0, round(s["count"] * (1 + rnd.gauss(0, nz.get("count_rel_sd", 0.0)))))
+            if n == 0:
+                continue
+            lat, lon = _jitter(s["lat"], s["lon"], nz.get("position_sd_m", 0), rnd)
+            out.append(_event(sc, t, s["equipment"], n, lat, lon, day, s["unit"]))
+        for u in sc.units:
+            if rnd.random() < nz.get("false_positive_rate", 0.0):
+                lat, lon = _jitter(*u.garrison, 400, rnd)
+                out.append(_event(sc, t, rnd.choice(FP_EQUIPMENT), rnd.randint(1, 3), lat, lon, day, u.name, fp=True))
+    return out
+
+
+def _event(sc: Scenario, t: datetime, eq: str, n: int, lat: float, lon: float, day: int,
+           unit: str, fp: bool = False) -> dict:
+    """truth_unit·false_positive는 평가용 정답 (API는 무시)."""
+    return {"area_id": sc.area_id, "observed_at": t.isoformat(), "equipment_type": eq, "count": n,
+            "lat": round(lat, 6), "lon": round(lon, 6), "image_ref": f"SIM-{sc.id}-D{day:+d}",
+            "truth_unit": unit, "false_positive": fp, "day": day}
+
+
+def report_documents(sc: Scenario, d_day: datetime) -> list[dict]:
+    out = []
+    for i, r in enumerate(sorted(sc.reports, key=lambda x: x.day), 1):
+        t = (d_day + timedelta(days=r.day)).replace(hour=15, minute=0, second=0, microsecond=0)
+        out.append({"filename": f"{sc.id}_report{i:02d}_D{r.day:+d}.txt", "text": r.text, "title": f"{r.name} 보고 (D{r.day:+d})",
+                    "source_name": r.name, "source_type": r.source, "reliability": r.reliability,
+                    "credibility": r.credibility, "reported_at": t.isoformat(), "truth": r.truth, "day": r.day})
+    return out
+
+
+def orbat_rows(sc: Scenario) -> list[dict]:
+    """전투서열 records.csv 형식 행 (파서 산출물과 동일 구조)."""
+    import mgrs as _mgrs
+
+    from app.orbat.patterns import echelon_of, unit_key
+
+    conv = _mgrs.MGRS()
+    rows = []
+    for u in sc.units:
+        m = conv.toMGRS(u.garrison[0], u.garrison[1], MGRSPrecision=5)
+        rows.append({"doc": f"sim_{sc.id}", "page": "1", "source": "table", "unit_raw": u.name, "unit_key": unit_key(u.name),
+                     "echelon": echelon_of(u.name) or "", "echelon_from": "name",
+                     "parent_raw": u.parent or "", "parent_key": unit_key(u.parent) if u.parent else "",
+                     "mgrs": m, "lat": u.garrison[0], "lon": u.garrison[1], "mgrs_precision_m": "1",
+                     "location_type": u.location_type, "equipment": "", "count": "", "as_of": "", "remark": "",
+                     "quote": "합성 시나리오", "bbox": "", "images": "", "issues": ""})
+    return rows

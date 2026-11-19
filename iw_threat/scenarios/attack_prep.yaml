@@ -1,0 +1,55 @@
+# 합성 시나리오: 공격 준비 (가상 부대·가상 지역 — 실제 부대와 무관)
+# 작성 원칙: 위협징후목록·우도비를 보지 않고 '부대 활동'과 '관측된 사실'만 기술 (평가 순환 방지)
+id: attack_prep
+name: 공격 준비
+area_id: SIM-ATK
+truth:
+  intent: 공격
+  hypothesis: 공격 준비
+  d_day: "D일 = 공격 개시"
+  # 정답 태세 일정 [시작일, 단계] — 분석관(정보병과 예비역) 작성 예시
+  readiness: {watchcon: [[-30, 3], [-7, 2], [-3, 1]], jindogae: [[-30, 3]], durumi: [[-30, 3]]}
+period: {start: -60, end: 0}           # 데이터 생성 기간 (D-60 ~ D일)
+assess: {start: -30, end: 0}           # 날짜별 평가 기간
+
+noise:
+  p_observe: 0.85          # 위성 관측 성공 확률 (재방문·운용 제약)
+  cloud_days: [-44, -31, -22, -9]     # 구름으로 관측 불가한 날
+  count_rel_sd: 0.10       # 판독 수량 오차 (상대 표준편차)
+  p_miss: 0.08             # 장비 유형 단위 탐지 누락 확률
+  false_positive_rate: 0.03    # 부대·일 단위 오탐 확률
+  position_sd_m: 150       # 판독 좌표 오차 (m)
+
+units:
+  - {name: 제9101가상보병사단, parent: null, garrison: [38.300, 127.200], location_type: 사령부, equipment: {command_vehicle: 2}}
+  - {name: 제9102가상전차여단, parent: 제9101가상보병사단, garrison: [38.270, 127.240], location_type: 주둔지, equipment: {tank: 12, apc: 8}}
+  - {name: 제9103가상포병연대, parent: 제9101가상보병사단, garrison: [38.255, 127.170], location_type: 주둔지, equipment: {artillery: 6}}
+  - {name: 제9104가상공병대대, parent: 제9101가상보병사단, garrison: [38.280, 127.150], location_type: 주둔지, equipment: {}}
+  - {name: 제9105가상수송대대, parent: 제9101가상보병사단, garrison: [38.250, 127.220], location_type: 주둔지, equipment: {truck: 25, fuel_truck: 4}}
+  - {name: 제9106가상의무대대, parent: 제9101가상보병사단, garrison: [38.290, 127.190], location_type: 주둔지, equipment: {}}
+
+# 활동: from~to 동안 수량이 to_count까지 선형 변화, move_km=[북, 동] 방향으로 점진 이동
+activities:
+  - {unit: 제9102가상전차여단, equipment: tank, from: -20, to: -5, to_count: 40, move_km: [2.5, 1.5]}
+  - {unit: 제9102가상전차여단, equipment: apc, from: -18, to: -5, to_count: 24, move_km: [2.5, 1.5]}
+  - {unit: 제9103가상포병연대, equipment: artillery, from: -10, to: -3, to_count: 16, move_km: [1.2, 0.5]}
+  - {unit: 제9104가상공병대대, equipment: bridging, from: -7, to: -3, to_count: 4, move_km: [0.6, 0.4]}
+  - {unit: 제9105가상수송대대, equipment: truck, from: -15, to: -2, to_count: 70, move_km: [0.5, 0.5]}
+  - {unit: 제9105가상수송대대, equipment: fuel_truck, from: -12, to: -2, to_count: 14, move_km: [0.5, 0.5]}
+  - {unit: 제9106가상의무대대, equipment: field_hospital, from: -5, to: -2, to_count: 2, move_km: [0.3, 0.2]}
+  - {unit: 제9101가상보병사단, equipment: command_vehicle, from: -6, to: -2, to_count: 6, move_km: [1.5, 0.5]}
+
+# 첩보: 분석관이 작성하는 관측 사실 문장 (truth=false는 오정보·기만)
+reports:
+  - {day: -16, source: OSINT, name: 현지 주민 증언, reliability: C, credibility: 3, truth: true,
+     text: "인근 주민들에 따르면 최근 일주일 사이 야간에 대형 트럭과 유조차 행렬이 평소보다 눈에 띄게 늘었다."}
+  - {day: -11, source: HUMINT, name: 협조자 A, reliability: C, credibility: 2, truth: true,
+     text: "협조자에 따르면 제9102가상전차여단 소속 전차 수십 대가 주둔지를 떠나 북동쪽 개활지로 이동해 머무르고 있다."}
+  - {day: -8, source: OSINT, name: 대외 선전매체, reliability: D, credibility: 4, truth: false,
+     text: "선전매체는 해당 지역의 부대 이동이 통상적인 계절 훈련이라고 주장했다."}
+  - {day: -5, source: OSINT, name: 현지 보도, reliability: C, credibility: 3, truth: true,
+     text: "현지 보도에 따르면 마을 외곽 공터에 야전병원으로 보이는 대형 천막 2동이 설치되었다."}
+  - {day: -4, source: HUMINT, name: 협조자 B, reliability: B, credibility: 2, truth: true,
+     text: "협조자는 포병 차량들이 기존 진지 북쪽 능선 뒤편에 새로 진지를 구축하고 있다고 전했다."}
+  - {day: -3, source: SIGINT, name: 통신 관측, reliability: B, credibility: 2, truth: true,
+     text: "평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동한 정황이 관측되었다."}

@@ -1,0 +1,39 @@
+# 합성 시나리오: 기만 (위장 집결) — 영상에는 전차·도하장비가 늘어나지만 상당수가 모형이며 실제 공격 의도 없음
+# 보급·의무·지휘 징후는 없고, 인간·신호 정보는 모형 장비와 평시 통신을 전함
+id: deception
+name: 기만(위장 집결)
+area_id: SIM-DEC
+truth:
+  intent: 기만(공격 의도 없음)
+  hypothesis: 없음
+  d_day: "D일 = 기만 활동 종료"
+  # 정답 태세 일정 [시작일, 단계] — 분석관(정보병과 예비역) 작성 예시
+  readiness: {watchcon: [[-30, 3]], jindogae: [[-30, 3]], durumi: [[-30, 3]]}
+period: {start: -60, end: 0}
+assess: {start: -30, end: 0}
+
+noise:
+  p_observe: 0.85
+  cloud_days: [-33, -15, -5]
+  count_rel_sd: 0.10
+  p_miss: 0.08
+  false_positive_rate: 0.03
+  position_sd_m: 150
+
+units:
+  - {name: 제9401가상보병사단, parent: null, garrison: [38.150, 126.900], location_type: 사령부, equipment: {command_vehicle: 2}}
+  - {name: 제9402가상전차여단, parent: 제9401가상보병사단, garrison: [38.120, 126.940], location_type: 주둔지, equipment: {tank: 12, apc: 8}}
+  - {name: 제9404가상공병대대, parent: 제9401가상보병사단, garrison: [38.130, 126.850], location_type: 주둔지, equipment: {}}
+  - {name: 제9405가상수송대대, parent: 제9401가상보병사단, garrison: [38.100, 126.920], location_type: 주둔지, equipment: {truck: 25, fuel_truck: 4}}
+
+activities:
+  - {unit: 제9402가상전차여단, equipment: tank, from: -12, to: -4, to_count: 45, move_km: [2.0, 1.0]}   # 상당수 모형
+  - {unit: 제9404가상공병대대, equipment: bridging, from: -6, to: -3, to_count: 3, move_km: [0.5, 0.3]}  # 노출 전시
+
+reports:
+  - {day: -7, source: OSINT, name: 외신 보도, reliability: C, credibility: 3, truth: true,
+     text: "외신은 위성사진을 인용해 국경 인근 개활지에 전차 수십 대가 집결했다고 보도했다."}
+  - {day: -5, source: HUMINT, name: 협조자 D, reliability: B, credibility: 2, truth: true,
+     text: "협조자는 집결지에 세워진 전차 상당수가 고무와 합판으로 만든 모형으로 보이며 연료 보급 차량은 오지 않았다고 전했다."}
+  - {day: -3, source: SIGINT, name: 통신 관측, reliability: B, credibility: 2, truth: true,
+     text: "해당 부대의 무선 통신량과 지휘망 활동은 평시 수준과 차이가 없는 것으로 관측되었다."}

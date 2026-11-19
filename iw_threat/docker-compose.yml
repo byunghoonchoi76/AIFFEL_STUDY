@@ -1,0 +1,121 @@
+# 정보사-1 징후·위협도 AI 추론 MVP — MS-C931(DGX Spark, arm64) 단일 장비 구성
+# 실행: cp .env.example .env && docker compose up -d --build
+# 중국계 모델·SW 배제 기준 적용 (README 참고)
+
+services:
+  llm:
+    # NGC vLLM 컨테이너(arm64/GB10 지원). 최신 태그는 NGC 카탈로그에서 확인 후 .env의 VLLM_IMAGE로 지정
+    image: ${VLLM_IMAGE}
+    command: >
+      vllm serve ${LLM_MODEL}
+      --host 0.0.0.0 --port 8000
+      --served-model-name ${LLM_SERVED_NAME}
+      --gpu-memory-utilization ${LLM_GPU_MEM_UTIL}
+      --max-model-len ${LLM_MAX_MODEL_LEN}
+    environment:
+      HF_HOME: /models
+      HF_HUB_OFFLINE: ${HF_HUB_OFFLINE}
+    volumes:
+      - ./models:/models
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "${LLM_HOST_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 40
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:v1.15.4
+    volumes:
+      - qdrant_data:/qdrant/storage
+    ports:
+      - "6333:6333"
+    restart: unless-stopped
+
+  neo4j:
+    image: neo4j:5.26-community
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD}
+      NEO4J_server_memory_heap_max__size: 2G
+      NEO4J_server_memory_pagecache_size: 1G
+    volumes:
+      - neo4j_data:/data
+      - ./db/neo4j:/import/schema:ro
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    restart: unless-stopped
+
+  postgis:
+    # 공식 postgis 이미지의 arm64 지원이 제한적이라 PGDG 패키지로 직접 빌드
+    build: ./docker/postgis
+    environment:
+      POSTGRES_DB: iw
+      POSTGRES_USER: iw
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./db/postgis/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - ./db/postgis/02_orbat.sql:/docker-entrypoint-initdb.d/02_orbat.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U iw -d iw"]
+      interval: 10s
+      retries: 10
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    env_file: .env
+    environment:
+      LLM_BASE_URL: http://llm:8000/v1
+      QDRANT_URL: http://qdrant:6333
+      NEO4J_URI: bolt://neo4j:7687
+      PG_HOST: postgis
+      HF_HOME: /models
+    volumes:
+      - ./config:/app/config:ro
+      - ./models:/models
+      - ./data:/app/data
+    depends_on:
+      postgis:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+      neo4j:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8080
+    restart: unless-stopped
+
+  ui:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    environment:
+      API_URL: http://api:8080
+    depends_on:
+      - api
+    ports:
+      - "8501:8501"
+    command: streamlit run ui/streamlit_app.py --server.address 0.0.0.0 --server.port 8501
+    restart: unless-stopped
+
+volumes:
+  qdrant_data:
+  neo4j_data:
+  pg_data:
