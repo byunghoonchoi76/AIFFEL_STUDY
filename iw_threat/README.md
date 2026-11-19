@@ -89,6 +89,10 @@ python scripts/orbat_benchmark.py --units 80 --seed 1 --scan   # 스캔 PDF(OCR 
    → 근거 문구 `[식별 부대: 제○여단(여단) 0.3km, 평시 대비 3.1배]`, 결과 `baseline_mode: unit`, `changes[].unit_name·ratio`, `unit_attribution`
    - 지역 평균에서는 서로 다른 부대 수량이 섞여 증가가 가려질 수 있음 → 부대 단위로 분리해 비교
    - 전투서열 DB가 없으면 지역 단위 비교(`baseline_mode: area`)
+5. **제대별 임계값** (`config/indicators.yaml`의 `thresholds`): 지역 기준 `min_delta`를 제대에 맞게 조정
+   - 우선순위: 지표별 `min_delta_by_echelon` → `echelon_scale` 배율(군단 1.5·사단 1.0·여단 0.5·연대 0.3·대대 0.2, 올림·최소 1) → 기본값
+   - 배수 기준: 평시 대비 `unit_min_ratio`(2.0)배 이상이고 증가량이 임계값의 절반 이상이면 충족
+   - 근거 문구에 적용 기준 표기: `(기준 여단 +6대 또는 2배)`
 
 식별 규칙 (`app/orbat/identify.py`)
 - 제대별 활동 반경: 군단 20km · 사단 10km · 여단 5km · 연대 3km · 대대 1.5km (+좌표 정밀도)

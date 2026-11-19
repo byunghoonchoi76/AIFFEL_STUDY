@@ -1,6 +1,7 @@
 """관측(영상 변화·텍스트 첩보) → 징후 지표 매칭."""
 from __future__ import annotations
 
+import math
 import re
 from dataclasses import dataclass
 from datetime import datetime
@@ -43,12 +44,18 @@ def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
         if not ind.equipment:
             continue
         for ch in changes:
-            if ch.equipment_type in ind.equipment and ch.delta >= ind.min_delta:
+            if ch.equipment_type not in ind.equipment:
+                continue
+            th = catalog.threshold(ind, ch.echelon if ch.unit_key else None)
+            by_delta = ch.delta >= th.min_delta
+            by_ratio = (th.min_ratio is not None and ch.ratio is not None and ch.ratio >= th.min_ratio
+                        and ch.delta >= max(1, math.ceil(th.min_delta / 2)))
+            if by_delta or by_ratio:
                 out.append(Evidence(
                     indicator_id=ind.id, source_type="IMINT", source_key=source_key,
                     reliability=rel, credibility=cred, observed_at=ch.latest_at,
                     ref=f"targets:{ch.equipment_type}:{','.join(map(str, ch.refs))}",
-                    quote=_imagery_quote(ch),
+                    quote=_imagery_quote(ch) + f" (기준 {th.basis})",
                 ))
     return out
 

@@ -178,3 +178,25 @@ def test_unit_baseline_reveals_surge_hidden_in_area_average():
     assert ids == {"I_ARMOR_MASS"}
     q = match_imagery([units["B"]], CAT, GR)[0].quote
     assert "[식별 부대: 제B가상부대(여단) 0.5km, 평시 대비 4.0배]" in q
+
+
+def _unit_change(eq, base, recent, echelon, uk="U1"):
+    from app.analysis.change import Change
+    return Change(eq, base, recent, round(recent - base, 2), NOW, [1], unit_key=uk, unit_name=f"제{uk}가상부대",
+                  echelon=echelon, dist_km=0.3, baseline_obs=4)
+
+
+def test_echelon_thresholds():
+    defs = CAT.indicator_defs()
+    # 배율: 포병(min_delta 4) × 대대 0.2 → 1, × 여단 0.5 → 2 / 지표별 지정값 우선: 기갑 여단 6
+    assert CAT.threshold(defs["I_ARTY_POS"], "대대").min_delta == 1
+    assert CAT.threshold(defs["I_ARTY_POS"], "여단").min_delta == 2
+    assert CAT.threshold(defs["I_ARMOR_MASS"], "여단").min_delta == 6
+    assert CAT.threshold(defs["I_ARMOR_MASS"], None).min_delta == 10        # 지역 단위는 기본값
+    # 여단 전차 +7: 지역 기준(10)으로는 미충족이지만 여단 기준(6)으로 충족
+    hit = match_imagery([_unit_change("tank", 8, 15, "여단")], CAT, GR)
+    assert [e.indicator_id for e in hit] == ["I_ARMOR_MASS"] and "(기준 여단 +6대" in hit[0].quote
+    # 대대 전차 +2(기준 3 미달)지만 평시 대비 3배 → 배수 기준으로 충족 (증가량 ≥ 기준의 절반)
+    assert [e.indicator_id for e in match_imagery([_unit_change("tank", 1, 3, "대대")], CAT, GR)] == ["I_ARMOR_MASS"]
+    # 대대 전차 +1, 1.1배 → 미충족
+    assert match_imagery([_unit_change("tank", 10, 11, "대대")], CAT, GR) == []
