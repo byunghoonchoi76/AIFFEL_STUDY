@@ -47,6 +47,22 @@ python scripts/seed_sample.py     # 가상 시나리오 표적 등록 (AREA-01)
 - `config/indicators.yaml` — 위협징후목록(가설·지표·LR·τ·장비·임계값). **현재 값은 공개 교리 일반론 기반 예시**이며 정보사 목록 확보 시 교체
 - `config/source_grading.yaml` — 6×6 평가 등급 → 가중치 환산표
 
+## 전투서열 PDF 파싱 (1단계: 규칙 기반)
+
+```bash
+python scripts/parse_orbat_pdf.py 문서.pdf --out data/orbat/문서명
+```
+
+- 표: 머리행에서 부대명·상급부대·좌표·장비·수량·기준일 열 자동 인식 → 행 단위 레코드
+- 서술형: MGRS가 있는 줄을 같은 줄(없으면 바로 위 2줄)의 부대명과 연결, 사령부·주둔지·예비진지 등 위치 유형 표시
+- 좌표: MGRS → 위경도(정밀도 m 포함), 한반도 범위 밖·자릿수 불일치는 폐기
+- 제대: 부대명 접미사(군단·사단·여단…) 또는 근처 단대호 제대 기호(XX·X·III·II)
+- 단대호·사진: 이미지로 저장하고 근처 부대 레코드에 연결 (분석관 확인용)
+- 검증: 제대 역전, 자기참조, 상하 순환, 같은 유형 위치 1km 이상 차이·소속 불일치 → `conflicts.csv`
+- 산출물: `records.csv`, `conflicts.csv`, `images/`, `review.html`, `summary.json`
+- 스캔 쪽은 Tesseract OCR로 처리 (정확도 낮음 — 검토 필수)
+- **`data/orbat/`는 git에서 제외됨. 비밀 문서는 MS-C931 안에서만 처리**
+
 ## 테스트
 
 ```bash

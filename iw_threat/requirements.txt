@@ -11,6 +11,7 @@ neo4j==5.28.1
 psycopg[binary]==3.2.9
 sentence-transformers==4.1.0
 pymupdf==1.25.5
+mgrs==1.7.0
 pytesseract==0.3.13
 streamlit==1.45.1
 pandas==2.2.3
