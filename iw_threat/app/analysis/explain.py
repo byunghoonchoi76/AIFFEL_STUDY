@@ -40,7 +40,7 @@ def explanation_prompt(result: AssessmentResult, ev_map: dict[str, list[dict]], 
     blocks = []
     for c in top.contributions:
         refs = "\n".join(f"    {d['id']}: {d['text']}" for d in ev_map.get(c.indicator_id, []))
-        blocks.append(f"- indicator_id={c.indicator_id} '{c.name}': {_strength_word(c.strength)} 충족, "
+        blocks.append(f"- indicator_id={c.indicator_id} '{c.name}': {_strength_word(c.strength)} 확인됨, "
                       f"출처 {'/'.join(c.source_types)}\n  근거:\n{refs}")
     doc = "\n".join(f"{d['id']}: {d['text']}" for d in doctrine) or "(교리 근거 없음)"
     system = (
@@ -59,7 +59,7 @@ def explanation_prompt(result: AssessmentResult, ev_map: dict[str, list[dict]], 
     )
     user = (
         f"평가 결과: 가설 '{top.name}', 확률 {top.probability:.0%}, 등급 {result.grade}, 분석 신뢰도 {result.confidence}\n\n"
-        "충족 지표와 근거:\n" + "\n".join(blocks) + f"\n\n교리 근거:\n{doc}\n\n"
+        "확인된 징후와 근거:\n" + "\n".join(blocks) + f"\n\n교리 근거:\n{doc}\n\n"
         'JSON으로 답하라: {"summary": {"text": "...", "citations": ["E1"]}, '
         '"sentences": [{"indicator_id": "I_...", "text": "...", "citations": ["E1"]}]}'
     )
@@ -111,12 +111,22 @@ def verify_sentences(sentences: list[dict], ev_map: dict[str, list[dict]],
         cites = [_norm_id(c) for c in (s.get("citations") or [])]
         text = re.sub(r"^\s*I_[A-Z_]+\s*[:：-]\s*", "", (s.get("text") or "").strip())
         allowed = {d["id"]: d["ref"] for d in ev_map.get(iid, [])} | doc_refs
-        if (text and iid in ev_map and cites and all(c in allowed for c in cites)
-                and reflects_evidence(text, [texts[c] for c in cites], (names or {}).get(iid, ""))):
+        reason = None
+        if not text:
+            reason = "빈 문장"
+        elif iid not in ev_map:
+            reason = f"알 수 없는 지표 {iid!r}"
+        elif not cites:
+            reason = "인용 없음"
+        elif not all(c in allowed for c in cites):
+            reason = f"허용되지 않은 인용 {[c for c in cites if c not in allowed]}"
+        elif not reflects_evidence(text, [texts[c] for c in cites], (names or {}).get(iid, "")):
+            reason = "내부 용어 사용" if any(j in text for j in _JARGON) else "근거 내용 미반영"
+        if reason is None:
             kept.append({"indicator_id": iid, "text": text, "citations": [allowed[c] for c in cites],
                          "generated": "llm"})
         else:
-            dropped.append(s)
+            dropped.append({**s, "_reason": reason})
     return kept, dropped
 
 

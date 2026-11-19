@@ -80,7 +80,8 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> d
         except Exception as e:  # noqa: BLE001
             narrative["error"] = str(e)
         filled = template_sentences(result, ev_map, {k["indicator_id"] for k in kept})
-        narrative.update({"sentences": kept + filled, "dropped": len(dropped), "template_filled": len(filled)})
+        narrative.update({"sentences": kept + filled, "dropped": len(dropped), "template_filled": len(filled),
+                          "dropped_samples": dropped[:3]})
 
     payload = {
         "changes": [asdict(c) for c in changes],
