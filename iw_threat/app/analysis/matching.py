@@ -45,7 +45,9 @@ def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
             by_delta = ch.delta >= th.min_delta
             by_ratio = (th.min_ratio is not None and ch.ratio is not None and ch.ratio >= th.min_ratio
                         and ch.delta >= max(1, math.ceil(th.min_delta / 2)))
-            if by_delta or by_ratio:
+            # 판독 오차·평시 변동을 넘는 증가인지 (대규모 부대에서 수량 오차가 임계값보다 커지는 오탐 방지)
+            significant = catalog.min_zscore is None or ch.zscore is None or ch.zscore >= catalog.min_zscore
+            if (by_delta or by_ratio) and significant:
                 out.append(Evidence(
                     indicator_id=ind.id, source_type="IMINT", source_key=source_key,
                     reliability=rel, credibility=cred, observed_at=ch.latest_at,

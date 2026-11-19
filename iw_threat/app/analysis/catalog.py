@@ -53,6 +53,7 @@ class Catalog:
     meta: dict = field(default_factory=dict)
     echelon_scale: dict[str, float] = field(default_factory=dict)   # 지역 단위 min_delta에 곱할 제대별 배율
     unit_min_ratio: float | None = None                              # 부대 단위 평시 대비 배수 기준
+    min_zscore: float | None = None                                  # 평시 변동폭(표준편차) 대비 최소 증가 배수
 
     def counters(self) -> dict[str, Indicator]:
         return {k: v for k, v in self.indicator_defs().items() if v.counter}
@@ -126,7 +127,8 @@ def load_catalog(path: str | Path) -> Catalog:
     th = raw.get("thresholds") or {}
     scale = {str(k): float(v) for k, v in (th.get("echelon_scale") or {}).items()}
     ratio = float(th["unit_min_ratio"]) if th.get("unit_min_ratio") else None
-    return Catalog(hyps, grades, raw.get("meta", {}), scale, ratio)
+    z = float(th["min_zscore"]) if th.get("min_zscore") else None
+    return Catalog(hyps, grades, raw.get("meta", {}), scale, ratio, z)
 
 
 def load_grading(path: str | Path) -> Grading:

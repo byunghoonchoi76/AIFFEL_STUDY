@@ -227,3 +227,15 @@ def test_counter_hit_suppresses_overlapping_positive_hit():
     hits = [{"indicator_id": "I_ARMOR_MASS", "quote": "집결지에 세워진 전차 상당수가"},
             {"indicator_id": "C_DECOY", "quote": "전차 상당수가 고무와 합판으로 만든 모형으로 보인다"}]
     assert [e.indicator_id for e in hits_to_evidence(chunk, hits, CAT)] == ["C_DECOY"]
+
+
+def test_zscore_guard_blocks_noise_on_large_units():
+    """평시 88±9대 포병의 +6대 흔들림은 오차 범위 → 미충족, 평시 없던 신규 출현은 그대로 충족."""
+    rows = [TargetRow(i, "towed_howitzer", NOW - timedelta(days=d), n)
+            for i, (d, n) in enumerate([(30, 80), (25, 95), (20, 88), (15, 97), (10, 81)])]
+    rows.append(TargetRow(9, "towed_howitzer", NOW - timedelta(days=1), 94))
+    ch = detect_changes(rows, NOW)[0]
+    assert ch.zscore is not None and ch.zscore < 3
+    assert match_imagery([ch], CAT, GR) == []
+    new = detect_changes([TargetRow(1, "bridge_pmp", NOW - timedelta(days=1), 4)], NOW)
+    assert [e.indicator_id for e in match_imagery(new, CAT, GR)] == ["I_BRIDGING"]

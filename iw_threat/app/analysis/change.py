@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from statistics import mean
+from statistics import mean, pstdev
 
 
 @dataclass(frozen=True)
@@ -28,6 +28,14 @@ class Change:
     echelon: str | None = None
     dist_km: float | None = None
     baseline_obs: int = 0              # 기준기간 관측 횟수 (0이면 평시 자료 없음)
+    baseline_sd: float = 0.0           # 기준기간 수량 표준편차 (판독 오차·평시 변동폭)
+
+    @property
+    def zscore(self) -> float | None:
+        """평시 변동폭 대비 증가 크기 (관측 3회 미만이면 None)."""
+        if self.baseline_obs < 3:
+            return None
+        return round(self.delta / max(self.baseline_sd, 0.5), 2)
 
     @property
     def ratio(self) -> float | None:
@@ -56,6 +64,7 @@ def detect_changes(rows: list[TargetRow], as_of: datetime, window_days: int = 7,
             delta=round(peak.count - baseline, 2),
             latest_at=max(r.observed_at for r in recent),
             refs=[r.id for r in recent], baseline_obs=len(base),
+            baseline_sd=round(pstdev(base), 2) if len(base) >= 2 else 0.0,
         ))
     out.sort(key=lambda c: c.delta, reverse=True)
     return out
