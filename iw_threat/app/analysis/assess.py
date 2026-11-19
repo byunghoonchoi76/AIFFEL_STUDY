@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 from datetime import datetime, timedelta
 
-from ..config import get_settings
+from ..config import get_settings, to_aware
 from ..embed import embed_query
 from ..stores import pg
 from .catalog import load_catalog, load_grading
@@ -22,12 +22,13 @@ def _report_chunks(vector, area_id: str, as_of: datetime, lookback_days: int, k:
     return [ReportChunk(
         chunk_id=h["chunk_id"], text=h["text"], source_type=h["source_type"], source_key=h["source_key"],
         reliability=h["reliability"], credibility=int(h["credibility"]),
-        reported_at=datetime.fromisoformat(h["reported_at"]),
+        reported_at=to_aware(datetime.fromisoformat(h["reported_at"])),
     ) for h in hits if h.get("reported_at")]
 
 
 def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None) -> dict:
     s = get_settings()
+    as_of = to_aware(as_of)
     catalog, grading = load_catalog(s.indicators_path), load_grading(s.grading_path)
 
     # 1) 영상 판독 표적 변화 → 규칙 매칭

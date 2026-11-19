@@ -7,9 +7,10 @@ from pathlib import Path
 from typing import Literal
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from .analysis.assess import run_assessment
+from .config import to_aware
 from .stores import pg
 
 app = FastAPI(title="징후·위협도 AI 추론 MVP")
@@ -41,10 +42,14 @@ class TargetEvent(BaseModel):
     image_ref: str | None = None
     source_id: int | None = None
 
+    _tz = field_validator("observed_at")(lambda v: to_aware(v))
+
 
 class AssessRequest(BaseModel):
     area_id: str
     as_of: datetime
+
+    _tz = field_validator("as_of")(lambda v: to_aware(v))
 
 
 class Feedback(BaseModel):
@@ -87,7 +92,7 @@ def ingest(
     try:
         return ingest_document(
             str(dest), title=title, source_name=source_name, source_type=source_type,
-            reliability=reliability, credibility=credibility, area_id=area_id, reported_at=reported_at,
+            reliability=reliability, credibility=credibility, area_id=area_id, reported_at=to_aware(reported_at),
             vector=d["vector"], graph=d["graph"] if extract_graph else None, llm=d["llm"] if extract_graph else None,
         )
     except ValueError as e:

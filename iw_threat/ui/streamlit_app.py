@@ -46,7 +46,7 @@ with tab_docs:
 with tab_assess:
     c1, c2 = st.columns(2)
     area_id = c1.text_input("지역 ID", "AREA-01")
-    as_of = c2.text_input("기준 일시", datetime.now().replace(microsecond=0).isoformat())
+    as_of = c2.text_input("기준 일시", datetime.now().astimezone().replace(microsecond=0).isoformat())
     if st.button("평가 실행", type="primary"):
         with st.spinner("분석 중..."):
             r = httpx.post(f"{API}/assess", json={"area_id": area_id, "as_of": as_of}, timeout=900)

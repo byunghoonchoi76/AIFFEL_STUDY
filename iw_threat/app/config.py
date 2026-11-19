@@ -1,4 +1,6 @@
+from datetime import datetime
 from functools import lru_cache
+from zoneinfo import ZoneInfo
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -10,6 +12,8 @@ class Settings(BaseSettings):
     llm_served_name: str = "gpt-oss"
     llm_timeout_s: float = 180.0
     llm_concurrency: int = 8
+    # 시간대 정보 없는 입력 시각의 기준 시간대
+    default_tz: str = "Asia/Seoul"
 
     embed_model: str = "intfloat/multilingual-e5-large-instruct"
     embed_dim: int = 1024
@@ -38,3 +42,10 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
+
+def to_aware(dt: datetime | None) -> datetime | None:
+    """시간대 없는 시각은 default_tz로 간주 (DB의 TIMESTAMPTZ와 비교 가능하게)."""
+    if dt is None or dt.tzinfo is not None:
+        return dt
+    return dt.replace(tzinfo=ZoneInfo(get_settings().default_tz))

@@ -31,7 +31,7 @@ def _row(t: datetime, eq: str, n: int) -> dict:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--api", default="http://localhost:8080")
-    ap.add_argument("--as-of", default=datetime.now().replace(microsecond=0).isoformat())
+    ap.add_argument("--as-of", default=datetime.now().astimezone().replace(microsecond=0).isoformat())
     ap.add_argument("--csv-only", action="store_true")
     a = ap.parse_args()
     rows = build(datetime.fromisoformat(a.as_of))
