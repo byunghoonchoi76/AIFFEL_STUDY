@@ -200,3 +200,30 @@ def test_echelon_thresholds():
     assert [e.indicator_id for e in match_imagery([_unit_change("tank", 1, 3, "대대")], CAT, GR)] == ["I_ARMOR_MASS"]
     # 대대 전차 +1, 1.1배 → 미충족
     assert match_imagery([_unit_change("tank", 10, 11, "대대")], CAT, GR) == []
+
+
+def test_counter_evidence_lowers_attack_and_confidence():
+    base = [ev("I_ARMOR_MASS"), ev("I_BRIDGING"), ev("I_LOGISTICS", stype="OSINT", key="n", rel="C", cred=3),
+            ev("I_ARTY_POS", stype="HUMINT", key="h", rel="C", cred=2)]
+    before = assess(CAT, base, GR, NOW)
+    counter = [ev("C_DECOY", stype="HUMINT", key="h2", rel="B", cred=2),
+               ev("C_NORMAL_COMMS", stype="SIGINT", key="s2", rel="B", cred=2)]
+    after = assess(CAT, base + counter, GR, NOW)
+    pa = {h.hypothesis_id: h.probability for h in before.hypotheses}["H_ATTACK"]
+    pb = {h.hypothesis_id: h.probability for h in after.hypotheses}["H_ATTACK"]
+    assert pb < pa * 0.5                                        # 반대 증거로 공격 확률 크게 하락
+    att = next(h for h in after.hypotheses if h.hypothesis_id == "H_ATTACK")
+    armor = next(c for c in att.contributions if c.indicator_id == "I_ARMOR_MASS")
+    assert armor.discount < 1                                    # 모형 장비 → 기갑 집결 신뢰 할인
+    assert any(c.indicator_id == "C_DECOY" and c.delta_logit < 0 for c in att.contributions)
+    order = {"하": 0, "중": 1, "상": 2}
+    assert before.confidence == "상" and order[after.confidence] < order[before.confidence]   # 출처 간 모순 → 신뢰도 하향
+    assert {c.counter_id for c in after.conflicts} == {"C_DECOY", "C_NORMAL_COMMS"}
+
+
+def test_counter_hit_suppresses_overlapping_positive_hit():
+    text = "협조자는 집결지에 세워진 전차 상당수가 고무와 합판으로 만든 모형으로 보인다고 전했다."
+    chunk = ReportChunk("d9:0", text, "HUMINT", "src7", "B", 2, NOW)
+    hits = [{"indicator_id": "I_ARMOR_MASS", "quote": "집결지에 세워진 전차 상당수가"},
+            {"indicator_id": "C_DECOY", "quote": "전차 상당수가 고무와 합판으로 만든 모형으로 보인다"}]
+    assert [e.indicator_id for e in hits_to_evidence(chunk, hits, CAT)] == ["C_DECOY"]

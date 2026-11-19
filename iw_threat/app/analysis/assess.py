@@ -104,6 +104,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         "unit_attribution": attribution,
         "evidence": [asdict(e) for e in evidence],
         "hypotheses": [asdict(h) for h in result.hypotheses],
+        "conflicts": [asdict(c) for c in result.conflicts],
         "rejected_llm_hits": rejected_hits,
         "catalog_version": catalog.meta.get("version"),
         "report_chunks_checked": n_chunks,

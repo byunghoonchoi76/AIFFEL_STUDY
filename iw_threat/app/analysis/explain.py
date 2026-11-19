@@ -178,9 +178,15 @@ def indicator_lines(result: AssessmentResult, ev_map: dict[str, list[dict]], imp
         source = "template+llm" if meaning else "template"
         if not meaning and meanings and meanings.get(c.indicator_id):
             meaning = meanings[c.indicator_id]
+        if c.delta_logit < 0:
+            head = f"[반대 징후] {c.name} {_strength_word(c.strength)} 식별됨"
+        else:
+            head = f"{c.name} 징후 {_strength_word(c.strength)} 식별됨"
+            if c.discount < 1:
+                head += f" (반대 증거로 신뢰 ×{c.discount:.2f})"
         out.append({
-            "indicator_id": c.indicator_id,
-            "text": f"{c.name} 징후 {_strength_word(c.strength)} 식별됨 — {facts}" + (f" → {meaning}" if meaning else ""),
+            "indicator_id": c.indicator_id, "counter": c.delta_logit < 0,
+            "text": f"{head} — {facts}" + (f" → {meaning}" if meaning else ""),
             "citations": [d["ref"] for d in ev], "generated": source,
         })
     return out
@@ -222,12 +228,17 @@ def verify_summary(summary: dict | None, result: AssessmentResult, ev_map: dict[
 def template_summary(result: AssessmentResult) -> dict:
     """종합 판단 정형 문장 (LLM 요약이 검증을 통과하지 못했을 때)."""
     top = result.top
-    types = sorted({t for c in top.contributions for t in c.source_types})
-    key = [c.name for c in top.contributions[:3]]
+    pos = [c for c in top.contributions if c.delta_logit > 0]
+    neg = [c for c in top.contributions if c.delta_logit < 0]
+    types = sorted({t for c in pos for t in c.source_types})
+    key = [c.name for c in pos[:3]]
     if not key:
         text = f"충족된 징후가 없어 '{top.name}' 가능성은 사전 수준({top.probability:.0%})으로 판단됨."
     else:
-        text = (f"{len(types)}개 출처 유형({'/'.join(types)})에서 {', '.join(key)} 등 {len(top.contributions)}개 징후가 "
+        text = (f"{len(types)}개 출처 유형({'/'.join(types)})에서 {', '.join(key)} 등 {len(pos)}개 징후가 "
                 f"식별되어 '{top.name}' 가능성 {top.probability:.0%}(등급 {result.grade}, 분석 신뢰도 {result.confidence})로 판단됨.")
-    refs = [r for c in top.contributions[:3] for r in c.refs]
+        if neg or result.conflicts:
+            names = sorted({c.name for c in neg} | {c.counter_name for c in result.conflicts})
+            text += f" 다만 반대 징후({', '.join(names)})가 식별되어 기만·오판 가능성을 함께 검토 필요."
+    refs = [r for c in pos[:3] for r in c.refs]
     return {"text": text, "citations": refs, "generated": "template"}

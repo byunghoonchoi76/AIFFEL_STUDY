@@ -187,6 +187,14 @@ def build_report(result: dict, out_path: str | Path) -> Path:
     else:
         para("평시 대비 증가가 식별된 부대 활동 없음", 9.5)
 
+    # ── 3-1. 반대 징후 ──
+    if final.get("conflicts"):
+        h("3-1. 출처 간 모순 · 반대 징후")
+        table(["반대 징후", "강도", "출처", "신뢰가 깎인 지표(배율)"],
+              [[c["counter_name"], f"{c['strength']:.2f}", "/".join(c["source_types"]),
+                ", ".join(f"{k} ×{v:.2f}" for k, v in c["discounted"].items()) or "-"] for c in final["conflicts"]],
+              [4.0, 1.6, 2.4, 9.0])
+
     # ── 4. 지표별 해설 ──
     h("4. 징후별 분석")
     for s in narrative.get("sentences", []):

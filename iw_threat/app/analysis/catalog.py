@@ -19,6 +19,9 @@ class Indicator:
     min_delta: int = 0
     meaning: str = ""
     min_delta_by_echelon: tuple[tuple[str, int], ...] = ()   # 지표별 제대 임계값(있으면 배율보다 우선)
+    counter: bool = False                 # 반대 징후(위협 가능성을 낮추는 증거, lr < 1)
+    discounts: tuple[str, ...] = ()       # 반대 징후가 신뢰를 깎는 대상 지표 (예: 모형 장비 → 기갑 집결)
+    discount_factor: float = 0.0          # 반대 징후 강도 1일 때 대상 지표 강도를 줄이는 비율
 
 
 @dataclass(frozen=True)
@@ -50,6 +53,9 @@ class Catalog:
     meta: dict = field(default_factory=dict)
     echelon_scale: dict[str, float] = field(default_factory=dict)   # 지역 단위 min_delta에 곱할 제대별 배율
     unit_min_ratio: float | None = None                              # 부대 단위 평시 대비 배수 기준
+
+    def counters(self) -> dict[str, Indicator]:
+        return {k: v for k, v in self.indicator_defs().items() if v.counter}
 
     def threshold(self, ind: Indicator, echelon: str | None) -> Threshold:
         """임계값 결정 순서: 지표별 제대 값 → 제대 배율 × 기본값(올림, 최소 1) → 기본값(지역 단위)."""
@@ -103,12 +109,16 @@ def load_catalog(path: str | Path) -> Catalog:
                 equipment=tuple(i.get("equipment", [])), min_delta=int(i.get("min_delta", 0)),
                 meaning=str(i.get("meaning", "")),
                 min_delta_by_echelon=tuple((str(k), int(v)) for k, v in (i.get("min_delta_by_echelon") or {}).items()),
+                counter=bool(i.get("counter", False)), discounts=tuple(i.get("discounts", [])),
+                discount_factor=float(i.get("discount_factor", 0.0)),
             )
             for i in h["indicators"]
         )
         for ind in inds:
             if ind.lr <= 0 or ind.tau_days <= 0:
                 raise ValueError(f"{h['id']}/{ind.id}: lr, tau_days는 양수여야 함")
+            if not 0 <= ind.discount_factor <= 1:
+                raise ValueError(f"{h['id']}/{ind.id}: discount_factor는 0~1")
         if not 0 < h["prior"] < 1:
             raise ValueError(f"{h['id']}: prior는 0과 1 사이")
         hyps.append(Hypothesis(h["id"], h["name"], float(h["prior"]), float(h["impact"]), inds))

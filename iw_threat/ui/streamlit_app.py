@@ -64,6 +64,9 @@ with tab_assess:
                                    for h in res["hypotheses"]]))
         st.subheader("지표별 기여도 (최상위 가설)")
         st.dataframe(pd.DataFrame(res["hypotheses"][0]["contributions"]))
+        if res.get("conflicts"):
+            st.subheader("출처 간 모순 · 반대 징후")
+            st.dataframe(pd.DataFrame(res["conflicts"])[["counter_name", "strength", "source_types", "discounted"]])
         st.subheader("영상 변화")
         st.dataframe(pd.DataFrame(res["changes"]))
         if res.get("unit_attribution"):

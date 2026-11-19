@@ -37,6 +37,7 @@ class IndicatorContribution:
     delta_logit: float
     source_types: list[str]
     refs: list[str]
+    discount: float = 1.0          # 반대 증거로 깎인 강도 배율 (1 = 영향 없음)
 
 
 @dataclass
@@ -51,6 +52,17 @@ class HypothesisResult:
 
 
 @dataclass
+class Conflict:
+    """반대 징후와 그것이 신뢰를 깎은 지표 (출처 간 모순)."""
+    counter_id: str
+    counter_name: str
+    strength: float
+    source_types: list[str]
+    discounted: dict[str, float]          # 대상 지표 → 강도 배율(0~1)
+    refs: list[str]
+
+
+@dataclass
 class AssessmentResult:
     as_of: datetime
     hypotheses: list[HypothesisResult]
@@ -58,6 +70,7 @@ class AssessmentResult:
     threat_score: float
     grade: str
     confidence: str
+    conflicts: list[Conflict] = field(default_factory=list)
 
 
 def _logit(p: float) -> float:
@@ -88,32 +101,71 @@ def indicator_strength(weighted: list[tuple[str, str, float]]) -> float:
     return 1 - miss
 
 
-def score_hypothesis(h: Hypothesis, evidence: list[Evidence], grading: Grading, as_of: datetime) -> HypothesisResult:
+def _strength(ind, evidence: list[Evidence], grading: Grading, as_of: datetime) -> tuple[float, list[Evidence]]:
+    evs = [e for e in evidence if e.indicator_id == ind.id and e.observed_at <= as_of]
+    if not evs:
+        return 0.0, []
+    weighted = [(e.source_type, e.source_key, evidence_weight(e, grading, as_of, ind.tau_days)) for e in evs]
+    return indicator_strength(weighted), evs
+
+
+def detect_conflicts(catalog: Catalog, evidence: list[Evidence], grading: Grading, as_of: datetime) -> list[Conflict]:
+    """반대 징후(모형 장비·보급 부재·통신 평시 수준 등)를 찾아 대상 지표의 할인 배율 계산."""
+    out = []
+    for c in catalog.counters().values():
+        s, evs = _strength(c, evidence, grading, as_of)
+        if s <= 0:
+            continue
+        mult = round(1 - c.discount_factor * s, 4)
+        out.append(Conflict(c.id, c.name, round(s, 4), sorted({e.source_type for e in evs}),
+                            {t: mult for t in c.discounts}, [e.ref for e in evs]))
+    return out
+
+
+def discount_map(conflicts: list[Conflict]) -> dict[str, float]:
+    m: dict[str, float] = {}
+    for c in conflicts:
+        for t, mult in c.discounted.items():
+            m[t] = m.get(t, 1.0) * mult
+    return m
+
+
+def score_hypothesis(h: Hypothesis, evidence: list[Evidence], grading: Grading, as_of: datetime,
+                     discounts: dict[str, float] | None = None) -> HypothesisResult:
+    """반대 징후(lr<1)는 logit을 낮추고, discounts는 반대 증거로 신뢰가 깎인 지표의 강도에 곱함."""
     logit = _logit(h.prior)
     contribs: list[IndicatorContribution] = []
     for ind in h.indicators:
-        evs = [e for e in evidence if e.indicator_id == ind.id and e.observed_at <= as_of]
+        s, evs = _strength(ind, evidence, grading, as_of)
         if not evs:
             continue
-        weighted = [(e.source_type, e.source_key, evidence_weight(e, grading, as_of, ind.tau_days)) for e in evs]
-        s = indicator_strength(weighted)
+        disc = (discounts or {}).get(ind.id, 1.0)
+        s *= disc
         delta = s * math.log(ind.lr)
         logit += delta
         contribs.append(IndicatorContribution(
             indicator_id=ind.id, name=ind.name, lr=ind.lr, strength=round(s, 4),
             delta_logit=round(delta, 4),
             source_types=sorted({e.source_type for e in evs}),
-            refs=[e.ref for e in evs],
+            refs=[e.ref for e in evs], discount=round(disc, 4),
         ))
     p = _sigmoid(logit)
     contribs.sort(key=lambda c: c.delta_logit, reverse=True)
     return HypothesisResult(h.id, h.name, h.prior, round(p, 4), h.impact, round(p * h.impact, 4), contribs)
 
 
-def confidence_level(r: HypothesisResult) -> str:
-    """분석 신뢰도(확률과 별개): 독립 출처 유형 수와 충족 지표 수 기준."""
-    types = {t for c in r.contributions for t in c.source_types}
-    n_ind = sum(1 for c in r.contributions if c.strength >= 0.3)
+def confidence_level(r: HypothesisResult, conflicts: list[Conflict] | None = None) -> str:
+    """분석 신뢰도(확률과 별개): 독립 출처 유형 수와 충족 지표 수 기준.
+    출처 간 모순(강도 0.3 이상 반대 징후)이 있으면 한 단계 낮춤."""
+    level = _base_confidence(r)
+    if any(c.strength >= 0.3 for c in (conflicts or [])):
+        level = {"상": "중", "중": "하"}.get(level, "하")
+    return level
+
+
+def _base_confidence(r: HypothesisResult) -> str:
+    types = {t for c in r.contributions if c.delta_logit > 0 for t in c.source_types}
+    n_ind = sum(1 for c in r.contributions if c.strength >= 0.3 and c.delta_logit > 0)
     if len(types) >= 3 and n_ind >= 3:
         return "상"
     if len(types) >= 2 or n_ind >= 2:
@@ -122,10 +174,12 @@ def confidence_level(r: HypothesisResult) -> str:
 
 
 def assess(catalog: Catalog, evidence: list[Evidence], grading: Grading, as_of: datetime) -> AssessmentResult:
-    results = [score_hypothesis(h, evidence, grading, as_of) for h in catalog.hypotheses]
+    conflicts = detect_conflicts(catalog, evidence, grading, as_of)
+    disc = discount_map(conflicts)
+    results = [score_hypothesis(h, evidence, grading, as_of, disc) for h in catalog.hypotheses]
     results.sort(key=lambda r: r.threat, reverse=True)
     top = results[0]
     return AssessmentResult(
         as_of=as_of, hypotheses=results, top=top, threat_score=top.threat,
-        grade=catalog.grade_for(top.threat), confidence=confidence_level(top),
+        grade=catalog.grade_for(top.threat), confidence=confidence_level(top, conflicts), conflicts=conflicts,
     )

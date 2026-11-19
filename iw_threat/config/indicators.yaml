@@ -35,6 +35,11 @@ hypotheses:
       - {id: I_COMMAND_POST, name: 전방 지휘소 전개,          lr: 4.0, tau_days: 7,  equipment: [command_vehicle], min_delta: 2, meaning: 전방 작전 지휘체계 구축 정황}
       - {id: I_AIR_DEFENSE,  name: 방공 자산 전방 배치,       lr: 3.5, tau_days: 7,  equipment: [sam, aaa], min_delta: 2, meaning: 공격 부대 방공 엄호 정황}
       - {id: I_PATTERN_DEV,  name: 평시 훈련 패턴과 상이한 활동, lr: 3.0, tau_days: 14, equipment: [], min_delta: 0, meaning: 평시 활동과 다른 이상 활동}
+      # 반대 징후 (lr < 1: 공격 가능성을 낮춤). discounts: 이 반대 증거가 신뢰를 깎는 대상 지표
+      - {id: C_DECOY,        name: 모형·위장 장비 식별,          lr: 0.2,  tau_days: 10, equipment: [], counter: true, discounts: [I_ARMOR_MASS, I_BRIDGING, I_ARTY_POS], discount_factor: 0.7, meaning: 기만 전시 가능성}
+      - {id: C_NO_LOGISTICS, name: 보급·연료 지원 부재,          lr: 0.35, tau_days: 7,  equipment: [], counter: true, meaning: 공격 지속능력 미비}
+      - {id: C_NORMAL_COMMS, name: 통신·지휘망 평시 수준,        lr: 0.4,  tau_days: 5,  equipment: [], counter: true, meaning: 작전 지휘 활동 미식별}
+      - {id: C_RETURN,       name: 부대 복귀·활동 종료 정황,     lr: 0.3,  tau_days: 7,  equipment: [], counter: true, meaning: 활동 종료 정황}
 
   - id: H_EXERCISE
     name: 대규모 훈련
@@ -44,6 +49,7 @@ hypotheses:
       - {id: I_ARMOR_MASS,   name: 기갑·기계화 장비 전방 집결, lr: 3.0, tau_days: 7,  equipment: [tank, ifv, apc], min_delta: 10, meaning: 공격 제대 집결 정황}
       - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 2.0, tau_days: 10, equipment: [truck, fuel_truck], min_delta: 20, meaning: 작전 지속지원 준비 정황}
       - {id: I_EX_ANNOUNCED, name: 훈련 공표·통상 훈련 시기,   lr: 6.0, tau_days: 30, equipment: [], min_delta: 0, meaning: 통상 훈련 활동 가능성}
+      - {id: C_RETURN,       name: 부대 복귀·활동 종료 정황,     lr: 2.0, tau_days: 7, equipment: [], meaning: 훈련 종료 후 복귀 정황}   # 훈련 가설에는 지지 증거
 
   # 진돗개(대침투·국지도발) 트랙용 — 예시값
   - id: H_INFILTRATION
