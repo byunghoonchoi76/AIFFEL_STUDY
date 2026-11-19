@@ -54,8 +54,9 @@ def explanation_prompt(result: AssessmentResult, ev_map: dict[str, list[dict]], 
         "4. citations에는 그 지표 아래 나열된 근거 ID(E숫자) 또는 교리 ID(D숫자)만 그대로 넣는다.\n"
         "5. 근거에 없는 수치·사실은 쓰지 않는다. '충족', 'LR', '강도' 같은 내부 계산 용어는 쓰지 않는다.\n"
         "6. 최종 판단은 분석관이 하므로 '~로 판단됨', '~가능성 있음' 등 추정 표현을 쓴다.\n"
-        "7. summary는 전체 종합 판단 1문장: 출처 유형 수, 핵심 징후 2~3개, 가설과 확률(주어진 값 그대로)을 담고 "
-        "citations에 핵심 징후의 근거 ID를 넣는다."
+        "7. summary는 전체 종합 판단 1문장: 출처 유형, 핵심 징후 2~3개를 장비·사실로 구체적으로, 가설과 확률(주어진 값 그대로)을 담고 "
+        "citations에 핵심 징후의 근거 ID를 넣는다.\n"
+        "   예) '영상·현지 보도 2개 출처에서 전차 집결(13→40대), 도하장비 전방 이동, 야전병원 설치가 동시에 식별되어 공격 준비 가능성 87%로 판단됨'"
     )
     user = (
         f"평가 결과: 가설 '{top.name}', 확률 {top.probability:.0%}, 등급 {result.grade}, 분석 신뢰도 {result.confidence}\n\n"
@@ -145,6 +146,14 @@ def template_sentences(result: AssessmentResult, ev_map: dict[str, list[dict]], 
     return out
 
 
+def _word_overlap(text: str, cited_texts: list[str]) -> int:
+    """숫자를 뺀 단어(조사 차이 허용) 중 근거와 겹치는 개수."""
+    ev = {t for c in cited_texts for t in _content_tokens(c) if not t.replace(".", "", 1).isdigit() and len(t) >= 2}
+    toks = {t for t in _content_tokens(text) if not t.replace(".", "", 1).isdigit() and len(t) >= 2}
+    toks -= {"출처", "유형", "징후", "핵심", "가설", "확률", "공격", "준비", "가능성", "판단됨", "식별됨"}
+    return sum(1 for t in toks if any(t in e or e in t for e in ev))
+
+
 def verify_summary(summary: dict | None, result: AssessmentResult, ev_map: dict[str, list[dict]],
                    doctrine: list[dict]) -> dict | None:
     """종합 판단 검증: 인용이 실제 근거·교리 ID이고, 근거 내용을 담고, 문장 속 백분율이 계산값과 같아야 통과."""
@@ -156,6 +165,8 @@ def verify_summary(summary: dict | None, result: AssessmentResult, ev_map: dict[
     if not cites or not all(c in allowed for c in cites):
         return None
     if not reflects_evidence(text, [allowed[c]["text"] for c in cites]):
+        return None
+    if _word_overlap(text, [allowed[c]["text"] for c in cites]) < 2:   # 핵심 징후를 구체적으로 2개 이상 언급해야 함
         return None
     pct = round(result.top.probability * 100)
     for m in re.findall(r"(\d+(?:\.\d+)?)\s*%", text):

@@ -150,5 +150,7 @@ def test_summary_verification_blocks_changed_probability():
     assert ok and ok["citations"] == ["r1", "r2"]
     assert verify_summary({"text": "야전병원·도하장비 증가로 공격 준비 가능성 99%로 판단됨", "citations": ids}, r, m, []) is None
     assert verify_summary({"text": "공격 준비 가능성 있음", "citations": ids}, r, m, []) is None   # 근거 내용 없음
+    vague = {"text": f"출처 유형 1개, 핵심 징후 2개, 가설 '공격 준비' 확률 {pct}%로 판단됨", "citations": ids}
+    assert verify_summary(vague, r, m, []) is None                                              # 징후를 구체적으로 안 밝힘
     t = template_summary(r)
     assert f"{r.top.probability:.0%}" in t["text"] and t["generated"] == "template"
