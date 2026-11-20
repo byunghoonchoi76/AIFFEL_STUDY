@@ -167,6 +167,42 @@ def assess(req: AssessRequest):
     return res
 
 
+@app.get("/targets/recent")
+def targets_recent(area_id: str, as_of: datetime, days: int = 7):
+    """지도용: 최근 표적 + 식별 부대."""
+    from datetime import timedelta
+    from .orbat import store as orbat_store
+    as_of = to_aware(as_of)
+    pts = pg.fetch_target_points(area_id, as_of - timedelta(days=days), as_of)
+    unit_of = orbat_store.identify_events(pts) if orbat_store.has_data() else {}
+    return [{**p, "observed_at": p["observed_at"].isoformat(),
+             "unit_name": (unit_of.get(p["id"]) or {}).get("name"),
+             "dist_m": (unit_of.get(p["id"]) or {}).get("dist_m")} for p in pts[-2000:]]
+
+
+@app.get("/orbat/garrisons")
+def orbat_garrisons():
+    from .orbat import store as orbat_store
+    if not orbat_store.has_data():
+        return []
+    with pg.conn() as c:
+        return c.execute("""SELECT u.name, u.echelon, u.parent_key, g.location_type, g.radius_m,
+                                   ST_Y(g.geom) AS lat, ST_X(g.geom) AS lon
+                            FROM orbat_garrisons g JOIN orbat_units u USING (unit_key)""").fetchall()
+
+
+@app.get("/assessments/history")
+def assessment_history(area_id: str, as_of: datetime, days: int = 30):
+    """추이 차트용: 기준 시각별 최신 평가의 가설 확률·등급·신뢰도."""
+    from datetime import timedelta
+    as_of = to_aware(as_of)
+    rows = pg.fetch_assessment_history(area_id, as_of - timedelta(days=days), as_of)
+    return [{"as_of": r["as_of"].isoformat(), "threat_score": r["threat_score"], "confidence": r["confidence"],
+             "probabilities": {h["name"]: h["probability"] for h in r["result"].get("hypotheses", [])},
+             "indicators": sorted({c["indicator_id"] for h in r["result"].get("hypotheses", []) for c in h["contributions"]})}
+            for r in rows]
+
+
 @app.get("/readiness")
 def readiness(area_id: str, as_of: datetime):
     from .analysis.readiness_service import current_readiness

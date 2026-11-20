@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from statistics import mean, pstdev
+from statistics import median
 
 
 @dataclass(frozen=True)
@@ -43,6 +43,17 @@ class Change:
         return round(self.recent_level / self.baseline_level, 1) if self.baseline_level > 0 else None
 
 
+def noise_sd(counts: list[int]) -> float:
+    """판독 잡음 표준편차 추정: 연속 관측 차이의 중앙절대편차(MAD) × 1.4826 ÷ √2.
+    일정한 증가 추세(차이가 고르게 양수)는 잡음으로 잡히지 않음."""
+    if len(counts) < 3:
+        return 0.0
+    diffs = [b - a for a, b in zip(counts, counts[1:])]
+    m = median(diffs)
+    mad = median(abs(d - m) for d in diffs)
+    return round(1.4826 * mad / 2 ** 0.5, 2)
+
+
 def detect_changes(rows: list[TargetRow], as_of: datetime, window_days: int = 7, baseline_days: int = 30) -> list[Change]:
     """최근 창(as_of-window, as_of]의 최대 수량과 그 이전 기준기간 평균 수량을 비교."""
     w_start = as_of - timedelta(days=window_days)
@@ -56,15 +67,17 @@ def detect_changes(rows: list[TargetRow], as_of: datetime, window_days: int = 7,
         recent = [r for r in rs if w_start < r.observed_at <= as_of]
         if not recent:
             continue
-        base = [r.count for r in rs if b_start < r.observed_at <= w_start]
-        baseline = mean(base) if base else 0.0
+        base_rows = sorted((r for r in rs if b_start < r.observed_at <= w_start), key=lambda r: r.observed_at)
+        base = [r.count for r in base_rows]
+        # 평시 수준 = 중앙값, 변동폭 = 연속 관측 간 차이의 MAD 기반 추정 → 기준기간에 증가 추세가 섞여도 왜곡이 작음
+        baseline = median(base) if base else 0.0
         peak = max(recent, key=lambda r: r.count)
         out.append(Change(
             equipment_type=eq, baseline_level=round(baseline, 2), recent_level=peak.count,
             delta=round(peak.count - baseline, 2),
             latest_at=max(r.observed_at for r in recent),
             refs=[r.id for r in recent], baseline_obs=len(base),
-            baseline_sd=round(pstdev(base), 2) if len(base) >= 2 else 0.0,
+            baseline_sd=noise_sd(base),
         ))
     out.sort(key=lambda c: c.delta, reverse=True)
     return out

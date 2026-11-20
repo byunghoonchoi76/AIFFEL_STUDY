@@ -40,6 +40,7 @@ class IndicatorContribution:
     source_types: list[str]
     refs: list[str]
     discount: float = 1.0          # 반대 증거로 깎인 강도 배율 (1 = 영향 없음)
+    details: list = field(default_factory=list)   # 근거별 계산 내역 (가시화용)
 
 
 @dataclass
@@ -86,6 +87,17 @@ def _sigmoid(x: float) -> float:
 def evidence_weight(ev: Evidence, grading: Grading, as_of: datetime, tau_days: float) -> float:
     age_days = max(0.0, (as_of - ev.observed_at).total_seconds() / 86400)
     return grading.weight(ev.reliability, ev.credibility) * math.exp(-age_days / tau_days) * ev.scale
+
+
+def evidence_detail(ev: Evidence, grading: Grading, as_of: datetime, tau_days: float) -> dict:
+    """근거 1건의 가중치 계산 내역: 출처등급 가중 × 시의성 감쇠 × 신호 배율."""
+    age = max(0.0, (as_of - ev.observed_at).total_seconds() / 86400)
+    base = grading.weight(ev.reliability, ev.credibility)
+    decay = math.exp(-age / tau_days)
+    return {"ref": ev.ref, "source_type": ev.source_type, "grade": f"{ev.reliability}{ev.credibility}",
+            "grade_weight": round(base, 3), "age_days": round(age, 1), "tau_days": tau_days, "decay": round(decay, 3),
+            "scale": ev.scale, "weight": round(base * decay * ev.scale, 3), "quote": (ev.quote or "")[:160],
+            "unit_key": ev.unit_key}
 
 
 def indicator_strength(weighted: list[tuple[str, str, float]]) -> float:
@@ -150,6 +162,7 @@ def score_hypothesis(h: Hypothesis, evidence: list[Evidence], grading: Grading, 
             delta_logit=round(delta, 4),
             source_types=sorted({e.source_type for e in evs}),
             refs=[e.ref for e in evs], discount=round(disc, 4),
+            details=[evidence_detail(e, grading, as_of, ind.tau_days) for e in evs],
         ))
     p = _sigmoid(logit)
     contribs.sort(key=lambda c: c.delta_logit, reverse=True)

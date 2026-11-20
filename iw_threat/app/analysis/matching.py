@@ -51,7 +51,8 @@ def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
             # 약한 신호: 임계값의 일정 비율 이상 + 평시 변동폭을 낮은 기준으로 넘는 증가 → 가중치를 낮춰 반영
             wk = catalog.weak
             weak = (not strong and wk and ch.delta >= max(1, math.ceil(th.min_delta * wk.get("fraction", 0.5)))
-                    and (ch.zscore is None or ch.zscore >= wk.get("zscore", 2.0)))
+                    and (ch.zscore is None or ch.zscore >= wk.get("zscore", 2.0))
+                    and len(ch.refs) >= wk.get("min_obs", 2))       # 약한 신호는 최근 2회 이상 관측돼야 (일회성 잡음 배제)
             if strong or weak:
                 out.append(Evidence(
                     indicator_id=ind.id, source_type="IMINT", source_key=source_key,

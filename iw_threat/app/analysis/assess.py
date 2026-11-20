@@ -17,6 +17,17 @@ from .matching import ReportChunk, classification_prompt, hits_to_evidence, matc
 from .scoring import assess
 
 
+def lr_matrix(catalog, result) -> dict:
+    """식별된 지표 × 가설 우도비 (경쟁가설 비교표용). 1보다 크면 그 가설을 지지, 작으면 반박."""
+    ids = {c.indicator_id for h in result.hypotheses for c in h.contributions}
+    names = {i: d.name for i, d in catalog.indicator_defs().items()}
+    out = {}
+    for iid in sorted(ids):
+        out[iid] = {"name": names.get(iid, iid),
+                    "lr": {h.name: next((x.lr for x in h.indicators if x.id == iid), 1.0) for h in catalog.hypotheses}}
+    return out
+
+
 def estimate_unidentified(points: list[dict], link_km: float = 4.0) -> list[dict]:
     """전투서열로 식별되지 않은 최근 표적을 거리 기준으로 묶어 장비 구성으로 부대 유형·제대 추정 (M2-echelon).
     예) 주둔지를 떠나 집결지에 나타난 전차·장갑차 군집 → '전차여단(여단) 추정'."""
@@ -130,12 +141,13 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
 
     payload = {
         "baseline_mode": baseline_mode,
-        "changes": [{**asdict(c), "ratio": c.ratio} for c in changes],
+        "changes": [{**asdict(c), "ratio": c.ratio, "zscore": c.zscore} for c in changes],
         "unit_attribution": attribution,
         "unit_estimates": unit_estimates,
         "evidence": [asdict(e) for e in evidence],
         "hypotheses": [asdict(h) for h in result.hypotheses],
         "conflicts": [asdict(c) for c in result.conflicts],
+        "lr_matrix": lr_matrix(catalog, result),
         "rejected_llm_hits": rejected_hits,
         "catalog_version": catalog.meta.get("version"),
         "report_chunks_checked": n_chunks,

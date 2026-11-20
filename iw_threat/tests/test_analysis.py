@@ -235,7 +235,7 @@ def test_zscore_guard_blocks_noise_on_large_units():
             for i, (d, n) in enumerate([(30, 80), (25, 95), (20, 88), (15, 97), (10, 81)])]
     rows.append(TargetRow(9, "towed_howitzer", NOW - timedelta(days=1), 94))
     ch = detect_changes(rows, NOW)[0]
-    assert ch.zscore is not None and ch.zscore < 3
+    assert ch.zscore is not None and ch.zscore < 3, ch
     assert match_imagery([ch], CAT, GR) == []
     new = detect_changes([TargetRow(1, "bridge_pmp", NOW - timedelta(days=1), 4)], NOW)
     assert [e.indicator_id for e in match_imagery(new, CAT, GR)] == ["I_BRIDGING"]
@@ -245,6 +245,8 @@ def test_weak_signal_and_multi_unit_sync():
     from app.analysis.matching import sync_evidence
     # 각 사단에서 위장 표적 1개 신규 출현: 사단 기준(+2) 미달이지만 절반 이상 → 약한 신호
     chs = [_unit_change("camouflaged", 0, 1, "사단", uk=f"D{i}") for i in range(3)]
+    for c in chs:
+        c.refs = [1, 2]                                   # 최근 2회 관측
     ev = match_imagery(chs, CAT, GR)
     assert [e.indicator_id for e in ev] == ["I_DISPERSAL"] * 3 and all(e.scale == 0.5 for e in ev)
     assert "약한 신호" in ev[0].quote
@@ -255,3 +257,9 @@ def test_weak_signal_and_multi_unit_sync():
     r = assess(CAT, ev + sync, GR, NOW)
     att = next(h for h in r.hypotheses if h.hypothesis_id == "H_ATTACK")
     assert {c.indicator_id for c in att.contributions} == {"I_DISPERSAL", "I_SYNC_CONCEAL"}
+
+
+def test_noise_sd_ignores_steady_trend():
+    from app.analysis.change import noise_sd
+    assert noise_sd([12, 14, 16, 18, 20, 22, 24]) == 0.0          # 고른 증가 추세는 잡음 아님
+    assert noise_sd([80, 95, 88, 97, 81, 92, 85]) > 5             # 들쭉날쭉한 판독 오차
