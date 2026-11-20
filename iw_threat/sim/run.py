@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from .scenario import Scenario, generate_targets, load_scenario, orbat_rows, report_documents
+from app.analysis.readiness import observation_from_result
 
 GRADE_ORDER = {"관심": 0, "주의": 1, "경계": 2, "심각": 3}
 
@@ -66,6 +67,7 @@ def assess_series(client, sc: Scenario, d_day: datetime, step: int, log=print) -
                        "top_threat": r["top_hypothesis"], "probabilities": probs,
                        "threats": {h["hypothesis_id"]: h["threat"] for h in r["hypotheses"]},
                        "indicators": sorted({c["indicator_id"] for h in r["hypotheses"] for c in h["contributions"]}),
+                       "decisive_indicators": sorted(observation_from_result(day, r).indicators),   # 태세 결정적 징후용(강도 기준 통과분)
                        "n_indicators": len(r["hypotheses"][0]["contributions"]), "elapsed_s": r.get("elapsed_s")})
         log(f"  D{day:+d}  등급 {r['grade']:2s}  " + "  ".join(f"{k} {v:.0%}" for k, v in probs.items()))
         final = r
@@ -102,7 +104,7 @@ def readiness_eval(sc: Scenario, series: list[dict], readiness_path: str = "conf
     from app.analysis.readiness import Observation, load_readiness, recommend_all
 
     tracks, basis = load_readiness(readiness_path)
-    obs = [Observation(x["day"], x["threats"], x["confidence"], set(x["indicators"]), f"D{x['day']:+d}") for x in series]
+    obs = [Observation(x["day"], x["threats"], x["confidence"], set(x.get("decisive_indicators", x["indicators"])), f"D{x['day']:+d}") for x in series]
     recs = recommend_all(tracks, obs)
     truth_cfg = (sc.truth.get("readiness") or {})
     out = {"basis": basis, "tracks": {}}
