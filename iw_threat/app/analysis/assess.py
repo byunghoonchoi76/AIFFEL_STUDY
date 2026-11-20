@@ -13,7 +13,7 @@ from .catalog import load_catalog, load_grading
 from .change import TargetRow, detect_changes, detect_unit_changes
 from .explain import (build_evidence_map, explanation_prompt, indicator_lines, label_doctrine, template_summary,
                       verify_implications, verify_summary)
-from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery
+from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery, sync_evidence
 from .scoring import assess
 
 
@@ -81,6 +81,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         rows = pg.fetch_target_rows(area_id, since, as_of)
         changes = detect_changes(rows, as_of, s.window_days, s.baseline_days)
     evidence = match_imagery(changes, catalog, grading)
+    evidence += sync_evidence(evidence, catalog, grading, {c.unit_key: c.unit_name for c in changes if c.unit_key})
 
     # 2) 텍스트 첩보 → LLM 분류(인용문 원문 대조 검증)
     rejected_hits = 0

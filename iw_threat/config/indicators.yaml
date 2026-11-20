@@ -14,6 +14,7 @@ thresholds:
   echelon_scale: {군단: 1.5, 사단: 1.0, 여단: 0.5, 연대: 0.3, 대대: 0.2, 중대: 0.1}   # min_delta × 배율 (올림, 최소 1)
   unit_min_ratio: 2.0    # 평시 대비 2배 이상 + 증가량이 임계값의 절반 이상이면 충족
   min_zscore: 3.0        # 증가량이 평시 표준편차의 3배 이상일 때만 (평시 관측 3회 이상일 때 적용)
+  weak_signal: {fraction: 0.5, zscore: 2.0, scale: 0.5}   # 임계값 절반 이상·표준편차 2배 이상 증가 → 가중치 절반의 약한 신호
 # 지표별로 제대 값을 직접 지정하려면: min_delta_by_echelon: {여단: 6, 대대: 3}  (배율보다 우선)
 
 grades:            # 위협 점수 → 등급 (하한값 기준, 내림차순)
@@ -38,6 +39,7 @@ hypotheses:
       - {id: I_PATTERN_DEV,  name: 평시 훈련 패턴과 상이한 활동, lr: 3.0, tau_days: 14, equipment: [], min_delta: 0, meaning: 평시 활동과 다른 이상 활동}
       # classes.yaml 연계 지표 (ATP 7-100.2 기반 시나리오) — 예시값
       - {id: I_DISPERSAL,    name: 주둔지 이탈·야간 분산 이동,  lr: 3.5, tau_days: 7, equipment: [march_column, camouflaged], min_delta: 2, meaning: 은밀 전개 정황}
+      - {id: I_SYNC_CONCEAL, name: 다수 부대 동시 은밀 전개,     lr: 6.0, tau_days: 5, equipment: [], sync_of: I_DISPERSAL, min_units: 2, meaning: 협조된 공격 준비 정황}
       - {id: I_HARTS_OCC,    name: 갱도포병진지 점유,          lr: 7.0, tau_days: 10, equipment: [harts@occupied], min_delta: 2, meaning: 화력 운용 준비 정황}
       - {id: I_DECEPTION_ACT, name: 기만체·가짜 진지 조성,     lr: 1.5, tau_days: 10, equipment: [group:deception], min_delta: 3, meaning: 의도 은폐 활동}
       - {id: I_EW_DEPLOY,    name: 전자전·통신 차량 전개,      lr: 3.0, tau_days: 5, equipment: [ew_vehicle], min_delta: 2, meaning: 전자전 공격 준비 정황}

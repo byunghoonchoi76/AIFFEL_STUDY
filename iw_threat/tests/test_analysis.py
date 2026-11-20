@@ -239,3 +239,19 @@ def test_zscore_guard_blocks_noise_on_large_units():
     assert match_imagery([ch], CAT, GR) == []
     new = detect_changes([TargetRow(1, "bridge_pmp", NOW - timedelta(days=1), 4)], NOW)
     assert [e.indicator_id for e in match_imagery(new, CAT, GR)] == ["I_BRIDGING"]
+
+
+def test_weak_signal_and_multi_unit_sync():
+    from app.analysis.matching import sync_evidence
+    # 각 사단에서 위장 표적 1개 신규 출현: 사단 기준(+2) 미달이지만 절반 이상 → 약한 신호
+    chs = [_unit_change("camouflaged", 0, 1, "사단", uk=f"D{i}") for i in range(3)]
+    ev = match_imagery(chs, CAT, GR)
+    assert [e.indicator_id for e in ev] == ["I_DISPERSAL"] * 3 and all(e.scale == 0.5 for e in ev)
+    assert "약한 신호" in ev[0].quote
+    sync = sync_evidence(ev, CAT, GR, {"D0": "제1가상사단"})
+    assert [e.indicator_id for e in sync] == ["I_SYNC_CONCEAL"] and sync[0].scale == 1.0
+    # 1개 부대만이면 동시성 없음
+    assert sync_evidence(ev[:1], CAT, GR) == []
+    r = assess(CAT, ev + sync, GR, NOW)
+    att = next(h for h in r.hypotheses if h.hypothesis_id == "H_ATTACK")
+    assert {c.indicator_id for c in att.contributions} == {"I_DISPERSAL", "I_SYNC_CONCEAL"}

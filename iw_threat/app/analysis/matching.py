@@ -47,13 +47,42 @@ def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
                         and ch.delta >= max(1, math.ceil(th.min_delta / 2)))
             # 판독 오차·평시 변동을 넘는 증가인지 (대규모 부대에서 수량 오차가 임계값보다 커지는 오탐 방지)
             significant = catalog.min_zscore is None or ch.zscore is None or ch.zscore >= catalog.min_zscore
-            if (by_delta or by_ratio) and significant:
+            strong = (by_delta or by_ratio) and significant
+            # 약한 신호: 임계값의 일정 비율 이상 + 평시 변동폭을 낮은 기준으로 넘는 증가 → 가중치를 낮춰 반영
+            wk = catalog.weak
+            weak = (not strong and wk and ch.delta >= max(1, math.ceil(th.min_delta * wk.get("fraction", 0.5)))
+                    and (ch.zscore is None or ch.zscore >= wk.get("zscore", 2.0)))
+            if strong or weak:
                 out.append(Evidence(
                     indicator_id=ind.id, source_type="IMINT", source_key=source_key,
                     reliability=rel, credibility=cred, observed_at=ch.latest_at,
                     ref=f"targets:{ch.equipment_type}:{','.join(map(str, ch.refs))}",
-                    quote=_imagery_quote(ch) + f" (기준 {th.basis})",
+                    quote=_imagery_quote(ch) + f" (기준 {th.basis}{', 약한 신호' if weak else ''})",
+                    scale=1.0 if strong else float(wk.get("scale", 0.5)), unit_key=ch.unit_key,
                 ))
+    return out
+
+
+def sync_evidence(evidence: list[Evidence], catalog: Catalog, grading: Grading,
+                  names: dict[str, str] | None = None) -> list[Evidence]:
+    """동시성 지표: 같은 지표(약한 신호 포함)가 여러 부대에서 함께 식별되면 별도 근거로 추가.
+    예) 보병사단 3개가 같은 시기에 야간 분산·위장 시작 → '다수 부대 동시 은밀 전개'."""
+    rel, cred = grading.default_grade("IMINT")
+    out = []
+    for ind in catalog.indicator_defs().values():
+        if not ind.sync_of:
+            continue
+        evs = [e for e in evidence if e.indicator_id == ind.sync_of and e.unit_key]
+        units = sorted({e.unit_key for e in evs})
+        if len(units) < max(ind.min_units, 2):
+            continue
+        label = ", ".join((names or {}).get(u, u) for u in units[:4])
+        out.append(Evidence(
+            indicator_id=ind.id, source_type="IMINT", source_key="IMINT:sync", reliability=rel, credibility=cred,
+            observed_at=max(e.observed_at for e in evs), ref="sync:" + ",".join(units),
+            quote=f"{len(units)}개 부대 동시 식별: {label}",
+            scale=min(1.0, len(units) / (ind.min_units + 1)),
+        ))
     return out
 
 

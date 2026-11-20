@@ -26,6 +26,8 @@ class Evidence:
     observed_at: datetime
     ref: str                 # 근거 참조(target_event id, chunk id 등)
     quote: str | None = None
+    scale: float = 1.0       # 약한 신호 등 가중 배율 (0~1)
+    unit_key: str | None = None   # 영상 근거의 식별 부대 (동시성 판단용)
 
 
 @dataclass
@@ -83,7 +85,7 @@ def _sigmoid(x: float) -> float:
 
 def evidence_weight(ev: Evidence, grading: Grading, as_of: datetime, tau_days: float) -> float:
     age_days = max(0.0, (as_of - ev.observed_at).total_seconds() / 86400)
-    return grading.weight(ev.reliability, ev.credibility) * math.exp(-age_days / tau_days)
+    return grading.weight(ev.reliability, ev.credibility) * math.exp(-age_days / tau_days) * ev.scale
 
 
 def indicator_strength(weighted: list[tuple[str, str, float]]) -> float:

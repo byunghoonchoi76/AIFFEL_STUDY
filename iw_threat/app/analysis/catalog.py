@@ -22,6 +22,8 @@ class Indicator:
     counter: bool = False                 # 반대 징후(위협 가능성을 낮추는 증거, lr < 1)
     discounts: tuple[str, ...] = ()       # 반대 징후가 신뢰를 깎는 대상 지표 (예: 모형 장비 → 기갑 집결)
     discount_factor: float = 0.0          # 반대 징후 강도 1일 때 대상 지표 강도를 줄이는 비율
+    sync_of: str | None = None            # 동시성 지표: 이 지표가 여러 부대에서 동시에 식별되면 충족
+    min_units: int = 0
 
 
 @dataclass(frozen=True)
@@ -54,6 +56,7 @@ class Catalog:
     echelon_scale: dict[str, float] = field(default_factory=dict)   # 지역 단위 min_delta에 곱할 제대별 배율
     unit_min_ratio: float | None = None                              # 부대 단위 평시 대비 배수 기준
     min_zscore: float | None = None                                  # 평시 변동폭(표준편차) 대비 최소 증가 배수
+    weak: dict = field(default_factory=dict)                         # 약한 신호 기준 {fraction, zscore, scale}
 
     def counters(self) -> dict[str, Indicator]:
         return {k: v for k, v in self.indicator_defs().items() if v.counter}
@@ -111,6 +114,7 @@ def load_catalog(path: str | Path) -> Catalog:
                 meaning=str(i.get("meaning", "")),
                 min_delta_by_echelon=tuple((str(k), int(v)) for k, v in (i.get("min_delta_by_echelon") or {}).items()),
                 counter=bool(i.get("counter", False)), discounts=tuple(i.get("discounts", [])),
+                sync_of=i.get("sync_of"), min_units=int(i.get("min_units", 0)),
                 discount_factor=float(i.get("discount_factor", 0.0)),
             )
             for i in h["indicators"]
@@ -128,7 +132,7 @@ def load_catalog(path: str | Path) -> Catalog:
     scale = {str(k): float(v) for k, v in (th.get("echelon_scale") or {}).items()}
     ratio = float(th["unit_min_ratio"]) if th.get("unit_min_ratio") else None
     z = float(th["min_zscore"]) if th.get("min_zscore") else None
-    return Catalog(hyps, grades, raw.get("meta", {}), scale, ratio, z)
+    return Catalog(hyps, grades, raw.get("meta", {}), scale, ratio, z, th.get("weak_signal") or {})
 
 
 def load_grading(path: str | Path) -> Grading:
