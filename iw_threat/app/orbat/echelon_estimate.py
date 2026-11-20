@@ -30,6 +30,9 @@ MECH_IFV_ASSUMED = 279
 
 @lru_cache
 def templates(path: str = str(Path(__file__).resolve().parents[2] / "scenarios/opfor_corps/orbat.yaml")) -> dict[str, dict[str, float]]:
+    """편제 템플릿. 파일이 없으면 빈 사전(제대 추정 생략) — 평가 자체는 계속 진행."""
+    if not Path(path).exists():
+        return {}
     raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))["echelon_templates"]
     out = {}
     for name, t in raw.items():
@@ -65,7 +68,7 @@ def _cos(a: dict[str, float], b: dict[str, float]) -> float:
 def estimate(counts: dict[str, float]) -> dict | None:
     """counts: 표적 라벨 → 관측 수량. 반환: 추정 유형·제대·유사도·편제 대비 규모·후보 순위."""
     obs = counts_to_groups(counts)
-    if sum(obs.values()) < 5:
+    if sum(obs.values()) < 5 or not templates():
         return None
     total = sum(obs.values())
     ranked = sorted(((_cos(obs, v), k) for k, v in templates().items()), reverse=True)

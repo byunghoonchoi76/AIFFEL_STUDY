@@ -14,3 +14,4 @@ COPY app ./app
 COPY ui ./ui
 COPY config ./config
 COPY db ./db
+COPY scenarios ./scenarios
