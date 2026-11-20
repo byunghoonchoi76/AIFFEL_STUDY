@@ -1,97 +1,286 @@
-"""분석관 화면 (MVP). 지도는 2차에서 오프라인 배경지도(PMTiles)+MapLibre로 교체 예정."""
+"""분석관 화면 — '무엇을 근거로 어떻게 판단했는지'를 단계별로 보여주는 데 초점.
+데이터 원천: (1) API 실시간 평가, (2) 결과 파일 열기(합성 시나리오 result.json — 오프라인 시연)."""
+import csv
+import io
+import json
 import os
+import sys
 from datetime import datetime
+from pathlib import Path
 
 import httpx
 import pandas as pd
 import streamlit as st
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from app.taxonomy import name_ko  # noqa: E402
+from ui import viz
+
+TRACK_KO = {'watchcon': '워치콘(정보감시태세)', 'jindogae': '진돗개(대침투)', 'durumi': '두루미(대공)'}  # noqa: E402
+
 API = os.environ.get("API_URL", "http://localhost:8080")
-st.set_page_config(page_title="징후·위협도 분석", layout="wide")
-st.title("징후·위협도 AI 추론 (MVP)")
+st.set_page_config(page_title="징후·위협도 분석", layout="wide", page_icon="🛰")
+st.markdown("""<style>
+.card{border-radius:10px;padding:12px 14px;color:#fff;margin-bottom:6px}
+.card .t{font-size:13px;opacity:.9}.card .v{font-size:26px;font-weight:700;line-height:1.2}.card .s{font-size:12px;opacity:.9}
+.lite{background:#F4F6F7;color:#1f2937;border:1px solid #D5D8DC}
+.step{border:1px solid #D5D8DC;border-radius:8px;padding:8px 10px;background:#FBFCFC;height:100%}
+.step b{font-size:15px}.step .n{font-size:22px;font-weight:700;color:#1F3A68}
+.why{background:#FEF9E7;border-left:4px solid #D4AC0D;padding:8px 12px;border-radius:4px;margin:6px 0}
+.defcon{background:#C0392B;color:#fff;padding:8px 12px;border-radius:6px;font-weight:700}
+</style>""", unsafe_allow_html=True)
 
-tab_assess, tab_targets, tab_docs, tab_fb = st.tabs(["평가", "표적 입력", "문서 수집", "분석관 피드백"])
 
-with tab_targets:
-    st.caption("CSV 열: area_id, observed_at, equipment_type, count, lon, lat, image_ref")
-    up = st.file_uploader("표적 CSV", type="csv", key="targets")
-    if up and st.button("표적 등록"):
-        df = pd.read_csv(up)
-        df = df.astype(object).where(pd.notna(df), None)
-        r = httpx.post(f"{API}/targets", json=df.to_dict(orient="records"), timeout=60)
-        st.write(r.json())
+# ───────────────────────── 데이터 불러오기 ─────────────────────────
+def api_get(path, **params):
+    r = httpx.get(f"{API}{path}", params=params, timeout=120)
+    r.raise_for_status()
+    return r.json()
 
-with tab_docs:
-    f = st.file_uploader("문서 (PDF·HWPX·TXT)", type=["pdf", "hwpx", "txt", "md"])
-    c1, c2, c3 = st.columns(3)
-    title = c1.text_input("제목")
-    source_name = c2.text_input("출처명")
-    source_type = c3.selectbox("출처 유형", ["DOCTRINE", "OSINT", "HUMINT", "SIGINT", "IMINT"])
-    c4, c5, c6 = st.columns(3)
-    rel = c4.selectbox("출처 신뢰도", list("ABCDEF"), index=2)
-    cred = c5.selectbox("정보 신빙성", [1, 2, 3, 4, 5, 6], index=2)
-    area = c6.text_input("지역 ID (교리는 공란)")
-    reported = st.text_input("보고 일시 (ISO, 예: 2026-11-10T09:00:00)")
-    extract = st.checkbox("LLM 개체·관계 추출(지식그래프)")
-    if f and title and source_name and st.button("수집"):
-        data = {"title": title, "source_name": source_name, "source_type": source_type, "reliability": rel,
-                "credibility": cred, "extract_graph": extract}
-        if area:
-            data["area_id"] = area
-        if reported:
-            data["reported_at"] = reported
-        r = httpx.post(f"{API}/ingest", data=data, files={"file": (f.name, f.getvalue())}, timeout=600)
-        st.write(r.json())
 
-with tab_assess:
+def load_result_file(raw: bytes, base: Path | None = None) -> dict:
+    """합성 시나리오 result.json → 화면 데이터 (평가 응답 + 추이 + 지도용 표적)."""
+    res = json.loads(raw)
+    data = {"assess": res["final"], "history": [{"as_of": s["as_of"], "probabilities": s["probabilities"]} for s in res["series"]],
+            "evaluation": res.get("evaluation"), "scenario": res.get("scenario"), "points": [], "garrisons": []}
+    if base and (base / "targets.json").exists():
+        last = res["series"][-1]["day"]
+        data["points"] = [{**t, "unit_name": None} for t in json.loads((base / "targets.json").read_text(encoding="utf-8"))
+                          if last - 7 < t["day"] <= last]
+    if base and (base / "orbat_records.csv").exists():
+        from app.orbat.identify import radius_for
+        rows = list(csv.DictReader(io.StringIO((base / "orbat_records.csv").read_text(encoding="utf-8-sig"))))
+        data["garrisons"] = [{"name": r["unit_raw"], "echelon": r["echelon"], "lat": float(r["lat"]), "lon": float(r["lon"]),
+                              "radius_m": radius_for(r["echelon"] or None, 1)} for r in rows if r.get("lat")]
+    return data
+
+
+with st.sidebar:
+    st.header("🛰 징후·위협도 분석")
+    mode = st.radio("데이터", ["실시간 평가(API)", "결과 파일 열기"], index=1 if os.environ.get("DEMO_RESULT") else 0)
+    if mode == "실시간 평가(API)":
+        area = st.text_input("지역 ID", "AREA-01")
+        as_of = st.text_input("기준 일시", datetime.now().astimezone().replace(microsecond=0).isoformat())
+        explain = st.checkbox("해설 생성(LLM)", True)
+        if st.button("평가 실행", type="primary", use_container_width=True):
+            with st.spinner("분석 중… (표적 변화 → 징후 매칭 → 위협도 → 해설 → 태세 건의)"):
+                a = httpx.post(f"{API}/assess", json={"area_id": area, "as_of": as_of, "explain": explain}, timeout=900).json()
+                d = {"assess": a, "history": [], "points": [], "garrisons": []}
+                try:
+                    d["history"] = api_get("/assessments/history", area_id=area, as_of=as_of)
+                    d["points"] = api_get("/targets/recent", area_id=area, as_of=as_of)
+                    d["garrisons"] = api_get("/orbat/garrisons")
+                except Exception as e:  # noqa: BLE001
+                    st.warning(f"부가 정보 조회 실패: {e}")
+                st.session_state["data"] = d
+    else:
+        demo = os.environ.get("DEMO_RESULT")
+        up = st.file_uploader("result.json (합성 시나리오)", type="json")
+        if up:
+            st.session_state["data"] = load_result_file(up.getvalue())
+        elif demo and "data" not in st.session_state:
+            p = Path(demo)
+            st.session_state["data"] = load_result_file(p.read_bytes(), p.parent)
+    st.caption("판단은 시스템 '건의'이며 최종 판단·발령은 분석관·지휘관 권한")
+
+data = st.session_state.get("data")
+if not data or "hypotheses" not in data.get("assess", {}):
+    st.info("왼쪽에서 평가를 실행하거나 결과 파일을 여세요.")
+    st.stop()
+
+A = data["assess"]
+hyps = A["hypotheses"]
+top = hyps[0]
+N = A.get("narrative") or {}
+evidence = A.get("evidence", [])
+rd = (A.get("readiness") or {}).get("current") or {}
+if not rd and data.get("evaluation", {}).get("readiness"):
+    rd = {k: {"level_name": v["series"][-1]["name"], "action": v["series"][-1]["action"], "reasons": v["series"][-1]["reasons"],
+              "note": v["series"][-1]["note"], "defcon_review": v["series"][-1]["defcon"]}
+          for k, v in data["evaluation"]["readiness"]["tracks"].items()}
+
+tabs = st.tabs(["🧭 판단 요약", "🔎 판단 근거", "📈 변화 분석", "🗺 상황도", "📊 추이", "📄 근거 원문", "⚙ 입력·피드백"])
+
+# ───────────────────────── 1. 판단 요약 ─────────────────────────
+with tabs[0]:
+    c = st.columns(4)
+    gcol = viz.GRADE_COLOR.get(A["grade"], "#555")
+    c[0].markdown(f"<div class='card' style='background:{gcol}'><div class='t'>위협 등급</div><div class='v'>{A['grade']}</div>"
+                  f"<div class='s'>위협 점수 {A['threat_score']:.0%} = 확률 × 영향도</div></div>", unsafe_allow_html=True)
+    c[1].markdown(f"<div class='card lite'><div class='t'>가장 위험한 가설</div><div class='v'>{A['top_hypothesis']}</div>"
+                  f"<div class='s'>확률 {top['probability']:.0%} (사전 {top['prior']:.0%})</div></div>", unsafe_allow_html=True)
+    types = sorted({t for cc in top["contributions"] if cc["delta_logit"] > 0 for t in cc["source_types"]})
+    c[2].markdown(f"<div class='card lite'><div class='t'>분석 신뢰도</div><div class='v'>{A['confidence']}</div>"
+                  f"<div class='s'>독립 출처 {len(types)}종: {' · '.join(viz.SOURCE_KO.get(t, t) for t in types) or '-'}</div></div>",
+                  unsafe_allow_html=True)
+    n_pos = sum(cc["delta_logit"] > 0 for cc in top["contributions"])
+    n_neg = sum(cc["delta_logit"] < 0 for cc in top["contributions"])
+    c[3].markdown(f"<div class='card lite'><div class='t'>식별 징후</div><div class='v'>{n_pos}개</div>"
+                  f"<div class='s'>반대 징후 {n_neg}개 · 출처 간 모순 {len(A.get('conflicts', []))}건</div></div>", unsafe_allow_html=True)
+
+    if N.get("summary"):
+        st.markdown(f"<div class='why'><b>종합 판단</b> — {N['summary']['text']}</div>", unsafe_allow_html=True)
+
+    if rd:
+        st.subheader("태세 건의")
+        cols = st.columns(len(rd))
+        for col, (tid, r) in zip(cols, rd.items()):
+            if not r:
+                continue
+            color = "#C0392B" if r["action"] == "격상" else "#1F3A68"
+            col.markdown(f"<div class='card lite'><div class='t'>{TRACK_KO.get(tid, tid)}</div><div class='v' style='color:{color}'>{r['level_name']}</div>"
+                         f"<div class='s'>{r['action']} · {'; '.join(r['reasons']) or r.get('note') or '기준 미달 — 유지'}</div></div>",
+                         unsafe_allow_html=True)
+        if any((r or {}).get("defcon_review") for r in rd.values()):
+            st.markdown("<div class='defcon'>⚠ 데프콘 검토 필요 신호 — 워치콘 최고 단계 + 분석 신뢰도 상</div>", unsafe_allow_html=True)
+
+    st.subheader("판단 과정")
+    s = st.columns(5)
+    changes = A.get("changes", [])
+    steps = [("① 관측", f"{len(data.get('points', [])) or sum(len(c_['refs']) for c_ in changes)}건", "영상 판독 표적·첩보 문서"),
+             ("② 변화 감지", f"{sum(c_['delta'] > 0 for c_ in changes)}건", {'unit': '부대별 평시 대비', 'area': '지역 평시 대비'}.get(A.get('baseline_mode'), '평시 대비')),
+             ("③ 징후 식별", f"{n_pos}개", f"반대 {n_neg} · 원문대조 탈락 {A.get('rejected_llm_hits', 0)}"),
+             ("④ 위협도", f"{top['probability']:.0%}", f"{A['top_hypothesis']} · 신뢰도 {A['confidence']}"),
+             ("⑤ 건의", (rd.get('watchcon') or {}).get('level_name', A['grade']), "태세·보고서 초안")]
+    for col, (t, n, d) in zip(s, steps):
+        col.markdown(f"<div class='step'><b>{t}</b><div class='n'>{n}</div><small>{d}</small></div>", unsafe_allow_html=True)
+    st.plotly_chart(viz.probability_bars(hyps), use_container_width=True)
+
+# ───────────────────────── 2. 판단 근거 ─────────────────────────
+with tabs[1]:
+    st.markdown("<div class='why'>확률 계산식: <b>logit(확률) = logit(사전확률) + Σ 징후 강도 × ln(우도비)</b> · "
+                "징후 강도 = 1 − Π(1 − 출처 유형별 최대 가중치) · 근거 가중치 = 출처등급 가중 × 시의성 감쇠 × 신호 배율</div>",
+                unsafe_allow_html=True)
+    hname = st.selectbox("가설", [h["name"] for h in hyps])
+    H = next(h for h in hyps if h["name"] == hname)
+    st.plotly_chart(viz.evidence_flow(H), use_container_width=True)
+    st.plotly_chart(viz.waterfall(H), use_container_width=True)
+    if A.get("lr_matrix"):
+        st.plotly_chart(viz.lr_heatmap(A["lr_matrix"], hyps), use_container_width=True)
+
+    st.subheader("징후별 근거 사슬 — 관측 사실 → 가중치 → 징후 강도 → 확률 기여")
+    for cc in H["contributions"]:
+        sign = "🔺" if cc["delta_logit"] > 0 else "🔻"
+        head = (f"{sign} {cc['name']} — 강도 {cc['strength']:.2f} × ln(우도비 {cc['lr']:g}) = 기여 {cc['delta_logit']:+.2f}"
+                + (f"  · 반대 증거로 ×{cc['discount']:.2f}" if cc.get("discount", 1) < 1 else ""))
+        with st.expander(head):
+            det = cc.get("details") or []
+            if det:
+                df = pd.DataFrame([{"출처": viz.SOURCE_KO.get(d["source_type"], d["source_type"]), "등급": d["grade"],
+                                    "등급 가중": d["grade_weight"], "경과(일)": d["age_days"], "시의성 감쇠": d["decay"],
+                                    "신호 배율": d["scale"], "최종 가중치": d["weight"], "근거": d["quote"]} for d in det])
+                st.dataframe(df, use_container_width=True, hide_index=True)
+                st.caption(f"시의성 감쇠 = exp(−경과일 ÷ {det[0]['tau_days']:g}일) · 신호 배율 0.5 = 약한 신호 · "
+                           "같은 출처는 최댓값만, 다른 출처 유형은 독립 확인으로 결합")
+            else:
+                st.write("근거 상세 없음 (이전 버전 결과)")
+
+# ───────────────────────── 3. 변화 분석 ─────────────────────────
+with tabs[2]:
+    judged = {}
+    for e in evidence:
+        if e["ref"].startswith("targets:"):
+            eq = e["ref"].split(":")[1]
+            judged[eq + str(e.get("unit_key"))] = "약" if e.get("scale", 1) < 1 else "강"
+    ch = [{**c_, "equipment_label": name_ko(c_["equipment_type"])} for c_ in changes]
+    if ch:
+        st.plotly_chart(viz.change_chart(ch, judged), use_container_width=True)
+        st.dataframe(pd.DataFrame([{"부대": c_.get("unit_name") or "미식별", "장비": c_["equipment_label"],
+                                    "평시(중앙값)": c_["baseline_level"], "판독 잡음": c_.get("baseline_sd"),
+                                    "최근 최대": c_["recent_level"], "증가": c_["delta"], "배수": f"{c_['ratio']}배" if c_.get("ratio") else "신규",
+                                    "z": str(c_["zscore"]) if c_.get("zscore") is not None else "-", "판정": {"강": "징후 충족", "약": "약한 신호"}.get(
+                                        judged.get(c_["equipment_type"] + str(c_.get("unit_key"))), "미충족")}
+                                   for c_ in ch if c_["delta"] > 0]), use_container_width=True, hide_index=True)
+        st.caption("판정 기준: 제대별 임계값(또는 평시 대비 2배) 이상 + 판독 잡음의 3배 이상 → 징후, 절반 이상·2배·2회 관측 → 약한 신호")
+    if A.get("unit_estimates"):
+        st.subheader("전투서열로 식별되지 않은 표적 군집 — 장비 구성으로 부대 유형 추정")
+        st.dataframe(pd.DataFrame([{"추정": f"{e['type_ko']}({e['echelon'] or '-'})", "구성 유사도": e["similarity"],
+                                    "편제 대비": f"{e['strength_ratio']:.0%}", "장비": ", ".join(f"{name_ko(k)} {v}" for k, v in
+                                                                                         sorted(e["equipment"].items(), key=lambda kv: -kv[1])[:5])}
+                                   for e in A["unit_estimates"]]), use_container_width=True, hide_index=True)
+
+# ───────────────────────── 4. 상황도 ─────────────────────────
+with tabs[3]:
+    if data.get("points") or data.get("garrisons"):
+        st.plotly_chart(viz.situation_map(data.get("points", []), data.get("garrisons", []), A.get("unit_estimates", [])),
+                        use_container_width=True)
+        st.caption("배경지도 없이 좌표 평면에 표시(오프라인). 실증 시 부대 보유 지도 체계와 연동")
+    else:
+        st.info("표적 좌표가 없습니다.")
+
+# ───────────────────────── 5. 추이 ─────────────────────────
+with tabs[4]:
+    st.plotly_chart(viz.trend_chart(data.get("history", [])), use_container_width=True)
+    ev = data.get("evaluation")
+    if ev and ev.get("readiness"):
+        rows = []
+        for tid, tr in ev["readiness"]["tracks"].items():
+            for x in tr["series"]:
+                if x["action"] != "유지":
+                    rows.append({"태세": tr["name"], "일자": f"D{x['day']:+d}", "건의": x["name"], "조치": x["action"],
+                                 "근거": "; ".join(x["reasons"])})
+        if rows:
+            st.subheader("태세 건의 변동 이력")
+            st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+# ───────────────────────── 6. 근거 원문 ─────────────────────────
+with tabs[5]:
+    if A.get("conflicts"):
+        st.subheader("⚠ 출처 간 모순 · 반대 징후")
+        st.dataframe(pd.DataFrame([{"반대 징후": c_["counter_name"], "강도": c_["strength"], "출처": "/".join(c_["source_types"]),
+                                    "신뢰가 깎인 징후": ", ".join(f"{k} ×{v:.2f}" for k, v in c_["discounted"].items()) or "-"}
+                                   for c_ in A["conflicts"]]), use_container_width=True, hide_index=True)
+    st.subheader("근거 목록")
+    src = st.multiselect("출처", sorted({e["source_type"] for e in evidence}), default=sorted({e["source_type"] for e in evidence}))
+    names = {cc["indicator_id"]: cc["name"] for h in hyps for cc in h["contributions"]}
+    st.dataframe(pd.DataFrame([{"징후": names.get(e["indicator_id"], e["indicator_id"]), "출처": viz.SOURCE_KO.get(e["source_type"]),
+                                "등급": f"{e['reliability']}{e['credibility']}", "관측": str(e["observed_at"])[:16],
+                                "약한 신호": "예" if e.get("scale", 1) < 1 else "", "근거 문구": e.get("quote")}
+                               for e in evidence if e["source_type"] in src]), use_container_width=True, hide_index=True)
+    st.caption(f"LLM 분류 중 원문에 없는 인용으로 탈락: {A.get('rejected_llm_hits', 0)}건 · 근거 미확인 해설 제거: {N.get('dropped', 0)}건")
+    if N.get("sentences"):
+        st.subheader("징후별 해설 (보고서 초안)")
+        for s_ in N["sentences"]:
+            st.markdown(f"- {s_['text']}")
+
+# ───────────────────────── 7. 입력·피드백 ─────────────────────────
+with tabs[6]:
+    st.caption("API 모드에서 사용")
     c1, c2 = st.columns(2)
-    area_id = c1.text_input("지역 ID", "AREA-01")
-    as_of = c2.text_input("기준 일시", datetime.now().astimezone().replace(microsecond=0).isoformat())
-    if st.button("평가 실행", type="primary"):
-        with st.spinner("분석 중..."):
-            r = httpx.post(f"{API}/assess", json={"area_id": area_id, "as_of": as_of}, timeout=900)
-        res = r.json()
-        st.session_state["last"] = res
-    res = st.session_state.get("last")
-    if res and "grade" in res:
-        m1, m2, m3, m4 = st.columns(4)
-        m1.metric("위협 등급", res["grade"])
-        m2.metric("최상위 가설", res["top_hypothesis"])
-        m3.metric("확률", f"{res['probability']:.0%}")
-        m4.metric("분석 신뢰도", res["confidence"])
-        st.subheader("가설별 결과")
-        st.dataframe(pd.DataFrame([{k: h[k] for k in ("name", "prior", "probability", "impact", "threat")}
-                                   for h in res["hypotheses"]]))
-        st.subheader("지표별 기여도 (최상위 가설)")
-        st.dataframe(pd.DataFrame(res["hypotheses"][0]["contributions"]))
-        if res.get("conflicts"):
-            st.subheader("출처 간 모순 · 반대 징후")
-            st.dataframe(pd.DataFrame(res["conflicts"])[["counter_name", "strength", "source_types", "discounted"]])
-        st.subheader("영상 변화")
-        st.dataframe(pd.DataFrame(res["changes"]))
-        if res.get("unit_attribution"):
-            st.subheader("표적 → 부대 식별 (전투서열)")
-            st.dataframe(pd.DataFrame(res["unit_attribution"])[
-                ["equipment", "unit_name", "echelon", "parent_key", "location_type", "dist_km", "affinity", "max_count"]])
-        st.subheader("근거 기반 해설 (보고서 초안)")
-        summ = res["narrative"].get("summary")
-        if summ:
-            st.info(f"**종합 판단** · {summ['text']}")
-        for s in res["narrative"].get("sentences", []):
-            st.markdown(f"- {s['text']}  \n  <small>근거: {', '.join(s['citations'])}</small>", unsafe_allow_html=True)
-        st.caption(f"근거 미확인으로 제거된 문장 {res['narrative'].get('dropped', 0)}개 · "
-                   f"원문 대조 실패 LLM 매칭 {res.get('rejected_llm_hits', 0)}건 · 평가 ID {res['assessment_id']}")
-        with st.expander("근거 목록"):
-            st.dataframe(pd.DataFrame(res["evidence"]))
-
-with tab_fb:
-    aid = st.number_input("평가 ID", min_value=1, step=1)
-    analyst = st.text_input("분석관")
-    decision = st.radio("판단", ["approve", "modify", "reject"], horizontal=True)
-    override = st.selectbox("등급 수정(선택)", ["", "관심", "주의", "경계", "심각"])
-    comment = st.text_area("의견")
-    if analyst and st.button("피드백 저장"):
-        r = httpx.post(f"{API}/assessments/{int(aid)}/feedback",
-                       json={"analyst": analyst, "decision": decision,
-                             "grade_override": override or None, "comment": comment}, timeout=30)
-        st.write(r.json())
+    with c1:
+        st.markdown("**표적 CSV 등록** — area_id, observed_at, equipment_type, count, lon, lat, image_ref")
+        upc = st.file_uploader("표적 CSV", type="csv", key="targets")
+        if upc and st.button("표적 등록"):
+            df = pd.read_csv(upc)
+            df = df.astype(object).where(pd.notna(df), None)
+            st.write(httpx.post(f"{API}/targets", json=df.to_dict(orient="records"), timeout=60).json())
+        st.markdown("**전투서열 적재** — 검토된 records.csv")
+        upo = st.file_uploader("records.csv", type="csv", key="orbat")
+        if upo and st.button("전투서열 적재"):
+            st.write(httpx.post(f"{API}/orbat/load", files={"file": (upo.name, upo.getvalue())}, data={"mode": "auto"}, timeout=300).json())
+    with c2:
+        st.markdown("**첩보 문서 수집**")
+        f = st.file_uploader("문서 (PDF·HWPX·TXT)", type=["pdf", "hwpx", "txt", "md"])
+        t1, t2 = st.columns(2)
+        title, source_name = t1.text_input("제목"), t2.text_input("출처명")
+        t3, t4, t5 = st.columns(3)
+        source_type = t3.selectbox("출처 유형", ["OSINT", "HUMINT", "SIGINT", "DOCTRINE", "IMINT"])
+        rel, cred = t4.selectbox("신뢰도", list("ABCDEF"), index=2), t5.selectbox("신빙성", [1, 2, 3, 4, 5, 6], index=2)
+        area_doc = st.text_input("지역 ID (교리는 공란)", key="area_doc")
+        reported = st.text_input("보고 일시", datetime.now().astimezone().replace(microsecond=0).isoformat())
+        if f and title and source_name and st.button("수집"):
+            form = {"title": title, "source_name": source_name, "source_type": source_type, "reliability": rel,
+                    "credibility": cred, "reported_at": reported}
+            if area_doc:
+                form["area_id"] = area_doc
+            st.write(httpx.post(f"{API}/ingest", data=form, files={"file": (f.name, f.getvalue())}, timeout=600).json())
+        st.markdown("**분석관 피드백**")
+        aid = st.number_input("평가 ID", min_value=1, step=1, value=int(A.get("assessment_id") or 1))
+        analyst = st.text_input("분석관")
+        decision = st.radio("판단", ["approve", "modify", "reject"], horizontal=True,
+                            format_func={"approve": "동의", "modify": "수정", "reject": "반려"}.get)
+        override = st.selectbox("등급 수정", ["", "관심", "주의", "경계", "심각"])
+        comment = st.text_area("의견")
+        if analyst and st.button("피드백 저장"):
+            st.write(httpx.post(f"{API}/assessments/{int(aid)}/feedback", json={"analyst": analyst, "decision": decision,
+                                "grade_override": override or None, "comment": comment}, timeout=30).json())
