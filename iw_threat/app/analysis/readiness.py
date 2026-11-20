@@ -110,9 +110,14 @@ def recommend_all(tracks: list[Track], obs: list[Observation]) -> dict[str, list
     return {t.id: recommend_series(t, obs) for t in tracks}
 
 
+DECISIVE_MIN_STRENGTH = 0.45   # 영상 B2 근거 1건(약 0.7)은 통과, 약한 신호(×0.5 ≈ 0.36)는 단독으로 불충분
+
+
 def observation_from_result(day: float, result: dict, label: str = "") -> Observation:
     """평가 결과(API 응답 또는 assessments.result+컬럼) → Observation."""
     hyps = result.get("hypotheses", [])
     threats = {h["hypothesis_id"]: float(h.get("threat", 0.0)) for h in hyps}
-    inds = {c["indicator_id"] for h in hyps for c in h.get("contributions", [])}
+    # 결정적 징후 조합은 충분히 강하게 식별된 지표만 인정 (약한 신호·단일 저신뢰 출처만으로 태세 격상 방지)
+    inds = {c["indicator_id"] for h in hyps for c in h.get("contributions", [])
+            if c.get("strength", 1.0) >= DECISIVE_MIN_STRENGTH and c.get("delta_logit", 1.0) > 0}
     return Observation(day, threats, result.get("confidence", "하"), inds, label)

@@ -98,7 +98,7 @@ def reflects_evidence(text: str, cited_texts: list[str], indicator_name: str = "
     return False
 
 
-_IMINT_RE = re.compile(r"영상 판독 (.+?) 기준기간 평균 ([\d.]+)대 → 최근 (\d+)대")
+_IMINT_RE = re.compile(r"영상 판독 (.+?) 평시\(중앙값\) ([\d.]+)대 → 최근 (\d+)대")
 
 
 def _compact(ev_text: str) -> str:

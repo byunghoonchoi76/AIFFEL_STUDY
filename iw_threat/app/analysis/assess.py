@@ -1,6 +1,8 @@
 """평가 오케스트레이터: 변화 분석 → 지표 매칭(영상 규칙 + 텍스트 LLM) → 위협도 산정 → 근거 해설."""
 from __future__ import annotations
 
+from dataclasses import replace as dc_replace
+
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
@@ -92,6 +94,11 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         rows = pg.fetch_target_rows(area_id, since, as_of)
         changes = detect_changes(rows, as_of, s.window_days, s.baseline_days)
     evidence = match_imagery(changes, catalog, grading)
+    # 관측 공백: 지역의 마지막 영상 관측 이후 기간 → 영상 근거의 시의성 감쇠를 완화 (기상·운용 제약으로 재관측 불가)
+    last_img = max((r.observed_at for r in rows), default=None)
+    if last_img is not None:
+        gap = max(0.0, (as_of - last_img).total_seconds() / 86400)
+        evidence = [dc_replace(e, gap_days=gap) for e in evidence]
     evidence += sync_evidence(evidence, catalog, grading, {c.unit_key: c.unit_name for c in changes if c.unit_key})
 
     # 2) 텍스트 첩보 → LLM 분류(인용문 원문 대조 검증)

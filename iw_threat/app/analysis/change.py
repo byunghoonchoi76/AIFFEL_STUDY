@@ -29,6 +29,8 @@ class Change:
     dist_km: float | None = None
     baseline_obs: int = 0              # 기준기간 관측 횟수 (0이면 평시 자료 없음)
     baseline_sd: float = 0.0           # 기준기간 수량 표준편차 (판독 오차·평시 변동폭)
+    recent_mean: float = 0.0           # 최근 창 관측 수량 평균
+    recent_n: int = 0                  # 최근 창 관측 횟수
 
     @property
     def zscore(self) -> float | None:
@@ -36,6 +38,15 @@ class Change:
         if self.baseline_obs < 3:
             return None
         return round(self.delta / max(self.baseline_sd, 0.5), 2)
+
+    @property
+    def persist_z(self) -> float | None:
+        """지속성 z: 최근 관측 평균의 평시 대비 증가 ÷ 표준오차. 여러 번 반복 관측된 작은 증가는
+        단발 잡음과 구분되므로, 관측 기회가 적은 상황에서 약한 신호를 놓치지 않도록 사용."""
+        if self.baseline_obs < 3 or self.recent_n < 2:
+            return None
+        se = max(self.baseline_sd, 0.5) * (1 / self.recent_n + 1 / self.baseline_obs) ** 0.5
+        return round((self.recent_mean - self.baseline_level) / se, 2)
 
     @property
     def ratio(self) -> float | None:
@@ -55,7 +66,7 @@ def noise_sd(counts: list[int]) -> float:
 
 
 def detect_changes(rows: list[TargetRow], as_of: datetime, window_days: int = 7, baseline_days: int = 30) -> list[Change]:
-    """최근 창(as_of-window, as_of]의 최대 수량과 그 이전 기준기간 평균 수량을 비교."""
+    """최근 창(as_of-window, as_of]의 최대 수량과 그 이전 기준기간 중앙값(평시 수준)을 비교."""
     w_start = as_of - timedelta(days=window_days)
     b_start = w_start - timedelta(days=baseline_days)
     by_eq: dict[str, list[TargetRow]] = {}
@@ -77,6 +88,7 @@ def detect_changes(rows: list[TargetRow], as_of: datetime, window_days: int = 7,
             delta=round(peak.count - baseline, 2),
             latest_at=max(r.observed_at for r in recent),
             refs=[r.id for r in recent], baseline_obs=len(base),
+            recent_mean=round(sum(r.count for r in recent) / len(recent), 2), recent_n=len(recent),
             baseline_sd=noise_sd(base),
         ))
     out.sort(key=lambda c: c.delta, reverse=True)

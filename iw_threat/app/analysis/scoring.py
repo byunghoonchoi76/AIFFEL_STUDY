@@ -28,6 +28,7 @@ class Evidence:
     quote: str | None = None
     scale: float = 1.0       # 약한 신호 등 가중 배율 (0~1)
     unit_key: str | None = None   # 영상 근거의 식별 부대 (동시성 판단용)
+    gap_days: float = 0.0          # 이 근거 이후 해당 지역 영상 관측이 없었던 기간(일) — 관측 공백 보정용
 
 
 @dataclass
@@ -84,18 +85,27 @@ def _sigmoid(x: float) -> float:
     return 1 / (1 + math.exp(-x))
 
 
+GAP_HOLD = 0.5   # 관측 공백 기간은 시의성 경과를 절반만 인정 (새 관측으로 반박될 기회가 없었으므로)
+
+
+def effective_age(ev: Evidence, as_of: datetime) -> float:
+    """시의성 경과일. 근거 이후 새 영상이 없던 기간(관측 공백)은 GAP_HOLD 비율만큼 경과로 덜 셈."""
+    age = max(0.0, (as_of - ev.observed_at).total_seconds() / 86400)
+    return max(0.0, age - GAP_HOLD * min(ev.gap_days, age))
+
+
 def evidence_weight(ev: Evidence, grading: Grading, as_of: datetime, tau_days: float) -> float:
-    age_days = max(0.0, (as_of - ev.observed_at).total_seconds() / 86400)
+    age_days = effective_age(ev, as_of)
     return grading.weight(ev.reliability, ev.credibility) * math.exp(-age_days / tau_days) * ev.scale
 
 
 def evidence_detail(ev: Evidence, grading: Grading, as_of: datetime, tau_days: float) -> dict:
     """근거 1건의 가중치 계산 내역: 출처등급 가중 × 시의성 감쇠 × 신호 배율."""
-    age = max(0.0, (as_of - ev.observed_at).total_seconds() / 86400)
+    age = effective_age(ev, as_of)
     base = grading.weight(ev.reliability, ev.credibility)
     decay = math.exp(-age / tau_days)
     return {"ref": ev.ref, "source_type": ev.source_type, "grade": f"{ev.reliability}{ev.credibility}",
-            "grade_weight": round(base, 3), "age_days": round(age, 1), "tau_days": tau_days, "decay": round(decay, 3),
+            "grade_weight": round(base, 3), "age_days": round(age, 1), "tau_days": tau_days, "decay": round(decay, 3), "gap_days": round(ev.gap_days, 1),
             "scale": ev.scale, "weight": round(base * decay * ev.scale, 3), "quote": (ev.quote or "")[:160],
             "unit_key": ev.unit_key}
 

@@ -22,7 +22,7 @@ def _fmt(n: float) -> str:
 
 
 def _imagery_quote(ch: Change) -> str:
-    q = (f"영상 판독 {equip_ko(ch.equipment_type)} 기준기간 평균 {_fmt(ch.baseline_level)}대 → "
+    q = (f"영상 판독 {equip_ko(ch.equipment_type)} 평시(중앙값) {_fmt(ch.baseline_level)}대 → "
          f"최근 {ch.recent_level}대 (+{_fmt(ch.delta)}대)")
     if ch.unit_key:
         base = "평시 대비 " + (f"{ch.ratio}배" if ch.ratio else "신규 출현")
@@ -51,7 +51,8 @@ def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
             # 약한 신호: 임계값의 일정 비율 이상 + 평시 변동폭을 낮은 기준으로 넘는 증가 → 가중치를 낮춰 반영
             wk = catalog.weak
             weak = (not strong and wk and ch.delta >= max(1, math.ceil(th.min_delta * wk.get("fraction", 0.5)))
-                    and (ch.zscore is None or ch.zscore >= wk.get("zscore", 2.0))
+                    and (ch.zscore is None or ch.zscore >= wk.get("zscore", 2.0)
+                         or (ch.persist_z or 0) >= wk.get("persist_zscore", 3.0))   # 반복 관측된 작은 증가
                     and len(ch.refs) >= wk.get("min_obs", 2))       # 약한 신호는 최근 2회 이상 관측돼야 (일회성 잡음 배제)
             if strong or weak:
                 out.append(Evidence(

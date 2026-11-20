@@ -87,10 +87,10 @@ def test_llm_hits_require_verbatim_quote_and_known_indicator():
 
 def test_implications_verified_and_lines_keep_exact_facts():
     evidence = [Evidence("I_MEDICAL", "IMINT", "s", "B", 2, NOW, "r1",
-                         quote="영상 판독 야전병원 기준기간 평균 0대 → 최근 2대 (+2대)"),
+                         quote="영상 판독 야전병원 평시(중앙값) 0대 → 최근 2대 (+2대)"),
                 Evidence("I_MEDICAL", "OSINT", "n", "C", 3, NOW, "chunk:d1:0", quote="천막 3동이 새로 설치되었다"),
                 Evidence("I_BRIDGING", "IMINT", "s", "B", 2, NOW, "r2",
-                         quote="영상 판독 도하장비 기준기간 평균 0대 → 최근 4대 (+4대)")]
+                         quote="영상 판독 도하장비 평시(중앙값) 0대 → 최근 4대 (+4대)")]
     r = assess(CAT, evidence, GR, NOW)
     m = build_evidence_map(r, evidence)
     ok, dropped = verify_implications(
