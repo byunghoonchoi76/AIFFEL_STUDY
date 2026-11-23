@@ -122,7 +122,8 @@ def deception_checks(changes, evidence, pts, catalog, grading) -> list:
                                     quote=f"SAR 금속 반사파 불일치 {sum(1 for f in flags if f is False)}/{len(flags)}건 — 모형·기만체 의심 ({e.quote[:40]})"))
     fires = [e for e in front if e.indicator_id in ("I_ARTY_POS", "I_HARTS_OCC")]
     # 기동부대 존재: 기갑 집결(약한 신호 포함)·주둔지 이탈·공격대형·동시 은밀 전개 중 하나라도 있으면 해당
-    armor = [e for e in evidence if e.indicator_id in ("I_ARMOR_MASS", "I_DISPERSAL", "I_ASSAULT", "I_SYNC_CONCEAL")]
+    armor = [e for e in evidence if (e.indicator_id == "I_ARMOR_MASS" and e.scale >= 1.0)
+             or e.indicator_id in ("I_DISPERSAL", "I_ASSAULT", "I_SYNC_CONCEAL")]
     if fires and not armor and "C_NO_MANEUVER" in valid:     # 화력만 증강, 기동부대 집결 없음 → 국지 화력 도발 쪽
         out.append(Evidence(indicator_id="C_NO_MANEUVER", source_type="IMINT", source_key="IMINT:maneuver_check",
                             reliability=rel, credibility=cred, observed_at=max(e.observed_at for e in fires),
