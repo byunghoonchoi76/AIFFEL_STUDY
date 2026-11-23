@@ -45,6 +45,8 @@ hypotheses:
       - {id: I_EW_DEPLOY,    name: 전자전·통신 차량 전개,      lr: 3.0, tau_days: 5, equipment: [ew_vehicle], min_delta: 2, meaning: 전자전 공격 준비 정황}
       - {id: I_ASSAULT,      name: 공격대형·화력준비 진지 형성, lr: 12.0, tau_days: 2, equipment: [formation_wedge_v_line, artillery_position], min_delta: 2, meaning: 공격 개시 정황}
       # 반대 징후 (lr < 1: 공격 가능성을 낮춤). discounts: 이 반대 증거가 신뢰를 깎는 대상 지표
+      - {id: I_WX_WINDOW,    name: 공격 적합 기상·지면 여건,      lr: 1.5, tau_days: 3, equipment: [], min_delta: 0, meaning: 기상 여건상 공격 시기로 유리 (의도 근거 아님)}
+      - {id: C_WX_NOGO,      name: 공격 불리 기상·지면 여건,      lr: 0.7, tau_days: 3, equipment: [], counter: true, meaning: 기상 여건상 대규모 지상 공격 곤란 (기만·지연 가능성 병행 검토)}
       - {id: C_DECOY,        name: 모형·위장 장비 식별,          lr: 0.2,  tau_days: 10, equipment: [], counter: true, discounts: [I_ARMOR_MASS, I_BRIDGING, I_ARTY_POS], discount_factor: 0.7, meaning: 기만 전시 가능성}
       - {id: C_NO_LOGISTICS, name: 보급·연료 지원 부재,          lr: 0.35, tau_days: 7,  equipment: [], counter: true, meaning: 공격 지속능력 미비}
       - {id: C_NORMAL_COMMS, name: 통신·지휘망 평시 수준,        lr: 0.4,  tau_days: 5,  equipment: [], counter: true, meaning: 작전 지휘 활동 미식별}
@@ -68,6 +70,7 @@ hypotheses:
     indicators:
       - {id: I_SOF_FORWARD,  name: 특수작전부대 전방 이동,       lr: 6.0, tau_days: 5, equipment: [sof_vehicle, aircraft_an2, helicopter_md500], min_delta: 2, meaning: 침투 준비 정황}
       - {id: I_SUB_SORTIE,   name: 잠수함정·공기부양정 기지 이탈, lr: 7.0, tau_days: 3, equipment: [submarine, hovercraft, semi_submersible], min_delta: 1, meaning: 해상 침투 준비 정황}
+      - {id: I_WX_COVER,     name: 저시정 은밀 침투 유리 여건,     lr: 1.3, tau_days: 2, equipment: [], min_delta: 0, meaning: 감시 곤란 기상 (의도 근거 아님)}
       - {id: I_INFIL_SIGN,   name: 침투 흔적·거동 수상자,        lr: 9.0, tau_days: 3, equipment: [tunnel_exit], min_delta: 1, meaning: 침투 진행 정황}
 
   # 두루미(적 항공기 위협) 트랙용 — 예시값

@@ -158,6 +158,38 @@ def orbat_identify(lat: float, lon: float, equipment: str | None = None):
     return res
 
 
+class WeatherObs(BaseModel):
+    area_id: str
+    valid_at: datetime
+    kind: Literal["obs", "fcst"] = "obs"
+    data: dict      # cloud_pct, precip_mm, temp_c, visibility_km, ceiling_m, wind_ms, ground, river, snow_cm, sea_state
+
+    _tz = field_validator("valid_at")(lambda v: to_aware(v))
+
+
+@app.post("/weather")
+def add_weather(rows: list[WeatherObs]):
+    """기상 관측·예보 입력 (기상 부대 자료 또는 공개 기상자료)."""
+    return {"inserted": pg.insert_weather([r.model_dump() for r in rows])}
+
+
+@app.get("/weather/effects")
+def weather_effects(area_id: str, as_of: datetime):
+    """기상이 작전에 미치는 영향 (평가 없이 조회)."""
+    from .analysis.assess import weather_assessment
+    from .analysis.catalog import load_catalog, load_grading
+    from .config import get_settings
+    s = get_settings()
+    res = weather_assessment(area_id, to_aware(as_of), load_catalog(s.indicators_path), load_grading(s.grading_path))
+    res["evidence"] = [e.quote for e in res.get("evidence", [])]
+    return res
+
+
+@app.delete("/weather")
+def delete_weather(area_id: str):
+    return {"deleted": pg.delete_weather(area_id)}
+
+
 @app.post("/assess")
 def assess(req: AssessRequest):
     d = deps()

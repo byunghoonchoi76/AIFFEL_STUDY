@@ -134,6 +134,24 @@ with tabs[0]:
         if any((r or {}).get("defcon_review") for r in rd.values()):
             st.markdown("<div class='defcon'>⚠ 데프콘 검토 필요 신호 — 워치콘 최고 단계 + 분석 신뢰도 상</div>", unsafe_allow_html=True)
 
+    WX = A.get("weather") or {}
+    if WX.get("available"):
+        st.subheader("기상이 작전에 미치는 영향")
+        wcol = {"양호": "#1E8449", "제한": "#D68910", "불가": "#C0392B"}
+        cols = st.columns(len(WX["effects"]))
+        for col, e in zip(cols, WX["effects"]):
+            col.markdown(f"<div class='card lite'><div class='t'>{e['name']}</div>"
+                         f"<div class='v' style='color:{wcol[e['level']]}'>{e['level']}</div><div class='s'>{e['reason']}</div></div>",
+                         unsafe_allow_html=True)
+        for f in WX.get("findings", []):
+            st.markdown(f"<div class='why'><b>적 작전 여건</b> — {f['text']}</div>", unsafe_allow_html=True)
+        for c_ in WX.get("collection_limits", []):
+            st.warning(f"아군 수집 제한: {c_}")
+        if WX.get("outlook"):
+            st.dataframe(pd.DataFrame([{"시각": o["valid_at"][:10], **{e["name"]: e["level"] for e in o["effects"]}}
+                                       for o in WX["outlook"]]), use_container_width=True, hide_index=True)
+        st.caption(f"기준 {WX['valid_at'][:16].replace('T', ' ')} ({'관측' if WX.get('kind') == 'obs' else '예보'}) · 판단 기준은 config/weather_effects.yaml (예시값) · 기상 근거는 여건 근거로 분석 신뢰도의 독립 출처 수에는 미산입")
+
     st.subheader("판단 과정")
     s = st.columns(5)
     changes = A.get("changes", [])

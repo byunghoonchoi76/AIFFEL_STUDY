@@ -68,6 +68,35 @@ def _report_chunks(vector, area_id: str, as_of: datetime, lookback_days: int, k:
     ) for h in hits if h.get("reported_at")]
 
 
+WX_EVIDENCE = {"favorable_attack": "I_WX_WINDOW", "unfavorable_attack": "C_WX_NOGO", "infiltration_cover": "I_WX_COVER"}
+
+
+def weather_assessment(area_id: str, as_of: datetime, catalog, grading) -> dict:
+    """기상 자료가 있으면 영향 평가·근거 생성, 없으면 빈 결과(기존 평가에 영향 없음)."""
+    from .scoring import Evidence
+    from .weather import effects, interpret, load_rules
+    rules = load_rules(get_settings().weather_rules_path)
+    days = rules.get("assessment", {}).get("outlook_days", 3)
+    rows = pg.fetch_weather(area_id, as_of - timedelta(days=1), as_of + timedelta(days=days))
+    if not rows:
+        return {"available": False, "evidence": []}
+    past = [r for r in rows if r["valid_at"] <= as_of]
+    cur = past[-1] if past else rows[0]
+    fut = [r for r in rows if r["valid_at"] > as_of]
+    cur_e = effects(cur["data"], rules)
+    out_e = [effects(r["data"], rules) for r in fut]
+    it = interpret(cur_e, out_e, rules)
+    rel, cred = grading.default_grade("METOC")
+    valid = catalog.indicator_defs()
+    ev = [Evidence(indicator_id=WX_EVIDENCE[f["key"]], source_type="METOC", source_key="METOC:wx",
+                   reliability=rel, credibility=cred, observed_at=cur["valid_at"], ref=f"weather:{area_id}:{cur['valid_at'].date()}",
+                   quote=f["text"]) for f in it["findings"] if WX_EVIDENCE.get(f["key"]) in valid]
+    return {"available": True, "valid_at": cur["valid_at"].isoformat(), "kind": cur["kind"], "data": cur["data"],
+            "effects": [vars(e) for e in cur_e],
+            "outlook": [{"valid_at": r["valid_at"].isoformat(), "effects": [vars(e) for e in es]} for r, es in zip(fut, out_e)],
+            "findings": it["findings"], "collection_limits": it["collection_limits"], "evidence": ev}
+
+
 def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, explain: bool = True) -> dict:
     t0 = time.perf_counter()
     s = get_settings()
@@ -100,6 +129,10 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         gap = max(0.0, (as_of - last_img).total_seconds() / 86400)
         evidence = [dc_replace(e, gap_days=gap) for e in evidence]
     evidence += sync_evidence(evidence, catalog, grading, {c.unit_key: c.unit_name for c in changes if c.unit_key})
+
+    # 1-2) 기상이 작전에 미치는 영향 (전장정보분석) — 현재 + 전망 기간 기상 → 영역별 영향, 적 작전 여건 근거, 아군 관측 제한
+    weather = weather_assessment(area_id, as_of, catalog, grading)
+    evidence += weather.pop("evidence")
 
     # 2) 텍스트 첩보 → LLM 분류(인용문 원문 대조 검증)
     rejected_hits = 0
@@ -155,6 +188,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         "hypotheses": [asdict(h) for h in result.hypotheses],
         "conflicts": [asdict(c) for c in result.conflicts],
         "lr_matrix": lr_matrix(catalog, result),
+        "weather": weather,
         "rejected_llm_hits": rejected_hits,
         "catalog_version": catalog.meta.get("version"),
         "report_chunks_checked": n_chunks,

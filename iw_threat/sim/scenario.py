@@ -75,7 +75,38 @@ def load_scenario(path: str | Path) -> Scenario:
                              tuple(a.get("move_km", (0, 0)))) for a in raw.get("activities", [])],
         reports=[Report(r["day"], r["source"], r["name"], r["reliability"], int(r["credibility"]),
                         bool(r.get("truth", True)), r["text"]) for r in raw.get("reports", [])],
+        meta={"weather": raw.get("weather", []), "imagery": raw.get("imagery", [])},
     )
+
+
+# ── 기상 (전장정보분석: 기상이 작전에 미치는 영향) ──
+def weather_on(sc: Scenario, day: int) -> dict | None:
+    """구간 정의(from~to, 나중 구간 우선)에서 해당 일 기상값."""
+    hit = None
+    for w in sc.meta.get("weather", []):
+        if w["from"] <= day <= w["to"]:
+            hit = {k: v for k, v in w.items() if k not in ("from", "to", "note")}
+    return hit
+
+
+def weather_series(sc: Scenario, d_day: datetime) -> list[dict]:
+    out = []
+    for day in range(sc.period[0], sc.period[1] + 1):
+        w = weather_on(sc, day)
+        if w is not None:
+            t = (d_day + timedelta(days=day)).replace(hour=9, minute=0, second=0, microsecond=0)
+            out.append({"area_id": sc.area_id, "valid_at": t.isoformat(), "kind": "obs", "data": w})
+    return out
+
+
+def eo_blocked_days(sc: Scenario) -> set[int]:
+    """광학 관측 불가일 (운량 70% 이상 또는 강수) — SAR 관측 가능 활동만 관측됨."""
+    out = set()
+    for day in range(sc.period[0], sc.period[1] + 1):
+        w = weather_on(sc, day)
+        if w and (w.get("cloud_pct", 0) >= 70 or w.get("precip_mm", 0) >= 1):
+            out.add(day)
+    return out
 
 
 # ── 활동 → 날짜별 '실제' 상태 ──
@@ -124,12 +155,15 @@ def generate_targets(sc: Scenario, d_day: datetime, seed: int = 7) -> list[dict]
     rnd = random.Random(seed)
     nz = sc.noise
     out = []
-    cloud = set(nz.get("cloud_days", []))
+    cloud = set(nz.get("cloud_days", [])) | eo_blocked_days(sc)
     adverse = nz.get("adverse_weather_share", 0.0)
     for day in range(sc.period[0], sc.period[1] + 1):
         if rnd.random() > nz.get("p_observe", 1.0):
             continue
         cloudy = day in cloud or rnd.random() < adverse          # 악천후: SAR 가능 표적만 관측
+        p_sar = nz.get("p_sar_on_cloudy", 1.0)
+        if cloudy and p_sar < 1.0 and rnd.random() > p_sar:   # 광학 불가일에 SAR 촬영이 없으면 관측 공백
+            continue
         t = (d_day + timedelta(days=day)).replace(hour=10, minute=0, second=0, microsecond=0)
         for s in true_state(sc, day):
             if cloudy and "SAR" not in s["sensors"]:

@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 
 GRADE_COLOR = {"관심": "#2E86C1", "주의": "#D4AC0D", "경계": "#E67E22", "심각": "#C0392B"}
 GRADE_LINES = [(0.25, "주의"), (0.50, "경계"), (0.75, "심각")]
-SOURCE_KO = {"IMINT": "영상", "OSINT": "공개첩보", "HUMINT": "인간정보", "SIGINT": "신호정보", "DOCTRINE": "교리"}
+SOURCE_KO = {"IMINT": "영상", "OSINT": "공개첩보", "HUMINT": "인간정보", "SIGINT": "신호정보", "DOCTRINE": "교리", "METOC": "기상"}
 FONT = dict(family="Malgun Gothic, NanumGothic, Noto Sans CJK KR, sans-serif", size=13)
 
 

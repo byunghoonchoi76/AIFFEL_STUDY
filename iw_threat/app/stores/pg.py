@@ -120,3 +120,39 @@ def insert_feedback(aid: int, analyst: str, decision: str, grade_override: str |
 def audit(actor: str, action: str, detail: dict) -> None:
     with conn() as c:
         c.execute("INSERT INTO audit_log(actor, action, detail) VALUES (%s,%s,%s)", (actor, action, Jsonb(detail)))
+
+
+# ── 기상 관측·예보 ──
+_WX_READY = False
+
+
+def ensure_weather() -> None:
+    global _WX_READY
+    if _WX_READY:
+        return
+    from pathlib import Path
+    sql = Path(__file__).resolve().parents[2] / "db/postgis/03_weather.sql"
+    with conn() as c:
+        c.execute(sql.read_text(encoding="utf-8"))
+    _WX_READY = True
+
+
+def insert_weather(rows: list[dict]) -> int:
+    ensure_weather()
+    with conn() as c, c.cursor() as cur:
+        cur.executemany("INSERT INTO weather_obs (area_id, valid_at, kind, data) VALUES (%s, %s, %s, %s)",
+                        [(r["area_id"], r["valid_at"], r.get("kind", "obs"), Jsonb(r["data"])) for r in rows])
+    return len(rows)
+
+
+def fetch_weather(area_id: str, since: datetime, until: datetime) -> list[dict]:
+    ensure_weather()
+    with conn() as c:
+        return c.execute("SELECT valid_at, kind, data FROM weather_obs WHERE area_id=%s AND valid_at > %s AND valid_at <= %s "
+                         "ORDER BY valid_at", (area_id, since, until)).fetchall()
+
+
+def delete_weather(area_id: str) -> int:
+    ensure_weather()
+    with conn() as c:
+        return c.execute("DELETE FROM weather_obs WHERE area_id=%s", (area_id,)).rowcount

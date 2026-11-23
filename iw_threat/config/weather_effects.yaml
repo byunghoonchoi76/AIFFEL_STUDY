@@ -1,0 +1,54 @@
+# 기상이 작전에 미치는 영향 — 판단 기준 (예시값: 교범·실증기관 기준으로 교체)
+# level: 양호 < 제한 < 불가
+version: wx-0.1
+domains:
+  eo_imaging:      # 아군 광학 위성·항공 영상 관측
+    name: 광학 영상 관측(아군)
+    rules:
+      - {when: "precip_mm >= 1 or cloud_pct >= 70", level: 불가, reason: "운량 {cloud_pct}%·강수 {precip_mm}mm — 광학 영상 획득 불가, SAR 대체"}
+      - {when: "cloud_pct >= 40", level: 제한, reason: "운량 {cloud_pct}% — 부분 가림"}
+  sar_imaging:
+    name: SAR 영상 관측(아군)
+    rules:
+      - {when: "wind_ms >= 25", level: 제한, reason: "강풍 {wind_ms}m/s — 해상 클러터 증가"}
+  ground_mobility: # 적 야지 기동(궤도·차륜)
+    name: 야지 기동(적 기갑·차량)
+    rules:
+      - {when: "ground == 'mud' or ground == 'thaw'", level: 제한, reason: "해빙·진창 — 차륜 야지 기동 곤란, 도로 의존"}
+      - {when: "snow_cm >= 30", level: 제한, reason: "적설 {snow_cm}cm — 야지 기동 속도 저하"}
+      - {when: "precip_mm >= 25", level: 제한, reason: "강수 {precip_mm}mm — 지반 약화"}
+  river_crossing:  # 적 하천 도하
+    name: 하천 도하(적)
+    rules:
+      - {when: "river == 'flood'", level: 불가, reason: "하천 범람 — 도하 불가"}
+      - {when: "river == 'ice_breakup'", level: 제한, reason: "유빙 — 부교 설치·도섭 곤란"}
+      - {when: "river == 'frozen'", level: 양호, reason: "하천 결빙 — 도보·경장비 빙상 도하 가능, 도하 지점 확대"}
+      - {when: "river == 'normal'", level: 제한, reason: "평시 수위 — 도하장비(부교·도하정) 필요, 도하 지점 한정"}
+  air_ops:         # 적 회전익·AN-2·항공 운용
+    name: 항공 운용(적 회전익·AN-2)
+    rules:
+      - {when: "ceiling_m < 300 or visibility_km < 1.6", level: 불가, reason: "운고 {ceiling_m}m·시정 {visibility_km}km — 시계비행 불가"}
+      - {when: "ceiling_m < 1000 or visibility_km < 5 or wind_ms >= 15", level: 제한, reason: "운고 {ceiling_m}m·시정 {visibility_km}km·풍속 {wind_ms}m/s"}
+  sea_infiltration:
+    name: 해상 침투(적 소형정·공기부양정)
+    rules:
+      - {when: "sea_state >= 5", level: 불가, reason: "해상 상태 {sea_state} — 소형정 운용 불가"}
+      - {when: "sea_state >= 4", level: 제한, reason: "해상 상태 {sea_state}"}
+  personnel:
+    name: 인원 활동(동상·열손상)
+    rules:
+      - {when: "temp_c <= -20", level: 제한, reason: "기온 {temp_c}℃ — 동상 위험, 장비 시동 지연"}
+      - {when: "temp_c >= 33", level: 제한, reason: "기온 {temp_c}℃ — 열손상 위험"}
+
+# 적 작전 여건 해석 → 근거(징후)로 반영 (전망 기간 중 조건 성립 시)
+assessment:
+  outlook_days: 3
+  favorable_attack:     # 공격 적합 여건 (I_WX_WINDOW)
+    require: {ground_mobility: [양호], river_crossing: [양호]}
+    text: "향후 {days}일 지상 기동 양호·하천 결빙 — 기갑 기동·도하 공격에 유리한 기상 여건"
+  unfavorable_attack:   # 공격 불리 여건 (C_WX_NOGO)
+    any: {ground_mobility: [제한], river_crossing: [불가]}
+    text: "향후 {days}일 {limits} — 대규모 지상 공격에 불리한 기상 여건"
+  infiltration_cover:   # 저시정 은밀 침투 유리
+    any: {air_ops: [불가]}
+    text: "저시정·저운고 — 감시 곤란으로 지상 은밀 침투에 유리, 항공 운용은 제한"

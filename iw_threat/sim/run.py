@@ -8,7 +8,7 @@ import json
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from .scenario import Scenario, generate_targets, load_scenario, orbat_rows, report_documents
+from .scenario import Scenario, generate_targets, load_scenario, orbat_rows, report_documents, weather_series
 from app.analysis.readiness import observation_from_result
 
 GRADE_ORDER = {"관심": 0, "주의": 1, "경계": 2, "심각": 3}
@@ -24,6 +24,11 @@ def prepare(client, sc: Scenario, d_day: datetime, out: Path, seed: int) -> dict
     """정리 → 전투서열·표적·첩보 적재."""
     _ok(client.delete("/targets", params={"area_id": sc.area_id}))
     _ok(client.delete("/documents", params={"area_id": sc.area_id}))
+    _ok(client.delete("/weather", params={"area_id": sc.area_id}))
+    wx = weather_series(sc, d_day)
+    if wx:
+        _ok(client.post("/weather", json=wx))
+        (out / "weather.json").write_text(json.dumps(wx, ensure_ascii=False, indent=1), encoding="utf-8")
 
     rows = orbat_rows(sc)
     buf = io.StringIO()
@@ -48,7 +53,7 @@ def prepare(client, sc: Scenario, d_day: datetime, out: Path, seed: int) -> dict
             "reliability": d["reliability"], "credibility": str(d["credibility"]), "area_id": sc.area_id,
             "reported_at": d["reported_at"], "extract_graph": "false"}))
     (out / "reports.json").write_text(json.dumps(docs, ensure_ascii=False, indent=1), encoding="utf-8")
-    return {"orbat": orbat, "targets": ins.get("inserted"), "reports": len(docs),
+    return {"orbat": orbat, "targets": ins.get("inserted"), "reports": len(docs), "weather_days": len(wx),
             "false_reports": sum(1 for d in docs if not d["truth"])}
 
 
