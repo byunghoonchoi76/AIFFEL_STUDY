@@ -28,5 +28,7 @@ def test_pir_status_and_ccir():
     acts = [{"target_id": "K1", "name": "포병 장사정포", "category": "핵심표적", "indicator": "I_KEY_TARGET", "pir_ids": ["PIR-J2"]}]
     pirs = {p["id"]: p["status"] for p in pir_answers(REQ, hyps, acts)}
     assert pirs["PIR-J1"] == "확인" and pirs["PIR-J2"] == "징후 있음" and pirs["PIR-J3"] == "미식별"
+    low = {p["id"]: p["status"] for p in pir_answers(REQ, [{**hyps[0], "probability": 0.05}, hyps[1]], [])}
+    assert low["PIR-J1"] == "약한 징후"        # 강한 단일 징후라도 가설 확률이 낮으면 '확인' 아님
     alerts = {a["id"] for a in ccir_alerts(REQ, pir_answers(REQ, hyps, acts), acts)}
     assert {"CCIR-J1", "CCIR-J2"} <= alerts and "CCIR-J3" not in alerts

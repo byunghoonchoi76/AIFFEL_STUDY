@@ -1,11 +1,11 @@
 # 지휘관 정보요구 — 합참의장·연합사령관 PIR(우선정보요구)·CCIR(지휘관 중요정보요구)
 # ※ 예시(가상). 실제 PIR·CCIR·보고 기준은 실증기관 제공 자료로 교체 (폐쇄망에서만 적재)
 version: pir-0.1
-status_levels:            # PIR 답변 상태 (연결된 징후 강도 최댓값 기준)
-  - {name: 확인, min: 0.6}
-  - {name: 징후 있음, min: 0.3}
-  - {name: 약한 징후, min: 0.01}
-  - {name: 미식별, min: 0.0}
+status_levels:            # PIR 답변 상태 = 연결 징후 강도(min) + 연결 가설 확률(min_prob) 모두 충족해야 함
+  - {name: 확인, min: 0.6, min_prob: 0.5}
+  - {name: 징후 있음, min: 0.3, min_prob: 0.15}
+  - {name: 약한 징후, min: 0.01, min_prob: 0.0}
+  - {name: 미식별, min: 0.0, min_prob: 0.0}
 commanders:
   - id: JCS
     name: 합참의장

@@ -99,9 +99,10 @@ def target_activity(targets: list[KeyTarget], changes: list, points: list[dict],
     return out
 
 
-def status_of(strength: float, levels: list[dict]) -> str:
+def status_of(strength: float, levels: list[dict], prob: float = 1.0) -> str:
+    """징후 강도와 가설 확률을 함께 봄 — 평시 잡음(강한 단일 징후·낮은 확률)이 '확인'으로 보고되지 않도록."""
     for lv in levels:
-        if strength >= lv["min"] and (lv["min"] > 0 or strength == 0):
+        if strength >= lv["min"] and prob >= lv.get("min_prob", 0.0) and (lv["min"] > 0 or strength == 0):
             return lv["name"]
     return levels[-1]["name"]
 
@@ -120,7 +121,7 @@ def pir_answers(req: dict, hypotheses: list[dict], activities: list[dict]) -> li
             if acts:
                 strength = max(strength, 0.3)        # 지휘관 지정 표적 활동은 최소 '징후 있음'
             prob = max([(hyp.get(h) or {}).get("probability", 0.0) for h in p["hypotheses"]] + [0.0])
-            out.append({"commander": cmd["name"], "id": p["id"], "question": p["question"], "status": status_of(strength, levels),
+            out.append({"commander": cmd["name"], "id": p["id"], "question": p["question"], "status": status_of(strength, levels, prob),
                         "strength": round(strength, 2), "probability": round(prob, 4),
                         "evidence": sorted({c["name"] for c in contribs}),
                         "targets": [a["name"] for a in acts]})
