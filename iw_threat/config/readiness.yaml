@@ -1,7 +1,8 @@
 # 경보·감시태세 '상황 판단 조건' — ※ 예시 기준. 단계 구분·조건은 실제 기준(합참·연합사)으로 교체
-# 워치콘·데프콘·진돗개 등 태세는 합참·연합사 협의와 국방부장관·군 통수권자 재가로 결정되는 사항
-# → 시스템은 태세를 건의·결정하지 않고, 현재 정보 상황이 각 단계의 판단 조건에 부합하는지만 제시 (상황 판단 참고)
-basis: "예시 조건 (실제 태세 조건 아님) — 태세 결정은 합참·연합사 협의 및 국방부장관·통수권자 재가 사항"
+# 워치콘·데프콘·진돗개 등 태세는 합참·연합사가 판단·건의하고 국방부장관·군 통수권자 재가로 결정되는 사항
+# → 정보사(시스템)는 태세를 건의하지 않음. ① 합참·연합사가 판단·발령한 현 태세를 평가의 참고 조건(입력)으로 적용하고
+#   ② 현재 정보 상황이 각 단계 조건에 부합하는지를 발령 태세와 비교해 정보 판단 자료로 제공
+basis: "예시 조건 (실제 태세 조건 아님) — 태세 판단·건의는 합참·연합사, 결정은 국방부장관·통수권자 재가 사항. 본 결과는 판단 지원 정보"
 
 tracks:
   - id: watchcon
@@ -15,6 +16,7 @@ tracks:
       - {level: 2, label: 위협 증가, min_threat: 0.50, min_confidence: 하}
       - {level: 3, label: 평시 감시, min_threat: 0.0}
     downgrade_hold_days: 4           # 하향은 낮은 조건이 이 기간 지속될 때만 (관측 공백에 의한 흔들림 방지)
+    posture_evidence: {indicator: I_POSTURE_WC, scale_by_level: {2: 0.6, 1: 1.0}}   # 합참·연합사 발령 태세 → 평가 참고 근거
     decisive:                        # 결정적 징후 조합: 모두 식별되면 확률과 무관하게 해당 단계 이상
       - {indicators: [I_BRIDGING, I_MEDICAL], min_level: 2, note: 도하장비·야전 의무시설 동시 전개}
       - {indicators: [I_BRIDGING, I_ARTY_POS, I_COMMAND_POST], min_level: 1, note: 도하·포병 진지·전방 지휘소 동시 전개}
@@ -24,6 +26,7 @@ tracks:
     scope: 방어준비태세 (전면전 위협)
     hypotheses: [H_ATTACK, H_NUCLEAR]
     baseline: 4                      # 한반도 평시 데프콘 4
+    posture_evidence: {indicator: I_POSTURE_DC, scale_by_level: {3: 0.6, 2: 1.0, 1: 1.0}}
     level_names: {4: 데프콘 4, 3: 데프콘 3, 2: 데프콘 2}
     levels:                          # 데프콘 1(전쟁 발발)은 교전 사실로 판단 — 정보 판단 조건에서 제외
       - {level: 2, label: 전쟁 임박 조건, min_threat: 0.95, min_confidence: 상}
@@ -39,6 +42,7 @@ tracks:
     hypotheses: [H_INFILTRATION]
     baseline: 3
     level_names: {3: 진돗개 셋, 2: 진돗개 둘, 1: 진돗개 하나}
+    posture_evidence: {indicator: I_POSTURE_JD, scale_by_level: {2: 0.6, 1: 1.0}}
     levels:
       - {level: 1, label: 침투 확실·발생, min_threat: 0.45, min_confidence: 중}
       - {level: 2, label: 침투 징후, min_threat: 0.25, min_confidence: 하}
@@ -54,6 +58,7 @@ tracks:
     hypotheses: [H_AIR]
     baseline: 3
     level_names: {3: 두루미 미발령, 2: 두루미 경계(예시), 1: 두루미 발령(예시)}
+    posture_evidence: {indicator: I_POSTURE_DR, scale_by_level: {2: 0.6, 1: 1.0}}
     levels:
       - {level: 1, label: 항공 위협 임박, min_threat: 0.40, min_confidence: 중}
       - {level: 2, label: 항공 활동 증가, min_threat: 0.20, min_confidence: 하}

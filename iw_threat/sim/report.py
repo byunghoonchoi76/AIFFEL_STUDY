@@ -144,7 +144,7 @@ def build_report(result: dict, out_path: str | Path) -> Path:
     # ── 0. 태세 판단 조건 (상황 판단 참고) ──
     rd = ev.get("readiness")
     if rd:
-        h("태세 판단 조건 부합 현황 (상황 판단 참고)")
+        h("태세 판단 조건 부합 정보 (합참·연합사 판단 지원용, 정보사는 태세 건의 안 함)")
         rows = []
         for tid, tr in rd["tracks"].items():
             last = tr["series"][-1]

@@ -75,7 +75,7 @@ def load_scenario(path: str | Path) -> Scenario:
                              tuple(a.get("move_km", (0, 0)))) for a in raw.get("activities", [])],
         reports=[Report(r["day"], r["source"], r["name"], r["reliability"], int(r["credibility"]),
                         bool(r.get("truth", True)), r["text"]) for r in raw.get("reports", [])],
-        meta={"weather": raw.get("weather", []), "imagery": raw.get("imagery", []), "key_targets": raw.get("key_targets", [])},
+        meta={"weather": raw.get("weather", []), "imagery": raw.get("imagery", []), "key_targets": raw.get("key_targets", []), "issued_posture": raw.get("issued_posture", [])},
     )
 
 

@@ -98,6 +98,36 @@ def weather_assessment(area_id: str, as_of: datetime, catalog, grading) -> dict:
             "findings": it["findings"], "collection_limits": it["collection_limits"], "evidence": ev}
 
 
+def issued_posture_evidence(area_id: str, as_of: datetime, catalog, grading, s) -> tuple[dict, list]:
+    """합참·연합사 발령 태세(평시 기준보다 높은 단계)를 해당 가설의 참고 근거로 변환."""
+    from .readiness import load_readiness
+    from .scoring import Evidence
+    try:
+        posture = pg.fetch_posture(area_id, as_of)
+    except Exception:  # noqa: BLE001
+        posture = {}
+    if not posture:
+        return {}, []
+    tracks, _ = load_readiness(s.readiness_path)
+    rel, cred = grading.default_grade("COMMAND")
+    valid = catalog.indicator_defs()
+    issued, ev = {}, []
+    for t in tracks:
+        p = posture.get(t.id)
+        if not p:
+            continue
+        issued[t.id] = {"level": p["level"], "level_name": t.name_of(p["level"]), "issuer": p["issuer"],
+                        "valid_from": p["valid_from"].isoformat(), "note": p["note"]}
+        pe = t.posture_evidence or {}
+        scale = (pe.get("scale_by_level") or {}).get(p["level"])
+        if p["level"] < t.baseline and scale and pe.get("indicator") in valid:
+            ev.append(Evidence(indicator_id=pe["indicator"], source_type="COMMAND", source_key=f"COMMAND:{t.id}",
+                               reliability=rel, credibility=cred, observed_at=p["valid_from"],
+                               ref=f"posture:{t.id}:{p['level']}", scale=float(scale),
+                               quote=f"{p['issuer']} {t.name_of(p['level'])} 판단·발령({p['valid_from'].date()}) — 상급 판단을 평가 참고 조건으로 반영"))
+    return issued, ev
+
+
 def commander_requirements(result, kt_acts: list[dict], s) -> dict:
     """합참의장·연합사령관 PIR 답변 상태와 CCIR 보고 조건."""
     from .commander import ccir_alerts, load_requirements, pir_answers
@@ -170,6 +200,10 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
     weather = weather_assessment(area_id, as_of, catalog, grading)
     evidence += weather.pop("evidence")
 
+    # 1-3) 합참·연합사가 판단·발령한 현 태세 → 평가 참고 조건 (상급 판단 반영, 분석 신뢰도 독립 출처에는 미산입)
+    issued, posture_ev = issued_posture_evidence(area_id, as_of, catalog, grading, s)
+    evidence += posture_ev
+
     # 2) 텍스트 첩보 → LLM 분류(인용문 원문 대조 검증)
     rejected_hits = 0
     n_chunks = 0
@@ -225,6 +259,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         "conflicts": [asdict(c) for c in result.conflicts],
         "lr_matrix": lr_matrix(catalog, result),
         "weather": weather,
+        "issued_posture": issued,
         "commander_requirements": commander_requirements(result, kt_acts, s),
         "rejected_llm_hits": rejected_hits,
         "catalog_version": catalog.meta.get("version"),

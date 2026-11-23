@@ -81,7 +81,7 @@ with st.sidebar:
         elif demo and "data" not in st.session_state:
             p = Path(demo)
             st.session_state["data"] = load_result_file(p.read_bytes(), p.parent)
-    st.caption("위협도는 분석 보조 결과(최종 판단은 분석관). 태세는 합참·연합사 협의 및 국방부장관·통수권자 재가 사항으로, 시스템은 상황 판단 조건 부합 여부만 제시")
+    st.caption("위협도는 분석 보조 결과(최종 판단은 분석관). 태세 판단·건의는 합참·연합사, 결정은 국방부장관·통수권자 재가 사항 — 정보사는 태세를 건의하지 않고 조건 부합 정보만 제공")
 
 data = st.session_state.get("data")
 if not data or "hypotheses" not in data.get("assess", {}):
@@ -122,16 +122,22 @@ with tabs[0]:
         st.markdown(f"<div class='why'><b>종합 판단</b> — {N['summary']['text']}</div>", unsafe_allow_html=True)
 
     if rd:
-        st.subheader("태세 판단 조건 (상황 판단 참고)")
+        st.subheader("태세 — 합참·연합사 발령 태세(참고 조건) vs 정보 상황")
+        IP = A.get("issued_posture") or {}
         cols = st.columns(len(rd))
         for col, (tid, r) in zip(cols, rd.items()):
             if not r:
                 continue
             color = "#C0392B" if r["action"] == "상향 조건" else "#1F3A68"
-            col.markdown(f"<div class='card lite'><div class='t'>{TRACK_KO.get(tid, tid)}</div><div class='v' style='color:{color}'>{r['level_name']}</div>"
-                         f"<div class='s'>{r['action']} · {'; '.join(r['reasons']) or r.get('note') or '기준 미달 — 유지'}</div></div>",
+            ip = IP.get(tid) or ({"level_name": r.get("issued_name"), "issuer": r.get("issuer")} if r.get("issued_name") else None)
+            issued = f"{ip['level_name']} ({ip['issuer']})" if ip else "미입력"
+            col.markdown(f"<div class='card lite'><div class='t'>{TRACK_KO.get(tid, tid)}</div>"
+                         f"<div class='s'>발령 태세: <b>{issued}</b></div>"
+                         f"<div class='v' style='color:{color}'>{r['level_name']}</div><div class='s'>정보 상황 조건 · {r.get('vs_issued') or ''}</div>"
+                         f"<div class='s'>{'; '.join(r['reasons']) or r.get('note') or '상위 조건 미충족'}</div></div>",
                          unsafe_allow_html=True)
-        st.caption("각 카드는 현재 정보 상황이 부합하는 조건 단계(예시 기준). 태세 결정은 합참·연합사 협의 및 국방부장관·통수권자 재가 사항")
+        st.caption("발령 태세는 합참·연합사가 판단·발령한 값을 입력받아 평가의 참고 조건으로 적용(상급 판단 근거). "
+                   "아래 단계는 현재 정보 상황이 부합하는 조건(예시 기준)으로, 발령 태세와의 차이를 정보 판단 자료로 제공 — 태세 건의 아님")
 
     CR = A.get("commander_requirements") or {}
     if CR.get("pirs"):

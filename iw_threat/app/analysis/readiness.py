@@ -1,6 +1,6 @@
 """경보·감시태세 상황 판단 조건 엔진 (워치콘·데프콘·진돗개·두루미 등 트랙별) — 순수 함수.
 날짜순 평가 이력을 보고 트랙마다 현재 정보 상황이 부합하는 '조건 단계'를 산출.
-태세 자체는 합참·연합사 협의와 국방부장관·통수권자 재가로 결정되므로, 결과는 상황 판단 참고 정보임."""
+태세 판단·건의는 합참·연합사, 결정은 국방부장관·통수권자 재가 사항이므로 정보사는 건의하지 않으며, 결과는 합참·연합사 판단 지원 정보임."""
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -24,6 +24,7 @@ class Track:
     decisive: list[dict] = field(default_factory=list)
     defcon_review: dict = field(default_factory=dict)
     low_confidence_action: str = "정보 수집 강화"
+    posture_evidence: dict = field(default_factory=dict)
 
     def name_of(self, level: int) -> str:
         return self.level_names.get(level, f"{self.name} {level}")
@@ -40,7 +41,8 @@ def load_readiness(path: str | Path) -> tuple[list[Track], str]:
             t["id"], t["name"], t.get("scope", ""), t.get("hypotheses", "all"), int(t["baseline"]),
             {int(k): v for k, v in (t.get("level_names") or {}).items()},
             sorted(t["levels"], key=lambda l: l["level"]), int(t.get("downgrade_hold_days", 0)),
-            t.get("decisive", []), t.get("defcon_review", {}), raw.get("low_confidence_action", "정보 수집 강화")))
+            t.get("decisive", []), t.get("defcon_review", {}), raw.get("low_confidence_action", "정보 수집 강화"),
+            t.get("posture_evidence", {})))
     return tracks, raw.get("basis", "")
 
 

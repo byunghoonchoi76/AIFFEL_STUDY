@@ -21,5 +21,21 @@ def current_readiness(area_id: str, as_of: datetime) -> dict:
         obs.append(observation_from_result(days, r, h["as_of"].isoformat()))
     recs = recommend_all(tracks, obs)
     now = {tid: (series[-1] if series else None) for tid, series in recs.items()}
+    # 합참·연합사 발령 태세와 정보 상황 조건 비교 → 정보 판단 자료 (태세 건의 아님)
+    try:
+        issued = pg.fetch_posture(area_id, as_of)
+    except Exception:  # noqa: BLE001
+        issued = {}
+    names = {t.id: t for t in tracks}
+    for tid, cur in now.items():
+        if cur is None:
+            continue
+        p = issued.get(tid)
+        if p:
+            cur["issued_level"], cur["issued_name"], cur["issuer"] = p["level"], names[tid].name_of(p["level"]), p["issuer"]
+            cur["vs_issued"] = ("정보 상황이 발령 태세보다 높은 조건" if cur["level"] < p["level"] else
+                                "정보 상황이 발령 태세보다 낮은 조건" if cur["level"] > p["level"] else "발령 태세와 일치")
+        else:
+            cur["issued_level"], cur["issued_name"], cur["issuer"], cur["vs_issued"] = None, None, None, "발령 태세 미입력"
     return {"basis": basis, "history_points": len(obs), "current": now,
             "changes": {tid: [x for x in series if x["action"] != "유지"] for tid, series in recs.items()}}

@@ -26,6 +26,12 @@ def prepare(client, sc: Scenario, d_day: datetime, out: Path, seed: int) -> dict
     _ok(client.delete("/documents", params={"area_id": sc.area_id}))
     _ok(client.delete("/weather", params={"area_id": sc.area_id}))
     _ok(client.delete("/keytargets", params={"area_id": sc.area_id}))
+    _ok(client.delete("/posture", params={"area_id": sc.area_id}))
+    ps = [{"area_id": sc.area_id, "track": p["track"], "level": p["level"], "issuer": p.get("issuer", "합참·연합사"),
+           "note": p.get("note"), "valid_from": (d_day + timedelta(days=p["day"])).replace(hour=8, minute=0, second=0, microsecond=0).isoformat()}
+          for p in sc.meta.get("issued_posture", [])]
+    if ps:
+        _ok(client.post("/posture", json=ps))
     kts = [{**k, "area_id": sc.area_id, "name": str(k["name"]).strip()} for k in sc.meta.get("key_targets", [])]
     if kts:
         _ok(client.post("/keytargets", json=kts))
@@ -57,7 +63,7 @@ def prepare(client, sc: Scenario, d_day: datetime, out: Path, seed: int) -> dict
             "reliability": d["reliability"], "credibility": str(d["credibility"]), "area_id": sc.area_id,
             "reported_at": d["reported_at"], "extract_graph": "false"}))
     (out / "reports.json").write_text(json.dumps(docs, ensure_ascii=False, indent=1), encoding="utf-8")
-    return {"orbat": orbat, "targets": ins.get("inserted"), "reports": len(docs), "weather_days": len(wx), "key_targets": len(kts),
+    return {"orbat": orbat, "targets": ins.get("inserted"), "reports": len(docs), "weather_days": len(wx), "key_targets": len(kts), "issued_posture": len(ps),
             "false_reports": sum(1 for d in docs if not d["truth"])}
 
 

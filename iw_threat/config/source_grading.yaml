@@ -21,4 +21,5 @@ defaults:
   SIGINT: {reliability: B, credibility: 2}
   OSINT: {reliability: C, credibility: 3}
   DOCTRINE: {reliability: A, credibility: 1}
+  COMMAND: {reliability: A, credibility: 2}   # 합참·연합사 태세 판단 (상급 판단 — 분석 신뢰도의 독립 출처 수에는 미산입)
   METOC: {reliability: B, credibility: 2}     # 기상 관측·예보 (작전 여건 근거, 분석 신뢰도의 독립 출처 수에는 미산입)

@@ -190,8 +190,8 @@ def confidence_level(r: HypothesisResult, conflicts: list[Conflict] | None = Non
 
 def _base_confidence(r: HypothesisResult) -> str:
     # 기상(METOC)은 의도가 아닌 여건 근거 → 독립 출처·충족 지표 수에서 제외
-    pos = [c for c in r.contributions if c.delta_logit > 0 and set(c.source_types) - {"METOC"}]
-    types = {t for c in pos for t in c.source_types} - {"METOC"}
+    pos = [c for c in r.contributions if c.delta_logit > 0 and set(c.source_types) - {"METOC", "COMMAND"}]
+    types = {t for c in pos for t in c.source_types} - {"METOC", "COMMAND"}
     n_ind = sum(1 for c in pos if c.strength >= 0.3)
     if len(types) >= 3 and n_ind >= 3:
         return "상"

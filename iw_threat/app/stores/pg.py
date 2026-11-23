@@ -197,3 +197,42 @@ def delete_keytargets(area_id: str) -> int:
     ensure_keytargets()
     with conn() as c:
         return c.execute("DELETE FROM key_targets WHERE area_id=%s", (area_id,)).rowcount
+
+
+# ── 합참·연합사 발령 태세 (평가 입력 조건) ──
+_PS_READY = False
+
+
+def ensure_posture() -> None:
+    global _PS_READY
+    if _PS_READY:
+        return
+    from pathlib import Path
+    sql = Path(__file__).resolve().parents[2] / "db/postgis/05_posture.sql"
+    with conn() as c:
+        c.execute(sql.read_text(encoding="utf-8"))
+    _PS_READY = True
+
+
+def insert_posture(rows: list[dict]) -> int:
+    ensure_posture()
+    with conn() as c, c.cursor() as cur:
+        cur.executemany("INSERT INTO issued_posture (area_id, track, level, valid_from, issuer, note) VALUES (%s,%s,%s,%s,%s,%s)",
+                        [(r.get("area_id"), r["track"], r["level"], r["valid_from"], r["issuer"], r.get("note")) for r in rows])
+    return len(rows)
+
+
+def fetch_posture(area_id: str, as_of: datetime) -> dict[str, dict]:
+    """트랙별 as_of 시점 유효한 최신 발령 태세."""
+    ensure_posture()
+    with conn() as c:
+        rows = c.execute("SELECT DISTINCT ON (track) track, level, valid_from, issuer, note FROM issued_posture "
+                         "WHERE (area_id IS NULL OR area_id=%s) AND valid_from <= %s ORDER BY track, valid_from DESC",
+                         (area_id, as_of)).fetchall()
+    return {r["track"]: r for r in rows}
+
+
+def delete_posture(area_id: str) -> int:
+    ensure_posture()
+    with conn() as c:
+        return c.execute("DELETE FROM issued_posture WHERE area_id=%s", (area_id,)).rowcount

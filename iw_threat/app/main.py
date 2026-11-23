@@ -206,6 +206,33 @@ class KeyTargetIn(BaseModel):
     note: str | None = None
 
 
+class PostureIn(BaseModel):
+    area_id: str | None = None
+    track: Literal["watchcon", "defcon", "jindogae", "durumi"]
+    level: int
+    valid_from: datetime
+    issuer: str = "합참·연합사"
+    note: str | None = None
+
+    _tz = field_validator("valid_from")(lambda v: to_aware(v))
+
+
+@app.post("/posture")
+def add_posture(rows: list[PostureIn]):
+    """합참·연합사가 판단·발령한 현 태세 입력 — 평가의 참고 조건으로 적용."""
+    return {"inserted": pg.insert_posture([r.model_dump() for r in rows])}
+
+
+@app.get("/posture")
+def get_posture(area_id: str, as_of: datetime):
+    return pg.fetch_posture(area_id, to_aware(as_of))
+
+
+@app.delete("/posture")
+def delete_posture(area_id: str):
+    return {"deleted": pg.delete_posture(area_id)}
+
+
 @app.post("/keytargets")
 def add_keytargets(rows: list[KeyTargetIn]):
     """합참·연합사 표적목록(핵심표적·고가치표적) 적재 — 실제 목록은 폐쇄망에서만."""

@@ -69,6 +69,7 @@ services:
       - ./db/postgis/02_orbat.sql:/docker-entrypoint-initdb.d/02_orbat.sql:ro
       - ./db/postgis/03_weather.sql:/docker-entrypoint-initdb.d/03_weather.sql:ro
       - ./db/postgis/04_keytargets.sql:/docker-entrypoint-initdb.d/04_keytargets.sql:ro
+      - ./db/postgis/05_posture.sql:/docker-entrypoint-initdb.d/05_posture.sql:ro
     ports:
       - "5432:5432"
     healthcheck:
