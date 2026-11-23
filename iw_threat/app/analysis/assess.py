@@ -120,6 +120,13 @@ def deception_checks(changes, evidence, pts, catalog, grading) -> list:
                 out.append(Evidence(indicator_id="C_DECOY", source_type="IMINT", source_key="IMINT:sar_check",
                                     reliability=rel, credibility=cred, observed_at=e.observed_at, ref="sar:" + e.ref,
                                     quote=f"SAR 금속 반사파 불일치 {sum(1 for f in flags if f is False)}/{len(flags)}건 — 모형·기만체 의심 ({e.quote[:40]})"))
+    fires = [e for e in front if e.indicator_id in ("I_ARTY_POS", "I_HARTS_OCC")]
+    armor = [e for e in evidence if e.indicator_id == "I_ARMOR_MASS" and e.scale >= 1.0]
+    if fires and not armor and "C_NO_MANEUVER" in valid:     # 화력만 증강, 기동부대 집결 없음 → 국지 화력 도발 쪽
+        out.append(Evidence(indicator_id="C_NO_MANEUVER", source_type="IMINT", source_key="IMINT:maneuver_check",
+                            reliability=rel, credibility=cred, observed_at=max(e.observed_at for e in fires),
+                            ref="maneuver:none", scale=0.7,
+                            quote="포병·갱도포병 증강이 식별되나 기갑·기계화 기동부대 집결은 미식별 — 전면 공격보다 국지 화력 도발 가능성"))
     logi = [c for c in changes if c.equipment_type in LOGI_EQ and c.baseline_obs >= 3]
     has_logi_ev = any(e.indicator_id == "I_LOGISTICS" for e in evidence)
     if front and logi and not has_logi_ev and all(c.delta <= 0 for c in logi) and "C_NO_LOGISTICS" in valid:

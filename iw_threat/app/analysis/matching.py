@@ -65,13 +65,15 @@ def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
                     and (ch.zscore is None or ch.zscore >= wk.get("zscore", 2.0)
                          or (ch.persist_z or 0) >= wk.get("persist_zscore", 3.0))   # 반복 관측된 작은 증가
                     and len(ch.refs) >= wk.get("min_obs", 2))       # 약한 신호는 최근 2회 이상 관측돼야 (일회성 잡음 배제)
+            # 평시 0에서 단 1회 관측된 신규 출현은 미확인(단일 영상 오탐 가능) → 약하게 반영
+            single_new = strong and ch.baseline_level == 0 and len(ch.refs) < 2
             if strong or weak:
                 out.append(Evidence(
                     indicator_id=ind.id, source_type="IMINT", source_key=source_key,
                     reliability=rel, credibility=cred, observed_at=ch.latest_at,
                     ref=f"targets:{ch.equipment_type}:{','.join(map(str, ch.refs))}",
-                    quote=_imagery_quote(ch) + f" (기준 {th.basis}{', 약한 신호' if weak else ''})",
-                    scale=1.0 if strong else float(wk.get("scale", 0.5)), unit_key=ch.unit_key,
+                    quote=_imagery_quote(ch) + f" (기준 {th.basis}{', 약한 신호' if weak else (', 단일 관측 신규 출현 — 미확인' if single_new else '')})",
+                    scale=1.0 if strong and not single_new else float(wk.get("scale", 0.5)), unit_key=ch.unit_key,
                 ))
     return out
 
