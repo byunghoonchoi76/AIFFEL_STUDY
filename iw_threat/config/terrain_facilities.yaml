@@ -1,0 +1,26 @@
+# 전장정보분석 — 지형(도심지)과 아군 중요시설 (※ 예시·가상 값. 실제 시설·지형 자료는 폐쇄망에서만 적재)
+version: tf-0.1
+# 적 지상 공격 진출 속도 (km/일, 예시) — 도심지는 "도시로 들어가는 것은 늪으로 들어가는 것"이라는 교시에 따라
+# 북한군은 도심 직접 진입을 회피·우회하고, 진입 시 진출 속도가 급감하는 것으로 가정
+advance_rate_km_per_day:
+  open: 30          # 개활·평지 기계화부대
+  mountain: 10      # 산악
+  urban: 3          # 도심지 시가전
+urban_bypass_factor: 1.3        # 도심 우회 시 경로 증가율
+# 투발 수단 사거리 (km, 예시) — 중요시설이 사거리 안이면 화학탄 투발 가능
+delivery_range_km:
+  artillery: 30
+  mlrs: 60
+  harts: 55
+chem_downwind_deg: 30           # 바람이 적 위치 → 시설 방향으로 ±30° 이내면 풍하(아군 위험)
+urban_areas:                    # 도심지 (중심·반경)
+  - {name: 가상도시A, lat: 38.05, lon: 127.05, radius_km: 6}
+  - {name: 가상도시B, lat: 37.90, lon: 126.85, radius_km: 9}
+  - {name: 가상도시C, lat: 38.40, lon: 127.00, radius_km: 5}
+facilities:                     # 국가중요시설(가·나·다급) / 군사중요시설 — 가상
+  - {id: NF-1, name: 가상 발전소, kind: 국가중요시설, grade: 가, lat: 38.02, lon: 127.10}
+  - {id: NF-2, name: 가상 정수장, kind: 국가중요시설, grade: 나, lat: 37.92, lon: 126.88}
+  - {id: MF-1, name: 가상 비행장, kind: 군사중요시설, grade: 가, lat: 38.10, lon: 126.95}
+  - {id: MF-2, name: 가상 군수지원시설, kind: 군사중요시설, grade: 나, lat: 37.98, lon: 127.20}
+  - {id: NF-3, name: 가상 변전소, kind: 국가중요시설, grade: 가, lat: 38.41, lon: 127.01}
+  - {id: MF-3, name: 가상 전방 지휘시설, kind: 군사중요시설, grade: 가, lat: 38.35, lon: 126.88}

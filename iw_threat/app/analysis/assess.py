@@ -98,6 +98,38 @@ def weather_assessment(area_id: str, as_of: datetime, catalog, grading) -> dict:
             "findings": it["findings"], "collection_limits": it["collection_limits"], "evidence": ev}
 
 
+def terrain_assessment(area_id, as_of, weather, catalog, grading, s, pts, since) -> dict:
+    from .scoring import Evidence
+    from .terrain import facility_vulnerability, load_terrain
+    try:
+        cfg = load_terrain(s.terrain_path)
+    except FileNotFoundError:
+        return {"available": False, "evidence": []}
+    if not cfg.get("facilities"):
+        return {"available": False, "evidence": []}
+    pts = pts if pts is not None else pg.fetch_target_points(area_id, since, as_of)
+    recent = [p for p in pts if p["observed_at"] > as_of - timedelta(days=s.window_days)]
+    wx = weather.get("data") if weather.get("available") else None
+    chem_ok = any(e["domain"] == "chemical_ops" and e["level"] == "양호" for e in weather.get("effects", []))
+    res = facility_vulnerability(recent, cfg, wx, chem_ok)
+    rel, cred = grading.default_grade("IMINT")
+    valid = catalog.indicator_defs()
+    ev = []
+    hi = [f for f in res["facilities"] if f["fires_in_range"] and f.get("grade") == "가"]
+    if hi and "I_CHEM_DELIVERY" in valid:
+        ev.append(Evidence(indicator_id="I_CHEM_DELIVERY", source_type="IMINT", source_key="IMINT:terrain",
+                           reliability=rel, credibility=cred, observed_at=max(p["observed_at"] for p in recent),
+                           ref="terrain:" + ",".join(f["id"] for f in hi),
+                           quote="가급 중요시설 " + ", ".join(f["name"] for f in hi) + " — 적 화력(투발 수단) 사거리 내"))
+    dw = [f for f in res["facilities"] if f["downwind"]]
+    if dw and chem_ok and "I_WX_CHEM" in valid:
+        r2, c2 = grading.default_grade("METOC")
+        ev.append(Evidence(indicator_id="I_WX_CHEM", source_type="METOC", source_key="METOC:chem",
+                           reliability=r2, credibility=c2, observed_at=to_aware(datetime.fromisoformat(weather["valid_at"])),
+                           ref="weather:chem", quote="화학 운용 유리 기상(약풍·강수 없음), 풍하 시설: " + ", ".join(f["name"] for f in dw)))
+    return {"available": True, **res, "evidence": ev}
+
+
 def issued_posture_evidence(area_id: str, as_of: datetime, catalog, grading, s) -> tuple[dict, list]:
     """합참·연합사 발령 태세(평시 기준보다 높은 단계)를 해당 가설의 참고 근거로 변환."""
     from .readiness import load_readiness
@@ -200,6 +232,11 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
     weather = weather_assessment(area_id, as_of, catalog, grading)
     evidence += weather.pop("evidence")
 
+    # 1-2b) 지형(도심지 진출 속도)·아군 중요시설 취약성 — 화학탄 투발 수단 사거리·풍하 → 화학 위협 근거
+    terrain = terrain_assessment(area_id, as_of, weather, catalog, grading, s,
+                                 pts if baseline_mode == "unit" else None, since)
+    evidence += terrain.pop("evidence")
+
     # 1-3) 합참·연합사가 판단·발령한 현 태세 → 평가 참고 조건 (상급 판단 반영, 분석 신뢰도 독립 출처에는 미산입)
     issued, posture_ev = issued_posture_evidence(area_id, as_of, catalog, grading, s)
     evidence += posture_ev
@@ -260,6 +297,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         "lr_matrix": lr_matrix(catalog, result),
         "weather": weather,
         "issued_posture": issued,
+        "terrain": terrain,
         "commander_requirements": commander_requirements(result, kt_acts, s),
         "rejected_llm_hits": rejected_hits,
         "catalog_version": catalog.meta.get("version"),

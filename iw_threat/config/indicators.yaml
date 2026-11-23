@@ -47,6 +47,7 @@ hypotheses:
       # 반대 징후 (lr < 1: 공격 가능성을 낮춤). discounts: 이 반대 증거가 신뢰를 깎는 대상 지표
       - {id: I_POSTURE_WC,   name: 합참·연합사 워치콘 상향 판단, lr: 2.0, tau_days: 30, equipment: [], min_delta: 0, meaning: 상급 정보판단 반영 (참고 조건)}
       - {id: I_POSTURE_DC,   name: 합참·연합사 데프콘 상향 판단, lr: 3.0, tau_days: 30, equipment: [], min_delta: 0, meaning: 상급 작전판단 반영 (참고 조건)}
+      - {id: I_CHEM_PREP,    name: 화학부대·화학정찰·제독 장비 전방 이동, lr: 2.0, tau_days: 7, equipment: [chem_vehicle, decon_vehicle], min_delta: 2, meaning: 공격 시 중요시설 무력화용 화학 운용 준비 정황}
       - {id: I_KEY_TARGET,   name: 핵심표적 활동(합참·연합사 표적목록), lr: 3.0, tau_days: 7, equipment: [], min_delta: 0, meaning: 지휘관 우선 표적의 활동 — 위협 평가 핵심 기준}
       - {id: I_HV_TARGET,    name: 고가치표적 활동(합참·연합사 표적목록), lr: 2.0, tau_days: 7, equipment: [], min_delta: 0, meaning: 고가치 표적의 활동}
       - {id: I_WX_WINDOW,    name: 공격 적합 기상·지면 여건,      lr: 1.5, tau_days: 3, equipment: [], min_delta: 0, meaning: 기상 여건상 공격 시기로 유리 (의도 근거 아님)}
@@ -90,6 +91,17 @@ hypotheses:
       - {id: I_AIR_DEFENSE,  name: 방공 자산 전방 배치,          lr: 2.0, tau_days: 7, equipment: [sam, aaa, group:air_defense], min_delta: 2, meaning: 공격 부대 방공 엄호 정황}
 
   # 전술핵 위협 (STRAT2026·scenario_events P5) — 예시값
+  - id: H_CHEM
+    name: 화학무기 사용 준비 (중요시설 무력화)
+    prior: 0.01
+    impact: 0.95
+    indicators:
+      - {id: I_CHEM_PREP,    name: 화학부대·화학정찰·제독 장비 전방 이동, lr: 6.0, tau_days: 7, equipment: [chem_vehicle, decon_vehicle], min_delta: 2, meaning: 화학 운용 준비 정황}
+      - {id: I_CHEM_STORE,   name: 화학탄 저장시설 활동,           lr: 5.0, tau_days: 7, equipment: [chem_storage@activity, chem_storage], min_delta: 1, meaning: 화학탄 반출 정황}
+      - {id: I_CHEM_DELIVERY, name: 화학탄 투발 수단(장사정포·방사포) 사거리 내 전개, lr: 2.0, tau_days: 5, equipment: [], min_delta: 0, meaning: 중요시설 사거리 내 투발 수단 (지형·시설 분석에서 생성)}
+      - {id: I_WX_CHEM,      name: 화학 운용 유리 기상(아군 시설 방향 약풍·안정 대기), lr: 1.5, tau_days: 2, equipment: [], min_delta: 0, meaning: 기상 여건 (의도 근거 아님)}
+      - {id: I_KEY_TARGET_WMD, name: 핵심표적 활동(대량살상무기 관련), lr: 2.0, tau_days: 7, equipment: [], min_delta: 0, meaning: 합참·연합사 표적목록 중 WMD 관련 표적 활동}
+
   - id: H_NUCLEAR
     name: 전술핵 사용 준비
     prior: 0.01

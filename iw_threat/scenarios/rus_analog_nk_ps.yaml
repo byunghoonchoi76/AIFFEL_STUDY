@@ -33,6 +33,7 @@ units:
   - {name: 제9707가상수송연대, parent: 제9701가상전방군단, garrison: [38.740, 126.900], location_type: 주둔지, equipment: {truck: 40, fuel_truck: 6}}
   - {name: 제9708가상경보병여단, parent: 제9701가상전방군단, garrison: [38.680, 126.940], location_type: 주둔지, equipment: {sof_vehicle: 4}}
   - {name: 제9709가상방공연대, parent: 제9701가상전방군단, garrison: [38.730, 126.840], location_type: 주둔지, equipment: {sam: 4}}
+  - {name: 제9710가상화학대대, parent: 제9701가상전방군단, garrison: [38.750, 126.870], location_type: 주둔지, equipment: {chem_vehicle: 2, decon_vehicle: 2}}
 
 # 활동: 같은 부대·장비의 활동은 시간순으로 이어서 적용 (move_km는 누적)
 activities:
@@ -59,6 +60,9 @@ activities:
   # ⑦ 전방 지휘·특작 (러: 2월 중순 헬기·지휘소 전방 전개) → 북: 전방 지휘소, 경보병 전방 이동(북 고유 전술)
   - {unit: 제9701가상전방군단, equipment: command_vehicle, from: -10, to: -4, to_count: 9, move_km: [-2.0, 0.0]}
   - {unit: 제9708가상경보병여단, equipment: sof_vehicle, from: -7, to: -2, to_count: 14, move_km: [-2.5, 0.0]}
+  # ⑦-2 화학 운용 준비 (북한군 고유 — 중요시설 무력화 목적 화학탄 사용 가능) → 화학정찰·제독 장비 전방 이동
+  - {unit: 제9710가상화학대대, equipment: chem_vehicle, from: -12, to: -5, to_count: 8, move_km: [-3.0, 0.0]}
+  - {unit: 제9710가상화학대대, equipment: decon_vehicle, from: -12, to: -5, to_count: 6, move_km: [-3.0, 0.0]}
   # ⑧ 집결지 이탈·분산, 공격대형 (러: 2.20~23 집결지 이탈·전투대형 전환) → 북: 야간 분산 이동, 공격대형
   - {unit: 제9702가상기계화보병사단, equipment: march_column, from: -4, to: -1, to_count: 6, move_km: [-5.0, 0.0]}
   - {unit: 제9703가상전차여단, equipment: march_column, from: -4, to: -1, to_count: 5, move_km: [-3.0, 0.0]}
@@ -86,7 +90,7 @@ weather:
   - {from: -170, to: -91, note: 늦가을, cloud_pct: 40, precip_mm: 0, temp_c: 8, visibility_km: 12, ceiling_m: 2000, wind_ms: 4, ground: firm, river: normal}
   - {from: -90, to: -61, note: 초겨울, cloud_pct: 35, precip_mm: 0, temp_c: -2, visibility_km: 15, ceiling_m: 2500, wind_ms: 5, ground: firm, river: normal}
   - {from: -60, to: -41, note: 결빙 시작, cloud_pct: 30, precip_mm: 0, temp_c: -8, visibility_km: 15, ceiling_m: 2500, wind_ms: 5, ground: frozen, river: normal}
-  - {from: -40, to: 0, note: 엄동·하천 결빙, cloud_pct: 30, precip_mm: 0, temp_c: -12, visibility_km: 15, ceiling_m: 2500, wind_ms: 6, ground: frozen, river: frozen, snow_cm: 10}
+  - {from: -40, to: 0, note: 엄동·하천 결빙·북서풍, cloud_pct: 30, precip_mm: 0, temp_c: -12, visibility_km: 15, ceiling_m: 2500, wind_ms: 4, wind_dir_deg: 340, ground: frozen, river: frozen, snow_cm: 10}
   # 흐림·강수일 (광학 관측 불가 — SAR만 일부 관측)
   - {from: -113, to: -113, note: 비, cloud_pct: 95, precip_mm: 8, temp_c: 7, visibility_km: 4, ceiling_m: 600, wind_ms: 6, ground: firm, river: normal}
   - {from: -97, to: -97, note: 흐림, cloud_pct: 90, precip_mm: 0, temp_c: 6, visibility_km: 8, ceiling_m: 900, wind_ms: 5, ground: firm, river: normal}

@@ -158,6 +158,19 @@ with tabs[0]:
                                         "연결 PIR": ", ".join(a_["pir_ids"])} for a_ in acts]), use_container_width=True, hide_index=True)
         st.caption("PIR·CCIR·표적목록은 예시(가상) — 실증 시 실증기관 제공 자료로 교체(폐쇄망 적재). 표적 활동은 위협도 근거(핵심표적 LR 3, 고가치표적 LR 2)로 반영")
 
+    TR = A.get("terrain") or {}
+    if TR.get("available"):
+        st.subheader("지형(도심지)·아군 중요시설 취약성")
+        vcol = {"상": "🔴", "중": "🟠", "하": "🟢"}
+        st.dataframe(pd.DataFrame([{"시설": f_["name"], "구분": f"{f_['kind']} {f_.get('grade') or ''}급", "취약도": f"{vcol[f_['vulnerability']]} {f_['vulnerability']}",
+                                    "적 화력 사거리 내": f_["fires_in_range"], "풍하": "예" if f_["downwind"] else "-",
+                                    "지상 도달(직접/우회, 일)": f"{f_['advance']['direct_days']} / {f_['advance']['bypass_days']}" if f_["advance"] else "-",
+                                    "도심": f_["urban"] or "-", "판단": " · ".join(f_["notes"]) or "-"} for f_ in TR["facilities"]]),
+                     use_container_width=True, hide_index=True)
+        r_ = TR["advance_rates"]
+        st.caption(f"진출 속도 예시(km/일): 개활 {r_['open']} · 산악 {r_['mountain']} · 도심 {r_['urban']} — 북한군은 도심 직접 진입을 회피·우회한다고 가정"
+                   "(도시 진입=늪). 도심 내 시설은 지상 진입이 늦은 대신 화력·화학·특작 위협을 우선 고려. 시설·지형은 가상 예시")
+
     WX = A.get("weather") or {}
     if WX.get("available"):
         st.subheader("기상이 작전에 미치는 영향")

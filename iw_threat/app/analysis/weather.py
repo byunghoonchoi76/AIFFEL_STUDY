@@ -9,7 +9,7 @@ import yaml
 
 LEVELS = {"양호": 0, "제한": 1, "불가": 2}
 DEFAULTS = {"cloud_pct": 0, "precip_mm": 0.0, "temp_c": 10.0, "visibility_km": 10.0, "ceiling_m": 3000,
-            "wind_ms": 3.0, "ground": "firm", "river": "normal", "snow_cm": 0, "sea_state": 2}
+            "wind_ms": 3.0, "ground": "firm", "river": "normal", "snow_cm": 0, "sea_state": 2, "wind_dir_deg": 0}
 
 
 @dataclass

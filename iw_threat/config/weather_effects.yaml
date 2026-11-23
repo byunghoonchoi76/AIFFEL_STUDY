@@ -34,6 +34,11 @@ domains:
     rules:
       - {when: "sea_state >= 5", level: 불가, reason: "해상 상태 {sea_state} — 소형정 운용 불가"}
       - {when: "sea_state >= 4", level: 제한, reason: "해상 상태 {sea_state}"}
+  chemical_ops:    # 적 화학작용제 운용 여건 (높을수록 적에게 유리 = 아군 위험)
+    name: 화학 운용 여건(적)
+    rules:
+      - {when: "precip_mm >= 5 or wind_ms >= 8", level: 제한, reason: "강수 {precip_mm}mm·풍속 {wind_ms}m/s — 작용제 희석·분산, 적 운용 불리"}
+      - {when: "1 <= wind_ms <= 5 and precip_mm < 1", level: 양호, reason: "풍속 {wind_ms}m/s·강수 없음 — 작용제 운용 유리(아군 위험)"}
   personnel:
     name: 인원 활동(동상·열손상)
     rules:
