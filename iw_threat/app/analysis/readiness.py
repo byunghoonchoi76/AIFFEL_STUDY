@@ -1,5 +1,6 @@
-"""경보·감시태세 건의 엔진 (워치콘·진돗개·두루미 등 트랙별) — 순수 함수.
-날짜순 평가 이력을 보고 트랙마다 격상·유지·하향을 건의. 발령은 지휘관 권한이므로 결과는 항상 '건의'."""
+"""경보·감시태세 상황 판단 조건 엔진 (워치콘·데프콘·진돗개·두루미 등 트랙별) — 순수 함수.
+날짜순 평가 이력을 보고 트랙마다 현재 정보 상황이 부합하는 '조건 단계'를 산출.
+태세 자체는 합참·연합사 협의와 국방부장관·통수권자 재가로 결정되므로, 결과는 상황 판단 참고 정보임."""
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -78,25 +79,25 @@ def _candidate(track: Track, ob: Observation) -> tuple[int, list[str], bool, flo
 
 
 def recommend_series(track: Track, obs: list[Observation]) -> list[dict]:
-    """격상은 즉시, 하향은 downgrade_hold_days 동안 낮은 조건 지속 시 한 단계씩."""
+    """상향 조건은 즉시, 하향 조건은 downgrade_hold_days 동안 낮은 조건 지속 시 한 단계씩 반영."""
     out, current, lower_since = [], track.baseline, None
     for ob in sorted(obs, key=lambda o: o.day):
         cand, reasons, held, threat = _candidate(track, ob)
         action, note = "유지", ""
         if cand < current:
-            action, current, lower_since = "격상", cand, None
+            action, current, lower_since = "상향 조건", cand, None
         elif cand > current:
             lower_since = ob.day if lower_since is None else lower_since
             if ob.day - lower_since >= track.downgrade_hold_days:
-                action, current, lower_since = "하향", current + 1, (ob.day if current + 1 < cand else None)
+                action, current, lower_since = "하향 조건", current + 1, (ob.day if current + 1 < cand else None)
                 reasons = [f"하향 조건 {track.downgrade_hold_days}일 이상 지속"]
             else:
                 note = f"하향 조건 {ob.day - lower_since:g}/{track.downgrade_hold_days}일 — 유지"
         else:
             lower_since = None
-        if held:   # 더 높은 단계 점수는 넘었지만 신뢰도 부족 — 그 단계 대신 정보 수집 강화 건의
+        if held:   # 더 높은 단계 점수는 넘었지만 신뢰도 부족 — 그 단계 대신 정보 수집 강화(정보 분야 건의)
             note = (note + " · " if note else "") + f"상위 단계 기준 초과이나 분석 신뢰도 부족 → {track.low_confidence_action} 건의"
-        dr = track.defcon_review
+        dr = track.defcon_review   # 구버전 설정 호환 (현재는 데프콘을 별도 조건 트랙으로 산출)
         defcon = bool(dr) and current <= dr.get("at_level", 0) and \
             CONF_ORDER.get(ob.confidence, 0) >= CONF_ORDER.get(dr.get("min_confidence", "상"), 2)
         out.append({"track": track.id, "day": ob.day, "label": ob.label, "level": current,

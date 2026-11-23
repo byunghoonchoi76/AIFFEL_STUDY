@@ -45,6 +45,8 @@ hypotheses:
       - {id: I_EW_DEPLOY,    name: 전자전·통신 차량 전개,      lr: 3.0, tau_days: 5, equipment: [ew_vehicle], min_delta: 2, meaning: 전자전 공격 준비 정황}
       - {id: I_ASSAULT,      name: 공격대형·화력준비 진지 형성, lr: 12.0, tau_days: 2, equipment: [formation_wedge_v_line, artillery_position], min_delta: 2, meaning: 공격 개시 정황}
       # 반대 징후 (lr < 1: 공격 가능성을 낮춤). discounts: 이 반대 증거가 신뢰를 깎는 대상 지표
+      - {id: I_KEY_TARGET,   name: 핵심표적 활동(합참·연합사 표적목록), lr: 3.0, tau_days: 7, equipment: [], min_delta: 0, meaning: 지휘관 우선 표적의 활동 — 위협 평가 핵심 기준}
+      - {id: I_HV_TARGET,    name: 고가치표적 활동(합참·연합사 표적목록), lr: 2.0, tau_days: 7, equipment: [], min_delta: 0, meaning: 고가치 표적의 활동}
       - {id: I_WX_WINDOW,    name: 공격 적합 기상·지면 여건,      lr: 1.5, tau_days: 3, equipment: [], min_delta: 0, meaning: 기상 여건상 공격 시기로 유리 (의도 근거 아님)}
       - {id: C_WX_NOGO,      name: 공격 불리 기상·지면 여건,      lr: 0.7, tau_days: 3, equipment: [], counter: true, meaning: 기상 여건상 대규모 지상 공격 곤란 (기만·지연 가능성 병행 검토)}
       - {id: C_DECOY,        name: 모형·위장 장비 식별,          lr: 0.2,  tau_days: 10, equipment: [], counter: true, discounts: [I_ARMOR_MASS, I_BRIDGING, I_ARTY_POS], discount_factor: 0.7, meaning: 기만 전시 가능성}
@@ -91,4 +93,5 @@ hypotheses:
     indicators:
       - {id: I_TEL_DISPERSAL, name: 이동식 발사대 지하기지 출고·분산, lr: 8.0, tau_days: 5, equipment: [tel_srbm, missile_support_vehicle, ugf_entrance@activity], min_delta: 2, meaning: 미사일 발사 준비 정황}
       - {id: I_STRAT_TEL,     name: 장거리 발사대 이동,            lr: 3.0, tau_days: 5, equipment: [tel_strategic], min_delta: 1, meaning: 전략 억제 신호}
+      - {id: I_KEY_TARGET_WMD, name: 핵심표적 활동(대량살상무기 관련), lr: 3.0, tau_days: 7, equipment: [], min_delta: 0, meaning: 합참·연합사 표적목록 중 WMD 관련 표적 활동}
       - {id: I_UAV_RECON,     name: 발사 전 무인기 정찰,           lr: 3.0, tau_days: 2, equipment: [uav], min_delta: 2, meaning: 표적 확인 정황}

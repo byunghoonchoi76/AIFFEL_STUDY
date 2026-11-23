@@ -166,7 +166,7 @@ def build_opfor_scenario(directory: str | Path, branch_p5: bool = True, seed: in
         id="opfor_corps", name="대항군 군단 연속 시나리오", area_id="SIM-OPFOR",
         truth={"intent": "공격(개전)" + (" + 전술핵 위협 분기" if branch_p5 else ""), "hypothesis": "공격 준비",
                "d_day": "D일 = H시 개전", "warning_start": -14,
-               "readiness": {"watchcon": [[-30, 3], [-14, 2], [-3, 1]], "jindogae": [[-30, 3], [-9, 2], [0, 1]],
+               "readiness": {"watchcon": [[-30, 3], [-14, 2], [-3, 1]], "defcon": [[-30, 4], [-3, 3], [0, 2]], "jindogae": [[-30, 3], [-9, 2], [0, 1]],
                              "durumi": [[-30, 3], [-9, 2], [0, 1]]}},
         period=(-45, 3), assess=(-30, 3),
         noise={"p_observe": 0.9, "adverse_weather_share": env.get("adverse_weather_share", 0.3), "count_rel_sd": 0.10,

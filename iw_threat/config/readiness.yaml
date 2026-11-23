@@ -1,6 +1,7 @@
-# 경보·감시태세 건의 기준 — ※ 예시 기준. 단계 구분·발령 기준은 실제 기준(정보사·합참·작전사)으로 교체
-# 시스템은 '건의'만 하며 발령은 지휘관·해당 기관 권한
-basis: "예시 기준 (실제 발령 기준 아님)"
+# 경보·감시태세 '상황 판단 조건' — ※ 예시 기준. 단계 구분·조건은 실제 기준(합참·연합사)으로 교체
+# 워치콘·데프콘·진돗개 등 태세는 합참·연합사 협의와 국방부장관·군 통수권자 재가로 결정되는 사항
+# → 시스템은 태세를 건의·결정하지 않고, 현재 정보 상황이 각 단계의 판단 조건에 부합하는지만 제시 (상황 판단 참고)
+basis: "예시 조건 (실제 태세 조건 아님) — 태세 결정은 합참·연합사 협의 및 국방부장관·통수권자 재가 사항"
 
 tracks:
   - id: watchcon
@@ -17,7 +18,20 @@ tracks:
     decisive:                        # 결정적 징후 조합: 모두 식별되면 확률과 무관하게 해당 단계 이상
       - {indicators: [I_BRIDGING, I_MEDICAL], min_level: 2, note: 도하장비·야전 의무시설 동시 전개}
       - {indicators: [I_BRIDGING, I_ARTY_POS, I_COMMAND_POST], min_level: 1, note: 도하·포병 진지·전방 지휘소 동시 전개}
-    defcon_review: {at_level: 1, min_confidence: 상}   # 데프콘은 건의하지 않고 '검토 필요' 신호만
+
+  - id: defcon
+    name: 데프콘
+    scope: 방어준비태세 (전면전 위협)
+    hypotheses: [H_ATTACK, H_NUCLEAR]
+    baseline: 4                      # 한반도 평시 데프콘 4
+    level_names: {4: 데프콘 4, 3: 데프콘 3, 2: 데프콘 2}
+    levels:                          # 데프콘 1(전쟁 발발)은 교전 사실로 판단 — 정보 판단 조건에서 제외
+      - {level: 2, label: 전쟁 임박 조건, min_threat: 0.95, min_confidence: 상}
+      - {level: 3, label: 긴장 고조 조건, min_threat: 0.75, min_confidence: 상}
+      - {level: 4, label: 평시, min_threat: 0.0}
+    downgrade_hold_days: 4
+    decisive:
+      - {indicators: [I_ASSAULT], min_level: 2, note: 공격대형·화력준비 진지 형성}
 
   - id: jindogae
     name: 진돗개
@@ -48,4 +62,4 @@ tracks:
     decisive:
       - {indicators: [I_AIR_FORWARD, I_AIR_SORTIE], min_level: 1, note: 전투기 전방 전개·비행 활동 급증 동시 식별}
 
-low_confidence_action: 정보 수집 강화   # 상위 단계 점수는 넘었으나 분석 신뢰도 부족 시 건의
+low_confidence_action: 정보 수집 강화   # 상위 단계 조건 점수는 넘었으나 분석 신뢰도 부족 시 (정보 분야 건의)

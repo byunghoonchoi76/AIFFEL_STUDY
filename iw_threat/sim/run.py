@@ -25,6 +25,10 @@ def prepare(client, sc: Scenario, d_day: datetime, out: Path, seed: int) -> dict
     _ok(client.delete("/targets", params={"area_id": sc.area_id}))
     _ok(client.delete("/documents", params={"area_id": sc.area_id}))
     _ok(client.delete("/weather", params={"area_id": sc.area_id}))
+    _ok(client.delete("/keytargets", params={"area_id": sc.area_id}))
+    kts = [{**k, "area_id": sc.area_id, "name": str(k["name"]).strip()} for k in sc.meta.get("key_targets", [])]
+    if kts:
+        _ok(client.post("/keytargets", json=kts))
     wx = weather_series(sc, d_day)
     if wx:
         _ok(client.post("/weather", json=wx))
@@ -53,7 +57,7 @@ def prepare(client, sc: Scenario, d_day: datetime, out: Path, seed: int) -> dict
             "reliability": d["reliability"], "credibility": str(d["credibility"]), "area_id": sc.area_id,
             "reported_at": d["reported_at"], "extract_graph": "false"}))
     (out / "reports.json").write_text(json.dumps(docs, ensure_ascii=False, indent=1), encoding="utf-8")
-    return {"orbat": orbat, "targets": ins.get("inserted"), "reports": len(docs), "weather_days": len(wx),
+    return {"orbat": orbat, "targets": ins.get("inserted"), "reports": len(docs), "weather_days": len(wx), "key_targets": len(kts),
             "false_reports": sum(1 for d in docs if not d["truth"])}
 
 
@@ -105,7 +109,7 @@ def identification_accuracy(client, sc: Scenario, out: Path, window_days: int = 
 
 
 def readiness_eval(sc: Scenario, series: list[dict], readiness_path: str = "config/readiness.yaml") -> dict:
-    """태세 건의를 시간순으로 계산하고 시나리오 정답 태세 일정과 비교 (트랙별)."""
+    """태세 판단 조건을 시간순으로 산출하고 시나리오 정답 태세 일정과 비교 (트랙별)."""
     from app.analysis.readiness import Observation, load_readiness, recommend_all
 
     tracks, basis = load_readiness(readiness_path)
@@ -121,7 +125,7 @@ def readiness_eval(sc: Scenario, series: list[dict], readiness_path: str = "conf
                 for r in recs[t.id]]
         delays = []
         for (d0, lv), prev in zip(sched[1:], sched[:-1]):
-            if lv < prev[1]:                                          # 정답상 격상 시점
+            if lv < prev[1]:                                          # 정답상 상향 시점
                 first_ok = next((r["day"] for r in rows if r["rec"] <= lv), None)
                 delays.append({"to": t.name_of(lv), "truth_day": d0, "rec_day": first_ok,
                                "delay_days": (first_ok - d0) if first_ok is not None else None})

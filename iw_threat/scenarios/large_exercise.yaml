@@ -41,3 +41,9 @@ reports:
      text: "훈련장 일대에서 낮 시간에 포성이 이어지고 있으며 주민 대피 요청은 없었다고 보도되었다."}
   - {day: -2, source: HUMINT, name: 협조자 C, reliability: C, credibility: 3, truth: true,
      text: "협조자는 훈련에 참가한 부대들이 훈련 종료 후 원래 주둔지로 복귀할 예정이라고 들었다고 전했다."}
+
+# 합참·연합사 표적목록 중 핵심표적·고가치표적 (가상 예시 — 실제 목록은 폐쇄망에서만 적재)
+key_targets:
+  - {target_id: KT-92-1, name: 제9203가상포병연대 장사정포, category: 핵심표적, owner: 합참, unit_name: 제9203가상포병연대, equipment: [artillery, mlrs], pir_ids: [PIR-J2]}
+  - {target_id: KT-92-2, name: 제9202가상전차여단 기갑, category: 고가치표적, owner: 연합사, unit_name: 제9202가상전차여단, equipment: [tank, apc], pir_ids: [PIR-C1]}
+  - {target_id: KT-92-3, name: 제9201가상보병사단 지휘부, category: 고가치표적, owner: 공동, unit_name: 제9201가상보병사단, equipment: [command_vehicle], pir_ids: [PIR-J1]}

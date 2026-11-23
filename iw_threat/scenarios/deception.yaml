@@ -37,3 +37,8 @@ reports:
      text: "협조자는 집결지에 세워진 전차 상당수가 고무와 합판으로 만든 모형으로 보이며 연료 보급 차량은 오지 않았다고 전했다."}
   - {day: -3, source: SIGINT, name: 통신 관측, reliability: B, credibility: 2, truth: true,
      text: "해당 부대의 무선 통신량과 지휘망 활동은 평시 수준과 차이가 없는 것으로 관측되었다."}
+
+# 합참·연합사 표적목록 중 핵심표적·고가치표적 (가상 예시 — 실제 목록은 폐쇄망에서만 적재)
+key_targets:
+  - {target_id: KT-94-2, name: 제9402가상전차여단 기갑, category: 고가치표적, owner: 연합사, unit_name: 제9402가상전차여단, equipment: [tank, apc], pir_ids: [PIR-C1]}
+  - {target_id: KT-94-3, name: 제9401가상보병사단 지휘부, category: 고가치표적, owner: 공동, unit_name: 제9401가상보병사단, equipment: [command_vehicle], pir_ids: [PIR-J1]}

@@ -60,9 +60,9 @@ def readiness_chart(rd: dict, path: Path) -> Path:
     for ax, tr in zip(axs if len(tracks) > 1 else [axs], tracks):
         days = [r["day"] for r in tr["series"]]
         ax.step(days, [r["truth"] for r in tr["series"]], where="post", color="#999", lw=2.2, label="정답" if kr else "Truth")
-        ax.step(days, [r["rec"] for r in tr["series"]], where="post", color="#C0392B", lw=1.4, label="건의" if kr else "Rec.")
+        ax.step(days, [r["rec"] for r in tr["series"]], where="post", color="#C0392B", lw=1.4, label="조건 판단" if kr else "Cond.")
         ax.set_title(tr["name"] if kr else tr.get("name", ""), fontsize=9)
-        ax.set_yticks([1, 2, 3]); ax.invert_yaxis(); ax.grid(alpha=0.25)
+        ax.set_yticks(sorted({r["truth"] for r in tr["series"]} | {r["rec"] for r in tr["series"]} | {1, 2, 3})); ax.invert_yaxis(); ax.grid(alpha=0.25)
         ax.set_xlabel("D일 기준" if kr else "Day", fontsize=8)
     (axs[0] if len(tracks) > 1 else axs).legend(fontsize=7, loc="lower left")
     fig.tight_layout()
@@ -141,24 +141,21 @@ def build_report(result: dict, out_path: str | Path) -> Path:
     para("※ 본 보고서는 가상 부대·가상 지역의 합성 데이터로 자동 생성된 시험 보고서임", 8.5, False,
          WD_ALIGN_PARAGRAPH.CENTER, 10, (0xC0, 0x00, 0x00))
 
-    # ── 0. 태세 판단 건의 ──
+    # ── 0. 태세 판단 조건 (상황 판단 참고) ──
     rd = ev.get("readiness")
     if rd:
-        h("태세 판단 건의 (발령은 지휘관 권한)")
+        h("태세 판단 조건 부합 현황 (상황 판단 참고)")
         rows = []
         for tid, tr in rd["tracks"].items():
             last = tr["series"][-1]
             chg = [x for x in tr["series"] if x["action"] != "유지"]
             hist = " → ".join(f"D{x['day']:+d} {x['name']}" for x in chg) or "변동 없음"
-            why = "; ".join(last["reasons"]) or (last["note"] or "기준 미달 — 현 태세 유지")
+            why = "; ".join(last["reasons"]) or (last["note"] or "상위 단계 조건 미충족")
             rows.append([tr["name"], f"{last['name']} {'(' + last['action'] + ')' if last['action'] != '유지' else ''}".strip(), why, hist])
-        table(["태세", "현재 건의", "근거", "건의 변동 이력"], rows, [2.0, 3.2, 6.8, 5.0])
-        dc = rd["tracks"].get("watchcon", {}).get("defcon_review_days", [])
-        para(("■ 데프콘 검토 필요 신호: " + ", ".join(f"D{x:+d}" for x in dc)) if dc else "■ 데프콘 검토 신호 없음", 9.5,
-             True, after=2, color=(0xC0, 0, 0) if dc else (0x44, 0x44, 0x44))
-        para(f"※ {rd['basis']} · 격상 즉시 / 하향은 낮은 조건 지속 시 · 신뢰도 부족 시 정보 수집 강화 건의", 8.5,
+        table(["태세", "조건 부합 단계", "근거", "조건 변동 이력"], rows, [2.0, 3.2, 6.8, 5.0])
+        para(f"※ {rd['basis']} · 상향 조건은 즉시 / 하향 조건은 낮은 조건 지속 시 반영 · 신뢰도 부족 시 정보 수집 강화", 8.5,
              after=4, color=(0x66, 0x66, 0x66))
-        table(["지휘관 결심", "□ 건의대로 발령  □ 수정 발령(          )  □ 현 태세 유지", ], [["결심자 / 일시", ""]], [4.0, 13.0])
+        table(["분석관 검토", "□ 조건 판단 동의  □ 수정(          )  □ 추가 수집 필요"], [["검토자 / 일시", ""]], [4.0, 13.0])
 
     # ── 1. 종합 판단 ──
     h("1. 종합 판단")
@@ -272,13 +269,13 @@ def build_report(result: dict, out_path: str | Path) -> Path:
         if a:
             para("시험 설계 가정값: " + ", ".join(f"{k}={v}" for k, v in a.items()), 8, after=4, color=(0x66, 0x66, 0x66))
     if rd:
-        para("태세 건의 vs 정답 태세 일정", 10.5, True, after=2)
+        para("태세 판단 조건 vs 정답 태세 일정", 10.5, True, after=2)
         trow = []
         for tid, tr in rd["tracks"].items():
-            delay = "; ".join(f"{x['to']}: 정답 D{x['truth_day']:+d} / 건의 " + (f"D{x['rec_day']:+d} ({x['delay_days']:+d}일)" if x["rec_day"] is not None else "미건의")
+            delay = "; ".join(f"{x['to']}: 정답 D{x['truth_day']:+d} / 조건 부합 " + (f"D{x['rec_day']:+d} ({x['delay_days']:+d}일)" if x["rec_day"] is not None else "미부합")
                               for x in tr["escalation_delays"]) or "-"
             trow.append([tr["name"], f"{tr['match_rate']:.0%}", tr["over_days"], tr["under_days"], tr["level_changes"], delay])
-        table(["태세", "일치율", "과잉(일)", "미달(일)", "변동 횟수", "격상 시점 비교"], trow, [1.8, 1.6, 1.6, 1.6, 1.8, 8.6])
+        table(["태세", "일치율", "과잉(일)", "미달(일)", "변동 횟수", "상향 시점 비교"], trow, [1.8, 1.6, 1.6, 1.6, 1.8, 8.6])
         chart2 = readiness_chart(rd, out_path.with_name(out_path.stem + "_readiness.png"))
         d.add_picture(str(chart2), width=Cm(16.5))
     d.save(out_path)

@@ -11,7 +11,7 @@ truth:
   hypothesis: 공격 준비
   d_day: "D일 = 공격 개시 (러시아 사례 2022.2.24에 대응)"
   # 정답 태세 일정 [시작일, 단계] — 분석관 작성 예시 (2차 증강 장기화 확인 시 워치콘 2, 기만 철수 발표에도 증강 지속 확인 시 워치콘 1)
-  readiness: {watchcon: [[-120, 3], [-45, 2], [-8, 1]], jindogae: [[-120, 3]], durumi: [[-120, 3]]}
+  readiness: {watchcon: [[-120, 3], [-45, 2], [-8, 1]], defcon: [[-120, 4], [-8, 3], [-2, 2]], jindogae: [[-120, 3]], durumi: [[-120, 3]]}
 period: {start: -170, end: 0}
 assess: {start: -120, end: 0}
 
@@ -117,3 +117,9 @@ imagery:
      open_source: "Sentinel-2·1 (집결지 차량 감소 = 이탈)", reference: "Maxar 2.21~22 보도 (보도 참고)"}
   - {phase: "⑦ 경보병 전방·갱도 포병", rus_date: "해당 없음", place: "북한 고유 전술 — 러시아 사례 대응 영상 없음", approx: [],
      open_source: "합성 표적 또는 38 North·CSIS 판독 보고서의 시설 묘사 참고", reference: "-"}
+
+# 합참·연합사 표적목록 중 핵심표적·고가치표적 (가상 예시 — 실제 목록은 폐쇄망에서만 적재)
+key_targets:
+  - {target_id: KT-97-1, name: 제9704가상포병여단 장사정포, category: 핵심표적, owner: 합참, unit_name: 제9704가상포병여단, equipment: [artillery, mlrs, harts], pir_ids: [PIR-J2]}
+  - {target_id: KT-97-2, name: 제9703가상전차여단 기갑, category: 고가치표적, owner: 연합사, unit_name: 제9703가상전차여단, equipment: [tank, apc], pir_ids: [PIR-C1]}
+  - {target_id: KT-97-3, name: 제9701가상전방군단 지휘부, category: 핵심표적, owner: 공동, unit_name: 제9701가상전방군단, equipment: [command_vehicle], pir_ids: [PIR-J1]}

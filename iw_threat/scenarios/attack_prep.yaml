@@ -8,7 +8,7 @@ truth:
   hypothesis: 공격 준비
   d_day: "D일 = 공격 개시"
   # 정답 태세 일정 [시작일, 단계] — 분석관(정보병과 예비역) 작성 예시
-  readiness: {watchcon: [[-30, 3], [-7, 2], [-3, 1]], jindogae: [[-30, 3]], durumi: [[-30, 3]]}
+  readiness: {watchcon: [[-30, 3], [-7, 2], [-3, 1]], defcon: [[-30, 4], [-3, 3]], jindogae: [[-30, 3]], durumi: [[-30, 3]]}
 period: {start: -60, end: 0}           # 데이터 생성 기간 (D-60 ~ D일)
 assess: {start: -30, end: 0}           # 날짜별 평가 기간
 
@@ -53,3 +53,9 @@ reports:
      text: "협조자는 포병 차량들이 기존 진지 북쪽 능선 뒤편에 새로 진지를 구축하고 있다고 전했다."}
   - {day: -3, source: SIGINT, name: 통신 관측, reliability: B, credibility: 2, truth: true,
      text: "평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동한 정황이 관측되었다."}
+
+# 합참·연합사 표적목록 중 핵심표적·고가치표적 (가상 예시 — 실제 목록은 폐쇄망에서만 적재)
+key_targets:
+  - {target_id: KT-91-1, name: 제9103가상포병연대 장사정포, category: 핵심표적, owner: 합참, unit_name: 제9103가상포병연대, equipment: [artillery, mlrs], pir_ids: [PIR-J2]}
+  - {target_id: KT-91-2, name: 제9102가상전차여단 기갑, category: 고가치표적, owner: 연합사, unit_name: 제9102가상전차여단, equipment: [tank, apc], pir_ids: [PIR-C1]}
+  - {target_id: KT-91-3, name: 제9101가상보병사단 지휘부, category: 고가치표적, owner: 공동, unit_name: 제9101가상보병사단, equipment: [command_vehicle], pir_ids: [PIR-J1]}

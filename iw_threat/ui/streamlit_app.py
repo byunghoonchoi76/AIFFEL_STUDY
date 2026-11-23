@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from app.taxonomy import name_ko  # noqa: E402
 from ui import viz
 
-TRACK_KO = {'watchcon': '워치콘(정보감시태세)', 'jindogae': '진돗개(대침투)', 'durumi': '두루미(대공)'}  # noqa: E402
+TRACK_KO = {'watchcon': '워치콘(정보감시태세)', 'defcon': '데프콘(방어준비태세)', 'jindogae': '진돗개(대침투)', 'durumi': '두루미(대공)'}  # noqa: E402
 
 API = os.environ.get("API_URL", "http://localhost:8080")
 st.set_page_config(page_title="징후·위협도 분석", layout="wide", page_icon="🛰")
@@ -63,7 +63,7 @@ with st.sidebar:
         as_of = st.text_input("기준 일시", datetime.now().astimezone().replace(microsecond=0).isoformat())
         explain = st.checkbox("해설 생성(LLM)", True)
         if st.button("평가 실행", type="primary", use_container_width=True):
-            with st.spinner("분석 중… (표적 변화 → 징후 매칭 → 위협도 → 해설 → 태세 건의)"):
+            with st.spinner("분석 중… (표적 변화 → 징후 매칭 → 위협도 → 해설 → 태세 판단 조건)"):
                 a = httpx.post(f"{API}/assess", json={"area_id": area, "as_of": as_of, "explain": explain}, timeout=900).json()
                 d = {"assess": a, "history": [], "points": [], "garrisons": []}
                 try:
@@ -81,7 +81,7 @@ with st.sidebar:
         elif demo and "data" not in st.session_state:
             p = Path(demo)
             st.session_state["data"] = load_result_file(p.read_bytes(), p.parent)
-    st.caption("판단은 시스템 '건의'이며 최종 판단·발령은 분석관·지휘관 권한")
+    st.caption("위협도는 분석 보조 결과(최종 판단은 분석관). 태세는 합참·연합사 협의 및 국방부장관·통수권자 재가 사항으로, 시스템은 상황 판단 조건 부합 여부만 제시")
 
 data = st.session_state.get("data")
 if not data or "hypotheses" not in data.get("assess", {}):
@@ -122,17 +122,35 @@ with tabs[0]:
         st.markdown(f"<div class='why'><b>종합 판단</b> — {N['summary']['text']}</div>", unsafe_allow_html=True)
 
     if rd:
-        st.subheader("태세 건의")
+        st.subheader("태세 판단 조건 (상황 판단 참고)")
         cols = st.columns(len(rd))
         for col, (tid, r) in zip(cols, rd.items()):
             if not r:
                 continue
-            color = "#C0392B" if r["action"] == "격상" else "#1F3A68"
+            color = "#C0392B" if r["action"] == "상향 조건" else "#1F3A68"
             col.markdown(f"<div class='card lite'><div class='t'>{TRACK_KO.get(tid, tid)}</div><div class='v' style='color:{color}'>{r['level_name']}</div>"
                          f"<div class='s'>{r['action']} · {'; '.join(r['reasons']) or r.get('note') or '기준 미달 — 유지'}</div></div>",
                          unsafe_allow_html=True)
-        if any((r or {}).get("defcon_review") for r in rd.values()):
-            st.markdown("<div class='defcon'>⚠ 데프콘 검토 필요 신호 — 워치콘 최고 단계 + 분석 신뢰도 상</div>", unsafe_allow_html=True)
+        st.caption("각 카드는 현재 정보 상황이 부합하는 조건 단계(예시 기준). 태세 결정은 합참·연합사 협의 및 국방부장관·통수권자 재가 사항")
+
+    CR = A.get("commander_requirements") or {}
+    if CR.get("pirs"):
+        st.subheader("지휘관 정보요구 — 합참의장·연합사령관 PIR / CCIR")
+        for al in CR.get("ccir_alerts", []):
+            st.markdown(f"<div class='defcon'>📣 CCIR 보고 조건 충족 — {al['commander']} {al['id']}: {al['text']} ({al['basis']})</div>",
+                        unsafe_allow_html=True)
+        scol = {"확인": "🔴", "징후 있음": "🟠", "약한 징후": "🟡", "미식별": "⚪"}
+        st.dataframe(pd.DataFrame([{"지휘관": p_["commander"], "PIR": p_["id"], "질문": p_["question"],
+                                    "답변 상태": f"{scol.get(p_['status'], '')} {p_['status']}", "근거 징후": ", ".join(p_["evidence"]) or "-",
+                                    "관련 표적 활동": ", ".join(p_["targets"]) or "-"} for p_ in CR["pirs"]]),
+                     use_container_width=True, hide_index=True)
+        acts = CR.get("key_target_activity", [])
+        if acts:
+            st.markdown("**합참·연합사 표적목록 — 핵심표적·고가치표적 활동**")
+            st.dataframe(pd.DataFrame([{"표적": a_["name"], "구분": a_["category"], "관리": a_["owner"],
+                                        "활동": "; ".join(f"{h['equipment']} {h['baseline']:g}→{h['recent']} ({h['basis']})" for h in a_["hits"]),
+                                        "연결 PIR": ", ".join(a_["pir_ids"])} for a_ in acts]), use_container_width=True, hide_index=True)
+        st.caption("PIR·CCIR·표적목록은 예시(가상) — 실증 시 실증기관 제공 자료로 교체(폐쇄망 적재). 표적 활동은 위협도 근거(핵심표적 LR 3, 고가치표적 LR 2)로 반영")
 
     WX = A.get("weather") or {}
     if WX.get("available"):
@@ -159,7 +177,7 @@ with tabs[0]:
              ("② 변화 감지", f"{sum(c_['delta'] > 0 for c_ in changes)}건", {'unit': '부대별 평시 대비', 'area': '지역 평시 대비'}.get(A.get('baseline_mode'), '평시 대비')),
              ("③ 징후 식별", f"{n_pos}개", f"반대 {n_neg} · 원문대조 탈락 {A.get('rejected_llm_hits', 0)}"),
              ("④ 위협도", f"{top['probability']:.0%}", f"{A['top_hypothesis']} · 신뢰도 {A['confidence']}"),
-             ("⑤ 건의", (rd.get('watchcon') or {}).get('level_name', A['grade']), "태세·보고서 초안")]
+             ("⑤ 태세 조건", (rd.get('watchcon') or {}).get('level_name', A['grade']), "조건 부합 단계·보고서 초안")]
     for col, (t, n, d) in zip(s, steps):
         col.markdown(f"<div class='step'><b>{t}</b><div class='n'>{n}</div><small>{d}</small></div>", unsafe_allow_html=True)
     st.plotly_chart(viz.probability_bars(hyps), use_container_width=True)
@@ -235,10 +253,10 @@ with tabs[4]:
         for tid, tr in ev["readiness"]["tracks"].items():
             for x in tr["series"]:
                 if x["action"] != "유지":
-                    rows.append({"태세": tr["name"], "일자": f"D{x['day']:+d}", "건의": x["name"], "조치": x["action"],
+                    rows.append({"태세": tr["name"], "일자": f"D{x['day']:+d}", "조건 단계": x["name"], "변동": x["action"],
                                  "근거": "; ".join(x["reasons"])})
         if rows:
-            st.subheader("태세 건의 변동 이력")
+            st.subheader("태세 판단 조건 변동 이력")
             st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
 # ───────────────────────── 6. 근거 원문 ─────────────────────────

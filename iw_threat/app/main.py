@@ -190,12 +190,46 @@ def delete_weather(area_id: str):
     return {"deleted": pg.delete_weather(area_id)}
 
 
+class KeyTargetIn(BaseModel):
+    target_id: str
+    area_id: str | None = None
+    name: str
+    category: Literal["핵심표적", "고가치표적"]
+    owner: Literal["합참", "연합사", "공동"]
+    unit_name: str | None = None
+    lat: float | None = None
+    lon: float | None = None
+    radius_m: float = 2000.0
+    equipment: list[str] = []
+    pir_ids: list[str] = []
+    hypotheses: list[str] = ["H_ATTACK"]
+    note: str | None = None
+
+
+@app.post("/keytargets")
+def add_keytargets(rows: list[KeyTargetIn]):
+    """합참·연합사 표적목록(핵심표적·고가치표적) 적재 — 실제 목록은 폐쇄망에서만."""
+    n = pg.upsert_keytargets([r.model_dump() for r in rows])
+    pg.audit("system", "keytargets", {"count": n})
+    return {"upserted": n}
+
+
+@app.get("/keytargets")
+def list_keytargets(area_id: str):
+    return pg.fetch_keytargets(area_id)
+
+
+@app.delete("/keytargets")
+def delete_keytargets(area_id: str):
+    return {"deleted": pg.delete_keytargets(area_id)}
+
+
 @app.post("/assess")
 def assess(req: AssessRequest):
     d = deps()
     res = run_assessment(req.area_id, req.as_of, vector=d["vector"], llm=d["llm"], explain=req.explain)
     from .analysis.readiness_service import current_readiness
-    res["readiness"] = current_readiness(req.area_id, req.as_of)   # 직전 평가 이력 포함 태세 건의
+    res["readiness"] = current_readiness(req.area_id, req.as_of)   # 직전 평가 이력 포함 태세 판단 조건(상황 판단 참고)
     return res
 
 

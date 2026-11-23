@@ -1,0 +1,36 @@
+# 지휘관 정보요구 — 합참의장·연합사령관 PIR(우선정보요구)·CCIR(지휘관 중요정보요구)
+# ※ 예시(가상). 실제 PIR·CCIR·보고 기준은 실증기관 제공 자료로 교체 (폐쇄망에서만 적재)
+version: pir-0.1
+status_levels:            # PIR 답변 상태 (연결된 징후 강도 최댓값 기준)
+  - {name: 확인, min: 0.6}
+  - {name: 징후 있음, min: 0.3}
+  - {name: 약한 징후, min: 0.01}
+  - {name: 미식별, min: 0.0}
+commanders:
+  - id: JCS
+    name: 합참의장
+    pir:
+      - {id: PIR-J1, question: "적 전면 공격 준비 여부 — 시기·주공 축선·제대", hypotheses: [H_ATTACK],
+         indicators: [I_ARMOR_MASS, I_ARTY_POS, I_BRIDGING, I_ASSAULT, I_COMMAND_POST, I_KEY_TARGET, I_HV_TARGET]}
+      - {id: PIR-J2, question: "장사정포·갱도포병 사격 준비 여부", hypotheses: [H_ATTACK],
+         indicators: [I_HARTS_OCC, I_ARTY_POS, I_KEY_TARGET]}
+      - {id: PIR-J3, question: "핵·미사일 사용 준비 여부", hypotheses: [H_NUCLEAR],
+         indicators: [I_TEL_DISPERSAL, I_STRAT_TEL, I_UAV_RECON, I_KEY_TARGET_WMD]}
+      - {id: PIR-J4, question: "특수작전부대 침투·국지도발 준비 여부", hypotheses: [H_INFILTRATION],
+         indicators: [I_SOF_FORWARD, I_SUB_SORTIE, I_INFIL_SIGN]}
+    ccir:
+      - {id: CCIR-J1, text: "핵심표적 활동 식별 시 즉시 보고", type: key_target_activity, category: 핵심표적}
+      - {id: CCIR-J2, text: "PIR-J1 '확인' 도달 시 즉시 보고", type: pir_status, pir: PIR-J1, min_status: 확인}
+      - {id: CCIR-J3, text: "PIR-J3 '징후 있음' 이상 시 즉시 보고", type: pir_status, pir: PIR-J3, min_status: 징후 있음}
+  - id: CFC
+    name: 연합사령관
+    pir:
+      - {id: PIR-C1, question: "북한군 전략적 공격 징후 — 1·2제대 전방 이동, 동시 은밀 전개", hypotheses: [H_ATTACK],
+         indicators: [I_ARMOR_MASS, I_SYNC_CONCEAL, I_DISPERSAL, I_LOGISTICS, I_MEDICAL, I_HV_TARGET]}
+      - {id: PIR-C2, question: "대량살상무기 사용 징후", hypotheses: [H_NUCLEAR],
+         indicators: [I_TEL_DISPERSAL, I_STRAT_TEL, I_KEY_TARGET_WMD]}
+      - {id: PIR-C3, question: "항공·해상 도발 준비 여부", hypotheses: [H_AIR, H_INFILTRATION],
+         indicators: [I_AIR_FORWARD, I_AIR_SORTIE, I_SUB_SORTIE]}
+    ccir:
+      - {id: CCIR-C1, text: "PIR-C2 '약한 징후' 이상 즉시 보고", type: pir_status, pir: PIR-C2, min_status: 약한 징후}
+      - {id: CCIR-C2, text: "고가치·핵심표적 2개 이상 동시 활동 시 보고", type: multi_target, min_count: 2}

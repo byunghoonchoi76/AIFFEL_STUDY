@@ -32,3 +32,9 @@ reports:
      text: "주민들은 부대 주변에서 병사들이 영농 지원과 도로 보수 작업을 하는 모습만 보았다고 말했다."}
   - {day: -7, source: OSINT, name: 현지 보도, reliability: C, credibility: 3, truth: true,
      text: "현지 보도는 해당 지역 부대들이 통상적인 정비 기간을 보내고 있다고 전했다."}
+
+# 합참·연합사 표적목록 중 핵심표적·고가치표적 (가상 예시 — 실제 목록은 폐쇄망에서만 적재)
+key_targets:
+  - {target_id: KT-93-1, name: 제9303가상포병연대 장사정포, category: 핵심표적, owner: 합참, unit_name: 제9303가상포병연대, equipment: [artillery, mlrs], pir_ids: [PIR-J2]}
+  - {target_id: KT-93-2, name: 제9302가상전차여단 기갑, category: 고가치표적, owner: 연합사, unit_name: 제9302가상전차여단, equipment: [tank, apc], pir_ids: [PIR-C1]}
+  - {target_id: KT-93-3, name: 제9301가상보병사단 지휘부, category: 고가치표적, owner: 공동, unit_name: 제9301가상보병사단, equipment: [command_vehicle], pir_ids: [PIR-J1]}

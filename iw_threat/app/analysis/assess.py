@@ -16,7 +16,8 @@ from .change import TargetRow, detect_changes, detect_unit_changes
 from .explain import (build_evidence_map, explanation_prompt, indicator_lines, label_doctrine, template_summary,
                       verify_implications, verify_summary)
 from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery, sync_evidence
-from .scoring import assess
+from .commander import KeyTarget, target_activity
+from .scoring import Evidence, assess
 
 
 def lr_matrix(catalog, result) -> dict:
@@ -97,6 +98,18 @@ def weather_assessment(area_id: str, as_of: datetime, catalog, grading) -> dict:
             "findings": it["findings"], "collection_limits": it["collection_limits"], "evidence": ev}
 
 
+def commander_requirements(result, kt_acts: list[dict], s) -> dict:
+    """합참의장·연합사령관 PIR 답변 상태와 CCIR 보고 조건."""
+    from .commander import ccir_alerts, load_requirements, pir_answers
+    req = load_requirements(s.pir_ccir_path)
+    hyps = [asdict(h) for h in result.hypotheses]
+    pirs = pir_answers(req, hyps, kt_acts)
+    return {"pirs": pirs, "ccir_alerts": ccir_alerts(req, pirs, kt_acts),
+            "key_target_activity": [{k: v for k, v in a.items() if k != "hits"} | {
+                "hits": [{**h, "latest_at": h["latest_at"].isoformat(), "refs": h["refs"][:20]} for h in a["hits"]]}
+                for a in kt_acts], "basis": req.get("version")}
+
+
 def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, explain: bool = True) -> dict:
     t0 = time.perf_counter()
     s = get_settings()
@@ -129,6 +142,29 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         gap = max(0.0, (as_of - last_img).total_seconds() / 86400)
         evidence = [dc_replace(e, gap_days=gap) for e in evidence]
     evidence += sync_evidence(evidence, catalog, grading, {c.unit_key: c.unit_name for c in changes if c.unit_key})
+
+    # 1-1) 합참·연합사 핵심표적·고가치표적 활동 (지휘관 우선 표적 → 위협 평가 기준)
+    key_targets, kt_acts = [], []
+    try:
+        key_targets = [KeyTarget(**{k: r[k] for k in KeyTarget.__dataclass_fields__ if k in r})
+                       for r in pg.fetch_keytargets(area_id)]
+    except Exception:  # noqa: BLE001 — 표적목록 미적재 시 생략
+        key_targets = []
+    if key_targets:
+        kt_pts = pts if baseline_mode == "unit" else pg.fetch_target_points(area_id, since, as_of)
+        kt_acts = target_activity(key_targets, changes, kt_pts, as_of, s.window_days, s.baseline_days)
+        rel, cred = grading.default_grade("IMINT")
+        valid = catalog.indicator_defs()
+        for a in kt_acts:
+            if a["indicator"] not in valid:
+                continue
+            h0 = a["hits"][0]
+            evidence.append(Evidence(
+                indicator_id=a["indicator"], source_type="IMINT", source_key=f"IMINT:keytarget:{a['target_id']}",
+                reliability=rel, credibility=cred, observed_at=a["latest_at"],
+                ref=f"keytarget:{a['target_id']}:" + ",".join(map(str, h0["refs"][:20])),
+                quote=f"{a['owner']} {a['category']} '{a['name']}' 활동 — " + "; ".join(
+                    f"{h['equipment']} {h['baseline']:g}→{h['recent']}대({h['basis']} 매칭)" for h in a["hits"])))
 
     # 1-2) 기상이 작전에 미치는 영향 (전장정보분석) — 현재 + 전망 기간 기상 → 영역별 영향, 적 작전 여건 근거, 아군 관측 제한
     weather = weather_assessment(area_id, as_of, catalog, grading)
@@ -189,6 +225,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         "conflicts": [asdict(c) for c in result.conflicts],
         "lr_matrix": lr_matrix(catalog, result),
         "weather": weather,
+        "commander_requirements": commander_requirements(result, kt_acts, s),
         "rejected_llm_hits": rejected_hits,
         "catalog_version": catalog.meta.get("version"),
         "report_chunks_checked": n_chunks,

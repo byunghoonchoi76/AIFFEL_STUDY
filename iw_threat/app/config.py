@@ -41,6 +41,7 @@ class Settings(BaseSettings):
     grading_path: str = "config/source_grading.yaml"
     readiness_path: str = "config/readiness.yaml"
     weather_rules_path: str = "config/weather_effects.yaml"
+    pir_ccir_path: str = "config/pir_ccir.yaml"
     readiness_history_days: int = 30
 
     # 변화 분석 창

@@ -1,4 +1,4 @@
-"""DB의 평가 이력으로 현재 태세 건의 계산 (API용)."""
+"""DB의 평가 이력으로 현재 태세 판단 조건 산출 (API용, 상황 판단 참고)."""
 from __future__ import annotations
 
 from datetime import datetime, timedelta

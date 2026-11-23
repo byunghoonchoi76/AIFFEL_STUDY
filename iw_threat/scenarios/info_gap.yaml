@@ -7,7 +7,7 @@ truth:
   hypothesis: 공격 준비
   d_day: "D일 = 공격 개시"
   # 정답 태세 일정 [시작일, 단계] — 분석관(정보병과 예비역) 작성 예시
-  readiness: {watchcon: [[-30, 3], [-7, 2], [-3, 1]], jindogae: [[-30, 3]], durumi: [[-30, 3]]}
+  readiness: {watchcon: [[-30, 3], [-7, 2], [-3, 1]], defcon: [[-30, 4], [-3, 3]], jindogae: [[-30, 3]], durumi: [[-30, 3]]}
 period: {start: -60, end: 0}
 assess: {start: -30, end: 0}
 
@@ -39,3 +39,9 @@ activities:   # 공격 준비 시나리오와 같은 활동
 reports:
   - {day: -2, source: OSINT, name: 현지 주민 증언, reliability: D, credibility: 4, truth: true,
      text: "주민 한 명은 밤사이 트럭 소리가 잦았던 것 같다고 말했다."}
+
+# 합참·연합사 표적목록 중 핵심표적·고가치표적 (가상 예시 — 실제 목록은 폐쇄망에서만 적재)
+key_targets:
+  - {target_id: KT-95-1, name: 제9503가상포병연대 장사정포, category: 핵심표적, owner: 합참, unit_name: 제9503가상포병연대, equipment: [artillery, mlrs], pir_ids: [PIR-J2]}
+  - {target_id: KT-95-2, name: 제9502가상전차여단 기갑, category: 고가치표적, owner: 연합사, unit_name: 제9502가상전차여단, equipment: [tank, apc], pir_ids: [PIR-C1]}
+  - {target_id: KT-95-3, name: 제9501가상보병사단 지휘부, category: 고가치표적, owner: 공동, unit_name: 제9501가상보병사단, equipment: [command_vehicle], pir_ids: [PIR-J1]}

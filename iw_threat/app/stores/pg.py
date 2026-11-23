@@ -156,3 +156,44 @@ def delete_weather(area_id: str) -> int:
     ensure_weather()
     with conn() as c:
         return c.execute("DELETE FROM weather_obs WHERE area_id=%s", (area_id,)).rowcount
+
+
+# ── 합참·연합사 핵심표적·고가치표적 목록 ──
+_KT_READY = False
+
+
+def ensure_keytargets() -> None:
+    global _KT_READY
+    if _KT_READY:
+        return
+    from pathlib import Path
+    sql = Path(__file__).resolve().parents[2] / "db/postgis/04_keytargets.sql"
+    with conn() as c:
+        c.execute(sql.read_text(encoding="utf-8"))
+    _KT_READY = True
+
+
+def upsert_keytargets(rows: list[dict]) -> int:
+    ensure_keytargets()
+    cols = ["target_id", "area_id", "name", "category", "owner", "unit_name", "lat", "lon", "radius_m",
+            "equipment", "pir_ids", "hypotheses", "note"]
+    with conn() as c, c.cursor() as cur:
+        for r in rows:
+            vals = [Jsonb(r.get(k) or ([] if k != "hypotheses" else ["H_ATTACK"])) if k in ("equipment", "pir_ids", "hypotheses")
+                    else r.get(k) for k in cols]
+            cur.execute(f"INSERT INTO key_targets ({','.join(cols)}) VALUES ({','.join(['%s'] * len(cols))}) "
+                        "ON CONFLICT (target_id) DO UPDATE SET " + ", ".join(f"{k}=EXCLUDED.{k}" for k in cols[1:]) +
+                        ", updated_at=now()", vals)
+    return len(rows)
+
+
+def fetch_keytargets(area_id: str) -> list[dict]:
+    ensure_keytargets()
+    with conn() as c:
+        return c.execute("SELECT * FROM key_targets WHERE area_id IS NULL OR area_id=%s ORDER BY target_id", (area_id,)).fetchall()
+
+
+def delete_keytargets(area_id: str) -> int:
+    ensure_keytargets()
+    with conn() as c:
+        return c.execute("DELETE FROM key_targets WHERE area_id=%s", (area_id,)).rowcount
