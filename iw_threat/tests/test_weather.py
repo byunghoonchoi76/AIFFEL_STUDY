@@ -25,6 +25,12 @@ def test_mud_or_flood_is_unfavorable_and_normal_river_is_neutral():
     assert it2["findings"] == []
 
 
+def test_north_wind_favors_enemy_chemical_use():
+    assert lv({"wind_dir_deg": 350, "wind_ms": 3})["chemical_ops"] == "양호"
+    assert lv({"wind_dir_deg": 180, "wind_ms": 3})["chemical_ops"] == "제한"
+    assert lv({"wind_ms": 3})["chemical_ops"] == "제한"          # 풍향 미상은 유리로 보지 않음
+
+
 def test_collection_limit_suggests_sar():
     it = interpret(effects({"cloud_pct": 95, "precip_mm": 3}, R), [], R)
     assert it["collection_limits"] and "SAR" in it["collection_limits"][0]

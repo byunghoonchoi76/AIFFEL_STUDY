@@ -73,6 +73,7 @@ def facility_vulnerability(points: list[dict], cfg: dict, wx: dict | None = None
     man, fires = positions(points)
     rng = cfg.get("delivery_range_km", {})
     wind_from = (wx or {}).get("wind_dir_deg")
+    wind_from = None if wind_from is None or wind_from < 0 else wind_from
     wind_to = (wind_from + 180) % 360 if wind_from is not None else None
     out = []
     for f in cfg.get("facilities", []):

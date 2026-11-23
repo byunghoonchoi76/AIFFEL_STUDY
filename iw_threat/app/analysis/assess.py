@@ -122,11 +122,12 @@ def terrain_assessment(area_id, as_of, weather, catalog, grading, s, pts, since)
                            ref="terrain:" + ",".join(f["id"] for f in hi),
                            quote="가급 중요시설 " + ", ".join(f["name"] for f in hi) + " — 적 화력(투발 수단) 사거리 내"))
     dw = [f for f in res["facilities"] if f["downwind"]]
-    if dw and chem_ok and "I_WX_CHEM" in valid:
+    if chem_ok and "I_WX_CHEM" in valid:        # 북풍(북→남) 약풍·강수 없음 = 군 판단상 화학탄 사용 가능성 높은 기상
         r2, c2 = grading.default_grade("METOC")
         ev.append(Evidence(indicator_id="I_WX_CHEM", source_type="METOC", source_key="METOC:chem",
                            reliability=r2, credibility=c2, observed_at=to_aware(datetime.fromisoformat(weather["valid_at"])),
-                           ref="weather:chem", quote="화학 운용 유리 기상(약풍·강수 없음), 풍하 시설: " + ", ".join(f["name"] for f in dw)))
+                           ref="weather:chem", quote=f"북풍({wx.get('wind_dir_deg')}°) {wx.get('wind_ms')}m/s·강수 없음 — 화학탄 사용 가능성 높은 기상"
+                           + (", 풍하 시설: " + ", ".join(f["name"] for f in dw) if dw else "")))
     return {"available": True, **res, "evidence": ev}
 
 

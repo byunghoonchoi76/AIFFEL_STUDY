@@ -38,7 +38,9 @@ domains:
     name: 화학 운용 여건(적)
     rules:
       - {when: "precip_mm >= 5 or wind_ms >= 8", level: 제한, reason: "강수 {precip_mm}mm·풍속 {wind_ms}m/s — 작용제 희석·분산, 적 운용 불리"}
-      - {when: "1 <= wind_ms <= 5 and precip_mm < 1", level: 양호, reason: "풍속 {wind_ms}m/s·강수 없음 — 작용제 운용 유리(아군 위험)"}
+      - {when: "wind_dir_deg >= 0 and 135 <= wind_dir_deg <= 225", level: 제한, reason: "남풍({wind_dir_deg}°) — 작용제가 적 지역으로 이동, 적 화학탄 운용 불리"}
+      - {when: "(wind_dir_deg >= 315 or 0 <= wind_dir_deg <= 45) and 1 <= wind_ms <= 5 and precip_mm < 1", level: 양호, reason: "북풍({wind_dir_deg}°) {wind_ms}m/s·강수 없음 — 작용제가 아군 지역으로 이동, 화학탄 사용 가능성 높음(군 판단 기준)"}
+      - {when: "1 <= wind_ms <= 5 and precip_mm < 1", level: 제한, reason: "약풍이나 풍향 {wind_dir_deg}° — 시설별 풍하 여부에 따라 위험"}
   personnel:
     name: 인원 활동(동상·열손상)
     rules:
