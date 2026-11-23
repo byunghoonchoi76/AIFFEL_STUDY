@@ -188,6 +188,15 @@ def generate_targets(sc: Scenario, d_day: datetime, seed: int = 7) -> list[dict]
             if rnd.random() < nz.get("false_positive_rate", 0.0):
                 lat, lon = _jitter(*u.garrison, 400, rnd)
                 out.append(_event(sc, t, rnd.choice(nz.get("fp_equipment", FP_EQUIPMENT)), rnd.randint(1, 3), lat, lon, day, u.name, fp=True))
+    sc_ = nz.get("sar_check")                 # SAR 금속 반사파 확인 (별도 난수 — 기존 표적 생성 결과 불변)
+    if sc_:
+        r2 = random.Random(seed + 99)
+        dec_units, dec_eq = set(sc_.get("decoy_units", [])), set(sc_.get("decoy_equipment", []))
+        for e in out:
+            if r2.random() < sc_.get("p_sar", 0.5):
+                is_dummy = e["decoy_truth"] or (e["truth_unit"] in dec_units and e["equipment_type"] in dec_eq
+                                                and r2.random() < sc_.get("dummy_share", 0.6))
+                e["sar_verified"] = not is_dummy
     return out
 
 

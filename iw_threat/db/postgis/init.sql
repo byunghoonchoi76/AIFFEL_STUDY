@@ -30,7 +30,8 @@ CREATE TABLE target_events (
   count          INT NOT NULL CHECK (count >= 0),
   geom           GEOMETRY(Point, 4326),
   image_ref      TEXT,
-  source_id      INT REFERENCES sources(id)
+  source_id      INT REFERENCES sources(id),
+  sar_verified   BOOLEAN          -- SAR 금속 반사파 일치 여부 (FALSE = 모형·기만체 의심, NULL = 미확인)
 );
 CREATE INDEX ON target_events (area_id, equipment_type, observed_at);
 CREATE INDEX ON target_events USING GIST (geom);

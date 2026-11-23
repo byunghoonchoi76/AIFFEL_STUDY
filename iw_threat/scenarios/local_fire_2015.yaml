@@ -1,0 +1,46 @@
+# 합성 시나리오: 국지 포격 도발 — 2015.8 DMZ 목함지뢰·서부전선 포격 도발의 전개 패턴을 가상 부대로 재구성
+# 패턴(공개 자료 요약): 남측 압박 재개 → 북측 경고 → 포병 전진·포문 개방 → 시한부 최후통첩·준전시상태 → 잠수함 약 70% 기지 이탈·공기부양정 전개
+# 부대·좌표·수량은 가상 (실제 부대와 무관). 작성 원칙: 위협징후목록·우도비를 보지 않고 부대 활동·관측 사실만 기술
+id: local_fire_2015
+name: 국지 포격 도발 (2015.8 패턴)
+area_id: SIM-LF15
+truth:
+  intent: 국지 포격 도발
+  hypothesis: 국지 포격 도발 준비
+  d_day: "D일 = 포격 도발"
+  readiness: {watchcon: [[-20, 3], [-2, 2]], jindogae: [[-20, 3], [-2, 2], [0, 1]], durumi: [[-20, 3]]}
+period: {start: -50, end: 0}
+assess: {start: -20, end: 0}
+
+noise: {p_observe: 0.8, count_rel_sd: 0.10, p_miss: 0.08, false_positive_rate: 0.03, position_sd_m: 150, p_sar_on_cloudy: 0.8}
+
+units:
+  - {name: 제9901가상해안포병대대, parent: null, garrison: [37.950, 126.200], location_type: 진지, equipment: {artillery: 4}}
+  - {name: 제9902가상포병여단, parent: null, garrison: [38.000, 126.450], location_type: 주둔지, equipment: {artillery: 12, mlrs: 6}}
+  - {name: 제9903가상잠수함전대, parent: null, garrison: [38.300, 125.700], location_type: 기지, equipment: {submarine: 18}}
+  - {name: 제9904가상공기부양정대, parent: null, garrison: [38.250, 125.900], location_type: 기지, equipment: {hovercraft: 20}}
+  - {name: 제9905가상수송대대, parent: 제9902가상포병여단, garrison: [38.050, 126.420], location_type: 주둔지, equipment: {truck: 20}}
+
+activities:
+  - {unit: 제9902가상포병여단, equipment: artillery, from: -6, to: -1, to_count: 24, move_km: [-1.0, 0.0]}     # 포병 전력 전진 배치
+  - {unit: 제9902가상포병여단, equipment: mlrs, from: -5, to: -1, to_count: 12, move_km: [-1.0, 0.0]}
+  - {unit: 제9901가상해안포병대대, equipment: harts@occupied, from: -3, to: -1, to_count: 6}                     # 갱도·해안포 포문 개방
+  - {unit: 제9905가상수송대대, equipment: truck, from: -5, to: -1, to_count: 45, move_km: [-0.5, 0.0]}          # 탄약 보급 연동
+  - {unit: 제9903가상잠수함전대, equipment: submarine, from: -3, to: -1, to_count: 5}                           # 약 70% 기지 이탈
+  - {unit: 제9904가상공기부양정대, equipment: hovercraft, from: -3, to: -1, to_count: 6}                        # 전방 기지 방향 이동
+
+reports:
+  - {day: -10, source: OSINT, name: 국내 언론, reliability: B, credibility: 2, truth: true,
+     text: "군은 전방 지역 대북 확성기 방송을 재개한다고 발표하였다."}
+  - {day: -6, source: OSINT, name: 북 관영매체, reliability: C, credibility: 3, truth: true,
+     text: "북한 총참모부는 심리전 수단을 철거하지 않으면 무차별 타격에 나설 것이라고 경고하였다."}
+  - {day: -2, source: OSINT, name: 북 관영매체, reliability: B, credibility: 2, truth: true,
+     text: "북한은 48시간 내 심리전 수단을 철거하지 않으면 군사행동에 나서겠다는 최후통첩을 보내고 전선 지역에 준전시상태를 선포하였다."}
+  - {day: -1, source: SIGINT, name: 통신 관측, reliability: B, credibility: 2, truth: true,
+     text: "서해 군 통신선 응답이 중단되었고 전방 부대 무전 교신량이 평시 대비 3배로 급증하였다."}
+  - {day: -1, source: OSINT, name: 북 관영매체, reliability: C, credibility: 4, truth: true,
+     text: "북한은 같은 날 남북 고위급 접촉을 제의하였다."}
+
+key_targets:
+  - {target_id: KT-99-1, name: 제9901가상해안포병대대 해안포, category: 핵심표적, owner: 합참, unit_name: 제9901가상해안포병대대, equipment: [harts, artillery], pir_ids: [PIR-J2], hypotheses: [H_LOCAL_FIRE]}
+  - {target_id: KT-99-2, name: 제9903가상잠수함전대 기지, category: 고가치표적, owner: 연합사, unit_name: 제9903가상잠수함전대, equipment: [submarine], pir_ids: [PIR-C3], hypotheses: [H_INFILTRATION]}

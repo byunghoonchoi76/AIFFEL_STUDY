@@ -47,12 +47,14 @@ hypotheses:
       # 반대 징후 (lr < 1: 공격 가능성을 낮춤). discounts: 이 반대 증거가 신뢰를 깎는 대상 지표
       - {id: I_POSTURE_WC,   name: 합참·연합사 워치콘 상향 판단, lr: 2.0, tau_days: 30, equipment: [], min_delta: 0, meaning: 상급 정보판단 반영 (참고 조건)}
       - {id: I_POSTURE_DC,   name: 합참·연합사 데프콘 상향 판단, lr: 3.0, tau_days: 30, equipment: [], min_delta: 0, meaning: 상급 작전판단 반영 (참고 조건)}
+      - {id: I_ULTIMATUM,    name: 최후통첩·준전시상태 선포,     lr: 2.0, tau_days: 4, equipment: [], min_delta: 0, meaning: 시한부 위협 정황}
+      - {id: I_COMMS_CUT,    name: 군 통신선 응답 중단·전방 교신량 급증, lr: 2.0, tau_days: 3, equipment: [], min_delta: 0, meaning: 작전 지휘 활성화 정황}
       - {id: I_CHEM_PREP,    name: 화학부대·화학정찰·제독 장비 전방 이동, lr: 2.0, tau_days: 7, equipment: [chem_vehicle, decon_vehicle], min_delta: 2, meaning: 공격 시 중요시설 무력화용 화학 운용 준비 정황}
       - {id: I_KEY_TARGET,   name: 핵심표적 활동(합참·연합사 표적목록), lr: 3.0, tau_days: 7, equipment: [], min_delta: 0, meaning: 지휘관 우선 표적의 활동 — 위협 평가 핵심 기준}
       - {id: I_HV_TARGET,    name: 고가치표적 활동(합참·연합사 표적목록), lr: 2.0, tau_days: 7, equipment: [], min_delta: 0, meaning: 고가치 표적의 활동}
       - {id: I_WX_WINDOW,    name: 공격 적합 기상·지면 여건,      lr: 1.5, tau_days: 3, equipment: [], min_delta: 0, meaning: 기상 여건상 공격 시기로 유리 (의도 근거 아님)}
       - {id: C_WX_NOGO,      name: 공격 불리 기상·지면 여건,      lr: 0.7, tau_days: 3, equipment: [], counter: true, meaning: 기상 여건상 대규모 지상 공격 곤란 (기만·지연 가능성 병행 검토)}
-      - {id: C_DECOY,        name: 모형·위장 장비 식별,          lr: 0.2,  tau_days: 10, equipment: [], counter: true, discounts: [I_ARMOR_MASS, I_BRIDGING, I_ARTY_POS], discount_factor: 0.7, meaning: 기만 전시 가능성}
+      - {id: C_DECOY,        name: 모형·위장 장비 식별,          lr: 0.2,  tau_days: 10, equipment: [], counter: true, discounts: [I_ARMOR_MASS, I_BRIDGING, I_ARTY_POS, I_HARTS_OCC], discount_factor: 0.7, meaning: 기만 전시 가능성}
       - {id: C_NO_LOGISTICS, name: 보급·연료 지원 부재,          lr: 0.35, tau_days: 7,  equipment: [], counter: true, meaning: 공격 지속능력 미비}
       - {id: C_NORMAL_COMMS, name: 통신·지휘망 평시 수준,        lr: 0.4,  tau_days: 5,  equipment: [], counter: true, meaning: 작전 지휘 활동 미식별}
       - {id: C_RETURN,       name: 부대 복귀·활동 종료 정황,     lr: 0.3,  tau_days: 7,  equipment: [], counter: true, meaning: 활동 종료 정황}
@@ -74,12 +76,28 @@ hypotheses:
     impact: 0.6
     indicators:
       - {id: I_SOF_FORWARD,  name: 특수작전부대 전방 이동,       lr: 6.0, tau_days: 5, equipment: [sof_vehicle, aircraft_an2, helicopter_md500], min_delta: 2, meaning: 침투 준비 정황}
-      - {id: I_SUB_SORTIE,   name: 잠수함정·공기부양정 기지 이탈, lr: 7.0, tau_days: 3, equipment: [submarine, hovercraft, semi_submersible], min_delta: 1, meaning: 해상 침투 준비 정황}
+      - {id: I_SUB_SORTIE,   name: 잠수함정·공기부양정 기지 이탈, lr: 7.0, tau_days: 3, equipment: [submarine, hovercraft, semi_submersible], min_delta: 1, direction: decrease, min_drop_ratio: 0.4, meaning: 해상 침투 준비 정황}
       - {id: I_POSTURE_JD,   name: 합참·연합사 진돗개 상향 판단, lr: 2.5, tau_days: 30, equipment: [], min_delta: 0, meaning: 상급 판단 반영 (참고 조건)}
+      - {id: I_KEY_TARGET_LOCAL, name: 핵심·고가치표적 활동(국지도발 관련), lr: 2.5, tau_days: 5, equipment: [], min_delta: 0, meaning: 합참·연합사 표적목록 중 국지도발 관련 표적 활동}
       - {id: I_WX_COVER,     name: 저시정 은밀 침투 유리 여건,     lr: 1.3, tau_days: 2, equipment: [], min_delta: 0, meaning: 감시 곤란 기상 (의도 근거 아님)}
       - {id: I_INFIL_SIGN,   name: 침투 흔적·거동 수상자,        lr: 9.0, tau_days: 3, equipment: [tunnel_exit], min_delta: 1, meaning: 침투 진행 정황}
 
   # 두루미(적 항공기 위협) 트랙용 — 예시값
+  - id: H_LOCAL_FIRE
+    name: 국지 포격 도발 준비
+    prior: 0.03
+    impact: 0.6
+    indicators:
+      - {id: I_HARTS_OCC,    name: 갱도포병·해안포 포문 개방·진지 점유, lr: 5.0, tau_days: 5, equipment: [harts@occupied, artillery_position], min_delta: 2, meaning: 국지 화력 도발 준비 정황}
+      - {id: I_ARTY_POS,     name: 포병 진지 점령·증강,       lr: 3.0, tau_days: 5, equipment: [artillery, mlrs, group:artillery], min_delta: 4, meaning: 화력 도발 준비 정황}
+      - {id: I_KEY_TARGET_LOCAL, name: 핵심·고가치표적 활동(국지도발 관련), lr: 2.5, tau_days: 5, equipment: [], min_delta: 0, meaning: 합참·연합사 표적목록 중 국지도발 관련 표적 활동}
+      - {id: I_ULTIMATUM,    name: 최후통첩·준전시상태 선포,     lr: 6.0, tau_days: 4, equipment: [], min_delta: 0, meaning: 시한부 위협 — 도발 임박 정황}
+      - {id: I_COMMS_CUT,    name: 군 통신선 응답 중단·전방 교신량 급증, lr: 4.0, tau_days: 3, equipment: [], min_delta: 0, meaning: 작전 지휘 활성화 정황}
+      - {id: I_SUB_SORTIE,   name: 잠수함정·공기부양정 기지 이탈, lr: 2.5, tau_days: 3, equipment: [submarine, hovercraft, semi_submersible], min_delta: 1, direction: decrease, min_drop_ratio: 0.4, meaning: 기습·비대칭 전력 동시 전개 정황}
+      - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 1.5, tau_days: 10, equipment: [truck, fuel_truck, supply_point], min_delta: 20, meaning: 탄약·보급 지원 정황}
+      - {id: C_DECOY,        name: 모형·위장 장비 식별,          lr: 0.3,  tau_days: 10, equipment: [], counter: true, discounts: [I_HARTS_OCC, I_ARTY_POS], discount_factor: 0.7, meaning: 기만 전시 가능성}
+      - {id: C_NORMAL_COMMS, name: 통신·지휘망 평시 수준,        lr: 0.5, tau_days: 5, equipment: [], counter: true, meaning: 작전 지휘 활동 미식별}
+
   - id: H_AIR
     name: 항공 도발 준비
     prior: 0.02

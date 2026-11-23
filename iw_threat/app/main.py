@@ -51,6 +51,7 @@ class TargetEvent(BaseModel):
     lat: float | None = None
     image_ref: str | None = None
     source_id: int | None = None
+    sar_verified: bool | None = None     # SAR 금속 반사파 일치 여부 (False = 모형·기만체 의심)
 
     _tz = field_validator("observed_at")(lambda v: to_aware(v))
 

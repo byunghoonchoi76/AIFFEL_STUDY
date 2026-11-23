@@ -98,6 +98,38 @@ def weather_assessment(area_id: str, as_of: datetime, catalog, grading) -> dict:
             "findings": it["findings"], "collection_limits": it["collection_limits"], "evidence": ev}
 
 
+LOGI_EQ = {"truck", "fuel_truck", "supply_point"}
+FRONT_IND = {"I_ARMOR_MASS", "I_ARTY_POS", "I_HARTS_OCC"}
+
+
+def deception_checks(changes, evidence, pts, catalog, grading) -> list:
+    """기만·단순 전시 판별 (자동 반대 징후):
+    ① SAR 금속 반사파 불일치 표적 비율 ≥ 50% → 모형·기만체 의심(C_DECOY)
+    ② 전방 기갑·포병 증강에도 후방 보급·유류 차량 증가가 없음 → 지속지원 미연동(C_NO_LOGISTICS, 약하게)"""
+    from .scoring import Evidence
+    valid = catalog.indicator_defs()
+    rel, cred = grading.default_grade("IMINT")
+    out = []
+    sar = {p["id"]: p.get("sar_verified") for p in pts}
+    front = [e for e in evidence if e.indicator_id in FRONT_IND and e.scale >= 1.0]
+    if "C_DECOY" in valid:
+        for e in front:
+            ids = [int(x) for x in e.ref.split(":")[-1].split(",") if x.isdigit()]
+            flags = [sar.get(i) for i in ids if sar.get(i) is not None]
+            if flags and sum(1 for f in flags if f is False) / len(flags) >= 0.5:
+                out.append(Evidence(indicator_id="C_DECOY", source_type="IMINT", source_key="IMINT:sar_check",
+                                    reliability=rel, credibility=cred, observed_at=e.observed_at, ref="sar:" + e.ref,
+                                    quote=f"SAR 금속 반사파 불일치 {sum(1 for f in flags if f is False)}/{len(flags)}건 — 모형·기만체 의심 ({e.quote[:40]})"))
+    logi = [c for c in changes if c.equipment_type in LOGI_EQ and c.baseline_obs >= 3]
+    has_logi_ev = any(e.indicator_id == "I_LOGISTICS" for e in evidence)
+    if front and logi and not has_logi_ev and all(c.delta <= 0 for c in logi) and "C_NO_LOGISTICS" in valid:
+        out.append(Evidence(indicator_id="C_NO_LOGISTICS", source_type="IMINT", source_key="IMINT:logistics_check",
+                            reliability=rel, credibility=cred, observed_at=max(e.observed_at for e in front),
+                            ref="logistics:" + ",".join(c.equipment_type for c in logi), scale=0.5,
+                            quote="전방 기갑·포병 증강에도 후방 보급·유류 차량 증가 없음 — 지속지원 미연동(단순 전시·훈련 가능성)"))
+    return out
+
+
 def terrain_assessment(area_id, as_of, weather, catalog, grading, s, pts, since) -> dict:
     from .scoring import Evidence
     from .terrain import facility_vulnerability, load_terrain
@@ -199,6 +231,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         rows = pg.fetch_target_rows(area_id, since, as_of)
         changes = detect_changes(rows, as_of, s.window_days, s.baseline_days)
     evidence = match_imagery(changes, catalog, grading)
+    evidence += deception_checks(changes, evidence, pts if baseline_mode == "unit" else [], catalog, grading)
     # 관측 공백: 지역의 마지막 영상 관측 이후 기간 → 영상 근거의 시의성 감쇠를 완화 (기상·운용 제약으로 재관측 불가)
     last_img = max((r.observed_at for r in rows), default=None)
     if last_img is not None:
@@ -305,6 +338,9 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         "report_chunks_checked": n_chunks,
         "elapsed_s": None,
     }
+    from .patterns import case_similarity, commander_briefing, load_cases
+    payload["patterns"] = case_similarity(payload["hypotheses"], load_cases(s.cases_path))
+    payload["briefing"] = commander_briefing({**payload, "grade": result.grade, "confidence": result.confidence})
     payload["elapsed_s"] = round(time.perf_counter() - t0, 2)
     aid = pg.insert_assessment(
         area_id, as_of, result.top.name, result.threat_score, result.grade, result.confidence,

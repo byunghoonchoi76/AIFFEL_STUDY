@@ -12,12 +12,12 @@ commanders:
     pir:
       - {id: PIR-J1, question: "적 전면 공격 준비 여부 — 시기·주공 축선·제대", hypotheses: [H_ATTACK],
          indicators: [I_ARMOR_MASS, I_ARTY_POS, I_BRIDGING, I_ASSAULT, I_COMMAND_POST, I_KEY_TARGET, I_HV_TARGET]}
-      - {id: PIR-J2, question: "장사정포·갱도포병 사격 준비 여부", hypotheses: [H_ATTACK],
-         indicators: [I_HARTS_OCC, I_ARTY_POS, I_KEY_TARGET]}
+      - {id: PIR-J2, question: "장사정포·갱도포병·해안포 사격 준비 여부 (국지 포격 포함)", hypotheses: [H_ATTACK, H_LOCAL_FIRE],
+         indicators: [I_HARTS_OCC, I_ARTY_POS, I_KEY_TARGET, I_KEY_TARGET_LOCAL, I_ULTIMATUM]}
       - {id: PIR-J3, question: "핵·미사일 사용 준비 여부", hypotheses: [H_NUCLEAR],
          indicators: [I_TEL_DISPERSAL, I_STRAT_TEL, I_UAV_RECON, I_KEY_TARGET_WMD]}
       - {id: PIR-J4, question: "특수작전부대 침투·국지도발 준비 여부", hypotheses: [H_INFILTRATION],
-         indicators: [I_SOF_FORWARD, I_SUB_SORTIE, I_INFIL_SIGN]}
+         indicators: [I_SOF_FORWARD, I_SUB_SORTIE, I_INFIL_SIGN, I_KEY_TARGET_LOCAL]}
     ccir:
       - {id: CCIR-J1, text: "핵심표적 활동 식별 시 즉시 보고", type: key_target_activity, category: 핵심표적}
       - {id: CCIR-J2, text: "PIR-J1 '확인' 도달 시 즉시 보고", type: pir_status, pir: PIR-J1, min_status: 확인}
@@ -30,7 +30,7 @@ commanders:
       - {id: PIR-C2, question: "대량살상무기 사용 징후", hypotheses: [H_NUCLEAR],
          indicators: [I_TEL_DISPERSAL, I_STRAT_TEL, I_KEY_TARGET_WMD]}
       - {id: PIR-C3, question: "항공·해상 도발 준비 여부", hypotheses: [H_AIR, H_INFILTRATION],
-         indicators: [I_AIR_FORWARD, I_AIR_SORTIE, I_SUB_SORTIE]}
+         indicators: [I_AIR_FORWARD, I_AIR_SORTIE, I_SUB_SORTIE, I_KEY_TARGET_LOCAL]}
     ccir:
       - {id: CCIR-C1, text: "PIR-C2 '약한 징후' 이상 즉시 보고", type: pir_status, pir: PIR-C2, min_status: 약한 징후}
       - {id: CCIR-C2, text: "고가치·핵심표적 2개 이상 동시 활동 시 보고", type: multi_target, min_count: 2}

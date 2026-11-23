@@ -41,14 +41,26 @@ def insert_document(source_id: int, title: str, path: str, credibility: int,
         ).fetchone()["id"]
 
 
+_SAR_COL = False
+
+
+def _ensure_sar_col(c) -> None:
+    global _SAR_COL
+    if not _SAR_COL:
+        c.execute("ALTER TABLE target_events ADD COLUMN IF NOT EXISTS sar_verified BOOLEAN")
+        _SAR_COL = True
+
+
 def insert_target_events(events: list[dict]) -> int:
+    events = [{"sar_verified": None, **e} for e in events]
     with conn() as c, c.cursor() as cur:
+        _ensure_sar_col(c)
         cur.executemany(
-            """INSERT INTO target_events(area_id, observed_at, equipment_type, count, geom, image_ref, source_id)
+            """INSERT INTO target_events(area_id, observed_at, equipment_type, count, geom, image_ref, source_id, sar_verified)
                VALUES (%(area_id)s, %(observed_at)s, %(equipment_type)s, %(count)s,
                        CASE WHEN %(lon)s::double precision IS NULL OR %(lat)s::double precision IS NULL THEN NULL
                             ELSE ST_SetSRID(ST_MakePoint(%(lon)s::double precision, %(lat)s::double precision), 4326) END,
-                       %(image_ref)s, %(source_id)s)""",
+                       %(image_ref)s, %(source_id)s, %(sar_verified)s)""",
             events,
         )
         return len(events)
@@ -67,8 +79,9 @@ def fetch_target_rows(area_id: str, since: datetime, until: datetime) -> list[Ta
 def fetch_target_points(area_id: str, since: datetime, until: datetime) -> list[dict]:
     """좌표가 있는 표적 이벤트 (부대 식별용)."""
     with conn() as c:
+        _ensure_sar_col(c)
         return c.execute(
-            """SELECT id, equipment_type, observed_at, count, ST_Y(geom) AS lat, ST_X(geom) AS lon
+            """SELECT id, equipment_type, observed_at, count, ST_Y(geom) AS lat, ST_X(geom) AS lon, sar_verified
                FROM target_events WHERE area_id=%s AND observed_at > %s AND observed_at <= %s
                ORDER BY observed_at""", (area_id, since, until)).fetchall()
 

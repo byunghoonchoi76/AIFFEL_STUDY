@@ -19,7 +19,7 @@ noise:
   p_miss: 0.08
   false_positive_rate: 0.03
   position_sd_m: 150
-
+  sar_check: {p_sar: 0.6, decoy_units: [제9402가상전차여단], decoy_equipment: [tank], dummy_share: 0.6}   # SAR 금속 반사파 확인: 모형 전차는 불일치
 units:
   - {name: 제9401가상보병사단, parent: null, garrison: [38.150, 126.900], location_type: 사령부, equipment: {command_vehicle: 2}}
   - {name: 제9402가상전차여단, parent: 제9401가상보병사단, garrison: [38.120, 126.940], location_type: 주둔지, equipment: {tank: 12, apc: 8}}

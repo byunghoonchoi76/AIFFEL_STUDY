@@ -24,6 +24,8 @@ class Indicator:
     discount_factor: float = 0.0          # 반대 징후 강도 1일 때 대상 지표 강도를 줄이는 비율
     sync_of: str | None = None            # 동시성 지표: 이 지표가 여러 부대에서 동시에 식별되면 충족
     min_units: int = 0
+    direction: str = "increase"           # decrease: 수량 감소가 징후 (예: 잠수함·공기부양정 기지 이탈)
+    min_drop_ratio: float = 0.0           # decrease일 때 평시 대비 감소율 하한 (예: 0.5 = 50% 이상 이탈)
 
 
 @dataclass(frozen=True)
@@ -116,6 +118,7 @@ def load_catalog(path: str | Path) -> Catalog:
                 counter=bool(i.get("counter", False)), discounts=tuple(i.get("discounts", [])),
                 sync_of=i.get("sync_of"), min_units=int(i.get("min_units", 0)),
                 discount_factor=float(i.get("discount_factor", 0.0)),
+                direction=str(i.get("direction", "increase")), min_drop_ratio=float(i.get("min_drop_ratio", 0.0)),
             )
             for i in h["indicators"]
         )

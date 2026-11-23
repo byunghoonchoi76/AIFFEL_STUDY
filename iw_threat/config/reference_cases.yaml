@@ -1,0 +1,18 @@
+# 과거 사례 패턴 (징후 조합 템플릿) — 현재 징후 강도 벡터와의 유사도(코사인)로 비교
+# ※ 공개 자료 기반 요약. 가중치는 예시값
+cases:
+  - id: CASE-2015-08
+    name: 2015.8 DMZ 목함지뢰·서부전선 포격 도발
+    hypothesis: H_LOCAL_FIRE
+    summary: "확성기 재개 → 경고 → 포격 → 48시간 최후통첩·준전시상태 선포, 포병 전진 배치·포문 개방, 잠수함 약 70% 기지 이탈, 공기부양정 전방 전개, 고위급 접촉 병행"
+    weights: {I_ULTIMATUM: 1.0, I_COMMS_CUT: 0.6, I_HARTS_OCC: 1.0, I_ARTY_POS: 0.8, I_SUB_SORTIE: 0.9, I_SOF_FORWARD: 0.5, I_LOGISTICS: 0.3}
+  - id: CASE-2022-RU
+    name: 2021~22 러시아 우크라이나 침공 전 집결
+    hypothesis: H_ATTACK
+    summary: "1·2차 증강, 훈련 명목 전개, 철수 발표 기만, 야전병원·도하장비·보급 증가 후 집결지 이탈·공격대형"
+    weights: {I_ARMOR_MASS: 1.0, I_LOGISTICS: 0.8, I_MEDICAL: 0.9, I_BRIDGING: 0.9, I_COMMAND_POST: 0.6, I_DISPERSAL: 0.6, I_ASSAULT: 0.8, I_EX_ANNOUNCED: 0.4}
+  - id: CASE-INFIL
+    name: 특작부대 침투형 국지도발 (일반 패턴)
+    hypothesis: H_INFILTRATION
+    summary: "경보병·특작 전방 이동, 잠수정·공기부양정 이탈, 침투 흔적"
+    weights: {I_SOF_FORWARD: 1.0, I_SUB_SORTIE: 0.9, I_INFIL_SIGN: 1.0, I_WX_COVER: 0.3}

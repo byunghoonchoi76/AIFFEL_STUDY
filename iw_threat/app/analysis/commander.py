@@ -16,6 +16,8 @@ import yaml
 
 from ..taxonomy import match_keys
 
+DEPART_EQ = {"submarine", "hovercraft", "semi_submersible", "tel_srbm", "tel_strategic"}   # 감소(기지 이탈)가 활동인 장비
+
 
 @dataclass
 class KeyTarget:
@@ -35,6 +37,8 @@ class KeyTarget:
     def indicator(self) -> str:
         if "H_NUCLEAR" in self.hypotheses:
             return "I_KEY_TARGET_WMD"
+        if "H_ATTACK" not in self.hypotheses and {"H_INFILTRATION", "H_LOCAL_FIRE"} & set(self.hypotheses):
+            return "I_KEY_TARGET_LOCAL"
         return "I_KEY_TARGET" if self.category == "핵심표적" else "I_HV_TARGET"
 
     def wants(self, equipment_type: str) -> bool:
@@ -62,10 +66,13 @@ def target_activity(targets: list[KeyTarget], changes: list, points: list[dict],
         hits = []
         if t.unit_name:
             for c in changes:
-                if c.unit_name == t.unit_name and c.delta > 0 and t.wants(c.equipment_type) and \
-                        (c.ratio is None or c.ratio >= 1.3 or (c.zscore or 0) >= 2):
-                    hits.append({"equipment": c.equipment_type, "baseline": c.baseline_level, "recent": c.recent_level,
-                                 "latest_at": c.latest_at, "refs": c.refs, "basis": "부대"})
+                departed = (c.equipment_type in DEPART_EQ and c.baseline_obs >= 3 and c.baseline_level > 0
+                            and (c.baseline_level - c.recent_mean) / c.baseline_level >= 0.4)   # 기지 이탈
+                if c.unit_name == t.unit_name and t.wants(c.equipment_type) and (departed or c.delta > 0 and
+                        (c.ratio is None or c.ratio >= 1.3 or (c.zscore or 0) >= 2)):
+                    hits.append({"equipment": c.equipment_type, "baseline": c.baseline_level,
+                                 "recent": round(c.recent_mean, 1) if departed else c.recent_level,
+                                 "latest_at": c.latest_at, "refs": c.refs, "basis": "부대·기지 이탈" if departed else "부대"})
         if t.lat is not None and t.lon is not None:
             near = [p for p in points if p.get("lat") is not None and t.wants(p["equipment_type"])
                     and _dist_m(t.lat, t.lon, p["lat"], p["lon"]) <= t.radius_m]

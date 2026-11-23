@@ -41,6 +41,17 @@ def match_imagery(changes: list[Change], catalog: Catalog, grading: Grading,
         for ch in changes:
             if not (match_keys(ch.equipment_type) & set(ind.equipment)):
                 continue
+            if ind.direction == "decrease":                 # 기지 이탈: 최근 평균이 평시 대비 크게 감소
+                drop = ch.baseline_level - ch.recent_mean
+                if ch.baseline_obs >= 3 and ch.baseline_level > 0 and drop >= max(1, ind.min_delta) \
+                        and drop / ch.baseline_level >= ind.min_drop_ratio:
+                    out.append(Evidence(
+                        indicator_id=ind.id, source_type="IMINT", source_key=source_key, reliability=rel, credibility=cred,
+                        observed_at=ch.latest_at, ref=f"targets:{ch.equipment_type}:{','.join(map(str, ch.refs))}",
+                        quote=f"영상 판독 {equip_ko(ch.equipment_type)} 평시(중앙값) {_fmt(ch.baseline_level)} → 최근 평균 {ch.recent_mean:g} "
+                              f"(기지 이탈률 {drop / ch.baseline_level:.0%})" + (f" [{ch.unit_name}]" if ch.unit_name else ""),
+                        unit_key=ch.unit_key))
+                continue
             th = catalog.threshold(ind, ch.echelon if ch.unit_key else None)
             by_delta = ch.delta >= th.min_delta
             by_ratio = (th.min_ratio is not None and ch.ratio is not None and ch.ratio >= th.min_ratio

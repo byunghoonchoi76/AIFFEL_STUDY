@@ -121,6 +121,14 @@ with tabs[0]:
     if N.get("summary"):
         st.markdown(f"<div class='why'><b>종합 판단</b> — {N['summary']['text']}</div>", unsafe_allow_html=True)
 
+    if A.get("briefing"):
+        st.markdown("<div class='why'><b>지휘관 보고 (3줄)</b><br>" + "<br>".join(A["briefing"]) + "</div>", unsafe_allow_html=True)
+    if A.get("patterns"):
+        st.dataframe(pd.DataFrame([{"과거 사례": p_["name"], "유사도": f"{p_['similarity']:.0%}", "일치 징후": ", ".join(p_["matched"]) or "-",
+                                    "미식별 징후": ", ".join(p_["missing"]) or "-"} for p_ in A["patterns"]]),
+                     use_container_width=True, hide_index=True)
+        st.caption("과거 사례 유사도 = 사례별 징후 조합(가중치)과 현재 징후 강도의 코사인 유사도 × 일치 비율 (LLM 미사용 계산)")
+
     if rd:
         st.subheader("태세 — 합참·연합사 발령 태세(참고 조건) vs 정보 상황")
         IP = A.get("issued_posture") or {}

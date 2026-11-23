@@ -39,7 +39,7 @@ tracks:
   - id: jindogae
     name: 진돗개
     scope: 대침투·국지도발 경계태세
-    hypotheses: [H_INFILTRATION]
+    hypotheses: [H_INFILTRATION, H_LOCAL_FIRE]   # 대침투·국지도발 (국지 포격 도발 포함)
     baseline: 3
     level_names: {3: 진돗개 셋, 2: 진돗개 둘, 1: 진돗개 하나}
     posture_evidence: {indicator: I_POSTURE_JD, scale_by_level: {2: 0.6, 1: 1.0}}
