@@ -57,7 +57,7 @@ activities:
   - {unit: 제9706가상의무대대, equipment: field_hospital, from: -12, to: -7, to_count: 3, move_km: [-0.5, 0.2]}
   # ⑥ 도하 준비 (러: 2022.2.15 프리퍄티강 부교 설치) → 북: 임진강 도하장비 전방 이동
   - {unit: 제9705가상공병대대, equipment: bridging, from: -11, to: -6, to_count: 6, move_km: [-1.2, 0.3]}
-  # ⑦ 전방 지휘·특작 (러: 2월 중순 헬기·지휘소 전방 전개) → 북: 전방 지휘소, 경보병 전방 이동(북 고유 전술)
+  # ⑦ 전방 지휘·특수전부대 (러: 2월 중순 헬기·지휘소 전방 전개) → 북: 전방 지휘소, 경보병 전방 이동(북 고유 전술)
   - {unit: 제9701가상전방군단, equipment: command_vehicle, from: -10, to: -4, to_count: 9, move_km: [-2.0, 0.0]}
   - {unit: 제9708가상경보병여단, equipment: sof_vehicle, from: -7, to: -2, to_count: 14, move_km: [-2.5, 0.0]}
   # ⑦-2 화학 운용 준비 (북한군 고유 — 중요시설 무력화 목적 화학탄 사용 가능) → 화학정찰·제독 장비 전방 이동

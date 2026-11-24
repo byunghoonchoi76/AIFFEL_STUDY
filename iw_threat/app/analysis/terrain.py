@@ -99,7 +99,7 @@ def facility_vulnerability(points: list[dict], cfg: dict, wx: dict | None = None
         if downwind:
             notes.append("풍하 위치" + (" · 화학 운용 유리 기상" if chem_favorable else ""))
         if urban:
-            notes.append(f"도심({urban}) 내 — 지상 진입 지연(우회 예상), 화력·화학·특작 위협 우선")
+            notes.append(f"도심({urban}) 내 — 지상 진입 지연(우회 예상), 화력·화학·특수전 위협 우선")
         out.append({"id": f["id"], "name": f["name"], "kind": f["kind"], "grade": f.get("grade"),
                     "urban": urban, "fires_in_range": len(in_range), "downwind": downwind,
                     "advance": adv, "vulnerability": level, "notes": notes})

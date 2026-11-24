@@ -214,7 +214,7 @@ with tabs[0]:
                      use_container_width=True, hide_index=True)
         r_ = TR["advance_rates"]
         st.caption(f"진출 속도 예시(km/일): 개활 {r_['open']} · 산악 {r_['mountain']} · 도심 {r_['urban']} — 북한군은 도심 직접 진입을 회피·우회한다고 가정"
-                   "(도시 진입=늪). 도심 내 시설은 지상 진입이 늦은 대신 화력·화학·특작 위협을 우선 고려. 시설·지형은 가상 예시")
+                   "(도시 진입=늪). 도심 내 시설은 지상 진입이 늦은 대신 화력·화학·특수전 위협을 우선 고려. 시설·지형은 가상 예시")
 
     WX = A.get("weather") or {}
     if WX.get("available"):

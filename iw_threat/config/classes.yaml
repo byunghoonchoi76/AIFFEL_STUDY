@@ -194,7 +194,7 @@ classes:
   - id: semi_submersible
     tier: equipment
     group: naval
-    name_ko: 반잠수정·특작 선박
+    name_ko: 반잠수정·특수전 선박
     source: ATP7-100.2 I장
     data_path: real_satellite
   # ---------- 시설 ----------
