@@ -1,0 +1,6 @@
+﻿doc,page,source,unit_raw,unit_key,echelon,echelon_from,parent_raw,parent_key,mgrs,lat,lon,mgrs_precision_m,location_type,equipment,count,as_of,remark,quote,bbox,images,issues
+sim_local_fire_2015,1,table,제9901가상해안포병대대,9901가상해안포병대대,대대,name,,,52SBH5397603966,37.95,126.2,1,진지,,,,,합성 시나리오,,,
+sim_local_fire_2015,1,table,제9902가상포병여단,9902가상포병여단,여단,name,,,52SBH7609808883,38.0,126.45,1,주둔지,,,,,합성 시나리오,,,
+sim_local_fire_2015,1,table,제9903가상잠수함전대,9903가상잠수함전대,,name,,,51SYC3610442550,38.3,125.7,1,기지,,,,,합성 시나리오,,,
+sim_local_fire_2015,1,table,제9904가상공기부양정대,9904가상공기부양정대,,name,,,51SYC5377137531,38.25,125.9,1,기지,,,,,합성 시나리오,,,
+sim_local_fire_2015,1,table,제9905가상수송대대,9905가상수송대대,대대,name,제9902가상포병여단,9902가상포병여단,52SBH7361814505,38.05,126.42,1,주둔지,,,,,합성 시나리오,,,

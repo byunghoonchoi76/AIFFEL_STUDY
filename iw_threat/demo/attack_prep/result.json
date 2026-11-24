@@ -1,0 +1,3708 @@
+{
+ "scenario": {
+  "id": "attack_prep",
+  "name": "공격 준비",
+  "area_id": "SIM-ATK",
+  "truth": {
+   "intent": "공격",
+   "hypothesis": "공격 준비",
+   "d_day": "D일 = 공격 개시",
+   "readiness": {
+    "watchcon": [
+     [
+      -30,
+      3
+     ],
+     [
+      -7,
+      2
+     ],
+     [
+      -3,
+      1
+     ]
+    ],
+    "defcon": [
+     [
+      -30,
+      4
+     ],
+     [
+      -3,
+      3
+     ]
+    ],
+    "jindogae": [
+     [
+      -30,
+      3
+     ]
+    ],
+    "durumi": [
+     [
+      -30,
+      3
+     ]
+    ]
+   }
+  },
+  "meta": {
+   "weather": [],
+   "imagery": [],
+   "key_targets": [
+    {
+     "target_id": "KT-91-1",
+     "name": "제9103가상포병연대 장사정포",
+     "category": "핵심표적",
+     "owner": "합참",
+     "unit_name": "제9103가상포병연대",
+     "equipment": [
+      "artillery",
+      "mlrs"
+     ],
+     "pir_ids": [
+      "PIR-J2"
+     ]
+    },
+    {
+     "target_id": "KT-91-2",
+     "name": "제9102가상전차여단 기갑",
+     "category": "고가치표적",
+     "owner": "연합사",
+     "unit_name": "제9102가상전차여단",
+     "equipment": [
+      "tank",
+      "apc"
+     ],
+     "pir_ids": [
+      "PIR-C1"
+     ]
+    },
+    {
+     "target_id": "KT-91-3",
+     "name": "제9101가상보병사단 지휘부",
+     "category": "고가치표적",
+     "owner": "공동",
+     "unit_name": "제9101가상보병사단",
+     "equipment": [
+      "command_vehicle"
+     ],
+     "pir_ids": [
+      "PIR-J1"
+     ]
+    }
+   ],
+   "issued_posture": []
+  },
+  "d_day": "2026-12-20T00:00:00+00:00",
+  "seed": 7,
+  "step": 2
+ },
+ "prepare": {
+  "orbat": {
+   "rows": 6,
+   "unit_rows": 6,
+   "garrisons": 6,
+   "equipment": 0,
+   "graph_units": 6
+  },
+  "targets": 338,
+  "reports": 6,
+  "weather_days": 0,
+  "key_targets": 3,
+  "issued_posture": 0,
+  "false_reports": 1
+ },
+ "series": [
+  {
+   "day": -30,
+   "as_of": "2026-11-20T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.02,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.02,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 0,
+   "elapsed_s": 5.19
+  },
+  {
+   "day": -28,
+   "as_of": "2026-11-22T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.02,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.02,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 0,
+   "elapsed_s": 5.53
+  },
+  {
+   "day": -26,
+   "as_of": "2026-11-24T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.02,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.02,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 0,
+   "elapsed_s": 5.92
+  },
+  {
+   "day": -24,
+   "as_of": "2026-11-26T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.02,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.02,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 0,
+   "elapsed_s": 6.31
+  },
+  {
+   "day": -22,
+   "as_of": "2026-11-28T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.02,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.02,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 0,
+   "elapsed_s": 6.0
+  },
+  {
+   "day": -20,
+   "as_of": "2026-11-30T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.02,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.02,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 0,
+   "elapsed_s": 5.71
+  },
+  {
+   "day": -18,
+   "as_of": "2026-12-02T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.188,
+    "국지 포격 도발 준비": 0.0478,
+    "대규모 훈련": 0.1407,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.188,
+    "H_LOCAL_FIRE": 0.0287,
+    "H_EXERCISE": 0.0281,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 6.04
+  },
+  {
+   "day": -16,
+   "as_of": "2026-12-04T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.259,
+    "대규모 훈련": 0.1827,
+    "국지 포격 도발 준비": 0.0568,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.259,
+    "H_EXERCISE": 0.0365,
+    "H_LOCAL_FIRE": 0.0341,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 5.39
+  },
+  {
+   "day": -14,
+   "as_of": "2026-12-06T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.379,
+    "대규모 훈련": 0.2374,
+    "국지 포격 도발 준비": 0.0551,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.379,
+    "H_EXERCISE": 0.0475,
+    "H_LOCAL_FIRE": 0.033,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 5.53
+  },
+  {
+   "day": -12,
+   "as_of": "2026-12-08T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.475,
+    "대규모 훈련": 0.2954,
+    "국지 포격 도발 준비": 0.0649,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.475,
+    "H_EXERCISE": 0.0591,
+    "H_LOCAL_FIRE": 0.0389,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 5.41
+  },
+  {
+   "day": -10,
+   "as_of": "2026-12-10T18:00:00+00:00",
+   "grade": "경계",
+   "confidence": "상",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.5381,
+    "대규모 훈련": 0.3282,
+    "국지 포격 도발 준비": 0.0645,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.5381,
+    "H_EXERCISE": 0.0656,
+    "H_LOCAL_FIRE": 0.0387,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 5.85
+  },
+  {
+   "day": -8,
+   "as_of": "2026-12-12T18:00:00+00:00",
+   "grade": "경계",
+   "confidence": "상",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.654,
+    "대규모 훈련": 0.3906,
+    "국지 포격 도발 준비": 0.1002,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.654,
+    "H_EXERCISE": 0.0781,
+    "H_LOCAL_FIRE": 0.0601,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 5.75
+  },
+  {
+   "day": -6,
+   "as_of": "2026-12-14T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "상",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.7876,
+    "대규모 훈련": 0.3767,
+    "국지 포격 도발 준비": 0.0998,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.7876,
+    "H_EXERCISE": 0.0753,
+    "H_LOCAL_FIRE": 0.0599,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 6,
+   "elapsed_s": 5.77
+  },
+  {
+   "day": -4,
+   "as_of": "2026-12-16T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "상",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.9892,
+    "국지 포격 도발 준비": 0.1291,
+    "대규모 훈련": 0.3654,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.9892,
+    "H_LOCAL_FIRE": 0.0774,
+    "H_EXERCISE": 0.0731,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_COMMAND_POST",
+    "I_EX_ANNOUNCED",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_COMMAND_POST",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL"
+   ],
+   "n_indicators": 8,
+   "elapsed_s": 5.97
+  },
+  {
+   "day": -2,
+   "as_of": "2026-12-18T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "상",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.9966,
+    "국지 포격 도발 준비": 0.1157,
+    "대규모 훈련": 0.3466,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.9966,
+    "H_LOCAL_FIRE": 0.0694,
+    "H_EXERCISE": 0.0693,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_COMMAND_POST",
+    "I_EX_ANNOUNCED",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_PATTERN_DEV"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_COMMAND_POST",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_PATTERN_DEV"
+   ],
+   "n_indicators": 9,
+   "elapsed_s": 5.7
+  },
+  {
+   "day": 0,
+   "as_of": "2026-12-20T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "상",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.9956,
+    "대규모 훈련": 0.3484,
+    "국지 포격 도발 준비": 0.1114,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.9956,
+    "H_EXERCISE": 0.0697,
+    "H_LOCAL_FIRE": 0.0668,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_COMMAND_POST",
+    "I_EX_ANNOUNCED",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_PATTERN_DEV"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_COMMAND_POST",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_PATTERN_DEV"
+   ],
+   "n_indicators": 9,
+   "elapsed_s": 6.45
+  }
+ ],
+ "final": {
+  "assessment_id": 2107,
+  "area_id": "SIM-ATK",
+  "as_of": "2026-12-20T18:00:00+00:00",
+  "top_hypothesis": "공격 준비",
+  "probability": 0.9956,
+  "threat_score": 0.9956,
+  "grade": "심각",
+  "confidence": "상",
+  "narrative": {
+   "summary": {
+    "text": "4개 출처 유형(HUMINT/IMINT/OSINT/SIGINT)에서 야전 의무시설 전개, 도하·공병 장비 전방 이동, 기갑·기계화 장비 전방 집결 등 9개 징후가 식별되어 '공격 준비' 가능성 100%(등급 심각, 분석 신뢰도 상)로 판단됨.",
+    "citations": [
+     "targets:field_hospital:50266,50273,50279,50287,50295",
+     "chunk:d354:0",
+     "targets:bridging:50251,50257,50263,50270,50278,50284,50292",
+     "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+     "targets:apc:50248,50275,50281,50289",
+     "chunk:d352:0"
+    ],
+    "generated": "template"
+   },
+   "sentences": [
+    {
+     "indicator_id": "I_MEDICAL",
+     "counter": false,
+     "text": "야전 의무시설 전개 징후 강하게 식별됨 — 영상: 야전병원 0→2대 (제9106가상의무대대(대대) 0.25km, 평시 대비 신규 출현); OSINT(C3): “현지 보도에 따르면 마을 외곽 공터에 야전병원으로 보이는 대형 천막 2동이 설치되…” → 대규모 사상자 대비 의무지원 준비 정황",
+     "citations": [
+      "targets:field_hospital:50266,50273,50279,50287,50295",
+      "chunk:d354:0"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_BRIDGING",
+     "counter": false,
+     "text": "도하·공병 장비 전방 이동 징후 강하게 식별됨 — 영상: 도하장비 0→4대 (제9104가상공병대대(대대) 0.44km, 평시 대비 신규 출현) → 하천 도하 공격 대비 정황",
+     "citations": [
+      "targets:bridging:50251,50257,50263,50270,50278,50284,50292"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_ARMOR_MASS",
+     "counter": false,
+     "text": "기갑·기계화 장비 전방 집결 징후 강하게 식별됨 — 영상: 전차 13.5→44대 (제9102가상전차여단(여단) 2.62km, 평시 대비 3.3배); 영상: 장갑차 9→26대 (제9102가상전차여단(여단) 2.44km, 평시 대비 2.9배); HUMINT(C2): “협조자에 따르면 제9102가상전차여단 소속 전차 수십 대가 주둔지를 떠나 북동쪽 …” → 공격 제대 집결 정황",
+     "citations": [
+      "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+      "targets:apc:50248,50275,50281,50289",
+      "chunk:d352:0"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_ARTY_POS",
+     "counter": false,
+     "text": "포병 진지 점령·증강 징후 강하게 식별됨 — 영상: 야포 6→17대 (제9103가상포병연대(연대) 0.62km, 평시 대비 2.8배); HUMINT(B2): “협조자는 포병 차량들이 기존 진지 북쪽 능선 뒤편에 새로 진지를 구축하고 있다고 …” → 공격준비사격 대비 정황",
+     "citations": [
+      "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
+      "chunk:d355:0"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_COMMAND_POST",
+     "counter": false,
+     "text": "전방 지휘소 전개 징후 강하게 식별됨 — 영상: 지휘차량 2→7대 (제9101가상보병사단(사단) 0.06km, 평시 대비 3.5배); SIGINT(B2): “평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동…” → 전방 작전 지휘체계 구축 정황",
+     "citations": [
+      "targets:command_vehicle:50247,50254,50260,50267,50274,50280,50288",
+      "chunk:d356:0"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_KEY_TARGET",
+     "counter": false,
+     "text": "핵심표적 활동(합참·연합사 표적목록) 징후 다수 식별됨 — IMINT(B2): “합참 핵심표적 '제9103가상포병연대 장사정포' 활동 — artillery 6→1…” → 지휘관 우선 표적의 활동 — 위협 평가 핵심 기준",
+     "citations": [
+      "keytarget:KT-91-1:50250,50256,50262,50269,50277,50283,50291"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_LOGISTICS",
+     "counter": false,
+     "text": "보급·유류 차량 증가 징후 강하게 식별됨 — 영상: 트럭 28→70대 (제9105가상수송대대(대대) 0.33km, 평시 대비 2.5배); 영상: 유류차 4→13대 (제9105가상수송대대(대대) 0.5km, 평시 대비 3.2배); OSINT(C3): “인근 주민들에 따르면 최근 일주일 사이 야간에 대형 트럭과 유조차 행렬이 평소보다…” → 작전 지속지원 준비 정황",
+     "citations": [
+      "targets:truck:50253,50259,50265,50272,50286,50294",
+      "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+      "chunk:d351:0"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_PATTERN_DEV",
+     "counter": false,
+     "text": "평시 훈련 패턴과 상이한 활동 징후 다수 식별됨 — SIGINT(B2): “평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동…” → 평시 활동과 다른 이상 활동",
+     "citations": [
+      "chunk:d356:0"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_HV_TARGET",
+     "counter": false,
+     "text": "고가치표적 활동(합참·연합사 표적목록) 징후 다수 식별됨 — IMINT(B2): “연합사 고가치표적 '제9102가상전차여단 기갑' 활동 — tank 13.5→44대…”; IMINT(B2): “공동 고가치표적 '제9101가상보병사단 지휘부' 활동 — command_vehic…” → 고가치 표적의 활동",
+     "citations": [
+      "keytarget:KT-91-2:50249,50255,50261,50268,50276,50282,50290",
+      "keytarget:KT-91-3:50247,50254,50260,50267,50274,50280,50288"
+     ],
+     "generated": "template"
+    }
+   ],
+   "dropped": 0,
+   "template_filled": 9,
+   "dropped_samples": []
+  },
+  "baseline_mode": "unit",
+  "changes": [
+   {
+    "equipment_type": "truck",
+    "baseline_level": 28.0,
+    "recent_level": 70,
+    "delta": 42.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     50253,
+     50259,
+     50265,
+     50272,
+     50286,
+     50294
+    ],
+    "unit_key": "9105가상수송대대",
+    "unit_name": "제9105가상수송대대",
+    "echelon": "대대",
+    "dist_km": 0.33,
+    "baseline_obs": 26,
+    "baseline_sd": 3.15,
+    "recent_mean": 63.67,
+    "recent_n": 6,
+    "ratio": 2.5,
+    "zscore": 13.33
+   },
+   {
+    "equipment_type": "tank",
+    "baseline_level": 13.5,
+    "recent_level": 44,
+    "delta": 30.5,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     50249,
+     50255,
+     50261,
+     50268,
+     50276,
+     50282,
+     50290
+    ],
+    "unit_key": "9102가상전차여단",
+    "unit_name": "제9102가상전차여단",
+    "echelon": "여단",
+    "dist_km": 2.62,
+    "baseline_obs": 26,
+    "baseline_sd": 1.05,
+    "recent_mean": 39.86,
+    "recent_n": 7,
+    "ratio": 3.3,
+    "zscore": 29.05
+   },
+   {
+    "equipment_type": "apc",
+    "baseline_level": 9,
+    "recent_level": 26,
+    "delta": 17,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     50248,
+     50275,
+     50281,
+     50289
+    ],
+    "unit_key": "9102가상전차여단",
+    "unit_name": "제9102가상전차여단",
+    "echelon": "여단",
+    "dist_km": 2.44,
+    "baseline_obs": 27,
+    "baseline_sd": 1.05,
+    "recent_mean": 22.5,
+    "recent_n": 4,
+    "ratio": 2.9,
+    "zscore": 16.19
+   },
+   {
+    "equipment_type": "artillery",
+    "baseline_level": 6.0,
+    "recent_level": 17,
+    "delta": 11.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     50250,
+     50256,
+     50262,
+     50269,
+     50277,
+     50283,
+     50291
+    ],
+    "unit_key": "9103가상포병연대",
+    "unit_name": "제9103가상포병연대",
+    "echelon": "연대",
+    "dist_km": 0.62,
+    "baseline_obs": 28,
+    "baseline_sd": 1.05,
+    "recent_mean": 15.0,
+    "recent_n": 7,
+    "ratio": 2.8,
+    "zscore": 10.48
+   },
+   {
+    "equipment_type": "fuel_truck",
+    "baseline_level": 4,
+    "recent_level": 13,
+    "delta": 9,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     50252,
+     50258,
+     50264,
+     50271,
+     50285,
+     50293
+    ],
+    "unit_key": "9105가상수송대대",
+    "unit_name": "제9105가상수송대대",
+    "echelon": "대대",
+    "dist_km": 0.5,
+    "baseline_obs": 27,
+    "baseline_sd": 0.52,
+    "recent_mean": 11.83,
+    "recent_n": 6,
+    "ratio": 3.2,
+    "zscore": 17.31
+   },
+   {
+    "equipment_type": "command_vehicle",
+    "baseline_level": 2,
+    "recent_level": 7,
+    "delta": 5,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     50247,
+     50254,
+     50260,
+     50267,
+     50274,
+     50280,
+     50288
+    ],
+    "unit_key": "9101가상보병사단",
+    "unit_name": "제9101가상보병사단",
+    "echelon": "사단",
+    "dist_km": 0.06,
+    "baseline_obs": 23,
+    "baseline_sd": 0.0,
+    "recent_mean": 5.0,
+    "recent_n": 7,
+    "ratio": 3.5,
+    "zscore": 10.0
+   },
+   {
+    "equipment_type": "bridging",
+    "baseline_level": 0.0,
+    "recent_level": 4,
+    "delta": 4.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     50251,
+     50257,
+     50263,
+     50270,
+     50278,
+     50284,
+     50292
+    ],
+    "unit_key": "9104가상공병대대",
+    "unit_name": "제9104가상공병대대",
+    "echelon": "대대",
+    "dist_km": 0.44,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 3.0,
+    "recent_n": 7,
+    "ratio": null,
+    "zscore": null
+   },
+   {
+    "equipment_type": "field_hospital",
+    "baseline_level": 0.0,
+    "recent_level": 2,
+    "delta": 2.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     50266,
+     50273,
+     50279,
+     50287,
+     50295
+    ],
+    "unit_key": "9106가상의무대대",
+    "unit_name": "제9106가상의무대대",
+    "echelon": "대대",
+    "dist_km": 0.25,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 1.6,
+    "recent_n": 5,
+    "ratio": null,
+    "zscore": null
+   }
+  ],
+  "unit_attribution": [
+   {
+    "equipment": "apc",
+    "unit_key": "9102가상전차여단",
+    "unit_name": "제9102가상전차여단",
+    "echelon": "여단",
+    "parent_key": "9101가상보병사단",
+    "location_type": "주둔지",
+    "dist_km": 2.44,
+    "affinity": true,
+    "max_count": 26,
+    "event_ids": [
+     50248,
+     50275,
+     50281,
+     50289
+    ]
+   },
+   {
+    "equipment": "artillery",
+    "unit_key": "9103가상포병연대",
+    "unit_name": "제9103가상포병연대",
+    "echelon": "연대",
+    "parent_key": "9101가상보병사단",
+    "location_type": "주둔지",
+    "dist_km": 0.62,
+    "affinity": true,
+    "max_count": 17,
+    "event_ids": [
+     50250,
+     50256,
+     50262,
+     50269,
+     50277,
+     50283,
+     50291
+    ]
+   },
+   {
+    "equipment": "bridging",
+    "unit_key": "9104가상공병대대",
+    "unit_name": "제9104가상공병대대",
+    "echelon": "대대",
+    "parent_key": "9101가상보병사단",
+    "location_type": "주둔지",
+    "dist_km": 0.45,
+    "affinity": true,
+    "max_count": 4,
+    "event_ids": [
+     50251,
+     50257,
+     50263,
+     50270,
+     50278,
+     50284,
+     50292
+    ]
+   },
+   {
+    "equipment": "command_vehicle",
+    "unit_key": "9101가상보병사단",
+    "unit_name": "제9101가상보병사단",
+    "echelon": "사단",
+    "parent_key": null,
+    "location_type": "사령부",
+    "dist_km": 0.06,
+    "affinity": false,
+    "max_count": 7,
+    "event_ids": [
+     50247,
+     50254,
+     50260,
+     50267,
+     50274,
+     50280,
+     50288
+    ]
+   },
+   {
+    "equipment": "field_hospital",
+    "unit_key": "9106가상의무대대",
+    "unit_name": "제9106가상의무대대",
+    "echelon": "대대",
+    "parent_key": "9101가상보병사단",
+    "location_type": "주둔지",
+    "dist_km": 0.35,
+    "affinity": true,
+    "max_count": 2,
+    "event_ids": [
+     50266,
+     50273,
+     50279,
+     50287,
+     50295
+    ]
+   },
+   {
+    "equipment": "fuel_truck",
+    "unit_key": "9105가상수송대대",
+    "unit_name": "제9105가상수송대대",
+    "echelon": "대대",
+    "parent_key": "9101가상보병사단",
+    "location_type": "주둔지",
+    "dist_km": 0.5,
+    "affinity": true,
+    "max_count": 13,
+    "event_ids": [
+     50252,
+     50258,
+     50264,
+     50271,
+     50285,
+     50293
+    ]
+   },
+   {
+    "equipment": "tank",
+    "unit_key": "9102가상전차여단",
+    "unit_name": "제9102가상전차여단",
+    "echelon": "여단",
+    "parent_key": "9101가상보병사단",
+    "location_type": "주둔지",
+    "dist_km": 2.66,
+    "affinity": true,
+    "max_count": 44,
+    "event_ids": [
+     50249,
+     50255,
+     50261,
+     50268,
+     50276,
+     50282,
+     50290
+    ]
+   },
+   {
+    "equipment": "truck",
+    "unit_key": "9105가상수송대대",
+    "unit_name": "제9105가상수송대대",
+    "echelon": "대대",
+    "parent_key": "9101가상보병사단",
+    "location_type": "주둔지",
+    "dist_km": 0.33,
+    "affinity": true,
+    "max_count": 70,
+    "event_ids": [
+     50253,
+     50259,
+     50265,
+     50272,
+     50286,
+     50294
+    ]
+   }
+  ],
+  "unit_estimates": [],
+  "evidence": [
+   {
+    "indicator_id": "I_ARMOR_MASS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+    "quote": "영상 판독 전차 평시(중앙값) 13.5대 → 최근 44대 (+30.5대) [식별 부대: 제9102가상전차여단(여단) 2.62km, 평시 대비 3.3배] (기준 여단 +6대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9102가상전차여단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_ARMOR_MASS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:apc:50248,50275,50281,50289",
+    "quote": "영상 판독 장갑차 평시(중앙값) 9대 → 최근 26대 (+17대) [식별 부대: 제9102가상전차여단(여단) 2.44km, 평시 대비 2.9배] (기준 여단 +6대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9102가상전차여단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_BRIDGING",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:bridging:50251,50257,50263,50270,50278,50284,50292",
+    "quote": "영상 판독 도하장비 평시(중앙값) 0대 → 최근 4대 (+4대) [식별 부대: 제9104가상공병대대(대대) 0.44km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9104가상공병대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_ARTY_POS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
+    "quote": "영상 판독 야포 평시(중앙값) 6대 → 최근 17대 (+11대) [식별 부대: 제9103가상포병연대(연대) 0.62km, 평시 대비 2.8배] (기준 연대 +2대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9103가상포병연대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_LOGISTICS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:truck:50253,50259,50265,50272,50286,50294",
+    "quote": "영상 판독 트럭 평시(중앙값) 28대 → 최근 70대 (+42대) [식별 부대: 제9105가상수송대대(대대) 0.33km, 평시 대비 2.5배] (기준 대대 +4대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9105가상수송대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_LOGISTICS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+    "quote": "영상 판독 유류차 평시(중앙값) 4대 → 최근 13대 (+9대) [식별 부대: 제9105가상수송대대(대대) 0.5km, 평시 대비 3.2배] (기준 대대 +4대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9105가상수송대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_MEDICAL",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:field_hospital:50266,50273,50279,50287,50295",
+    "quote": "영상 판독 야전병원 평시(중앙값) 0대 → 최근 2대 (+2대) [식별 부대: 제9106가상의무대대(대대) 0.25km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9106가상의무대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_COMMAND_POST",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:command_vehicle:50247,50254,50260,50267,50274,50280,50288",
+    "quote": "영상 판독 지휘차량 평시(중앙값) 2대 → 최근 7대 (+5대) [식별 부대: 제9101가상보병사단(사단) 0.06km, 평시 대비 3.5배] (기준 사단 +2대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9101가상보병사단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_KEY_TARGET",
+    "source_type": "IMINT",
+    "source_key": "IMINT:keytarget:KT-91-1",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "keytarget:KT-91-1:50250,50256,50262,50269,50277,50283,50291",
+    "quote": "합참 핵심표적 '제9103가상포병연대 장사정포' 활동 — artillery 6→17대(부대 매칭)",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_HV_TARGET",
+    "source_type": "IMINT",
+    "source_key": "IMINT:keytarget:KT-91-2",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "keytarget:KT-91-2:50249,50255,50261,50268,50276,50282,50290",
+    "quote": "연합사 고가치표적 '제9102가상전차여단 기갑' 활동 — tank 13.5→44대(부대 매칭); apc 9→26대(부대 매칭)",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_HV_TARGET",
+    "source_type": "IMINT",
+    "source_key": "IMINT:keytarget:KT-91-3",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "keytarget:KT-91-3:50247,50254,50260,50267,50274,50280,50288",
+    "quote": "공동 고가치표적 '제9101가상보병사단 지휘부' 활동 — command_vehicle 2→7대(부대 매칭)",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_CHEM_DELIVERY",
+    "source_type": "IMINT",
+    "source_key": "IMINT:terrain",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "terrain:NF-1,MF-1,NF-3,MF-3",
+    "quote": "가급 중요시설 가상 발전소, 가상 비행장, 가상 변전소, 가상 전방 지휘시설 — 적 화력(투발 수단) 사거리 내",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_LOGISTICS",
+    "source_type": "OSINT",
+    "source_key": "src2",
+    "reliability": "C",
+    "credibility": 3,
+    "observed_at": "2026-12-04T15:00:00+00:00",
+    "ref": "chunk:d351:0",
+    "quote": "인근 주민들에 따르면 최근 일주일 사이 야간에 대형 트럭과 유조차 행렬이 평소보다 눈에 띄게 늘었다.",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_ARMOR_MASS",
+    "source_type": "HUMINT",
+    "source_key": "src3",
+    "reliability": "C",
+    "credibility": 2,
+    "observed_at": "2026-12-09T15:00:00+00:00",
+    "ref": "chunk:d352:0",
+    "quote": "협조자에 따르면 제9102가상전차여단 소속 전차 수십 대가 주둔지를 떠나 북동쪽 개활지로 이동해 머무르고 있다.",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_COMMAND_POST",
+    "source_type": "SIGINT",
+    "source_key": "src7",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-17T15:00:00+00:00",
+    "ref": "chunk:d356:0",
+    "quote": "평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동한 정황이 관측되었다.",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_PATTERN_DEV",
+    "source_type": "SIGINT",
+    "source_key": "src7",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-17T15:00:00+00:00",
+    "ref": "chunk:d356:0",
+    "quote": "평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동한 정황이 관측되었다.",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_ARTY_POS",
+    "source_type": "HUMINT",
+    "source_key": "src6",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-16T15:00:00+00:00",
+    "ref": "chunk:d355:0",
+    "quote": "협조자는 포병 차량들이 기존 진지 북쪽 능선 뒤편에 새로 진지를 구축하고 있다고 전했다.",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_MEDICAL",
+    "source_type": "OSINT",
+    "source_key": "src5",
+    "reliability": "C",
+    "credibility": 3,
+    "observed_at": "2026-12-15T15:00:00+00:00",
+    "ref": "chunk:d354:0",
+    "quote": "현지 보도에 따르면 마을 외곽 공터에 야전병원으로 보이는 대형 천막 2동이 설치되었다.",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_EX_ANNOUNCED",
+    "source_type": "OSINT",
+    "source_key": "src4",
+    "reliability": "D",
+    "credibility": 4,
+    "observed_at": "2026-12-12T15:00:00+00:00",
+    "ref": "chunk:d353:0",
+    "quote": "선전매체는 해당 지역의 부대 이동이 통상적인 계절 훈련이라고 주장했다.",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   }
+  ],
+  "hypotheses": [
+   {
+    "hypothesis_id": "H_ATTACK",
+    "name": "공격 준비",
+    "prior": 0.02,
+    "probability": 0.9956,
+    "impact": 1.0,
+    "threat": 0.9956,
+    "contributions": [
+     {
+      "indicator_id": "I_MEDICAL",
+      "name": "야전 의무시설 전개",
+      "lr": 7.0,
+      "strength": 0.7894,
+      "delta_logit": 1.5362,
+      "source_types": [
+       "IMINT",
+       "OSINT"
+      ],
+      "refs": [
+       "targets:field_hospital:50266,50273,50279,50287,50295",
+       "chunk:d354:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:field_hospital:50266,50273,50279,50287,50295",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 야전병원 평시(중앙값) 0대 → 최근 2대 (+2대) [식별 부대: 제9106가상의무대대(대대) 0.25km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+        "unit_key": "9106가상의무대대"
+       },
+       {
+        "ref": "chunk:d354:0",
+        "source_type": "OSINT",
+        "grade": "C3",
+        "grade_weight": 0.455,
+        "age_days": 5.1,
+        "tau_days": 10.0,
+        "decay": 0.599,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.273,
+        "quote": "현지 보도에 따르면 마을 외곽 공터에 야전병원으로 보이는 대형 천막 2동이 설치되었다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_BRIDGING",
+      "name": "도하·공병 장비 전방 이동",
+      "lr": 8.0,
+      "strength": 0.7055,
+      "delta_logit": 1.467,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:bridging:50251,50257,50263,50270,50278,50284,50292"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:bridging:50251,50257,50263,50270,50278,50284,50292",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 도하장비 평시(중앙값) 0대 → 최근 4대 (+4대) [식별 부대: 제9104가상공병대대(대대) 0.44km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+        "unit_key": "9104가상공병대대"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_ARMOR_MASS",
+      "name": "기갑·기계화 장비 전방 집결",
+      "lr": 6.0,
+      "strength": 0.7413,
+      "delta_logit": 1.3282,
+      "source_types": [
+       "HUMINT",
+       "IMINT"
+      ],
+      "refs": [
+       "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+       "targets:apc:50248,50275,50281,50289",
+       "chunk:d352:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 전차 평시(중앙값) 13.5대 → 최근 44대 (+30.5대) [식별 부대: 제9102가상전차여단(여단) 2.62km, 평시 대비 3.3배] (기준 여단 +6대 또는 2배)",
+        "unit_key": "9102가상전차여단"
+       },
+       {
+        "ref": "targets:apc:50248,50275,50281,50289",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 장갑차 평시(중앙값) 9대 → 최근 26대 (+17대) [식별 부대: 제9102가상전차여단(여단) 2.44km, 평시 대비 2.9배] (기준 여단 +6대 또는 2배)",
+        "unit_key": "9102가상전차여단"
+       },
+       {
+        "ref": "chunk:d352:0",
+        "source_type": "HUMINT",
+        "grade": "C2",
+        "grade_weight": 0.595,
+        "age_days": 11.1,
+        "tau_days": 7.0,
+        "decay": 0.204,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.121,
+        "quote": "협조자에 따르면 제9102가상전차여단 소속 전차 수십 대가 주둔지를 떠나 북동쪽 개활지로 이동해 머무르고 있다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_ARTY_POS",
+      "name": "포병 진지 점령·증강",
+      "lr": 5.0,
+      "strength": 0.7942,
+      "delta_logit": 1.2782,
+      "source_types": [
+       "HUMINT",
+       "IMINT"
+      ],
+      "refs": [
+       "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
+       "chunk:d355:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 5.0,
+        "decay": 0.967,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.699,
+        "quote": "영상 판독 야포 평시(중앙값) 6대 → 최근 17대 (+11대) [식별 부대: 제9103가상포병연대(연대) 0.62km, 평시 대비 2.8배] (기준 연대 +2대 또는 2배)",
+        "unit_key": "9103가상포병연대"
+       },
+       {
+        "ref": "chunk:d355:0",
+        "source_type": "HUMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 4.1,
+        "tau_days": 5.0,
+        "decay": 0.438,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.317,
+        "quote": "협조자는 포병 차량들이 기존 진지 북쪽 능선 뒤편에 새로 진지를 구축하고 있다고 전했다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_COMMAND_POST",
+      "name": "전방 지휘소 전개",
+      "lr": 4.0,
+      "strength": 0.8417,
+      "delta_logit": 1.1668,
+      "source_types": [
+       "IMINT",
+       "SIGINT"
+      ],
+      "refs": [
+       "targets:command_vehicle:50247,50254,50260,50267,50274,50280,50288",
+       "chunk:d356:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:command_vehicle:50247,50254,50260,50267,50274,50280,50288",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 지휘차량 평시(중앙값) 2대 → 최근 7대 (+5대) [식별 부대: 제9101가상보병사단(사단) 0.06km, 평시 대비 3.5배] (기준 사단 +2대 또는 2배)",
+        "unit_key": "9101가상보병사단"
+       },
+       {
+        "ref": "chunk:d356:0",
+        "source_type": "SIGINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 3.1,
+        "tau_days": 7.0,
+        "decay": 0.64,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.462,
+        "quote": "평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동한 정황이 관측되었다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_KEY_TARGET",
+      "name": "핵심표적 활동(합참·연합사 표적목록)",
+      "lr": 3.0,
+      "strength": 0.6889,
+      "delta_logit": 0.7568,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "keytarget:KT-91-1:50250,50256,50262,50269,50277,50283,50291"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "keytarget:KT-91-1:50250,50256,50262,50269,50277,50283,50291",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.3,
+        "tau_days": 7.0,
+        "decay": 0.953,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.689,
+        "quote": "합참 핵심표적 '제9103가상포병연대 장사정포' 활동 — artillery 6→17대(부대 매칭)",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_LOGISTICS",
+      "name": "보급·유류 차량 증가",
+      "lr": 2.5,
+      "strength": 0.7368,
+      "delta_logit": 0.6751,
+      "source_types": [
+       "IMINT",
+       "OSINT"
+      ],
+      "refs": [
+       "targets:truck:50253,50259,50265,50272,50286,50294",
+       "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+       "chunk:d351:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:truck:50253,50259,50265,50272,50286,50294",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 트럭 평시(중앙값) 28대 → 최근 70대 (+42대) [식별 부대: 제9105가상수송대대(대대) 0.33km, 평시 대비 2.5배] (기준 대대 +4대 또는 2배)",
+        "unit_key": "9105가상수송대대"
+       },
+       {
+        "ref": "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 유류차 평시(중앙값) 4대 → 최근 13대 (+9대) [식별 부대: 제9105가상수송대대(대대) 0.5km, 평시 대비 3.2배] (기준 대대 +4대 또는 2배)",
+        "unit_key": "9105가상수송대대"
+       },
+       {
+        "ref": "chunk:d351:0",
+        "source_type": "OSINT",
+        "grade": "C3",
+        "grade_weight": 0.455,
+        "age_days": 16.1,
+        "tau_days": 10.0,
+        "decay": 0.199,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.091,
+        "quote": "인근 주민들에 따르면 최근 일주일 사이 야간에 대형 트럭과 유조차 행렬이 평소보다 눈에 띄게 늘었다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_PATTERN_DEV",
+      "name": "평시 훈련 패턴과 상이한 활동",
+      "lr": 3.0,
+      "strength": 0.578,
+      "delta_logit": 0.635,
+      "source_types": [
+       "SIGINT"
+      ],
+      "refs": [
+       "chunk:d356:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "chunk:d356:0",
+        "source_type": "SIGINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 3.1,
+        "tau_days": 14.0,
+        "decay": 0.8,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.578,
+        "quote": "평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동한 정황이 관측되었다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_HV_TARGET",
+      "name": "고가치표적 활동(합참·연합사 표적목록)",
+      "lr": 2.0,
+      "strength": 0.6889,
+      "delta_logit": 0.4775,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "keytarget:KT-91-2:50249,50255,50261,50268,50276,50282,50290",
+       "keytarget:KT-91-3:50247,50254,50260,50267,50274,50280,50288"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "keytarget:KT-91-2:50249,50255,50261,50268,50276,50282,50290",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.3,
+        "tau_days": 7.0,
+        "decay": 0.953,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.689,
+        "quote": "연합사 고가치표적 '제9102가상전차여단 기갑' 활동 — tank 13.5→44대(부대 매칭); apc 9→26대(부대 매칭)",
+        "unit_key": null
+       },
+       {
+        "ref": "keytarget:KT-91-3:50247,50254,50260,50267,50274,50280,50288",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.3,
+        "tau_days": 7.0,
+        "decay": 0.953,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.689,
+        "quote": "공동 고가치표적 '제9101가상보병사단 지휘부' 활동 — command_vehicle 2→7대(부대 매칭)",
+        "unit_key": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_EXERCISE",
+    "name": "대규모 훈련",
+    "prior": 0.1,
+    "probability": 0.3484,
+    "impact": 0.2,
+    "threat": 0.0697,
+    "contributions": [
+     {
+      "indicator_id": "I_ARMOR_MASS",
+      "name": "기갑·기계화 장비 전방 집결",
+      "lr": 3.0,
+      "strength": 0.7413,
+      "delta_logit": 0.8144,
+      "source_types": [
+       "HUMINT",
+       "IMINT"
+      ],
+      "refs": [
+       "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+       "targets:apc:50248,50275,50281,50289",
+       "chunk:d352:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 전차 평시(중앙값) 13.5대 → 최근 44대 (+30.5대) [식별 부대: 제9102가상전차여단(여단) 2.62km, 평시 대비 3.3배] (기준 여단 +6대 또는 2배)",
+        "unit_key": "9102가상전차여단"
+       },
+       {
+        "ref": "targets:apc:50248,50275,50281,50289",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 장갑차 평시(중앙값) 9대 → 최근 26대 (+17대) [식별 부대: 제9102가상전차여단(여단) 2.44km, 평시 대비 2.9배] (기준 여단 +6대 또는 2배)",
+        "unit_key": "9102가상전차여단"
+       },
+       {
+        "ref": "chunk:d352:0",
+        "source_type": "HUMINT",
+        "grade": "C2",
+        "grade_weight": 0.595,
+        "age_days": 11.1,
+        "tau_days": 7.0,
+        "decay": 0.204,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.121,
+        "quote": "협조자에 따르면 제9102가상전차여단 소속 전차 수십 대가 주둔지를 떠나 북동쪽 개활지로 이동해 머무르고 있다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_LOGISTICS",
+      "name": "보급·유류 차량 증가",
+      "lr": 2.0,
+      "strength": 0.7368,
+      "delta_logit": 0.5107,
+      "source_types": [
+       "IMINT",
+       "OSINT"
+      ],
+      "refs": [
+       "targets:truck:50253,50259,50265,50272,50286,50294",
+       "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+       "chunk:d351:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:truck:50253,50259,50265,50272,50286,50294",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 트럭 평시(중앙값) 28대 → 최근 70대 (+42대) [식별 부대: 제9105가상수송대대(대대) 0.33km, 평시 대비 2.5배] (기준 대대 +4대 또는 2배)",
+        "unit_key": "9105가상수송대대"
+       },
+       {
+        "ref": "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 유류차 평시(중앙값) 4대 → 최근 13대 (+9대) [식별 부대: 제9105가상수송대대(대대) 0.5km, 평시 대비 3.2배] (기준 대대 +4대 또는 2배)",
+        "unit_key": "9105가상수송대대"
+       },
+       {
+        "ref": "chunk:d351:0",
+        "source_type": "OSINT",
+        "grade": "C3",
+        "grade_weight": 0.455,
+        "age_days": 16.1,
+        "tau_days": 10.0,
+        "decay": 0.199,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.091,
+        "quote": "인근 주민들에 따르면 최근 일주일 사이 야간에 대형 트럭과 유조차 행렬이 평소보다 눈에 띄게 늘었다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_EX_ANNOUNCED",
+      "name": "훈련 공표·통상 훈련 시기",
+      "lr": 6.0,
+      "strength": 0.1373,
+      "delta_logit": 0.246,
+      "source_types": [
+       "OSINT"
+      ],
+      "refs": [
+       "chunk:d353:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "chunk:d353:0",
+        "source_type": "OSINT",
+        "grade": "D4",
+        "grade_weight": 0.18,
+        "age_days": 8.1,
+        "tau_days": 30.0,
+        "decay": 0.763,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.137,
+        "quote": "선전매체는 해당 지역의 부대 이동이 통상적인 계절 훈련이라고 주장했다.",
+        "unit_key": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_LOCAL_FIRE",
+    "name": "국지 포격 도발 준비",
+    "prior": 0.03,
+    "probability": 0.1114,
+    "impact": 0.6,
+    "threat": 0.0668,
+    "contributions": [
+     {
+      "indicator_id": "I_ARTY_POS",
+      "name": "포병 진지 점령·증강",
+      "lr": 4.0,
+      "strength": 0.7942,
+      "delta_logit": 1.101,
+      "source_types": [
+       "HUMINT",
+       "IMINT"
+      ],
+      "refs": [
+       "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
+       "chunk:d355:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 5.0,
+        "decay": 0.967,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.699,
+        "quote": "영상 판독 야포 평시(중앙값) 6대 → 최근 17대 (+11대) [식별 부대: 제9103가상포병연대(연대) 0.62km, 평시 대비 2.8배] (기준 연대 +2대 또는 2배)",
+        "unit_key": "9103가상포병연대"
+       },
+       {
+        "ref": "chunk:d355:0",
+        "source_type": "HUMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 4.1,
+        "tau_days": 5.0,
+        "decay": 0.438,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.317,
+        "quote": "협조자는 포병 차량들이 기존 진지 북쪽 능선 뒤편에 새로 진지를 구축하고 있다고 전했다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_LOGISTICS",
+      "name": "보급·유류 차량 증가",
+      "lr": 1.5,
+      "strength": 0.7368,
+      "delta_logit": 0.2988,
+      "source_types": [
+       "IMINT",
+       "OSINT"
+      ],
+      "refs": [
+       "targets:truck:50253,50259,50265,50272,50286,50294",
+       "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+       "chunk:d351:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:truck:50253,50259,50265,50272,50286,50294",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 트럭 평시(중앙값) 28대 → 최근 70대 (+42대) [식별 부대: 제9105가상수송대대(대대) 0.33km, 평시 대비 2.5배] (기준 대대 +4대 또는 2배)",
+        "unit_key": "9105가상수송대대"
+       },
+       {
+        "ref": "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 유류차 평시(중앙값) 4대 → 최근 13대 (+9대) [식별 부대: 제9105가상수송대대(대대) 0.5km, 평시 대비 3.2배] (기준 대대 +4대 또는 2배)",
+        "unit_key": "9105가상수송대대"
+       },
+       {
+        "ref": "chunk:d351:0",
+        "source_type": "OSINT",
+        "grade": "C3",
+        "grade_weight": 0.455,
+        "age_days": 16.1,
+        "tau_days": 10.0,
+        "decay": 0.199,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.091,
+        "quote": "인근 주민들에 따르면 최근 일주일 사이 야간에 대형 트럭과 유조차 행렬이 평소보다 눈에 띄게 늘었다.",
+        "unit_key": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_CHEM",
+    "name": "화학무기 사용 준비 (중요시설 무력화)",
+    "prior": 0.01,
+    "probability": 0.0159,
+    "impact": 0.95,
+    "threat": 0.0151,
+    "contributions": [
+     {
+      "indicator_id": "I_CHEM_DELIVERY",
+      "name": "화학탄 투발 수단(장사정포·방사포) 사거리 내 전개",
+      "lr": 2.0,
+      "strength": 0.6759,
+      "delta_logit": 0.4685,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "terrain:NF-1,MF-1,NF-3,MF-3"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "terrain:NF-1,MF-1,NF-3,MF-3",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.3,
+        "tau_days": 5.0,
+        "decay": 0.936,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.676,
+        "quote": "가급 중요시설 가상 발전소, 가상 비행장, 가상 변전소, 가상 전방 지휘시설 — 적 화력(투발 수단) 사거리 내",
+        "unit_key": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_INFILTRATION",
+    "name": "침투·국지도발 준비",
+    "prior": 0.02,
+    "probability": 0.02,
+    "impact": 0.6,
+    "threat": 0.012,
+    "contributions": []
+   },
+   {
+    "hypothesis_id": "H_AIR",
+    "name": "항공 도발 준비",
+    "prior": 0.02,
+    "probability": 0.02,
+    "impact": 0.5,
+    "threat": 0.01,
+    "contributions": []
+   },
+   {
+    "hypothesis_id": "H_NUCLEAR",
+    "name": "전술핵 사용 준비",
+    "prior": 0.01,
+    "probability": 0.01,
+    "impact": 1.0,
+    "threat": 0.01,
+    "contributions": []
+   }
+  ],
+  "conflicts": [],
+  "lr_matrix": {
+   "I_ARMOR_MASS": {
+    "name": "기갑·기계화 장비 전방 집결",
+    "lr": {
+     "공격 준비": 6.0,
+     "대규모 훈련": 3.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_ARTY_POS": {
+    "name": "포병 진지 점령·증강",
+    "lr": {
+     "공격 준비": 5.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 4.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_BRIDGING": {
+    "name": "도하·공병 장비 전방 이동",
+    "lr": {
+     "공격 준비": 8.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_CHEM_DELIVERY": {
+    "name": "화학탄 투발 수단(장사정포·방사포) 사거리 내 전개",
+    "lr": {
+     "공격 준비": 1.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 2.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_COMMAND_POST": {
+    "name": "전방 지휘소 전개",
+    "lr": {
+     "공격 준비": 4.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_EX_ANNOUNCED": {
+    "name": "훈련 공표·통상 훈련 시기",
+    "lr": {
+     "공격 준비": 1.0,
+     "대규모 훈련": 6.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_HV_TARGET": {
+    "name": "고가치표적 활동(합참·연합사 표적목록)",
+    "lr": {
+     "공격 준비": 2.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_KEY_TARGET": {
+    "name": "핵심표적 활동(합참·연합사 표적목록)",
+    "lr": {
+     "공격 준비": 3.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_LOGISTICS": {
+    "name": "보급·유류 차량 증가",
+    "lr": {
+     "공격 준비": 2.5,
+     "대규모 훈련": 2.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.5,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_MEDICAL": {
+    "name": "야전 의무시설 전개",
+    "lr": {
+     "공격 준비": 7.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_PATTERN_DEV": {
+    "name": "평시 훈련 패턴과 상이한 활동",
+    "lr": {
+     "공격 준비": 3.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   }
+  },
+  "weather": {
+   "available": false
+  },
+  "issued_posture": {},
+  "terrain": {
+   "available": true,
+   "facilities": [
+    {
+     "id": "NF-1",
+     "name": "가상 발전소",
+     "kind": "국가중요시설",
+     "grade": "가",
+     "urban": "가상도시A",
+     "fires_in_range": 7,
+     "downwind": false,
+     "advance": {
+      "km": 32.8,
+      "urban_share": 0.12,
+      "direct_days": 2.3,
+      "bypass_days": 1.4
+     },
+     "vulnerability": "중",
+     "notes": [
+      "적 투발 수단 사거리 내(artillery 7건) — 무력화 목적 화학탄 사용 가능",
+      "도심(가상도시A) 내 — 지상 진입 지연(우회 예상), 화력·화학·특작 위협 우선"
+     ]
+    },
+    {
+     "id": "NF-2",
+     "name": "가상 정수장",
+     "kind": "국가중요시설",
+     "grade": "나",
+     "urban": "가상도시B",
+     "fires_in_range": 0,
+     "downwind": false,
+     "advance": {
+      "km": 52.5,
+      "urban_share": 0.3,
+      "direct_days": 6.5,
+      "bypass_days": 2.3
+     },
+     "vulnerability": "중",
+     "notes": [
+      "도심(가상도시B) 내 — 지상 진입 지연(우회 예상), 화력·화학·특작 위협 우선"
+     ]
+    },
+    {
+     "id": "MF-1",
+     "name": "가상 비행장",
+     "kind": "군사중요시설",
+     "grade": "가",
+     "urban": null,
+     "fires_in_range": 7,
+     "downwind": false,
+     "advance": {
+      "km": 33.9,
+      "urban_share": 0.0,
+      "direct_days": 1.1,
+      "bypass_days": 1.1
+     },
+     "vulnerability": "중",
+     "notes": [
+      "적 투발 수단 사거리 내(artillery 7건) — 무력화 목적 화학탄 사용 가능"
+     ]
+    },
+    {
+     "id": "MF-2",
+     "name": "가상 군수지원시설",
+     "kind": "군사중요시설",
+     "grade": "나",
+     "urban": null,
+     "fires_in_range": 0,
+     "downwind": false,
+     "advance": {
+      "km": 34.6,
+      "urban_share": 0.0,
+      "direct_days": 1.2,
+      "bypass_days": 1.2
+     },
+     "vulnerability": "중",
+     "notes": []
+    },
+    {
+     "id": "NF-3",
+     "name": "가상 변전소",
+     "kind": "국가중요시설",
+     "grade": "가",
+     "urban": "가상도시C",
+     "fires_in_range": 7,
+     "downwind": false,
+     "advance": {
+      "km": 25.0,
+      "urban_share": 0.17,
+      "direct_days": 2.1,
+      "bypass_days": 1.1
+     },
+     "vulnerability": "중",
+     "notes": [
+      "적 투발 수단 사거리 내(artillery 7건) — 무력화 목적 화학탄 사용 가능",
+      "도심(가상도시C) 내 — 지상 진입 지연(우회 예상), 화력·화학·특작 위협 우선"
+     ]
+    },
+    {
+     "id": "MF-3",
+     "name": "가상 전방 지휘시설",
+     "kind": "군사중요시설",
+     "grade": "가",
+     "urban": null,
+     "fires_in_range": 7,
+     "downwind": false,
+     "advance": {
+      "km": 33.3,
+      "urban_share": 0.0,
+      "direct_days": 1.1,
+      "bypass_days": 1.1
+     },
+     "vulnerability": "중",
+     "notes": [
+      "적 투발 수단 사거리 내(artillery 7건) — 무력화 목적 화학탄 사용 가능"
+     ]
+    }
+   ],
+   "advance_rates": {
+    "open": 30,
+    "mountain": 10,
+    "urban": 3
+   },
+   "basis": "tf-0.1"
+  },
+  "commander_requirements": {
+   "pirs": [
+    {
+     "commander": "합참의장",
+     "id": "PIR-J1",
+     "question": "적 전면 공격 준비 여부 — 시기·주공 축선·제대",
+     "status": "확인",
+     "strength": 0.84,
+     "probability": 0.9956,
+     "evidence": [
+      "고가치표적 활동(합참·연합사 표적목록)",
+      "기갑·기계화 장비 전방 집결",
+      "도하·공병 장비 전방 이동",
+      "전방 지휘소 전개",
+      "포병 진지 점령·증강",
+      "핵심표적 활동(합참·연합사 표적목록)"
+     ],
+     "targets": [
+      "제9103가상포병연대 장사정포",
+      "제9102가상전차여단 기갑",
+      "제9101가상보병사단 지휘부"
+     ]
+    },
+    {
+     "commander": "합참의장",
+     "id": "PIR-J2",
+     "question": "장사정포·갱도포병·해안포 사격 준비 여부 (국지 포격 포함)",
+     "status": "확인",
+     "strength": 0.79,
+     "probability": 0.9956,
+     "evidence": [
+      "포병 진지 점령·증강",
+      "핵심표적 활동(합참·연합사 표적목록)"
+     ],
+     "targets": [
+      "제9103가상포병연대 장사정포"
+     ]
+    },
+    {
+     "commander": "합참의장",
+     "id": "PIR-J3",
+     "question": "핵·미사일 사용 준비 여부",
+     "status": "미식별",
+     "strength": 0.0,
+     "probability": 0.01,
+     "evidence": [],
+     "targets": []
+    },
+    {
+     "commander": "합참의장",
+     "id": "PIR-J4",
+     "question": "특수작전부대 침투·국지도발 준비 여부",
+     "status": "미식별",
+     "strength": 0.0,
+     "probability": 0.02,
+     "evidence": [],
+     "targets": []
+    },
+    {
+     "commander": "연합사령관",
+     "id": "PIR-C1",
+     "question": "북한군 전략적 공격 징후 — 1·2제대 전방 이동, 동시 은밀 전개",
+     "status": "확인",
+     "strength": 0.79,
+     "probability": 0.9956,
+     "evidence": [
+      "고가치표적 활동(합참·연합사 표적목록)",
+      "기갑·기계화 장비 전방 집결",
+      "보급·유류 차량 증가",
+      "야전 의무시설 전개"
+     ],
+     "targets": [
+      "제9102가상전차여단 기갑",
+      "제9101가상보병사단 지휘부"
+     ]
+    },
+    {
+     "commander": "연합사령관",
+     "id": "PIR-C2",
+     "question": "대량살상무기 사용 징후",
+     "status": "미식별",
+     "strength": 0.0,
+     "probability": 0.01,
+     "evidence": [],
+     "targets": []
+    },
+    {
+     "commander": "연합사령관",
+     "id": "PIR-C3",
+     "question": "항공·해상 도발 준비 여부",
+     "status": "미식별",
+     "strength": 0.0,
+     "probability": 0.02,
+     "evidence": [],
+     "targets": []
+    }
+   ],
+   "ccir_alerts": [
+    {
+     "commander": "합참의장",
+     "id": "CCIR-J1",
+     "text": "핵심표적 활동 식별 시 즉시 보고",
+     "basis": "제9103가상포병연대 장사정포"
+    },
+    {
+     "commander": "합참의장",
+     "id": "CCIR-J2",
+     "text": "PIR-J1 '확인' 도달 시 즉시 보고",
+     "basis": "PIR-J1 확인"
+    },
+    {
+     "commander": "연합사령관",
+     "id": "CCIR-C2",
+     "text": "고가치·핵심표적 2개 이상 동시 활동 시 보고",
+     "basis": "3개 표적 활동"
+    }
+   ],
+   "key_target_activity": [
+    {
+     "target_id": "KT-91-1",
+     "name": "제9103가상포병연대 장사정포",
+     "category": "핵심표적",
+     "owner": "합참",
+     "indicator": "I_KEY_TARGET",
+     "pir_ids": [
+      "PIR-J2"
+     ],
+     "latest_at": "2026-12-20T10:00:00+00:00",
+     "hits": [
+      {
+       "equipment": "artillery",
+       "baseline": 6.0,
+       "recent": 17,
+       "latest_at": "2026-12-20T10:00:00+00:00",
+       "refs": [
+        50250,
+        50256,
+        50262,
+        50269,
+        50277,
+        50283,
+        50291
+       ],
+       "basis": "부대"
+      }
+     ]
+    },
+    {
+     "target_id": "KT-91-2",
+     "name": "제9102가상전차여단 기갑",
+     "category": "고가치표적",
+     "owner": "연합사",
+     "indicator": "I_HV_TARGET",
+     "pir_ids": [
+      "PIR-C1"
+     ],
+     "latest_at": "2026-12-20T10:00:00+00:00",
+     "hits": [
+      {
+       "equipment": "tank",
+       "baseline": 13.5,
+       "recent": 44,
+       "latest_at": "2026-12-20T10:00:00+00:00",
+       "refs": [
+        50249,
+        50255,
+        50261,
+        50268,
+        50276,
+        50282,
+        50290
+       ],
+       "basis": "부대"
+      },
+      {
+       "equipment": "apc",
+       "baseline": 9,
+       "recent": 26,
+       "latest_at": "2026-12-20T10:00:00+00:00",
+       "refs": [
+        50248,
+        50275,
+        50281,
+        50289
+       ],
+       "basis": "부대"
+      }
+     ]
+    },
+    {
+     "target_id": "KT-91-3",
+     "name": "제9101가상보병사단 지휘부",
+     "category": "고가치표적",
+     "owner": "공동",
+     "indicator": "I_HV_TARGET",
+     "pir_ids": [
+      "PIR-J1"
+     ],
+     "latest_at": "2026-12-20T10:00:00+00:00",
+     "hits": [
+      {
+       "equipment": "command_vehicle",
+       "baseline": 2,
+       "recent": 7,
+       "latest_at": "2026-12-20T10:00:00+00:00",
+       "refs": [
+        50247,
+        50254,
+        50260,
+        50267,
+        50274,
+        50280,
+        50288
+       ],
+       "basis": "부대"
+      }
+     ]
+    }
+   ],
+   "basis": "pir-0.1"
+  },
+  "rejected_llm_hits": 0,
+  "catalog_version": "0.1-sample",
+  "report_chunks_checked": 6,
+  "elapsed_s": 6.45,
+  "patterns": [
+   {
+    "id": "CASE-2022-RU",
+    "name": "2021~22 러시아 우크라이나 침공 전 집결",
+    "hypothesis": "H_ATTACK",
+    "similarity": 0.647,
+    "matched": [
+     "I_ARMOR_MASS",
+     "I_BRIDGING",
+     "I_COMMAND_POST",
+     "I_EX_ANNOUNCED",
+     "I_LOGISTICS",
+     "I_MEDICAL"
+    ],
+    "missing": [
+     "I_ASSAULT",
+     "I_DISPERSAL"
+    ],
+    "summary": "1·2차 증강, 훈련 명목 전개, 철수 발표 기만, 야전병원·도하장비·보급 증가 후 집결지 이탈·공격대형"
+   },
+   {
+    "id": "CASE-2015-08",
+    "name": "2015.8 DMZ 목함지뢰·서부전선 포격 도발",
+    "hypothesis": "H_LOCAL_FIRE",
+    "similarity": 0.111,
+    "matched": [
+     "I_ARTY_POS",
+     "I_LOGISTICS"
+    ],
+    "missing": [
+     "I_COMMS_CUT",
+     "I_HARTS_OCC",
+     "I_SOF_FORWARD",
+     "I_SUB_SORTIE",
+     "I_ULTIMATUM"
+    ],
+    "summary": "확성기 재개 → 경고 → 포격 → 48시간 최후통첩·준전시상태 선포, 포병 전진 배치·포문 개방, 잠수함 약 70% 기지 이탈, 공기부양정 전방 전개, 고위급 접촉 병행"
+   },
+   {
+    "id": "CASE-INFIL",
+    "name": "특작부대 침투형 국지도발 (일반 패턴)",
+    "hypothesis": "H_INFILTRATION",
+    "similarity": 0.0,
+    "matched": [],
+    "missing": [
+     "I_INFIL_SIGN",
+     "I_SOF_FORWARD",
+     "I_SUB_SORTIE",
+     "I_WX_COVER"
+    ],
+    "summary": "경보병·특작 전방 이동, 잠수정·공기부양정 이탈, 침투 흔적"
+   }
+  ],
+  "briefing": [
+   "① 공격 준비 가능성 100%, 위협 등급 심각, 분석 신뢰도 상.",
+   "② 핵심 근거: 야전 의무시설 전개, 도하·공병 장비 전방 이동, 기갑·기계화 장비 전방 집결 — 과거 사례 '2021~22 러시아 우크라이나 침공 전 집결'와 유사도 65%.",
+   "③ CCIR 보고 조건 충족: 합참의장 CCIR-J1; 합참의장 CCIR-J2; 연합사령관 CCIR-C2."
+  ],
+  "readiness": {
+   "basis": "예시 조건 (실제 태세 조건 아님) — 태세 판단·건의는 합참·연합사, 결정은 국방부장관·통수권자 재가 사항. 본 결과는 판단 지원 정보",
+   "history_points": 20,
+   "current": {
+    "watchcon": {
+     "track": "watchcon",
+     "day": 0.0,
+     "label": "2026-12-20T18:00:00+00:00",
+     "level": 1,
+     "level_name": "워치콘 1",
+     "level_label": "위협 임박",
+     "action": "유지",
+     "reasons": [
+      "위협 점수 100% ≥ 75% (분석 신뢰도 상)"
+     ],
+     "note": "",
+     "collect_more": false,
+     "defcon_review": false,
+     "threat": 0.9956,
+     "confidence": "상",
+     "issued_level": null,
+     "issued_name": null,
+     "issuer": null,
+     "vs_issued": "발령 태세 미입력"
+    },
+    "defcon": {
+     "track": "defcon",
+     "day": 0.0,
+     "label": "2026-12-20T18:00:00+00:00",
+     "level": 2,
+     "level_name": "데프콘 2",
+     "level_label": "전쟁 임박 조건",
+     "action": "유지",
+     "reasons": [
+      "위협 점수 100% ≥ 95% (분석 신뢰도 상)"
+     ],
+     "note": "",
+     "collect_more": false,
+     "defcon_review": false,
+     "threat": 0.9956,
+     "confidence": "상",
+     "issued_level": null,
+     "issued_name": null,
+     "issuer": null,
+     "vs_issued": "발령 태세 미입력"
+    },
+    "jindogae": {
+     "track": "jindogae",
+     "day": 0.0,
+     "label": "2026-12-20T18:00:00+00:00",
+     "level": 3,
+     "level_name": "진돗개 셋",
+     "level_label": "평시 경계",
+     "action": "유지",
+     "reasons": [],
+     "note": "",
+     "collect_more": false,
+     "defcon_review": false,
+     "threat": 0.0668,
+     "confidence": "상",
+     "issued_level": null,
+     "issued_name": null,
+     "issuer": null,
+     "vs_issued": "발령 태세 미입력"
+    },
+    "durumi": {
+     "track": "durumi",
+     "day": 0.0,
+     "label": "2026-12-20T18:00:00+00:00",
+     "level": 3,
+     "level_name": "두루미 미발령",
+     "level_label": "평시",
+     "action": "유지",
+     "reasons": [],
+     "note": "",
+     "collect_more": false,
+     "defcon_review": false,
+     "threat": 0.01,
+     "confidence": "상",
+     "issued_level": null,
+     "issued_name": null,
+     "issuer": null,
+     "vs_issued": "발령 태세 미입력"
+    }
+   },
+   "changes": {
+    "watchcon": [
+     {
+      "track": "watchcon",
+      "day": -10.0,
+      "label": "2026-12-10T18:00:00+00:00",
+      "level": 2,
+      "level_name": "워치콘 2",
+      "level_label": "위협 증가",
+      "action": "상향 조건",
+      "reasons": [
+       "위협 점수 54% ≥ 50% (분석 신뢰도 상)"
+      ],
+      "note": "",
+      "collect_more": false,
+      "defcon_review": false,
+      "threat": 0.5381,
+      "confidence": "상"
+     },
+     {
+      "track": "watchcon",
+      "day": -6.0,
+      "label": "2026-12-14T18:00:00+00:00",
+      "level": 1,
+      "level_name": "워치콘 1",
+      "level_label": "위협 임박",
+      "action": "상향 조건",
+      "reasons": [
+       "위협 점수 79% ≥ 75% (분석 신뢰도 상)"
+      ],
+      "note": "",
+      "collect_more": false,
+      "defcon_review": false,
+      "threat": 0.7876,
+      "confidence": "상"
+     }
+    ],
+    "defcon": [
+     {
+      "track": "defcon",
+      "day": -6.0,
+      "label": "2026-12-14T18:00:00+00:00",
+      "level": 3,
+      "level_name": "데프콘 3",
+      "level_label": "긴장 고조 조건",
+      "action": "상향 조건",
+      "reasons": [
+       "위협 점수 79% ≥ 75% (분석 신뢰도 상)"
+      ],
+      "note": "",
+      "collect_more": false,
+      "defcon_review": false,
+      "threat": 0.7876,
+      "confidence": "상"
+     },
+     {
+      "track": "defcon",
+      "day": -4.0,
+      "label": "2026-12-16T18:00:00+00:00",
+      "level": 2,
+      "level_name": "데프콘 2",
+      "level_label": "전쟁 임박 조건",
+      "action": "상향 조건",
+      "reasons": [
+       "위협 점수 99% ≥ 95% (분석 신뢰도 상)"
+      ],
+      "note": "",
+      "collect_more": false,
+      "defcon_review": false,
+      "threat": 0.9892,
+      "confidence": "상"
+     }
+    ],
+    "jindogae": [],
+    "durumi": []
+   }
+  }
+ },
+ "evaluation": {
+  "truth": "공격 준비",
+  "final_most_probable": "공격 준비",
+  "final_correct": true,
+  "final_grade": "심각",
+  "final_confidence": "상",
+  "max_attack_probability": 0.9966,
+  "first_warning_day": -10,
+  "warning_lead_days": 10,
+  "missed": false,
+  "identification": {
+   "events": 49,
+   "correct": 49,
+   "wrong": 0,
+   "unidentified": 0,
+   "accuracy": 1.0,
+   "errors": []
+  },
+  "readiness": {
+   "basis": "예시 조건 (실제 태세 조건 아님) — 태세 판단·건의는 합참·연합사, 결정은 국방부장관·통수권자 재가 사항. 본 결과는 판단 지원 정보",
+   "tracks": {
+    "watchcon": {
+     "name": "워치콘",
+     "final": "워치콘 1",
+     "final_truth": "워치콘 1",
+     "match_rate": 0.75,
+     "over_days": 4,
+     "under_days": 0,
+     "level_changes": 2,
+     "escalation_delays": [
+      {
+       "to": "워치콘 2",
+       "truth_day": -7,
+       "rec_day": -10,
+       "delay_days": -3
+      },
+      {
+       "to": "워치콘 1",
+       "truth_day": -3,
+       "rec_day": -6,
+       "delay_days": -3
+      }
+     ],
+     "defcon_review_days": [],
+     "series": [
+      {
+       "day": -30,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -28,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -26,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -24,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -22,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -20,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -18,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -16,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -14,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -12,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -10,
+       "rec": 2,
+       "truth": 3,
+       "action": "상향 조건",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 54% ≥ 50% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -8,
+       "rec": 2,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 65% ≥ 50% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -6,
+       "rec": 1,
+       "truth": 2,
+       "action": "상향 조건",
+       "name": "워치콘 1",
+       "reasons": [
+        "위협 점수 79% ≥ 75% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -4,
+       "rec": 1,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 1",
+       "reasons": [
+        "위협 점수 99% ≥ 75% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -2,
+       "rec": 1,
+       "truth": 1,
+       "action": "유지",
+       "name": "워치콘 1",
+       "reasons": [
+        "위협 점수 100% ≥ 75% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": 0,
+       "rec": 1,
+       "truth": 1,
+       "action": "유지",
+       "name": "워치콘 1",
+       "reasons": [
+        "위협 점수 100% ≥ 75% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      }
+     ]
+    },
+    "defcon": {
+     "name": "데프콘",
+     "final": "데프콘 2",
+     "final_truth": "데프콘 3",
+     "match_rate": 0.75,
+     "over_days": 4,
+     "under_days": 0,
+     "level_changes": 2,
+     "escalation_delays": [
+      {
+       "to": "데프콘 3",
+       "truth_day": -3,
+       "rec_day": -6,
+       "delay_days": -3
+      }
+     ],
+     "defcon_review_days": [],
+     "series": [
+      {
+       "day": -30,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -28,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -26,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -24,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -22,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -20,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -18,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -16,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -14,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -12,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -10,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -8,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -6,
+       "rec": 3,
+       "truth": 4,
+       "action": "상향 조건",
+       "name": "데프콘 3",
+       "reasons": [
+        "위협 점수 79% ≥ 75% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -4,
+       "rec": 2,
+       "truth": 4,
+       "action": "상향 조건",
+       "name": "데프콘 2",
+       "reasons": [
+        "위협 점수 99% ≥ 95% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -2,
+       "rec": 2,
+       "truth": 3,
+       "action": "유지",
+       "name": "데프콘 2",
+       "reasons": [
+        "위협 점수 100% ≥ 95% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": 0,
+       "rec": 2,
+       "truth": 3,
+       "action": "유지",
+       "name": "데프콘 2",
+       "reasons": [
+        "위협 점수 100% ≥ 95% (분석 신뢰도 상)"
+       ],
+       "note": "",
+       "defcon": false
+      }
+     ]
+    },
+    "jindogae": {
+     "name": "진돗개",
+     "final": "진돗개 셋",
+     "final_truth": "진돗개 셋",
+     "match_rate": 1.0,
+     "over_days": 0,
+     "under_days": 0,
+     "level_changes": 0,
+     "escalation_delays": [],
+     "defcon_review_days": [],
+     "series": [
+      {
+       "day": -30,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -28,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -26,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -24,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -22,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -20,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -18,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -16,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -14,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -12,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -10,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -8,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -6,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -4,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -2,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": 0,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      }
+     ]
+    },
+    "durumi": {
+     "name": "두루미",
+     "final": "두루미 미발령",
+     "final_truth": "두루미 미발령",
+     "match_rate": 1.0,
+     "over_days": 0,
+     "under_days": 0,
+     "level_changes": 0,
+     "escalation_delays": [],
+     "defcon_review_days": [],
+     "series": [
+      {
+       "day": -30,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -28,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -26,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -24,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -22,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -20,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -18,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -16,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -14,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -12,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -10,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -8,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -6,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -4,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -2,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": 0,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      }
+     ]
+    }
+   }
+  }
+ }
+}

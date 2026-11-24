@@ -1,0 +1,7 @@
+﻿doc,page,source,unit_raw,unit_key,echelon,echelon_from,parent_raw,parent_key,mgrs,lat,lon,mgrs_precision_m,location_type,equipment,count,as_of,remark,quote,bbox,images,issues
+sim_attack_prep,1,table,제9101가상보병사단,9101가상보병사단,사단,name,,,52SCH4260440634,38.3,127.2,1,사령부,,,,,합성 시나리오,,,
+sim_attack_prep,1,table,제9102가상전차여단,9102가상전차여단,여단,name,제9101가상보병사단,9101가상보병사단,52SCH4603937237,38.27,127.24,1,주둔지,,,,,합성 시나리오,,,
+sim_attack_prep,1,table,제9103가상포병연대,9103가상포병연대,연대,name,제9101가상보병사단,9101가상보병사단,52SCH3988235691,38.255,127.17,1,주둔지,,,,,합성 시나리오,,,
+sim_attack_prep,1,table,제9104가상공병대대,9104가상공병대대,대대,name,제9101가상보병사단,9101가상보병사단,52SCH3818738501,38.28,127.15,1,주둔지,,,,,합성 시나리오,,,
+sim_attack_prep,1,table,제9105가상수송대대,9105가상수송대대,대대,name,제9101가상보병사단,9101가상보병사단,52SCH4424635051,38.25,127.22,1,주둔지,,,,,합성 시나리오,,,
+sim_attack_prep,1,table,제9106가상의무대대,9106가상의무대대,대대,name,제9101가상보병사단,9101가상보병사단,52SCH4170839541,38.29,127.19,1,주둔지,,,,,합성 시나리오,,,

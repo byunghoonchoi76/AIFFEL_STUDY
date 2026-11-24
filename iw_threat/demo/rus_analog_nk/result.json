@@ -1,0 +1,8724 @@
+{
+ "scenario": {
+  "id": "rus_analog_nk",
+  "name": "러시아 사례 기반 북한군 공격 준비",
+  "area_id": "SIM-RUSNK",
+  "truth": {
+   "intent": "공격",
+   "hypothesis": "공격 준비",
+   "d_day": "D일 = 공격 개시 (러시아 사례 2022.2.24에 대응)",
+   "readiness": {
+    "watchcon": [
+     [
+      -120,
+      3
+     ],
+     [
+      -45,
+      2
+     ],
+     [
+      -8,
+      1
+     ]
+    ],
+    "defcon": [
+     [
+      -120,
+      4
+     ],
+     [
+      -8,
+      3
+     ],
+     [
+      -2,
+      2
+     ]
+    ],
+    "jindogae": [
+     [
+      -120,
+      3
+     ]
+    ],
+    "durumi": [
+     [
+      -120,
+      3
+     ]
+    ]
+   }
+  },
+  "meta": {
+   "weather": [
+    {
+     "from": -170,
+     "to": -91,
+     "note": "늦가을",
+     "cloud_pct": 40,
+     "precip_mm": 0,
+     "temp_c": 8,
+     "visibility_km": 12,
+     "ceiling_m": 2000,
+     "wind_ms": 4,
+     "ground": "firm",
+     "river": "normal"
+    },
+    {
+     "from": -90,
+     "to": -61,
+     "note": "초겨울",
+     "cloud_pct": 35,
+     "precip_mm": 0,
+     "temp_c": -2,
+     "visibility_km": 15,
+     "ceiling_m": 2500,
+     "wind_ms": 5,
+     "ground": "firm",
+     "river": "normal"
+    },
+    {
+     "from": -60,
+     "to": -41,
+     "note": "결빙 시작",
+     "cloud_pct": 30,
+     "precip_mm": 0,
+     "temp_c": -8,
+     "visibility_km": 15,
+     "ceiling_m": 2500,
+     "wind_ms": 5,
+     "ground": "frozen",
+     "river": "normal"
+    },
+    {
+     "from": -40,
+     "to": 0,
+     "note": "엄동·하천 결빙·북서풍",
+     "cloud_pct": 30,
+     "precip_mm": 0,
+     "temp_c": -12,
+     "visibility_km": 15,
+     "ceiling_m": 2500,
+     "wind_ms": 4,
+     "wind_dir_deg": 340,
+     "ground": "frozen",
+     "river": "frozen",
+     "snow_cm": 10
+    },
+    {
+     "from": -113,
+     "to": -113,
+     "note": "비",
+     "cloud_pct": 95,
+     "precip_mm": 8,
+     "temp_c": 7,
+     "visibility_km": 4,
+     "ceiling_m": 600,
+     "wind_ms": 6,
+     "ground": "firm",
+     "river": "normal"
+    },
+    {
+     "from": -97,
+     "to": -97,
+     "note": "흐림",
+     "cloud_pct": 90,
+     "precip_mm": 0,
+     "temp_c": 6,
+     "visibility_km": 8,
+     "ceiling_m": 900,
+     "wind_ms": 5,
+     "ground": "firm",
+     "river": "normal"
+    },
+    {
+     "from": -88,
+     "to": -88,
+     "note": "흐림",
+     "cloud_pct": 85,
+     "precip_mm": 0,
+     "temp_c": -1,
+     "visibility_km": 8,
+     "ceiling_m": 900,
+     "wind_ms": 5,
+     "ground": "firm",
+     "river": "normal"
+    },
+    {
+     "from": -61,
+     "to": -61,
+     "note": "눈",
+     "cloud_pct": 95,
+     "precip_mm": 4,
+     "temp_c": -5,
+     "visibility_km": 3,
+     "ceiling_m": 500,
+     "wind_ms": 7,
+     "ground": "firm",
+     "river": "normal",
+     "snow_cm": 5
+    },
+    {
+     "from": -52,
+     "to": -52,
+     "note": "흐림",
+     "cloud_pct": 80,
+     "precip_mm": 0,
+     "temp_c": -7,
+     "visibility_km": 8,
+     "ceiling_m": 1200,
+     "wind_ms": 5,
+     "ground": "frozen",
+     "river": "normal"
+    },
+    {
+     "from": -33,
+     "to": -33,
+     "note": "눈",
+     "cloud_pct": 95,
+     "precip_mm": 5,
+     "temp_c": -10,
+     "visibility_km": 2.5,
+     "ceiling_m": 500,
+     "wind_ms": 8,
+     "ground": "frozen",
+     "river": "frozen",
+     "snow_cm": 15
+    },
+    {
+     "from": -26,
+     "to": -26,
+     "note": "한파",
+     "cloud_pct": 75,
+     "precip_mm": 0,
+     "temp_c": -22,
+     "visibility_km": 10,
+     "ceiling_m": 1500,
+     "wind_ms": 9,
+     "ground": "frozen",
+     "river": "frozen",
+     "snow_cm": 12
+    },
+    {
+     "from": -19,
+     "to": -19,
+     "note": "흐림",
+     "cloud_pct": 85,
+     "precip_mm": 0,
+     "temp_c": -11,
+     "visibility_km": 8,
+     "ceiling_m": 1000,
+     "wind_ms": 6,
+     "ground": "frozen",
+     "river": "frozen",
+     "snow_cm": 10
+    },
+    {
+     "from": -12,
+     "to": -12,
+     "note": "눈",
+     "cloud_pct": 95,
+     "precip_mm": 3,
+     "temp_c": -9,
+     "visibility_km": 3,
+     "ceiling_m": 600,
+     "wind_ms": 7,
+     "ground": "frozen",
+     "river": "frozen",
+     "snow_cm": 14
+    },
+    {
+     "from": -6,
+     "to": -5,
+     "note": "눈·저시정 (은밀 이동 엄호)",
+     "cloud_pct": 100,
+     "precip_mm": 6,
+     "temp_c": -8,
+     "visibility_km": 1.2,
+     "ceiling_m": 250,
+     "wind_ms": 8,
+     "ground": "frozen",
+     "river": "frozen",
+     "snow_cm": 18
+    }
+   ],
+   "imagery": [
+    {
+     "phase": "① 1차 증강",
+     "rus_date": "2021-03~04",
+     "place": "크림 오푹 훈련장 / 보로네시 포고노보",
+     "approx": [
+      [
+       45.05,
+       35.8
+      ],
+      [
+       51.49,
+       39.16
+      ]
+     ],
+     "open_source": "Sentinel-2 L2A (2021-02 vs 2021-04 비교, 10m)",
+     "reference": "Maxar 2021.4 보도 영상 (보도 참고, 재사용 불가)"
+    },
+    {
+     "phase": "② 철수 발표·장비 잔류",
+     "rus_date": "2021-04-22 이후",
+     "place": "포고노보",
+     "approx": [
+      [
+       51.49,
+       39.16
+      ]
+     ],
+     "open_source": "Sentinel-2 (2021-05~06, 차량 집결지 잔존 여부)",
+     "reference": "2021.5 이후 장비 잔류 보도"
+    },
+    {
+     "phase": "③ 2차 증강·장기 주둔",
+     "rus_date": "2021-10~12",
+     "place": "스몰렌스크 옐냐",
+     "approx": [
+      [
+       54.58,
+       33.17
+      ]
+     ],
+     "open_source": "Sentinel-2 (2021-09 vs 2021-11), Sentinel-1 SAR(구름 시)",
+     "reference": "Maxar 2021.11.1 옐냐 영상 (보도 참고)"
+    },
+    {
+     "phase": "④ 연합훈련 명목 전개",
+     "rus_date": "2022-01-19 ~ 02-10",
+     "place": "벨라루스·크림·서부 러시아 전개지",
+     "approx": [],
+     "open_source": "Sentinel-2·1 (전개지 천막·차량 증가)",
+     "reference": "Maxar 1.19·2.1 비교: 2월 초 거의 모든 전개지에 천막 (보도 참고)"
+    },
+    {
+     "phase": "⑤ 야전병원",
+     "rus_date": "2022-02-16",
+     "place": "벨라루스 (우크라이나 접경)",
+     "approx": [],
+     "open_source": "Sentinel-2 (천막 군집, 10m로는 형태만)",
+     "reference": "Maxar 2.16 벨라루스 야전병원 (보도 참고)"
+    },
+    {
+     "phase": "⑥ 도하 준비",
+     "rus_date": "2022-02-15~16",
+     "place": "벨라루스 프리퍄티강 (국경 약 6km, 체르노빌 북서 약 22km)",
+     "approx": [],
+     "open_source": "Sentinel-2 (부교 길이 수백 m — 10m에서 선형 구조로 식별 가능 여부 확인)",
+     "reference": "Maxar 2.15 부교 (보도 참고), Planet 1월 영상에는 없음"
+    },
+    {
+     "phase": "⑧ 집결지 이탈·전투대형",
+     "rus_date": "2022-02-20~23",
+     "place": "벨고로드·발루이키 일대",
+     "approx": [
+      [
+       50.21,
+       38.1
+      ]
+     ],
+     "open_source": "Sentinel-2·1 (집결지 차량 감소 = 이탈)",
+     "reference": "Maxar 2.21~22 보도 (보도 참고)"
+    },
+    {
+     "phase": "⑦ 경보병 전방·갱도 포병",
+     "rus_date": "해당 없음",
+     "place": "북한 고유 전술 — 러시아 사례 대응 영상 없음",
+     "approx": [],
+     "open_source": "합성 표적 또는 38 North·CSIS 판독 보고서의 시설 묘사 참고",
+     "reference": "-"
+    }
+   ],
+   "key_targets": [
+    {
+     "target_id": "KT-97-1",
+     "name": "제9704가상포병여단 장사정포",
+     "category": "핵심표적",
+     "owner": "합참",
+     "unit_name": "제9704가상포병여단",
+     "equipment": [
+      "artillery",
+      "mlrs",
+      "harts"
+     ],
+     "pir_ids": [
+      "PIR-J2"
+     ]
+    },
+    {
+     "target_id": "KT-97-2",
+     "name": "제9703가상전차여단 기갑",
+     "category": "고가치표적",
+     "owner": "연합사",
+     "unit_name": "제9703가상전차여단",
+     "equipment": [
+      "tank",
+      "apc"
+     ],
+     "pir_ids": [
+      "PIR-C1"
+     ]
+    },
+    {
+     "target_id": "KT-97-3",
+     "name": "제9701가상전방군단 지휘부",
+     "category": "핵심표적",
+     "owner": "공동",
+     "unit_name": "제9701가상전방군단",
+     "equipment": [
+      "command_vehicle"
+     ],
+     "pir_ids": [
+      "PIR-J1"
+     ]
+    }
+   ],
+   "issued_posture": []
+  },
+  "d_day": "2026-12-20T00:00:00+00:00",
+  "seed": 7,
+  "step": 2
+ },
+ "prepare": {
+  "orbat": {
+   "rows": 10,
+   "unit_rows": 10,
+   "garrisons": 10,
+   "equipment": 0,
+   "graph_units": 10
+  },
+  "targets": 1554,
+  "reports": 7,
+  "weather_days": 171,
+  "key_targets": 3,
+  "issued_posture": 0,
+  "false_reports": 3
+ },
+ "series": [
+  {
+   "day": -120,
+   "as_of": "2026-08-22T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1413,
+    "대규모 훈련": 0.1407,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0295,
+    "국지 포격 도발 준비": 0.03,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1413,
+    "H_EXERCISE": 0.0281,
+    "H_CHEM": 0.028,
+    "H_LOCAL_FIRE": 0.018,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_HV_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 7.64
+  },
+  {
+   "day": -118,
+   "as_of": "2026-08-24T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.2335,
+    "대규모 훈련": 0.2358,
+    "국지 포격 도발 준비": 0.0345,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.2335,
+    "H_EXERCISE": 0.0472,
+    "H_LOCAL_FIRE": 0.0207,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 8.3
+  },
+  {
+   "day": -116,
+   "as_of": "2026-08-26T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.4126,
+    "대규모 훈련": 0.1943,
+    "국지 포격 도발 준비": 0.0478,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.4126,
+    "H_EXERCISE": 0.0389,
+    "H_LOCAL_FIRE": 0.0287,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 8.57
+  },
+  {
+   "day": -114,
+   "as_of": "2026-08-28T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.3207,
+    "대규모 훈련": 0.1861,
+    "국지 포격 도발 준비": 0.0457,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0146,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.3207,
+    "H_EXERCISE": 0.0372,
+    "H_LOCAL_FIRE": 0.0274,
+    "H_CHEM": 0.0139,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 8.45
+  },
+  {
+   "day": -112,
+   "as_of": "2026-08-30T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.3034,
+    "대규모 훈련": 0.1943,
+    "국지 포격 도발 준비": 0.0478,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.3034,
+    "H_EXERCISE": 0.0389,
+    "H_LOCAL_FIRE": 0.0287,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 8.87
+  },
+  {
+   "day": -110,
+   "as_of": "2026-09-01T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.091,
+    "대규모 훈련": 0.1861,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0146,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.091,
+    "H_EXERCISE": 0.0372,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0139,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "n_indicators": 2,
+   "elapsed_s": 8.73
+  },
+  {
+   "day": -108,
+   "as_of": "2026-09-03T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1043,
+    "대규모 훈련": 0.1943,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1043,
+    "H_EXERCISE": 0.0389,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "n_indicators": 2,
+   "elapsed_s": 8.68
+  },
+  {
+   "day": -106,
+   "as_of": "2026-09-05T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1043,
+    "대규모 훈련": 0.1943,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1043,
+    "H_EXERCISE": 0.0389,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "n_indicators": 2,
+   "elapsed_s": 9.96
+  },
+  {
+   "day": -104,
+   "as_of": "2026-09-07T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1313,
+    "대규모 훈련": 0.1861,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0146,
+    "항공 도발 준비": 0.025,
+    "침투·국지도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1313,
+    "H_EXERCISE": 0.0372,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0139,
+    "H_AIR": 0.0125,
+    "H_INFILTRATION": 0.012,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET"
+   ],
+   "n_indicators": 3,
+   "elapsed_s": 9.34
+  },
+  {
+   "day": -102,
+   "as_of": "2026-09-09T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.4039,
+    "대규모 훈련": 0.1943,
+    "국지 포격 도발 준비": 0.0478,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.0254,
+    "침투·국지도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.4039,
+    "H_EXERCISE": 0.0389,
+    "H_LOCAL_FIRE": 0.0287,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.0127,
+    "H_INFILTRATION": 0.012,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 9.08
+  },
+  {
+   "day": -100,
+   "as_of": "2026-09-11T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.2657,
+    "대규모 훈련": 0.1943,
+    "국지 포격 도발 준비": 0.041,
+    "침투·국지도발 준비": 0.0368,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.2657,
+    "H_EXERCISE": 0.0389,
+    "H_LOCAL_FIRE": 0.0246,
+    "H_INFILTRATION": 0.0221,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 9.11
+  },
+  {
+   "day": -98,
+   "as_of": "2026-09-13T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.3068,
+    "대규모 훈련": 0.2358,
+    "국지 포격 도발 준비": 0.0425,
+    "침투·국지도발 준비": 0.0368,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.3068,
+    "H_EXERCISE": 0.0472,
+    "H_LOCAL_FIRE": 0.0255,
+    "H_INFILTRATION": 0.0221,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 8.17
+  },
+  {
+   "day": -96,
+   "as_of": "2026-09-15T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.2894,
+    "대규모 훈련": 0.2358,
+    "국지 포격 도발 준비": 0.0397,
+    "침투·국지도발 준비": 0.0301,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.2894,
+    "H_EXERCISE": 0.0472,
+    "H_LOCAL_FIRE": 0.0238,
+    "H_INFILTRATION": 0.0181,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 9.51
+  },
+  {
+   "day": -94,
+   "as_of": "2026-09-17T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1989,
+    "대규모 훈련": 0.1943,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1989,
+    "H_EXERCISE": 0.0389,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 3,
+   "elapsed_s": 9.72
+  },
+  {
+   "day": -92,
+   "as_of": "2026-09-19T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1989,
+    "대규모 훈련": 0.1943,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1989,
+    "H_EXERCISE": 0.0389,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 3,
+   "elapsed_s": 10.54
+  },
+  {
+   "day": -90,
+   "as_of": "2026-09-21T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1989,
+    "대규모 훈련": 0.1943,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1989,
+    "H_EXERCISE": 0.0389,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 3,
+   "elapsed_s": 11.56
+  },
+  {
+   "day": -88,
+   "as_of": "2026-09-23T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.0968,
+    "대규모 훈련": 0.1375,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0146,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.0968,
+    "H_EXERCISE": 0.0275,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0139,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 3,
+   "elapsed_s": 9.78
+  },
+  {
+   "day": -86,
+   "as_of": "2026-09-25T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.037,
+    "대규모 훈련": 0.1407,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.037,
+    "H_EXERCISE": 0.0281,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 1,
+   "elapsed_s": 11.0
+  },
+  {
+   "day": -84,
+   "as_of": "2026-09-27T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.0318,
+    "대규모 훈련": 0.1294,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.0318,
+    "H_EXERCISE": 0.0259,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 1,
+   "elapsed_s": 12.24
+  },
+  {
+   "day": -82,
+   "as_of": "2026-09-29T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.0299,
+    "대규모 훈련": 0.1251,
+    "침투·국지도발 준비": 0.033,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0136,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.0299,
+    "H_EXERCISE": 0.025,
+    "H_INFILTRATION": 0.0198,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.013,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 1,
+   "elapsed_s": 11.04
+  },
+  {
+   "day": -80,
+   "as_of": "2026-10-01T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.026,
+    "대규모 훈련": 0.1158,
+    "침투·국지도발 준비": 0.0368,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.026,
+    "H_EXERCISE": 0.0232,
+    "H_INFILTRATION": 0.0221,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 1,
+   "elapsed_s": 10.39
+  },
+  {
+   "day": -78,
+   "as_of": "2026-10-03T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.0408,
+    "침투·국지도발 준비": 0.0368,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.0408,
+    "H_INFILTRATION": 0.0221,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY"
+   ],
+   "n_indicators": 1,
+   "elapsed_s": 10.72
+  },
+  {
+   "day": -76,
+   "as_of": "2026-10-05T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.0702,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.0702,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 2,
+   "elapsed_s": 10.88
+  },
+  {
+   "day": -74,
+   "as_of": "2026-10-07T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.0831,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.0831,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 2,
+   "elapsed_s": 10.75
+  },
+  {
+   "day": -72,
+   "as_of": "2026-10-09T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.0831,
+    "대규모 훈련": 0.1,
+    "국지 포격 도발 준비": 0.03,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.0831,
+    "H_EXERCISE": 0.02,
+    "H_LOCAL_FIRE": 0.018,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 2,
+   "elapsed_s": 11.9
+  },
+  {
+   "day": -70,
+   "as_of": "2026-10-11T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.3428,
+    "국지 포격 도발 준비": 0.0753,
+    "대규모 훈련": 0.1407,
+    "침투·국지도발 준비": 0.0368,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.0254,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.3428,
+    "H_LOCAL_FIRE": 0.0452,
+    "H_EXERCISE": 0.0281,
+    "H_INFILTRATION": 0.0221,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.0127,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 6,
+   "elapsed_s": 10.5
+  },
+  {
+   "day": -68,
+   "as_of": "2026-10-13T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.3551,
+    "국지 포격 도발 준비": 0.0548,
+    "대규모 훈련": 0.1598,
+    "침투·국지도발 준비": 0.0368,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.0254,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.3551,
+    "H_LOCAL_FIRE": 0.0329,
+    "H_EXERCISE": 0.032,
+    "H_INFILTRATION": 0.0221,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.0127,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 6,
+   "elapsed_s": 11.02
+  },
+  {
+   "day": -66,
+   "as_of": "2026-10-15T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1659,
+    "대규모 훈련": 0.1732,
+    "국지 포격 도발 준비": 0.0548,
+    "침투·국지도발 준비": 0.033,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1659,
+    "H_EXERCISE": 0.0346,
+    "H_LOCAL_FIRE": 0.0329,
+    "H_INFILTRATION": 0.0198,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 11.31
+  },
+  {
+   "day": -64,
+   "as_of": "2026-10-17T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.228,
+    "대규모 훈련": 0.283,
+    "국지 포격 도발 준비": 0.0396,
+    "침투·국지도발 준비": 0.0368,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.228,
+    "H_EXERCISE": 0.0566,
+    "H_LOCAL_FIRE": 0.0238,
+    "H_INFILTRATION": 0.0221,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 3,
+   "elapsed_s": 12.35
+  },
+  {
+   "day": -62,
+   "as_of": "2026-10-19T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1616,
+    "대규모 훈련": 0.2358,
+    "침투·국지도발 준비": 0.0368,
+    "국지 포격 도발 준비": 0.0345,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1616,
+    "H_EXERCISE": 0.0472,
+    "H_INFILTRATION": 0.0221,
+    "H_LOCAL_FIRE": 0.0207,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 3,
+   "elapsed_s": 11.62
+  },
+  {
+   "day": -60,
+   "as_of": "2026-10-21T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.228,
+    "대규모 훈련": 0.283,
+    "국지 포격 도발 준비": 0.0396,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.228,
+    "H_EXERCISE": 0.0566,
+    "H_LOCAL_FIRE": 0.0238,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 3,
+   "elapsed_s": 11.97
+  },
+  {
+   "day": -58,
+   "as_of": "2026-10-23T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.3964,
+    "국지 포격 도발 준비": 0.086,
+    "대규모 훈련": 0.2358,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.3964,
+    "H_LOCAL_FIRE": 0.0516,
+    "H_EXERCISE": 0.0472,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 11.57
+  },
+  {
+   "day": -56,
+   "as_of": "2026-10-25T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.2244,
+    "대규모 훈련": 0.2242,
+    "국지 포격 도발 준비": 0.0521,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0146,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.2244,
+    "H_EXERCISE": 0.0448,
+    "H_LOCAL_FIRE": 0.0313,
+    "H_CHEM": 0.0139,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 11.51
+  },
+  {
+   "day": -54,
+   "as_of": "2026-10-27T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1569,
+    "대규모 훈련": 0.2043,
+    "국지 포격 도발 준비": 0.0477,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0129,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1569,
+    "H_EXERCISE": 0.0409,
+    "H_LOCAL_FIRE": 0.0286,
+    "H_CHEM": 0.0122,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 10.44
+  },
+  {
+   "day": -52,
+   "as_of": "2026-10-29T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.3736,
+    "대규모 훈련": 0.2676,
+    "국지 포격 도발 준비": 0.0593,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0146,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.3736,
+    "H_EXERCISE": 0.0535,
+    "H_LOCAL_FIRE": 0.0356,
+    "H_CHEM": 0.0139,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 9.74
+  },
+  {
+   "day": -50,
+   "as_of": "2026-10-31T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.3225,
+    "대규모 훈련": 0.283,
+    "국지 포격 도발 준비": 0.0396,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.3225,
+    "H_EXERCISE": 0.0566,
+    "H_LOCAL_FIRE": 0.0238,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 9.56
+  },
+  {
+   "day": -48,
+   "as_of": "2026-11-02T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.4255,
+    "대규모 훈련": 0.283,
+    "국지 포격 도발 준비": 0.0396,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.0254,
+    "침투·국지도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.4255,
+    "H_EXERCISE": 0.0566,
+    "H_LOCAL_FIRE": 0.0238,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.0127,
+    "H_INFILTRATION": 0.012,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 9.75
+  },
+  {
+   "day": -46,
+   "as_of": "2026-11-04T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.4255,
+    "대규모 훈련": 0.283,
+    "국지 포격 도발 준비": 0.0396,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.0254,
+    "침투·국지도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.4255,
+    "H_EXERCISE": 0.0566,
+    "H_LOCAL_FIRE": 0.0238,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.0127,
+    "H_INFILTRATION": 0.012,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 5,
+   "elapsed_s": 9.98
+  },
+  {
+   "day": -44,
+   "as_of": "2026-11-06T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.2578,
+    "대규모 훈련": 0.283,
+    "국지 포격 도발 준비": 0.0396,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "항공 도발 준비": 0.0254,
+    "침투·국지도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.2578,
+    "H_EXERCISE": 0.0566,
+    "H_LOCAL_FIRE": 0.0238,
+    "H_CHEM": 0.0151,
+    "H_AIR": 0.0127,
+    "H_INFILTRATION": 0.012,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 11.25
+  },
+  {
+   "day": -42,
+   "as_of": "2026-11-08T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1826,
+    "대규모 훈련": 0.283,
+    "국지 포격 도발 준비": 0.0396,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0159,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1826,
+    "H_EXERCISE": 0.0566,
+    "H_LOCAL_FIRE": 0.0238,
+    "H_CHEM": 0.0151,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS"
+   ],
+   "n_indicators": 3,
+   "elapsed_s": 11.49
+  },
+  {
+   "day": -40,
+   "as_of": "2026-11-10T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.1695,
+    "대규모 훈련": 0.2536,
+    "국지 포격 도발 준비": 0.0386,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0173,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.1695,
+    "H_EXERCISE": 0.0507,
+    "H_LOCAL_FIRE": 0.0232,
+    "H_CHEM": 0.0165,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 11.34
+  },
+  {
+   "day": -38,
+   "as_of": "2026-11-12T18:00:00+00:00",
+   "grade": "관심",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.2243,
+    "대규모 훈련": 0.283,
+    "국지 포격 도발 준비": 0.0396,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0202,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.2243,
+    "H_EXERCISE": 0.0566,
+    "H_LOCAL_FIRE": 0.0238,
+    "H_CHEM": 0.0192,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 4,
+   "elapsed_s": 10.4
+  },
+  {
+   "day": -36,
+   "as_of": "2026-11-14T18:00:00+00:00",
+   "grade": "경계",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.5138,
+    "대규모 훈련": 0.283,
+    "국지 포격 도발 준비": 0.0628,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0202,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.5138,
+    "H_EXERCISE": 0.0566,
+    "H_LOCAL_FIRE": 0.0377,
+    "H_CHEM": 0.0192,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 6,
+   "elapsed_s": 10.32
+  },
+  {
+   "day": -34,
+   "as_of": "2026-11-16T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.4521,
+    "대규모 훈련": 0.2736,
+    "국지 포격 도발 준비": 0.0526,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0202,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.4521,
+    "H_EXERCISE": 0.0547,
+    "H_LOCAL_FIRE": 0.0316,
+    "H_CHEM": 0.0192,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 6,
+   "elapsed_s": 10.9
+  },
+  {
+   "day": -32,
+   "as_of": "2026-11-18T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.4367,
+    "대규모 훈련": 0.3941,
+    "국지 포격 도발 준비": 0.0488,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0202,
+    "침투·국지도발 준비": 0.02,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.4367,
+    "H_EXERCISE": 0.0788,
+    "H_LOCAL_FIRE": 0.0293,
+    "H_CHEM": 0.0192,
+    "H_INFILTRATION": 0.012,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARMOR_MASS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 6,
+   "elapsed_s": 10.31
+  },
+  {
+   "day": -30,
+   "as_of": "2026-11-20T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.3286,
+    "국지 포격 도발 준비": 0.098,
+    "대규모 훈련": 0.2653,
+    "침투·국지도발 준비": 0.0368,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0202,
+    "항공 도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.3286,
+    "H_LOCAL_FIRE": 0.0588,
+    "H_EXERCISE": 0.0531,
+    "H_INFILTRATION": 0.0221,
+    "H_CHEM": 0.0192,
+    "H_AIR": 0.01,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 7,
+   "elapsed_s": 10.04
+  },
+  {
+   "day": -28,
+   "as_of": "2026-11-22T18:00:00+00:00",
+   "grade": "경계",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.5002,
+    "국지 포격 도발 준비": 0.0753,
+    "대규모 훈련": 0.194,
+    "침투·국지도발 준비": 0.0368,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0202,
+    "항공 도발 준비": 0.0254,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.5002,
+    "H_LOCAL_FIRE": 0.0452,
+    "H_EXERCISE": 0.0388,
+    "H_INFILTRATION": 0.0221,
+    "H_CHEM": 0.0192,
+    "H_AIR": 0.0127,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_SOF_FORWARD",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 8,
+   "elapsed_s": 9.85
+  },
+  {
+   "day": -26,
+   "as_of": "2026-11-24T18:00:00+00:00",
+   "grade": "주의",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.4101,
+    "대규모 훈련": 0.2186,
+    "국지 포격 도발 준비": 0.0723,
+    "침투·국지도발 준비": 0.033,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0136,
+    "항공 도발 준비": 0.0246,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.4101,
+    "H_EXERCISE": 0.0437,
+    "H_LOCAL_FIRE": 0.0434,
+    "H_INFILTRATION": 0.0198,
+    "H_CHEM": 0.013,
+    "H_AIR": 0.0123,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 9,
+   "elapsed_s": 8.87
+  },
+  {
+   "day": -24,
+   "as_of": "2026-11-26T18:00:00+00:00",
+   "grade": "경계",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.6852,
+    "국지 포격 도발 준비": 0.1385,
+    "대규모 훈련": 0.1645,
+    "침투·국지도발 준비": 0.0368,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0202,
+    "항공 도발 준비": 0.0302,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.6852,
+    "H_LOCAL_FIRE": 0.0831,
+    "H_EXERCISE": 0.0329,
+    "H_INFILTRATION": 0.0221,
+    "H_CHEM": 0.0192,
+    "H_AIR": 0.0151,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_SOF_FORWARD",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 9,
+   "elapsed_s": 9.47
+  },
+  {
+   "day": -22,
+   "as_of": "2026-11-28T18:00:00+00:00",
+   "grade": "경계",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.5975,
+    "국지 포격 도발 준비": 0.2507,
+    "대규모 훈련": 0.2025,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0185,
+    "항공 도발 준비": 0.025,
+    "침투·국지도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.5975,
+    "H_LOCAL_FIRE": 0.1504,
+    "H_EXERCISE": 0.0405,
+    "H_CHEM": 0.0176,
+    "H_AIR": 0.0125,
+    "H_INFILTRATION": 0.012,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 8,
+   "elapsed_s": 9.27
+  },
+  {
+   "day": -20,
+   "as_of": "2026-11-30T18:00:00+00:00",
+   "grade": "경계",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.5339,
+    "국지 포격 도발 준비": 0.182,
+    "대규모 훈련": 0.1918,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0164,
+    "항공 도발 준비": 0.0294,
+    "침투·국지도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.5339,
+    "H_LOCAL_FIRE": 0.1092,
+    "H_EXERCISE": 0.0384,
+    "H_CHEM": 0.0156,
+    "H_AIR": 0.0147,
+    "H_INFILTRATION": 0.012,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_HARTS_OCC",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 8,
+   "elapsed_s": 7.9
+  },
+  {
+   "day": -18,
+   "as_of": "2026-12-02T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.7677,
+    "국지 포격 도발 준비": 0.2975,
+    "대규모 훈련": 0.1992,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0202,
+    "항공 도발 준비": 0.0322,
+    "침투·국지도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.7677,
+    "H_LOCAL_FIRE": 0.1785,
+    "H_EXERCISE": 0.0398,
+    "H_CHEM": 0.0192,
+    "H_AIR": 0.0161,
+    "H_INFILTRATION": 0.012,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 8,
+   "elapsed_s": 8.94
+  },
+  {
+   "day": -16,
+   "as_of": "2026-12-04T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.8731,
+    "국지 포격 도발 준비": 0.2975,
+    "대규모 훈련": 0.196,
+    "침투·국지도발 준비": 0.0368,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0202,
+    "항공 도발 준비": 0.0322,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.8731,
+    "H_LOCAL_FIRE": 0.1785,
+    "H_EXERCISE": 0.0392,
+    "H_INFILTRATION": 0.0221,
+    "H_CHEM": 0.0192,
+    "H_AIR": 0.0161,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 9,
+   "elapsed_s": 9.52
+  },
+  {
+   "day": -14,
+   "as_of": "2026-12-06T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.8887,
+    "국지 포격 도발 준비": 0.2507,
+    "대규모 훈련": 0.2509,
+    "침투·국지도발 준비": 0.0347,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0185,
+    "항공 도발 준비": 0.0312,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.8887,
+    "H_LOCAL_FIRE": 0.1504,
+    "H_EXERCISE": 0.0502,
+    "H_INFILTRATION": 0.0208,
+    "H_CHEM": 0.0176,
+    "H_AIR": 0.0156,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 10,
+   "elapsed_s": 9.59
+  },
+  {
+   "day": -12,
+   "as_of": "2026-12-08T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.7752,
+    "국지 포격 도발 준비": 0.182,
+    "대규모 훈련": 0.2308,
+    "침투·국지도발 준비": 0.0314,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0164,
+    "항공 도발 준비": 0.0294,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.7752,
+    "H_LOCAL_FIRE": 0.1092,
+    "H_EXERCISE": 0.0462,
+    "H_INFILTRATION": 0.0189,
+    "H_CHEM": 0.0156,
+    "H_AIR": 0.0147,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_SOF_FORWARD",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_HARTS_OCC",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 10,
+   "elapsed_s": 9.13
+  },
+  {
+   "day": -10,
+   "as_of": "2026-12-10T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.841,
+    "국지 포격 도발 준비": 0.2507,
+    "대규모 훈련": 0.2167,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0329,
+    "침투·국지도발 준비": 0.0347,
+    "항공 도발 준비": 0.0257,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.841,
+    "H_LOCAL_FIRE": 0.1504,
+    "H_EXERCISE": 0.0433,
+    "H_CHEM": 0.0313,
+    "H_INFILTRATION": 0.0208,
+    "H_AIR": 0.0129,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARMOR_MASS",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_SOF_FORWARD",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 11,
+   "elapsed_s": 8.85
+  },
+  {
+   "day": -8,
+   "as_of": "2026-12-12T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.9737,
+    "국지 포격 도발 준비": 0.1865,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0679,
+    "대규모 훈련": 0.1854,
+    "항공 도발 준비": 0.0322,
+    "침투·국지도발 준비": 0.02,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.9737,
+    "H_LOCAL_FIRE": 0.1119,
+    "H_CHEM": 0.0645,
+    "H_EXERCISE": 0.0371,
+    "H_AIR": 0.0161,
+    "H_INFILTRATION": 0.012,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_HARTS_OCC",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 10,
+   "elapsed_s": 8.12
+  },
+  {
+   "day": -6,
+   "as_of": "2026-12-14T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.9888,
+    "국지 포격 도발 준비": 0.2507,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0395,
+    "대규모 훈련": 0.1797,
+    "침투·국지도발 준비": 0.0404,
+    "항공 도발 준비": 0.0312,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.9888,
+    "H_LOCAL_FIRE": 0.1504,
+    "H_CHEM": 0.0375,
+    "H_EXERCISE": 0.0359,
+    "H_INFILTRATION": 0.0242,
+    "H_AIR": 0.0156,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_SOF_FORWARD",
+    "I_WX_COVER",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_WX_COVER",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 12,
+   "elapsed_s": 8.16
+  },
+  {
+   "day": -4,
+   "as_of": "2026-12-16T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "하",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.9939,
+    "국지 포격 도발 준비": 0.2069,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.058,
+    "침투·국지도발 준비": 0.0666,
+    "대규모 훈련": 0.1812,
+    "항공 도발 준비": 0.0322,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.9939,
+    "H_LOCAL_FIRE": 0.1241,
+    "H_CHEM": 0.0551,
+    "H_INFILTRATION": 0.04,
+    "H_EXERCISE": 0.0362,
+    "H_AIR": 0.0161,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "C_NO_MANEUVER",
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_EX_ANNOUNCED",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_SOF_FORWARD",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_SOF_FORWARD",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 12,
+   "elapsed_s": 8.86
+  },
+  {
+   "day": -2,
+   "as_of": "2026-12-18T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.9994,
+    "국지 포격 도발 준비": 0.2975,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0679,
+    "대규모 훈련": 0.1539,
+    "침투·국지도발 준비": 0.0451,
+    "항공 도발 준비": 0.0322,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.9994,
+    "H_LOCAL_FIRE": 0.1785,
+    "H_CHEM": 0.0645,
+    "H_EXERCISE": 0.0308,
+    "H_INFILTRATION": 0.0271,
+    "H_AIR": 0.0161,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_DISPERSAL",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_SOF_FORWARD",
+    "I_SYNC_CONCEAL",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_HARTS_OCC",
+    "I_HV_TARGET",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_SOF_FORWARD",
+    "I_SYNC_CONCEAL",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 13,
+   "elapsed_s": 10.95
+  },
+  {
+   "day": 0,
+   "as_of": "2026-12-20T18:00:00+00:00",
+   "grade": "심각",
+   "confidence": "중",
+   "top_threat": "공격 준비",
+   "probabilities": {
+    "공격 준비": 0.9992,
+    "국지 포격 도발 준비": 0.2069,
+    "화학무기 사용 준비 (중요시설 무력화)": 0.0679,
+    "대규모 훈련": 0.1539,
+    "침투·국지도발 준비": 0.0346,
+    "항공 도발 준비": 0.0322,
+    "전술핵 사용 준비": 0.01
+   },
+   "threats": {
+    "H_ATTACK": 0.9992,
+    "H_LOCAL_FIRE": 0.1241,
+    "H_CHEM": 0.0645,
+    "H_EXERCISE": 0.0308,
+    "H_INFILTRATION": 0.0207,
+    "H_AIR": 0.0161,
+    "H_NUCLEAR": 0.01
+   },
+   "indicators": [
+    "I_AIR_DEFENSE",
+    "I_ARTY_POS",
+    "I_ASSAULT",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_DISPERSAL",
+    "I_HARTS_OCC",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_SOF_FORWARD",
+    "I_SYNC_CONCEAL",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "decisive_indicators": [
+    "I_AIR_DEFENSE",
+    "I_BRIDGING",
+    "I_CHEM_DELIVERY",
+    "I_CHEM_PREP",
+    "I_COMMAND_POST",
+    "I_DISPERSAL",
+    "I_HARTS_OCC",
+    "I_KEY_TARGET",
+    "I_LOGISTICS",
+    "I_MEDICAL",
+    "I_SYNC_CONCEAL",
+    "I_WX_CHEM",
+    "I_WX_WINDOW"
+   ],
+   "n_indicators": 13,
+   "elapsed_s": 9.64
+  }
+ ],
+ "final": {
+  "assessment_id": 2442,
+  "area_id": "SIM-RUSNK",
+  "as_of": "2026-12-20T18:00:00+00:00",
+  "top_hypothesis": "공격 준비",
+  "probability": 0.9992,
+  "threat_score": 0.9992,
+  "grade": "심각",
+  "confidence": "중",
+  "narrative": {
+   "summary": {
+    "text": "3개 출처 유형(IMINT/METOC/OSINT)에서 도하·공병 장비 전방 이동, 갱도포병진지 점유, 야전 의무시설 전개 등 13개 징후가 식별되어 '공격 준비' 가능성 100%(등급 심각, 분석 신뢰도 중)로 판단됨.",
+    "citations": [
+     "targets:engineer:58608,58626,58643,58660",
+     "targets:bridging:58625,58642,58659",
+     "targets:harts@occupied:58606,58623,58640,58657",
+     "targets:field_hospital:58609,58644,58661",
+     "chunk:d401:0"
+    ],
+    "generated": "template"
+   },
+   "sentences": [
+    {
+     "indicator_id": "I_BRIDGING",
+     "counter": false,
+     "text": "도하·공병 장비 전방 이동 징후 강하게 식별됨 — 영상: 공병장비 3→4대 (제9705가상공병대대(대대) 0.07km, 평시 대비 1.3배); 영상: 도하장비 5→6대 (제9705가상공병대대(대대) 1.07km, 평시 대비 1.2배) → 하천 도하 공격 대비 정황",
+     "citations": [
+      "targets:engineer:58608,58626,58643,58660",
+      "targets:bridging:58625,58642,58659"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_HARTS_OCC",
+     "counter": false,
+     "text": "갱도포병진지 점유 징후 강하게 식별됨 — 영상: 갱도포병진지(HARTS)(점유) 4→9대 (제9704가상포병여단(여단) 1.91km, 평시 대비 2.2배) → 화력 운용 준비 정황",
+     "citations": [
+      "targets:harts@occupied:58606,58623,58640,58657"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_MEDICAL",
+     "counter": false,
+     "text": "야전 의무시설 전개 징후 다수 식별됨 — 영상: 야전병원 2→3대 (제9706가상의무대대(대대) 0.45km, 평시 대비 1.5배); OSINT(B2): “위성영상에서 복귀 발표와 달리 새로운 야전병원 천막과 하천 인근 도하장비가 추가로…” → 대규모 사상자 대비 의무지원 준비 정황",
+     "citations": [
+      "targets:field_hospital:58609,58644,58661",
+      "chunk:d401:0"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_COMMAND_POST",
+     "counter": false,
+     "text": "전방 지휘소 전개 징후 강하게 식별됨 — 영상: 지휘차량 3→11대 (제9701가상전방군단(군단) 1.88km, 평시 대비 3.7배) → 전방 작전 지휘체계 구축 정황",
+     "citations": [
+      "targets:command_vehicle:58600,58617,58632,58650"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_AIR_DEFENSE",
+     "counter": false,
+     "text": "방공 자산 전방 배치 징후 강하게 식별됨 — 영상: 지대공미사일 7→12대 (제9709가상방공연대(연대) 0.87km, 평시 대비 1.7배) → 공격 부대 방공 엄호 정황",
+     "citations": [
+      "targets:sam:58613,58629,58647,58664"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_DISPERSAL",
+     "counter": false,
+     "text": "주둔지 이탈·야간 분산 이동 징후 강하게 식별됨 — 영상: 행군종대 0→6대 (제9703가상전차여단(여단) 1.95km, 평시 대비 신규 출현); 영상: 행군종대 0→3대 (제9702가상기계화보병사단(사단) 3.15km, 평시 대비 신규 출현) → 은밀 전개 정황",
+     "citations": [
+      "targets:march_column:58637,58652,58654",
+      "targets:march_column:58634"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_ASSAULT",
+     "counter": false,
+     "text": "공격대형·화력준비 진지 형성 징후 약하게 식별됨 — 영상: 쐐기·V·횡대 대형 0→4대 (제9703가상전차여단(여단) 1.72km, 평시 대비 신규 출현) → 공격 개시 정황",
+     "citations": [
+      "targets:formation_wedge_v_line:58653"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_SYNC_CONCEAL",
+     "counter": false,
+     "text": "다수 부대 동시 은밀 전개 징후 다수 식별됨 — IMINT(B2): “2개 부대 동시 식별: 제9702가상기계화보병사단, 제9703가상전차여단” → 협조된 공격 준비 정황",
+     "citations": [
+      "sync:9702가상기계화보병사단,9703가상전차여단"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_KEY_TARGET",
+     "counter": false,
+     "text": "핵심표적 활동(합참·연합사 표적목록) 징후 다수 식별됨 — IMINT(B2): “합참 핵심표적 '제9704가상포병여단 장사정포' 활동 — artillery 24.…”; IMINT(B2): “공동 핵심표적 '제9701가상전방군단 지휘부' 활동 — command_vehicl…” → 지휘관 우선 표적의 활동 — 위협 평가 핵심 기준",
+     "citations": [
+      "keytarget:KT-97-1:58605,58622,58639,58656",
+      "keytarget:KT-97-3:58600,58617,58632,58650"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_LOGISTICS",
+     "counter": false,
+     "text": "보급·유류 차량 증가 징후 강하게 식별됨 — 영상: 트럭 0→120대 (제9701가상전방군단(군단) 1.27km, 평시 대비 신규 출현); 영상: 트럭 74→147대 (제9707가상수송연대(연대) 2.34km, 평시 대비 2.0배); 영상: 유류차 7→23대 (제9707가상수송연대(연대) 0.85km, 평시 대비 3.3배) → 작전 지속지원 준비 정황",
+     "citations": [
+      "targets:truck:58663",
+      "targets:truck:58611,58627,58646",
+      "targets:fuel_truck:58610,58645,58662"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_ARTY_POS",
+     "counter": false,
+     "text": "포병 진지 점령·증강 징후 약하게 식별됨 — 영상: 야포 24.5→37대 (제9704가상포병여단(여단) 1.27km, 평시 대비 1.5배); 영상: 야포 0→2대 (제9710가상화학대대(대대) 0.51km, 평시 대비 신규 출현) → 공격준비사격 대비 정황",
+     "citations": [
+      "targets:artillery:58605,58622,58639,58656",
+      "targets:artillery:58616"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_CHEM_PREP",
+     "counter": false,
+     "text": "화학부대·화학정찰·제독 장비 전방 이동 징후 강하게 식별됨 — 영상: chem_vehicle 0→9대 (제9706가상의무대대(대대) 1.11km, 평시 대비 신규 출현); 영상: chem_vehicle 0→8대 (제9709가상방공연대(연대) 2.55km, 평시 대비 신규 출현); 영상: decon_vehicle 0→6대 (제9706가상의무대대(대대) 1.31km, 평시 대비 신규 출현); 영상: decon_vehicle 5→8대 (제9709가상방공연대(연대) 2.77km, 평시 대비 1.6배) → 공격 시 중요시설 무력화용 화학 운용 준비 정황",
+     "citations": [
+      "targets:chem_vehicle:58614,58648",
+      "targets:chem_vehicle:58630,58665",
+      "targets:decon_vehicle:58631,58649",
+      "targets:decon_vehicle:58615,58666"
+     ],
+     "generated": "template"
+    },
+    {
+     "indicator_id": "I_WX_WINDOW",
+     "counter": false,
+     "text": "공격 적합 기상·지면 여건 징후 다수 식별됨 — METOC(B2): “향후 3일 지상 기동 양호·하천 결빙 — 기갑 기동·도하 공격에 유리한 기상 여건” → 기상 여건상 공격 시기로 유리 (의도 근거 아님)",
+     "citations": [
+      "weather:SIM-RUSNK:2026-12-20"
+     ],
+     "generated": "template"
+    }
+   ],
+   "dropped": 0,
+   "template_filled": 13,
+   "dropped_samples": []
+  },
+  "baseline_mode": "unit",
+  "changes": [
+   {
+    "equipment_type": "truck",
+    "baseline_level": 0.0,
+    "recent_level": 120,
+    "delta": 120.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58663
+    ],
+    "unit_key": "9701가상전방군단",
+    "unit_name": "제9701가상전방군단",
+    "echelon": "군단",
+    "dist_km": 1.27,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 120.0,
+    "recent_n": 1,
+    "ratio": null,
+    "zscore": null
+   },
+   {
+    "equipment_type": "truck",
+    "baseline_level": 74,
+    "recent_level": 147,
+    "delta": 73,
+    "latest_at": "2026-12-18T10:00:00+00:00",
+    "refs": [
+     58611,
+     58627,
+     58646
+    ],
+    "unit_key": "9707가상수송연대",
+    "unit_name": "제9707가상수송연대",
+    "echelon": "연대",
+    "dist_km": 2.34,
+    "baseline_obs": 17,
+    "baseline_sd": 3.67,
+    "recent_mean": 121.67,
+    "recent_n": 3,
+    "ratio": 2.0,
+    "zscore": 19.89
+   },
+   {
+    "equipment_type": "fuel_truck",
+    "baseline_level": 7,
+    "recent_level": 23,
+    "delta": 16,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58610,
+     58645,
+     58662
+    ],
+    "unit_key": "9707가상수송연대",
+    "unit_name": "제9707가상수송연대",
+    "echelon": "연대",
+    "dist_km": 0.85,
+    "baseline_obs": 17,
+    "baseline_sd": 1.05,
+    "recent_mean": 22.0,
+    "recent_n": 3,
+    "ratio": 3.3,
+    "zscore": 15.24
+   },
+   {
+    "equipment_type": "artillery",
+    "baseline_level": 24.5,
+    "recent_level": 37,
+    "delta": 12.5,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58605,
+     58622,
+     58639,
+     58656
+    ],
+    "unit_key": "9704가상포병여단",
+    "unit_name": "제9704가상포병여단",
+    "echelon": "여단",
+    "dist_km": 1.27,
+    "baseline_obs": 18,
+    "baseline_sd": 4.19,
+    "recent_mean": 31.5,
+    "recent_n": 4,
+    "ratio": 1.5,
+    "zscore": 2.98
+   },
+   {
+    "equipment_type": "apc",
+    "baseline_level": 51.0,
+    "recent_level": 61,
+    "delta": 10.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58601,
+     58603,
+     58618,
+     58620,
+     58633,
+     58636,
+     58651
+    ],
+    "unit_key": "9703가상전차여단",
+    "unit_name": "제9703가상전차여단",
+    "echelon": "여단",
+    "dist_km": 1.92,
+    "baseline_obs": 34,
+    "baseline_sd": 50.32,
+    "recent_mean": 40.0,
+    "recent_n": 7,
+    "ratio": 1.2,
+    "zscore": 0.2
+   },
+   {
+    "equipment_type": "chem_vehicle",
+    "baseline_level": 0.0,
+    "recent_level": 9,
+    "delta": 9.0,
+    "latest_at": "2026-12-18T10:00:00+00:00",
+    "refs": [
+     58614,
+     58648
+    ],
+    "unit_key": "9706가상의무대대",
+    "unit_name": "제9706가상의무대대",
+    "echelon": "대대",
+    "dist_km": 1.11,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 8.0,
+    "recent_n": 2,
+    "ratio": null,
+    "zscore": null
+   },
+   {
+    "equipment_type": "command_vehicle",
+    "baseline_level": 3,
+    "recent_level": 11,
+    "delta": 8,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58600,
+     58617,
+     58632,
+     58650
+    ],
+    "unit_key": "9701가상전방군단",
+    "unit_name": "제9701가상전방군단",
+    "echelon": "군단",
+    "dist_km": 1.88,
+    "baseline_obs": 17,
+    "baseline_sd": 1.05,
+    "recent_mean": 9.5,
+    "recent_n": 4,
+    "ratio": 3.7,
+    "zscore": 7.62
+   },
+   {
+    "equipment_type": "chem_vehicle",
+    "baseline_level": 0.0,
+    "recent_level": 8,
+    "delta": 8.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58630,
+     58665
+    ],
+    "unit_key": "9709가상방공연대",
+    "unit_name": "제9709가상방공연대",
+    "echelon": "연대",
+    "dist_km": 2.55,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 8.0,
+    "recent_n": 2,
+    "ratio": null,
+    "zscore": null
+   },
+   {
+    "equipment_type": "march_column",
+    "baseline_level": 0.0,
+    "recent_level": 6,
+    "delta": 6.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58637,
+     58652,
+     58654
+    ],
+    "unit_key": "9703가상전차여단",
+    "unit_name": "제9703가상전차여단",
+    "echelon": "여단",
+    "dist_km": 1.95,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 5.0,
+    "recent_n": 3,
+    "ratio": null,
+    "zscore": null
+   },
+   {
+    "equipment_type": "sof_vehicle",
+    "baseline_level": 4.0,
+    "recent_level": 10,
+    "delta": 6.0,
+    "latest_at": "2026-12-16T10:00:00+00:00",
+    "refs": [
+     58612,
+     58628
+    ],
+    "unit_key": "9708가상경보병여단",
+    "unit_name": "제9708가상경보병여단",
+    "echelon": "여단",
+    "dist_km": 1.05,
+    "baseline_obs": 16,
+    "baseline_sd": 1.05,
+    "recent_mean": 9.5,
+    "recent_n": 2,
+    "ratio": 2.5,
+    "zscore": 5.71
+   },
+   {
+    "equipment_type": "decon_vehicle",
+    "baseline_level": 0.0,
+    "recent_level": 6,
+    "delta": 6.0,
+    "latest_at": "2026-12-18T10:00:00+00:00",
+    "refs": [
+     58631,
+     58649
+    ],
+    "unit_key": "9706가상의무대대",
+    "unit_name": "제9706가상의무대대",
+    "echelon": "대대",
+    "dist_km": 1.31,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 6.0,
+    "recent_n": 2,
+    "ratio": null,
+    "zscore": null
+   },
+   {
+    "equipment_type": "harts@occupied",
+    "baseline_level": 4,
+    "recent_level": 9,
+    "delta": 5,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58606,
+     58623,
+     58640,
+     58657
+    ],
+    "unit_key": "9704가상포병여단",
+    "unit_name": "제9704가상포병여단",
+    "echelon": "여단",
+    "dist_km": 1.91,
+    "baseline_obs": 9,
+    "baseline_sd": 1.05,
+    "recent_mean": 8.25,
+    "recent_n": 4,
+    "ratio": 2.2,
+    "zscore": 4.76
+   },
+   {
+    "equipment_type": "sam",
+    "baseline_level": 7.0,
+    "recent_level": 12,
+    "delta": 5.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58613,
+     58629,
+     58647,
+     58664
+    ],
+    "unit_key": "9709가상방공연대",
+    "unit_name": "제9709가상방공연대",
+    "echelon": "연대",
+    "dist_km": 0.87,
+    "baseline_obs": 16,
+    "baseline_sd": 0.0,
+    "recent_mean": 10.5,
+    "recent_n": 4,
+    "ratio": 1.7,
+    "zscore": 10.0
+   },
+   {
+    "equipment_type": "formation_wedge_v_line",
+    "baseline_level": 0.0,
+    "recent_level": 4,
+    "delta": 4.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58653
+    ],
+    "unit_key": "9703가상전차여단",
+    "unit_name": "제9703가상전차여단",
+    "echelon": "여단",
+    "dist_km": 1.72,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 4.0,
+    "recent_n": 1,
+    "ratio": null,
+    "zscore": null
+   },
+   {
+    "equipment_type": "tank",
+    "baseline_level": 45.0,
+    "recent_level": 48,
+    "delta": 3.0,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58602,
+     58604,
+     58619,
+     58621,
+     58635,
+     58638,
+     58655
+    ],
+    "unit_key": "9703가상전차여단",
+    "unit_name": "제9703가상전차여단",
+    "echelon": "여단",
+    "dist_km": 1.74,
+    "baseline_obs": 36,
+    "baseline_sd": 4.19,
+    "recent_mean": 42.14,
+    "recent_n": 7,
+    "ratio": 1.1,
+    "zscore": 0.72
+   },
+   {
+    "equipment_type": "decon_vehicle",
+    "baseline_level": 5,
+    "recent_level": 8,
+    "delta": 3,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58615,
+     58666
+    ],
+    "unit_key": "9709가상방공연대",
+    "unit_name": "제9709가상방공연대",
+    "echelon": "연대",
+    "dist_km": 2.77,
+    "baseline_obs": 1,
+    "baseline_sd": 0.0,
+    "recent_mean": 7.0,
+    "recent_n": 2,
+    "ratio": 1.6,
+    "zscore": null
+   },
+   {
+    "equipment_type": "march_column",
+    "baseline_level": 0.0,
+    "recent_level": 3,
+    "delta": 3.0,
+    "latest_at": "2026-12-18T10:00:00+00:00",
+    "refs": [
+     58634
+    ],
+    "unit_key": "9702가상기계화보병사단",
+    "unit_name": "제9702가상기계화보병사단",
+    "echelon": "사단",
+    "dist_km": 3.15,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 3.0,
+    "recent_n": 1,
+    "ratio": null,
+    "zscore": null
+   },
+   {
+    "equipment_type": "artillery",
+    "baseline_level": 0.0,
+    "recent_level": 2,
+    "delta": 2.0,
+    "latest_at": "2026-12-15T10:00:00+00:00",
+    "refs": [
+     58616
+    ],
+    "unit_key": "9710가상화학대대",
+    "unit_name": "제9710가상화학대대",
+    "echelon": "대대",
+    "dist_km": 0.51,
+    "baseline_obs": 0,
+    "baseline_sd": 0.0,
+    "recent_mean": 2.0,
+    "recent_n": 1,
+    "ratio": null,
+    "zscore": null
+   },
+   {
+    "equipment_type": "mlrs",
+    "baseline_level": 6,
+    "recent_level": 7,
+    "delta": 1,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58607,
+     58624,
+     58641,
+     58658
+    ],
+    "unit_key": "9704가상포병여단",
+    "unit_name": "제9704가상포병여단",
+    "echelon": "여단",
+    "dist_km": 0.17,
+    "baseline_obs": 17,
+    "baseline_sd": 1.05,
+    "recent_mean": 6.25,
+    "recent_n": 4,
+    "ratio": 1.2,
+    "zscore": 0.95
+   },
+   {
+    "equipment_type": "engineer",
+    "baseline_level": 3,
+    "recent_level": 4,
+    "delta": 1,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58608,
+     58626,
+     58643,
+     58660
+    ],
+    "unit_key": "9705가상공병대대",
+    "unit_name": "제9705가상공병대대",
+    "echelon": "대대",
+    "dist_km": 0.07,
+    "baseline_obs": 17,
+    "baseline_sd": 0.0,
+    "recent_mean": 3.25,
+    "recent_n": 4,
+    "ratio": 1.3,
+    "zscore": 2.0
+   },
+   {
+    "equipment_type": "bridging",
+    "baseline_level": 5,
+    "recent_level": 6,
+    "delta": 1,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58625,
+     58642,
+     58659
+    ],
+    "unit_key": "9705가상공병대대",
+    "unit_name": "제9705가상공병대대",
+    "echelon": "대대",
+    "dist_km": 1.07,
+    "baseline_obs": 1,
+    "baseline_sd": 0.0,
+    "recent_mean": 6.0,
+    "recent_n": 3,
+    "ratio": 1.2,
+    "zscore": null
+   },
+   {
+    "equipment_type": "field_hospital",
+    "baseline_level": 2,
+    "recent_level": 3,
+    "delta": 1,
+    "latest_at": "2026-12-20T10:00:00+00:00",
+    "refs": [
+     58609,
+     58644,
+     58661
+    ],
+    "unit_key": "9706가상의무대대",
+    "unit_name": "제9706가상의무대대",
+    "echelon": "대대",
+    "dist_km": 0.45,
+    "baseline_obs": 3,
+    "baseline_sd": 0.0,
+    "recent_mean": 3.0,
+    "recent_n": 3,
+    "ratio": 1.5,
+    "zscore": 2.0
+   }
+  ],
+  "unit_attribution": [
+   {
+    "equipment": "apc",
+    "unit_key": "9703가상전차여단",
+    "unit_name": "제9703가상전차여단",
+    "echelon": "여단",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 3.13,
+    "affinity": true,
+    "max_count": 61,
+    "event_ids": [
+     58601,
+     58603,
+     58618,
+     58620,
+     58633,
+     58636,
+     58651
+    ]
+   },
+   {
+    "equipment": "artillery",
+    "unit_key": "9704가상포병여단",
+    "unit_name": "제9704가상포병여단",
+    "echelon": "여단",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 1.53,
+    "affinity": true,
+    "max_count": 37,
+    "event_ids": [
+     58605,
+     58622,
+     58639,
+     58656
+    ]
+   },
+   {
+    "equipment": "artillery",
+    "unit_key": "9710가상화학대대",
+    "unit_name": "제9710가상화학대대",
+    "echelon": "대대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 0.51,
+    "affinity": false,
+    "max_count": 2,
+    "event_ids": [
+     58616
+    ]
+   },
+   {
+    "equipment": "bridging",
+    "unit_key": "9705가상공병대대",
+    "unit_name": "제9705가상공병대대",
+    "echelon": "대대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 1.34,
+    "affinity": true,
+    "max_count": 6,
+    "event_ids": [
+     58625,
+     58642,
+     58659
+    ]
+   },
+   {
+    "equipment": "chem_vehicle",
+    "unit_key": "9706가상의무대대",
+    "unit_name": "제9706가상의무대대",
+    "echelon": "대대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 1.31,
+    "affinity": false,
+    "max_count": 9,
+    "event_ids": [
+     58614,
+     58648
+    ]
+   },
+   {
+    "equipment": "chem_vehicle",
+    "unit_key": "9709가상방공연대",
+    "unit_name": "제9709가상방공연대",
+    "echelon": "연대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 2.66,
+    "affinity": false,
+    "max_count": 8,
+    "event_ids": [
+     58630,
+     58665
+    ]
+   },
+   {
+    "equipment": "command_vehicle",
+    "unit_key": "9701가상전방군단",
+    "unit_name": "제9701가상전방군단",
+    "echelon": "군단",
+    "parent_key": null,
+    "location_type": "사령부",
+    "dist_km": 1.88,
+    "affinity": false,
+    "max_count": 11,
+    "event_ids": [
+     58600,
+     58617,
+     58632,
+     58650
+    ]
+   },
+   {
+    "equipment": "decon_vehicle",
+    "unit_key": "9709가상방공연대",
+    "unit_name": "제9709가상방공연대",
+    "echelon": "연대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 2.89,
+    "affinity": false,
+    "max_count": 8,
+    "event_ids": [
+     58615,
+     58666
+    ]
+   },
+   {
+    "equipment": "decon_vehicle",
+    "unit_key": "9706가상의무대대",
+    "unit_name": "제9706가상의무대대",
+    "echelon": "대대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 1.41,
+    "affinity": false,
+    "max_count": 6,
+    "event_ids": [
+     58631,
+     58649
+    ]
+   },
+   {
+    "equipment": "engineer",
+    "unit_key": "9705가상공병대대",
+    "unit_name": "제9705가상공병대대",
+    "echelon": "대대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 0.31,
+    "affinity": true,
+    "max_count": 4,
+    "event_ids": [
+     58608,
+     58626,
+     58643,
+     58660
+    ]
+   },
+   {
+    "equipment": "field_hospital",
+    "unit_key": "9706가상의무대대",
+    "unit_name": "제9706가상의무대대",
+    "echelon": "대대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 0.45,
+    "affinity": true,
+    "max_count": 3,
+    "event_ids": [
+     58609,
+     58644,
+     58661
+    ]
+   },
+   {
+    "equipment": "formation_wedge_v_line",
+    "unit_key": "9703가상전차여단",
+    "unit_name": "제9703가상전차여단",
+    "echelon": "여단",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 1.72,
+    "affinity": false,
+    "max_count": 4,
+    "event_ids": [
+     58653
+    ]
+   },
+   {
+    "equipment": "fuel_truck",
+    "unit_key": "9707가상수송연대",
+    "unit_name": "제9707가상수송연대",
+    "echelon": "연대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 0.85,
+    "affinity": true,
+    "max_count": 23,
+    "event_ids": [
+     58610,
+     58645,
+     58662
+    ]
+   },
+   {
+    "equipment": "harts@occupied",
+    "unit_key": "9704가상포병여단",
+    "unit_name": "제9704가상포병여단",
+    "echelon": "여단",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 1.91,
+    "affinity": true,
+    "max_count": 9,
+    "event_ids": [
+     58606,
+     58623,
+     58640,
+     58657
+    ]
+   },
+   {
+    "equipment": "march_column",
+    "unit_key": "9703가상전차여단",
+    "unit_name": "제9703가상전차여단",
+    "echelon": "여단",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 1.95,
+    "affinity": false,
+    "max_count": 6,
+    "event_ids": [
+     58637,
+     58652,
+     58654
+    ]
+   },
+   {
+    "equipment": "march_column",
+    "unit_key": "9702가상기계화보병사단",
+    "unit_name": "제9702가상기계화보병사단",
+    "echelon": "사단",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 3.15,
+    "affinity": false,
+    "max_count": 3,
+    "event_ids": [
+     58634
+    ]
+   },
+   {
+    "equipment": "mlrs",
+    "unit_key": "9704가상포병여단",
+    "unit_name": "제9704가상포병여단",
+    "echelon": "여단",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 0.24,
+    "affinity": true,
+    "max_count": 7,
+    "event_ids": [
+     58607,
+     58624,
+     58641,
+     58658
+    ]
+   },
+   {
+    "equipment": "sam",
+    "unit_key": "9709가상방공연대",
+    "unit_name": "제9709가상방공연대",
+    "echelon": "연대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 1.06,
+    "affinity": true,
+    "max_count": 12,
+    "event_ids": [
+     58613,
+     58629,
+     58647,
+     58664
+    ]
+   },
+   {
+    "equipment": "sof_vehicle",
+    "unit_key": "9708가상경보병여단",
+    "unit_name": "제9708가상경보병여단",
+    "echelon": "여단",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 1.05,
+    "affinity": true,
+    "max_count": 10,
+    "event_ids": [
+     58612,
+     58628
+    ]
+   },
+   {
+    "equipment": "tank",
+    "unit_key": "9703가상전차여단",
+    "unit_name": "제9703가상전차여단",
+    "echelon": "여단",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 3.0,
+    "affinity": true,
+    "max_count": 48,
+    "event_ids": [
+     58602,
+     58604,
+     58619,
+     58621,
+     58635,
+     58638,
+     58655
+    ]
+   },
+   {
+    "equipment": "truck",
+    "unit_key": "9707가상수송연대",
+    "unit_name": "제9707가상수송연대",
+    "echelon": "연대",
+    "parent_key": "9701가상전방군단",
+    "location_type": "주둔지",
+    "dist_km": 2.54,
+    "affinity": true,
+    "max_count": 147,
+    "event_ids": [
+     58611,
+     58627,
+     58646
+    ]
+   },
+   {
+    "equipment": "truck",
+    "unit_key": "9701가상전방군단",
+    "unit_name": "제9701가상전방군단",
+    "echelon": "군단",
+    "parent_key": null,
+    "location_type": "사령부",
+    "dist_km": 1.27,
+    "affinity": false,
+    "max_count": 120,
+    "event_ids": [
+     58663
+    ]
+   }
+  ],
+  "unit_estimates": [],
+  "evidence": [
+   {
+    "indicator_id": "I_BRIDGING",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:engineer:58608,58626,58643,58660",
+    "quote": "영상 판독 공병장비 평시(중앙값) 3대 → 최근 4대 (+1대) [식별 부대: 제9705가상공병대대(대대) 0.07km, 평시 대비 1.3배] (기준 대대 +1대 또는 2배, 약한 신호)",
+    "scale": 0.5,
+    "unit_key": "9705가상공병대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_BRIDGING",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:bridging:58625,58642,58659",
+    "quote": "영상 판독 도하장비 평시(중앙값) 5대 → 최근 6대 (+1대) [식별 부대: 제9705가상공병대대(대대) 1.07km, 평시 대비 1.2배] (기준 대대 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9705가상공병대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_ARTY_POS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:artillery:58605,58622,58639,58656",
+    "quote": "영상 판독 야포 평시(중앙값) 24.5대 → 최근 37대 (+12.5대) [식별 부대: 제9704가상포병여단(여단) 1.27km, 평시 대비 1.5배] (기준 여단 +2대 또는 2배, 약한 신호)",
+    "scale": 0.5,
+    "unit_key": "9704가상포병여단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_ARTY_POS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-15T10:00:00+00:00",
+    "ref": "targets:artillery:58616",
+    "quote": "영상 판독 야포 평시(중앙값) 0대 → 최근 2대 (+2대) [식별 부대: 제9710가상화학대대(대대) 0.51km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+    "scale": 0.5,
+    "unit_key": "9710가상화학대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_LOGISTICS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:truck:58663",
+    "quote": "영상 판독 트럭 평시(중앙값) 0대 → 최근 120대 (+120대) [식별 부대: 제9701가상전방군단(군단) 1.27km, 평시 대비 신규 출현] (기준 군단 +30대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+    "scale": 0.5,
+    "unit_key": "9701가상전방군단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_LOGISTICS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-18T10:00:00+00:00",
+    "ref": "targets:truck:58611,58627,58646",
+    "quote": "영상 판독 트럭 평시(중앙값) 74대 → 최근 147대 (+73대) [식별 부대: 제9707가상수송연대(연대) 2.34km, 평시 대비 2.0배] (기준 연대 +6대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9707가상수송연대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_LOGISTICS",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:fuel_truck:58610,58645,58662",
+    "quote": "영상 판독 유류차 평시(중앙값) 7대 → 최근 23대 (+16대) [식별 부대: 제9707가상수송연대(연대) 0.85km, 평시 대비 3.3배] (기준 연대 +6대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9707가상수송연대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_MEDICAL",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:field_hospital:58609,58644,58661",
+    "quote": "영상 판독 야전병원 평시(중앙값) 2대 → 최근 3대 (+1대) [식별 부대: 제9706가상의무대대(대대) 0.45km, 평시 대비 1.5배] (기준 대대 +1대 또는 2배, 약한 신호)",
+    "scale": 0.5,
+    "unit_key": "9706가상의무대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_COMMAND_POST",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:command_vehicle:58600,58617,58632,58650",
+    "quote": "영상 판독 지휘차량 평시(중앙값) 3대 → 최근 11대 (+8대) [식별 부대: 제9701가상전방군단(군단) 1.88km, 평시 대비 3.7배] (기준 군단 +3대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9701가상전방군단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_AIR_DEFENSE",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:sam:58613,58629,58647,58664",
+    "quote": "영상 판독 지대공미사일 평시(중앙값) 7대 → 최근 12대 (+5대) [식별 부대: 제9709가상방공연대(연대) 0.87km, 평시 대비 1.7배] (기준 연대 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9709가상방공연대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_DISPERSAL",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:march_column:58637,58652,58654",
+    "quote": "영상 판독 행군종대 평시(중앙값) 0대 → 최근 6대 (+6대) [식별 부대: 제9703가상전차여단(여단) 1.95km, 평시 대비 신규 출현] (기준 여단 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9703가상전차여단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_DISPERSAL",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-18T10:00:00+00:00",
+    "ref": "targets:march_column:58634",
+    "quote": "영상 판독 행군종대 평시(중앙값) 0대 → 최근 3대 (+3대) [식별 부대: 제9702가상기계화보병사단(사단) 3.15km, 평시 대비 신규 출현] (기준 사단 +2대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+    "scale": 0.5,
+    "unit_key": "9702가상기계화보병사단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_HARTS_OCC",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:harts@occupied:58606,58623,58640,58657",
+    "quote": "영상 판독 갱도포병진지(HARTS)(점유) 평시(중앙값) 4대 → 최근 9대 (+5대) [식별 부대: 제9704가상포병여단(여단) 1.91km, 평시 대비 2.2배] (기준 여단 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9704가상포병여단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_ASSAULT",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:formation_wedge_v_line:58653",
+    "quote": "영상 판독 쐐기·V·횡대 대형 평시(중앙값) 0대 → 최근 4대 (+4대) [식별 부대: 제9703가상전차여단(여단) 1.72km, 평시 대비 신규 출현] (기준 여단 +1대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+    "scale": 0.5,
+    "unit_key": "9703가상전차여단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_CHEM_PREP",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-18T10:00:00+00:00",
+    "ref": "targets:chem_vehicle:58614,58648",
+    "quote": "영상 판독 chem_vehicle 평시(중앙값) 0대 → 최근 9대 (+9대) [식별 부대: 제9706가상의무대대(대대) 1.11km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9706가상의무대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_CHEM_PREP",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:chem_vehicle:58630,58665",
+    "quote": "영상 판독 chem_vehicle 평시(중앙값) 0대 → 최근 8대 (+8대) [식별 부대: 제9709가상방공연대(연대) 2.55km, 평시 대비 신규 출현] (기준 연대 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9709가상방공연대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_CHEM_PREP",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-18T10:00:00+00:00",
+    "ref": "targets:decon_vehicle:58631,58649",
+    "quote": "영상 판독 decon_vehicle 평시(중앙값) 0대 → 최근 6대 (+6대) [식별 부대: 제9706가상의무대대(대대) 1.31km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9706가상의무대대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_CHEM_PREP",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "targets:decon_vehicle:58615,58666",
+    "quote": "영상 판독 decon_vehicle 평시(중앙값) 5대 → 최근 8대 (+3대) [식별 부대: 제9709가상방공연대(연대) 2.77km, 평시 대비 1.6배] (기준 연대 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9709가상방공연대",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_SOF_FORWARD",
+    "source_type": "IMINT",
+    "source_key": "IMINT:default",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-16T10:00:00+00:00",
+    "ref": "targets:sof_vehicle:58612,58628",
+    "quote": "영상 판독 특수작전부대 차량 평시(중앙값) 4대 → 최근 10대 (+6대) [식별 부대: 제9708가상경보병여단(여단) 1.05km, 평시 대비 2.5배] (기준 여단 +1대 또는 2배)",
+    "scale": 1.0,
+    "unit_key": "9708가상경보병여단",
+    "gap_days": 0.3333333333333333
+   },
+   {
+    "indicator_id": "I_SYNC_CONCEAL",
+    "source_type": "IMINT",
+    "source_key": "IMINT:sync",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "sync:9702가상기계화보병사단,9703가상전차여단",
+    "quote": "2개 부대 동시 식별: 제9702가상기계화보병사단, 제9703가상전차여단",
+    "scale": 0.6666666666666666,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_KEY_TARGET",
+    "source_type": "IMINT",
+    "source_key": "IMINT:keytarget:KT-97-1",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "keytarget:KT-97-1:58605,58622,58639,58656",
+    "quote": "합참 핵심표적 '제9704가상포병여단 장사정포' 활동 — artillery 24.5→37대(부대 매칭); harts@occupied 4→9대(부대 매칭)",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_KEY_TARGET",
+    "source_type": "IMINT",
+    "source_key": "IMINT:keytarget:KT-97-3",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "keytarget:KT-97-3:58600,58617,58632,58650",
+    "quote": "공동 핵심표적 '제9701가상전방군단 지휘부' 활동 — command_vehicle 3→11대(부대 매칭)",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_WX_WINDOW",
+    "source_type": "METOC",
+    "source_key": "METOC:wx",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T09:00:00+00:00",
+    "ref": "weather:SIM-RUSNK:2026-12-20",
+    "quote": "향후 3일 지상 기동 양호·하천 결빙 — 기갑 기동·도하 공격에 유리한 기상 여건",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_CHEM_DELIVERY",
+    "source_type": "IMINT",
+    "source_key": "IMINT:terrain",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T10:00:00+00:00",
+    "ref": "terrain:NF-3,MF-3",
+    "quote": "가급 중요시설 가상 변전소, 가상 전방 지휘시설 — 적 화력(투발 수단) 사거리 내",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_WX_CHEM",
+    "source_type": "METOC",
+    "source_key": "METOC:chem",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-20T09:00:00+00:00",
+    "ref": "weather:chem",
+    "quote": "북풍(340°) 4m/s·강수 없음 — 화학탄 사용 가능성 높은 기상, 풍하 시설: 가상 변전소, 가상 전방 지휘시설",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   },
+   {
+    "indicator_id": "I_MEDICAL",
+    "source_type": "OSINT",
+    "source_key": "src16",
+    "reliability": "B",
+    "credibility": 2,
+    "observed_at": "2026-12-12T15:00:00+00:00",
+    "ref": "chunk:d401:0",
+    "quote": "위성영상에서 복귀 발표와 달리 새로운 야전병원 천막과 하천 인근 도하장비가 추가로 식별되었다.",
+    "scale": 1.0,
+    "unit_key": null,
+    "gap_days": 0.0
+   }
+  ],
+  "hypotheses": [
+   {
+    "hypothesis_id": "H_ATTACK",
+    "name": "공격 준비",
+    "prior": 0.02,
+    "probability": 0.9992,
+    "impact": 1.0,
+    "threat": 0.9992,
+    "contributions": [
+     {
+      "indicator_id": "I_BRIDGING",
+      "name": "도하·공병 장비 전방 이동",
+      "lr": 8.0,
+      "strength": 0.7055,
+      "delta_logit": 1.467,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:engineer:58608,58626,58643,58660",
+       "targets:bridging:58625,58642,58659"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:engineer:58608,58626,58643,58660",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.353,
+        "quote": "영상 판독 공병장비 평시(중앙값) 3대 → 최근 4대 (+1대) [식별 부대: 제9705가상공병대대(대대) 0.07km, 평시 대비 1.3배] (기준 대대 +1대 또는 2배, 약한 신호)",
+        "unit_key": "9705가상공병대대"
+       },
+       {
+        "ref": "targets:bridging:58625,58642,58659",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 도하장비 평시(중앙값) 5대 → 최근 6대 (+1대) [식별 부대: 제9705가상공병대대(대대) 1.07km, 평시 대비 1.2배] (기준 대대 +1대 또는 2배)",
+        "unit_key": "9705가상공병대대"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_HARTS_OCC",
+      "name": "갱도포병진지 점유",
+      "lr": 7.0,
+      "strength": 0.7106,
+      "delta_logit": 1.3827,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:harts@occupied:58606,58623,58640,58657"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:harts@occupied:58606,58623,58640,58657",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 갱도포병진지(HARTS)(점유) 평시(중앙값) 4대 → 최근 9대 (+5대) [식별 부대: 제9704가상포병여단(여단) 1.91km, 평시 대비 2.2배] (기준 여단 +1대 또는 2배)",
+        "unit_key": "9704가상포병여단"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_MEDICAL",
+      "name": "야전 의무시설 전개",
+      "lr": 7.0,
+      "strength": 0.562,
+      "delta_logit": 1.0936,
+      "source_types": [
+       "IMINT",
+       "OSINT"
+      ],
+      "refs": [
+       "targets:field_hospital:58609,58644,58661",
+       "chunk:d401:0"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:field_hospital:58609,58644,58661",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.355,
+        "quote": "영상 판독 야전병원 평시(중앙값) 2대 → 최근 3대 (+1대) [식별 부대: 제9706가상의무대대(대대) 0.45km, 평시 대비 1.5배] (기준 대대 +1대 또는 2배, 약한 신호)",
+        "unit_key": "9706가상의무대대"
+       },
+       {
+        "ref": "chunk:d401:0",
+        "source_type": "OSINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 8.1,
+        "tau_days": 10.0,
+        "decay": 0.444,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.321,
+        "quote": "위성영상에서 복귀 발표와 달리 새로운 야전병원 천막과 하천 인근 도하장비가 추가로 식별되었다.",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_COMMAND_POST",
+      "name": "전방 지휘소 전개",
+      "lr": 4.0,
+      "strength": 0.7055,
+      "delta_logit": 0.978,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:command_vehicle:58600,58617,58632,58650"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:command_vehicle:58600,58617,58632,58650",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 지휘차량 평시(중앙값) 3대 → 최근 11대 (+8대) [식별 부대: 제9701가상전방군단(군단) 1.88km, 평시 대비 3.7배] (기준 군단 +3대 또는 2배)",
+        "unit_key": "9701가상전방군단"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_AIR_DEFENSE",
+      "name": "방공 자산 전방 배치",
+      "lr": 3.5,
+      "strength": 0.7055,
+      "delta_logit": 0.8838,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:sam:58613,58629,58647,58664"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:sam:58613,58629,58647,58664",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 지대공미사일 평시(중앙값) 7대 → 최근 12대 (+5대) [식별 부대: 제9709가상방공연대(연대) 0.87km, 평시 대비 1.7배] (기준 연대 +1대 또는 2배)",
+        "unit_key": "9709가상방공연대"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_DISPERSAL",
+      "name": "주둔지 이탈·야간 분산 이동",
+      "lr": 3.5,
+      "strength": 0.7055,
+      "delta_logit": 0.8838,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:march_column:58637,58652,58654",
+       "targets:march_column:58634"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:march_column:58637,58652,58654",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 행군종대 평시(중앙값) 0대 → 최근 6대 (+6대) [식별 부대: 제9703가상전차여단(여단) 1.95km, 평시 대비 신규 출현] (기준 여단 +1대 또는 2배)",
+        "unit_key": "9703가상전차여단"
+       },
+       {
+        "ref": "targets:march_column:58634",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 2.2,
+        "tau_days": 7.0,
+        "decay": 0.734,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.265,
+        "quote": "영상 판독 행군종대 평시(중앙값) 0대 → 최근 3대 (+3대) [식별 부대: 제9702가상기계화보병사단(사단) 3.15km, 평시 대비 신규 출현] (기준 사단 +2대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+        "unit_key": "9702가상기계화보병사단"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_ASSAULT",
+      "name": "공격대형·화력준비 진지 형성",
+      "lr": 12.0,
+      "strength": 0.3324,
+      "delta_logit": 0.8259,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:formation_wedge_v_line:58653"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:formation_wedge_v_line:58653",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 2.0,
+        "decay": 0.92,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.332,
+        "quote": "영상 판독 쐐기·V·횡대 대형 평시(중앙값) 0대 → 최근 4대 (+4대) [식별 부대: 제9703가상전차여단(여단) 1.72km, 평시 대비 신규 출현] (기준 여단 +1대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+        "unit_key": "9703가상전차여단"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_SYNC_CONCEAL",
+      "name": "다수 부대 동시 은밀 전개",
+      "lr": 6.0,
+      "strength": 0.4506,
+      "delta_logit": 0.8074,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "sync:9702가상기계화보병사단,9703가상전차여단"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "sync:9702가상기계화보병사단,9703가상전차여단",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.3,
+        "tau_days": 5.0,
+        "decay": 0.936,
+        "gap_days": 0.0,
+        "scale": 0.6666666666666666,
+        "weight": 0.451,
+        "quote": "2개 부대 동시 식별: 제9702가상기계화보병사단, 제9703가상전차여단",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_KEY_TARGET",
+      "name": "핵심표적 활동(합참·연합사 표적목록)",
+      "lr": 3.0,
+      "strength": 0.6889,
+      "delta_logit": 0.7568,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "keytarget:KT-97-1:58605,58622,58639,58656",
+       "keytarget:KT-97-3:58600,58617,58632,58650"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "keytarget:KT-97-1:58605,58622,58639,58656",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.3,
+        "tau_days": 7.0,
+        "decay": 0.953,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.689,
+        "quote": "합참 핵심표적 '제9704가상포병여단 장사정포' 활동 — artillery 24.5→37대(부대 매칭); harts@occupied 4→9대(부대 매칭)",
+        "unit_key": null
+       },
+       {
+        "ref": "keytarget:KT-97-3:58600,58617,58632,58650",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.3,
+        "tau_days": 7.0,
+        "decay": 0.953,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.689,
+        "quote": "공동 핵심표적 '제9701가상전방군단 지휘부' 활동 — command_vehicle 3→11대(부대 매칭)",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_LOGISTICS",
+      "name": "보급·유류 차량 증가",
+      "lr": 2.5,
+      "strength": 0.7106,
+      "delta_logit": 0.6511,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:truck:58663",
+       "targets:truck:58611,58627,58646",
+       "targets:fuel_truck:58610,58645,58662"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:truck:58663",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.355,
+        "quote": "영상 판독 트럭 평시(중앙값) 0대 → 최근 120대 (+120대) [식별 부대: 제9701가상전방군단(군단) 1.27km, 평시 대비 신규 출현] (기준 군단 +30대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+        "unit_key": "9701가상전방군단"
+       },
+       {
+        "ref": "targets:truck:58611,58627,58646",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 2.2,
+        "tau_days": 10.0,
+        "decay": 0.805,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.582,
+        "quote": "영상 판독 트럭 평시(중앙값) 74대 → 최근 147대 (+73대) [식별 부대: 제9707가상수송연대(연대) 2.34km, 평시 대비 2.0배] (기준 연대 +6대 또는 2배)",
+        "unit_key": "9707가상수송연대"
+       },
+       {
+        "ref": "targets:fuel_truck:58610,58645,58662",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 유류차 평시(중앙값) 7대 → 최근 23대 (+16대) [식별 부대: 제9707가상수송연대(연대) 0.85km, 평시 대비 3.3배] (기준 연대 +6대 또는 2배)",
+        "unit_key": "9707가상수송연대"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_ARTY_POS",
+      "name": "포병 진지 점령·증강",
+      "lr": 5.0,
+      "strength": 0.3494,
+      "delta_logit": 0.5623,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:artillery:58605,58622,58639,58656",
+       "targets:artillery:58616"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:artillery:58605,58622,58639,58656",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 5.0,
+        "decay": 0.967,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.349,
+        "quote": "영상 판독 야포 평시(중앙값) 24.5대 → 최근 37대 (+12.5대) [식별 부대: 제9704가상포병여단(여단) 1.27km, 평시 대비 1.5배] (기준 여단 +2대 또는 2배, 약한 신호)",
+        "unit_key": "9704가상포병여단"
+       },
+       {
+        "ref": "targets:artillery:58616",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 5.2,
+        "tau_days": 5.0,
+        "decay": 0.356,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.129,
+        "quote": "영상 판독 야포 평시(중앙값) 0대 → 최근 2대 (+2대) [식별 부대: 제9710가상화학대대(대대) 0.51km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+        "unit_key": "9710가상화학대대"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_CHEM_PREP",
+      "name": "화학부대·화학정찰·제독 장비 전방 이동",
+      "lr": 2.0,
+      "strength": 0.7055,
+      "delta_logit": 0.489,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:chem_vehicle:58614,58648",
+       "targets:chem_vehicle:58630,58665",
+       "targets:decon_vehicle:58631,58649",
+       "targets:decon_vehicle:58615,58666"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:chem_vehicle:58614,58648",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 2.2,
+        "tau_days": 7.0,
+        "decay": 0.734,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.53,
+        "quote": "영상 판독 chem_vehicle 평시(중앙값) 0대 → 최근 9대 (+9대) [식별 부대: 제9706가상의무대대(대대) 1.11km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+        "unit_key": "9706가상의무대대"
+       },
+       {
+        "ref": "targets:chem_vehicle:58630,58665",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 chem_vehicle 평시(중앙값) 0대 → 최근 8대 (+8대) [식별 부대: 제9709가상방공연대(연대) 2.55km, 평시 대비 신규 출현] (기준 연대 +1대 또는 2배)",
+        "unit_key": "9709가상방공연대"
+       },
+       {
+        "ref": "targets:decon_vehicle:58631,58649",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 2.2,
+        "tau_days": 7.0,
+        "decay": 0.734,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.53,
+        "quote": "영상 판독 decon_vehicle 평시(중앙값) 0대 → 최근 6대 (+6대) [식별 부대: 제9706가상의무대대(대대) 1.31km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+        "unit_key": "9706가상의무대대"
+       },
+       {
+        "ref": "targets:decon_vehicle:58615,58666",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 decon_vehicle 평시(중앙값) 5대 → 최근 8대 (+3대) [식별 부대: 제9709가상방공연대(연대) 2.77km, 평시 대비 1.6배] (기준 연대 +1대 또는 2배)",
+        "unit_key": "9709가상방공연대"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_WX_WINDOW",
+      "name": "공격 적합 기상·지면 여건",
+      "lr": 1.5,
+      "strength": 0.6376,
+      "delta_logit": 0.2585,
+      "source_types": [
+       "METOC"
+      ],
+      "refs": [
+       "weather:SIM-RUSNK:2026-12-20"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "weather:SIM-RUSNK:2026-12-20",
+        "source_type": "METOC",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.4,
+        "tau_days": 3.0,
+        "decay": 0.882,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.638,
+        "quote": "향후 3일 지상 기동 양호·하천 결빙 — 기갑 기동·도하 공격에 유리한 기상 여건",
+        "unit_key": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_LOCAL_FIRE",
+    "name": "국지 포격 도발 준비",
+    "prior": 0.03,
+    "probability": 0.2069,
+    "impact": 0.6,
+    "threat": 0.1241,
+    "contributions": [
+     {
+      "indicator_id": "I_HARTS_OCC",
+      "name": "갱도포병·해안포 포문 개방·진지 점유",
+      "lr": 7.0,
+      "strength": 0.6988,
+      "delta_logit": 1.3598,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:harts@occupied:58606,58623,58640,58657"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:harts@occupied:58606,58623,58640,58657",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 5.0,
+        "decay": 0.967,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.699,
+        "quote": "영상 판독 갱도포병진지(HARTS)(점유) 평시(중앙값) 4대 → 최근 9대 (+5대) [식별 부대: 제9704가상포병여단(여단) 1.91km, 평시 대비 2.2배] (기준 여단 +1대 또는 2배)",
+        "unit_key": "9704가상포병여단"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_ARTY_POS",
+      "name": "포병 진지 점령·증강",
+      "lr": 4.0,
+      "strength": 0.3494,
+      "delta_logit": 0.4844,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:artillery:58605,58622,58639,58656",
+       "targets:artillery:58616"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:artillery:58605,58622,58639,58656",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 5.0,
+        "decay": 0.967,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.349,
+        "quote": "영상 판독 야포 평시(중앙값) 24.5대 → 최근 37대 (+12.5대) [식별 부대: 제9704가상포병여단(여단) 1.27km, 평시 대비 1.5배] (기준 여단 +2대 또는 2배, 약한 신호)",
+        "unit_key": "9704가상포병여단"
+       },
+       {
+        "ref": "targets:artillery:58616",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 5.2,
+        "tau_days": 5.0,
+        "decay": 0.356,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.129,
+        "quote": "영상 판독 야포 평시(중앙값) 0대 → 최근 2대 (+2대) [식별 부대: 제9710가상화학대대(대대) 0.51km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+        "unit_key": "9710가상화학대대"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_LOGISTICS",
+      "name": "보급·유류 차량 증가",
+      "lr": 1.5,
+      "strength": 0.7106,
+      "delta_logit": 0.2881,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:truck:58663",
+       "targets:truck:58611,58627,58646",
+       "targets:fuel_truck:58610,58645,58662"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:truck:58663",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.355,
+        "quote": "영상 판독 트럭 평시(중앙값) 0대 → 최근 120대 (+120대) [식별 부대: 제9701가상전방군단(군단) 1.27km, 평시 대비 신규 출현] (기준 군단 +30대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+        "unit_key": "9701가상전방군단"
+       },
+       {
+        "ref": "targets:truck:58611,58627,58646",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 2.2,
+        "tau_days": 10.0,
+        "decay": 0.805,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.582,
+        "quote": "영상 판독 트럭 평시(중앙값) 74대 → 최근 147대 (+73대) [식별 부대: 제9707가상수송연대(연대) 2.34km, 평시 대비 2.0배] (기준 연대 +6대 또는 2배)",
+        "unit_key": "9707가상수송연대"
+       },
+       {
+        "ref": "targets:fuel_truck:58610,58645,58662",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 유류차 평시(중앙값) 7대 → 최근 23대 (+16대) [식별 부대: 제9707가상수송연대(연대) 0.85km, 평시 대비 3.3배] (기준 연대 +6대 또는 2배)",
+        "unit_key": "9707가상수송연대"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_CHEM",
+    "name": "화학무기 사용 준비 (중요시설 무력화)",
+    "prior": 0.01,
+    "probability": 0.0679,
+    "impact": 0.95,
+    "threat": 0.0645,
+    "contributions": [
+     {
+      "indicator_id": "I_CHEM_PREP",
+      "name": "화학부대·화학정찰·제독 장비 전방 이동",
+      "lr": 6.0,
+      "strength": 0.7055,
+      "delta_logit": 1.2641,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:chem_vehicle:58614,58648",
+       "targets:chem_vehicle:58630,58665",
+       "targets:decon_vehicle:58631,58649",
+       "targets:decon_vehicle:58615,58666"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:chem_vehicle:58614,58648",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 2.2,
+        "tau_days": 7.0,
+        "decay": 0.734,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.53,
+        "quote": "영상 판독 chem_vehicle 평시(중앙값) 0대 → 최근 9대 (+9대) [식별 부대: 제9706가상의무대대(대대) 1.11km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+        "unit_key": "9706가상의무대대"
+       },
+       {
+        "ref": "targets:chem_vehicle:58630,58665",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 chem_vehicle 평시(중앙값) 0대 → 최근 8대 (+8대) [식별 부대: 제9709가상방공연대(연대) 2.55km, 평시 대비 신규 출현] (기준 연대 +1대 또는 2배)",
+        "unit_key": "9709가상방공연대"
+       },
+       {
+        "ref": "targets:decon_vehicle:58631,58649",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 2.2,
+        "tau_days": 7.0,
+        "decay": 0.734,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.53,
+        "quote": "영상 판독 decon_vehicle 평시(중앙값) 0대 → 최근 6대 (+6대) [식별 부대: 제9706가상의무대대(대대) 1.31km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
+        "unit_key": "9706가상의무대대"
+       },
+       {
+        "ref": "targets:decon_vehicle:58615,58666",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 decon_vehicle 평시(중앙값) 5대 → 최근 8대 (+3대) [식별 부대: 제9709가상방공연대(연대) 2.77km, 평시 대비 1.6배] (기준 연대 +1대 또는 2배)",
+        "unit_key": "9709가상방공연대"
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_CHEM_DELIVERY",
+      "name": "화학탄 투발 수단(장사정포·방사포) 사거리 내 전개",
+      "lr": 2.0,
+      "strength": 0.6759,
+      "delta_logit": 0.4685,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "terrain:NF-3,MF-3"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "terrain:NF-3,MF-3",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.3,
+        "tau_days": 5.0,
+        "decay": 0.936,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.676,
+        "quote": "가급 중요시설 가상 변전소, 가상 전방 지휘시설 — 적 화력(투발 수단) 사거리 내",
+        "unit_key": null
+       }
+      ]
+     },
+     {
+      "indicator_id": "I_WX_CHEM",
+      "name": "화학 운용 유리 기상(아군 시설 방향 약풍·안정 대기)",
+      "lr": 1.5,
+      "strength": 0.599,
+      "delta_logit": 0.2429,
+      "source_types": [
+       "METOC"
+      ],
+      "refs": [
+       "weather:chem"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "weather:chem",
+        "source_type": "METOC",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.4,
+        "tau_days": 2.0,
+        "decay": 0.829,
+        "gap_days": 0.0,
+        "scale": 1.0,
+        "weight": 0.599,
+        "quote": "북풍(340°) 4m/s·강수 없음 — 화학탄 사용 가능성 높은 기상, 풍하 시설: 가상 변전소, 가상 전방 지휘시설",
+        "unit_key": null
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_EXERCISE",
+    "name": "대규모 훈련",
+    "prior": 0.1,
+    "probability": 0.1539,
+    "impact": 0.2,
+    "threat": 0.0308,
+    "contributions": [
+     {
+      "indicator_id": "I_LOGISTICS",
+      "name": "보급·유류 차량 증가",
+      "lr": 2.0,
+      "strength": 0.7106,
+      "delta_logit": 0.4925,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:truck:58663",
+       "targets:truck:58611,58627,58646",
+       "targets:fuel_truck:58610,58645,58662"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:truck:58663",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 0.5,
+        "weight": 0.355,
+        "quote": "영상 판독 트럭 평시(중앙값) 0대 → 최근 120대 (+120대) [식별 부대: 제9701가상전방군단(군단) 1.27km, 평시 대비 신규 출현] (기준 군단 +30대 또는 2배, 단일 관측 신규 출현 — 미확인)",
+        "unit_key": "9701가상전방군단"
+       },
+       {
+        "ref": "targets:truck:58611,58627,58646",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 2.2,
+        "tau_days": 10.0,
+        "decay": 0.805,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.582,
+        "quote": "영상 판독 트럭 평시(중앙값) 74대 → 최근 147대 (+73대) [식별 부대: 제9707가상수송연대(연대) 2.34km, 평시 대비 2.0배] (기준 연대 +6대 또는 2배)",
+        "unit_key": "9707가상수송연대"
+       },
+       {
+        "ref": "targets:fuel_truck:58610,58645,58662",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 10.0,
+        "decay": 0.983,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.711,
+        "quote": "영상 판독 유류차 평시(중앙값) 7대 → 최근 23대 (+16대) [식별 부대: 제9707가상수송연대(연대) 0.85km, 평시 대비 3.3배] (기준 연대 +6대 또는 2배)",
+        "unit_key": "9707가상수송연대"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_INFILTRATION",
+    "name": "침투·국지도발 준비",
+    "prior": 0.02,
+    "probability": 0.0346,
+    "impact": 0.6,
+    "threat": 0.0207,
+    "contributions": [
+     {
+      "indicator_id": "I_SOF_FORWARD",
+      "name": "특수작전부대 전방 이동",
+      "lr": 6.0,
+      "strength": 0.314,
+      "delta_logit": 0.5626,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:sof_vehicle:58612,58628"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:sof_vehicle:58612,58628",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 4.2,
+        "tau_days": 5.0,
+        "decay": 0.435,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.314,
+        "quote": "영상 판독 특수작전부대 차량 평시(중앙값) 4대 → 최근 10대 (+6대) [식별 부대: 제9708가상경보병여단(여단) 1.05km, 평시 대비 2.5배] (기준 여단 +1대 또는 2배)",
+        "unit_key": "9708가상경보병여단"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_AIR",
+    "name": "항공 도발 준비",
+    "prior": 0.02,
+    "probability": 0.0322,
+    "impact": 0.5,
+    "threat": 0.0161,
+    "contributions": [
+     {
+      "indicator_id": "I_AIR_DEFENSE",
+      "name": "방공 자산 전방 배치",
+      "lr": 2.0,
+      "strength": 0.7055,
+      "delta_logit": 0.489,
+      "source_types": [
+       "IMINT"
+      ],
+      "refs": [
+       "targets:sam:58613,58629,58647,58664"
+      ],
+      "discount": 1.0,
+      "details": [
+       {
+        "ref": "targets:sam:58613,58629,58647,58664",
+        "source_type": "IMINT",
+        "grade": "B2",
+        "grade_weight": 0.722,
+        "age_days": 0.2,
+        "tau_days": 7.0,
+        "decay": 0.976,
+        "gap_days": 0.3,
+        "scale": 1.0,
+        "weight": 0.706,
+        "quote": "영상 판독 지대공미사일 평시(중앙값) 7대 → 최근 12대 (+5대) [식별 부대: 제9709가상방공연대(연대) 0.87km, 평시 대비 1.7배] (기준 연대 +1대 또는 2배)",
+        "unit_key": "9709가상방공연대"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hypothesis_id": "H_NUCLEAR",
+    "name": "전술핵 사용 준비",
+    "prior": 0.01,
+    "probability": 0.01,
+    "impact": 1.0,
+    "threat": 0.01,
+    "contributions": []
+   }
+  ],
+  "conflicts": [],
+  "lr_matrix": {
+   "I_AIR_DEFENSE": {
+    "name": "방공 자산 전방 배치",
+    "lr": {
+     "공격 준비": 3.5,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 2.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_ARTY_POS": {
+    "name": "포병 진지 점령·증강",
+    "lr": {
+     "공격 준비": 5.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 4.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_ASSAULT": {
+    "name": "공격대형·화력준비 진지 형성",
+    "lr": {
+     "공격 준비": 12.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_BRIDGING": {
+    "name": "도하·공병 장비 전방 이동",
+    "lr": {
+     "공격 준비": 8.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_CHEM_DELIVERY": {
+    "name": "화학탄 투발 수단(장사정포·방사포) 사거리 내 전개",
+    "lr": {
+     "공격 준비": 1.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 2.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_CHEM_PREP": {
+    "name": "화학부대·화학정찰·제독 장비 전방 이동",
+    "lr": {
+     "공격 준비": 2.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 6.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_COMMAND_POST": {
+    "name": "전방 지휘소 전개",
+    "lr": {
+     "공격 준비": 4.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_DISPERSAL": {
+    "name": "주둔지 이탈·야간 분산 이동",
+    "lr": {
+     "공격 준비": 3.5,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_HARTS_OCC": {
+    "name": "갱도포병진지 점유",
+    "lr": {
+     "공격 준비": 7.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 7.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_KEY_TARGET": {
+    "name": "핵심표적 활동(합참·연합사 표적목록)",
+    "lr": {
+     "공격 준비": 3.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_LOGISTICS": {
+    "name": "보급·유류 차량 증가",
+    "lr": {
+     "공격 준비": 2.5,
+     "대규모 훈련": 2.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.5,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_MEDICAL": {
+    "name": "야전 의무시설 전개",
+    "lr": {
+     "공격 준비": 7.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_SOF_FORWARD": {
+    "name": "특수작전부대 전방 이동",
+    "lr": {
+     "공격 준비": 1.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 6.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_SYNC_CONCEAL": {
+    "name": "다수 부대 동시 은밀 전개",
+    "lr": {
+     "공격 준비": 6.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_WX_CHEM": {
+    "name": "화학 운용 유리 기상(아군 시설 방향 약풍·안정 대기)",
+    "lr": {
+     "공격 준비": 1.0,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.5,
+     "전술핵 사용 준비": 1.0
+    }
+   },
+   "I_WX_WINDOW": {
+    "name": "공격 적합 기상·지면 여건",
+    "lr": {
+     "공격 준비": 1.5,
+     "대규모 훈련": 1.0,
+     "침투·국지도발 준비": 1.0,
+     "국지 포격 도발 준비": 1.0,
+     "항공 도발 준비": 1.0,
+     "화학무기 사용 준비 (중요시설 무력화)": 1.0,
+     "전술핵 사용 준비": 1.0
+    }
+   }
+  },
+  "weather": {
+   "available": true,
+   "valid_at": "2026-12-20T09:00:00+00:00",
+   "kind": "obs",
+   "data": {
+    "river": "frozen",
+    "ground": "frozen",
+    "temp_c": -12,
+    "snow_cm": 10,
+    "wind_ms": 4,
+    "ceiling_m": 2500,
+    "cloud_pct": 30,
+    "precip_mm": 0,
+    "wind_dir_deg": 340,
+    "visibility_km": 15
+   },
+   "effects": [
+    {
+     "domain": "eo_imaging",
+     "name": "광학 영상 관측(아군)",
+     "level": "양호",
+     "reason": "제한 요인 없음"
+    },
+    {
+     "domain": "sar_imaging",
+     "name": "SAR 영상 관측(아군)",
+     "level": "양호",
+     "reason": "제한 요인 없음"
+    },
+    {
+     "domain": "ground_mobility",
+     "name": "야지 기동(적 기갑·차량)",
+     "level": "양호",
+     "reason": "제한 요인 없음"
+    },
+    {
+     "domain": "river_crossing",
+     "name": "하천 도하(적)",
+     "level": "양호",
+     "reason": "하천 결빙 — 도보·경장비 빙상 도하 가능, 도하 지점 확대"
+    },
+    {
+     "domain": "air_ops",
+     "name": "항공 운용(적 회전익·AN-2)",
+     "level": "양호",
+     "reason": "제한 요인 없음"
+    },
+    {
+     "domain": "sea_infiltration",
+     "name": "해상 침투(적 소형정·공기부양정)",
+     "level": "양호",
+     "reason": "제한 요인 없음"
+    },
+    {
+     "domain": "chemical_ops",
+     "name": "화학 운용 여건(적)",
+     "level": "양호",
+     "reason": "북풍(340°) 4m/s·강수 없음 — 작용제가 아군 지역으로 이동, 화학탄 사용 가능성 높음(군 판단 기준)"
+    },
+    {
+     "domain": "personnel",
+     "name": "인원 활동(동상·열손상)",
+     "level": "양호",
+     "reason": "제한 요인 없음"
+    }
+   ],
+   "outlook": [],
+   "findings": [
+    {
+     "key": "favorable_attack",
+     "text": "향후 3일 지상 기동 양호·하천 결빙 — 기갑 기동·도하 공격에 유리한 기상 여건"
+    }
+   ],
+   "collection_limits": []
+  },
+  "issued_posture": {},
+  "terrain": {
+   "available": true,
+   "facilities": [
+    {
+     "id": "NF-3",
+     "name": "가상 변전소",
+     "kind": "국가중요시설",
+     "grade": "가",
+     "urban": "가상도시C",
+     "fires_in_range": 12,
+     "downwind": true,
+     "advance": {
+      "km": 31.4,
+      "urban_share": 0.12,
+      "direct_days": 2.2,
+      "bypass_days": 1.4
+     },
+     "vulnerability": "상",
+     "notes": [
+      "적 투발 수단 사거리 내(artillery, harts, mlrs 12건) — 무력화 목적 화학탄 사용 가능",
+      "풍하 위치 · 화학 운용 유리 기상",
+      "도심(가상도시C) 내 — 지상 진입 지연(우회 예상), 화력·화학·특작 위협 우선"
+     ]
+    },
+    {
+     "id": "MF-3",
+     "name": "가상 전방 지휘시설",
+     "kind": "군사중요시설",
+     "grade": "가",
+     "urban": null,
+     "fires_in_range": 8,
+     "downwind": true,
+     "advance": {
+      "km": 39.3,
+      "urban_share": 0.0,
+      "direct_days": 1.3,
+      "bypass_days": 1.3
+     },
+     "vulnerability": "상",
+     "notes": [
+      "적 투발 수단 사거리 내(harts, mlrs 8건) — 무력화 목적 화학탄 사용 가능",
+      "풍하 위치 · 화학 운용 유리 기상"
+     ]
+    },
+    {
+     "id": "MF-1",
+     "name": "가상 비행장",
+     "kind": "군사중요시설",
+     "grade": "가",
+     "urban": null,
+     "fires_in_range": 0,
+     "downwind": false,
+     "advance": {
+      "km": 66.0,
+      "urban_share": 0.12,
+      "direct_days": 4.7,
+      "bypass_days": 2.9
+     },
+     "vulnerability": "중",
+     "notes": []
+    },
+    {
+     "id": "MF-2",
+     "name": "가상 군수지원시설",
+     "kind": "군사중요시설",
+     "grade": "나",
+     "urban": null,
+     "fires_in_range": 0,
+     "downwind": false,
+     "advance": {
+      "km": 81.2,
+      "urban_share": 0.0,
+      "direct_days": 2.7,
+      "bypass_days": 2.7
+     },
+     "vulnerability": "중",
+     "notes": []
+    },
+    {
+     "id": "NF-1",
+     "name": "가상 발전소",
+     "kind": "국가중요시설",
+     "grade": "가",
+     "urban": "가상도시A",
+     "fires_in_range": 0,
+     "downwind": false,
+     "advance": {
+      "km": 75.4,
+      "urban_share": 0.2,
+      "direct_days": 7.0,
+      "bypass_days": 3.3
+     },
+     "vulnerability": "하",
+     "notes": [
+      "도심(가상도시A) 내 — 지상 진입 지연(우회 예상), 화력·화학·특작 위협 우선"
+     ]
+    },
+    {
+     "id": "NF-2",
+     "name": "가상 정수장",
+     "kind": "국가중요시설",
+     "grade": "나",
+     "urban": "가상도시B",
+     "fires_in_range": 0,
+     "downwind": false,
+     "advance": {
+      "km": 86.5,
+      "urban_share": 0.12,
+      "direct_days": 6.1,
+      "bypass_days": 3.7
+     },
+     "vulnerability": "하",
+     "notes": [
+      "도심(가상도시B) 내 — 지상 진입 지연(우회 예상), 화력·화학·특작 위협 우선"
+     ]
+    }
+   ],
+   "advance_rates": {
+    "open": 30,
+    "mountain": 10,
+    "urban": 3
+   },
+   "basis": "tf-0.1"
+  },
+  "commander_requirements": {
+   "pirs": [
+    {
+     "commander": "합참의장",
+     "id": "PIR-J1",
+     "question": "적 전면 공격 준비 여부 — 시기·주공 축선·제대",
+     "status": "확인",
+     "strength": 0.71,
+     "probability": 0.9992,
+     "evidence": [
+      "공격대형·화력준비 진지 형성",
+      "도하·공병 장비 전방 이동",
+      "전방 지휘소 전개",
+      "포병 진지 점령·증강",
+      "핵심표적 활동(합참·연합사 표적목록)"
+     ],
+     "targets": [
+      "제9704가상포병여단 장사정포",
+      "제9701가상전방군단 지휘부"
+     ]
+    },
+    {
+     "commander": "합참의장",
+     "id": "PIR-J2",
+     "question": "장사정포·갱도포병·해안포 사격 준비 여부 (국지 포격 포함)",
+     "status": "확인",
+     "strength": 0.71,
+     "probability": 0.9992,
+     "evidence": [
+      "갱도포병·해안포 포문 개방·진지 점유",
+      "갱도포병진지 점유",
+      "포병 진지 점령·증강",
+      "핵심표적 활동(합참·연합사 표적목록)"
+     ],
+     "targets": [
+      "제9704가상포병여단 장사정포",
+      "제9701가상전방군단 지휘부"
+     ]
+    },
+    {
+     "commander": "합참의장",
+     "id": "PIR-J3",
+     "question": "핵·미사일 사용 준비 여부",
+     "status": "미식별",
+     "strength": 0.0,
+     "probability": 0.01,
+     "evidence": [],
+     "targets": []
+    },
+    {
+     "commander": "합참의장",
+     "id": "PIR-J4",
+     "question": "특수작전부대 침투·국지도발 준비 여부",
+     "status": "약한 징후",
+     "strength": 0.31,
+     "probability": 0.0346,
+     "evidence": [
+      "특수작전부대 전방 이동"
+     ],
+     "targets": []
+    },
+    {
+     "commander": "연합사령관",
+     "id": "PIR-C1",
+     "question": "북한군 전략적 공격 징후 — 1·2제대 전방 이동, 동시 은밀 전개",
+     "status": "확인",
+     "strength": 0.71,
+     "probability": 0.9992,
+     "evidence": [
+      "다수 부대 동시 은밀 전개",
+      "보급·유류 차량 증가",
+      "야전 의무시설 전개",
+      "주둔지 이탈·야간 분산 이동"
+     ],
+     "targets": []
+    },
+    {
+     "commander": "연합사령관",
+     "id": "PIR-C2",
+     "question": "대량살상무기 사용 징후",
+     "status": "미식별",
+     "strength": 0.0,
+     "probability": 0.01,
+     "evidence": [],
+     "targets": []
+    },
+    {
+     "commander": "연합사령관",
+     "id": "PIR-C3",
+     "question": "항공·해상 도발 준비 여부",
+     "status": "미식별",
+     "strength": 0.0,
+     "probability": 0.0346,
+     "evidence": [],
+     "targets": []
+    }
+   ],
+   "ccir_alerts": [
+    {
+     "commander": "합참의장",
+     "id": "CCIR-J1",
+     "text": "핵심표적 활동 식별 시 즉시 보고",
+     "basis": "제9704가상포병여단 장사정포, 제9701가상전방군단 지휘부"
+    },
+    {
+     "commander": "합참의장",
+     "id": "CCIR-J2",
+     "text": "PIR-J1 '확인' 도달 시 즉시 보고",
+     "basis": "PIR-J1 확인"
+    },
+    {
+     "commander": "연합사령관",
+     "id": "CCIR-C2",
+     "text": "고가치·핵심표적 2개 이상 동시 활동 시 보고",
+     "basis": "2개 표적 활동"
+    }
+   ],
+   "key_target_activity": [
+    {
+     "target_id": "KT-97-1",
+     "name": "제9704가상포병여단 장사정포",
+     "category": "핵심표적",
+     "owner": "합참",
+     "indicator": "I_KEY_TARGET",
+     "pir_ids": [
+      "PIR-J2"
+     ],
+     "latest_at": "2026-12-20T10:00:00+00:00",
+     "hits": [
+      {
+       "equipment": "artillery",
+       "baseline": 24.5,
+       "recent": 37,
+       "latest_at": "2026-12-20T10:00:00+00:00",
+       "refs": [
+        58605,
+        58622,
+        58639,
+        58656
+       ],
+       "basis": "부대"
+      },
+      {
+       "equipment": "harts@occupied",
+       "baseline": 4,
+       "recent": 9,
+       "latest_at": "2026-12-20T10:00:00+00:00",
+       "refs": [
+        58606,
+        58623,
+        58640,
+        58657
+       ],
+       "basis": "부대"
+      }
+     ]
+    },
+    {
+     "target_id": "KT-97-3",
+     "name": "제9701가상전방군단 지휘부",
+     "category": "핵심표적",
+     "owner": "공동",
+     "indicator": "I_KEY_TARGET",
+     "pir_ids": [
+      "PIR-J1"
+     ],
+     "latest_at": "2026-12-20T10:00:00+00:00",
+     "hits": [
+      {
+       "equipment": "command_vehicle",
+       "baseline": 3,
+       "recent": 11,
+       "latest_at": "2026-12-20T10:00:00+00:00",
+       "refs": [
+        58600,
+        58617,
+        58632,
+        58650
+       ],
+       "basis": "부대"
+      }
+     ]
+    }
+   ],
+   "basis": "pir-0.1"
+  },
+  "rejected_llm_hits": 0,
+  "catalog_version": "0.1-sample",
+  "report_chunks_checked": 4,
+  "elapsed_s": 9.64,
+  "patterns": [
+   {
+    "id": "CASE-2022-RU",
+    "name": "2021~22 러시아 우크라이나 침공 전 집결",
+    "hypothesis": "H_ATTACK",
+    "similarity": 0.622,
+    "matched": [
+     "I_ASSAULT",
+     "I_BRIDGING",
+     "I_COMMAND_POST",
+     "I_DISPERSAL",
+     "I_LOGISTICS",
+     "I_MEDICAL"
+    ],
+    "missing": [
+     "I_ARMOR_MASS",
+     "I_EX_ANNOUNCED"
+    ],
+    "summary": "1·2차 증강, 훈련 명목 전개, 철수 발표 기만, 야전병원·도하장비·보급 증가 후 집결지 이탈·공격대형"
+   },
+   {
+    "id": "CASE-2015-08",
+    "name": "2015.8 DMZ 목함지뢰·서부전선 포격 도발",
+    "hypothesis": "H_LOCAL_FIRE",
+    "similarity": 0.344,
+    "matched": [
+     "I_ARTY_POS",
+     "I_HARTS_OCC",
+     "I_LOGISTICS",
+     "I_SOF_FORWARD"
+    ],
+    "missing": [
+     "I_COMMS_CUT",
+     "I_SUB_SORTIE",
+     "I_ULTIMATUM"
+    ],
+    "summary": "확성기 재개 → 경고 → 포격 → 48시간 최후통첩·준전시상태 선포, 포병 전진 배치·포문 개방, 잠수함 약 70% 기지 이탈, 공기부양정 전방 전개, 고위급 접촉 병행"
+   },
+   {
+    "id": "CASE-INFIL",
+    "name": "특작부대 침투형 국지도발 (일반 패턴)",
+    "hypothesis": "H_INFILTRATION",
+    "similarity": 0.147,
+    "matched": [
+     "I_SOF_FORWARD"
+    ],
+    "missing": [
+     "I_INFIL_SIGN",
+     "I_SUB_SORTIE",
+     "I_WX_COVER"
+    ],
+    "summary": "경보병·특작 전방 이동, 잠수정·공기부양정 이탈, 침투 흔적"
+   }
+  ],
+  "briefing": [
+   "① 공격 준비 가능성 100%, 위협 등급 심각, 분석 신뢰도 중.",
+   "② 핵심 근거: 도하·공병 장비 전방 이동, 갱도포병진지 점유, 야전 의무시설 전개 — 과거 사례 '2021~22 러시아 우크라이나 침공 전 집결'와 유사도 62%.",
+   "③ CCIR 보고 조건 충족: 합참의장 CCIR-J1; 합참의장 CCIR-J2; 연합사령관 CCIR-C2."
+  ],
+  "readiness": {
+   "basis": "예시 조건 (실제 태세 조건 아님) — 태세 판단·건의는 합참·연합사, 결정은 국방부장관·통수권자 재가 사항. 본 결과는 판단 지원 정보",
+   "history_points": 15,
+   "current": {
+    "watchcon": {
+     "track": "watchcon",
+     "day": 0.0,
+     "label": "2026-12-20T18:00:00+00:00",
+     "level": 1,
+     "level_name": "워치콘 1",
+     "level_label": "위협 임박",
+     "action": "유지",
+     "reasons": [
+      "위협 점수 100% ≥ 75% (분석 신뢰도 중)"
+     ],
+     "note": "",
+     "collect_more": false,
+     "defcon_review": false,
+     "threat": 0.9992,
+     "confidence": "중",
+     "issued_level": null,
+     "issued_name": null,
+     "issuer": null,
+     "vs_issued": "발령 태세 미입력"
+    },
+    "defcon": {
+     "track": "defcon",
+     "day": 0.0,
+     "label": "2026-12-20T18:00:00+00:00",
+     "level": 4,
+     "level_name": "데프콘 4",
+     "level_label": "평시",
+     "action": "유지",
+     "reasons": [],
+     "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+     "collect_more": true,
+     "defcon_review": false,
+     "threat": 0.9992,
+     "confidence": "중",
+     "issued_level": null,
+     "issued_name": null,
+     "issuer": null,
+     "vs_issued": "발령 태세 미입력"
+    },
+    "jindogae": {
+     "track": "jindogae",
+     "day": 0.0,
+     "label": "2026-12-20T18:00:00+00:00",
+     "level": 3,
+     "level_name": "진돗개 셋",
+     "level_label": "평시 경계",
+     "action": "유지",
+     "reasons": [],
+     "note": "",
+     "collect_more": false,
+     "defcon_review": false,
+     "threat": 0.1241,
+     "confidence": "중",
+     "issued_level": null,
+     "issued_name": null,
+     "issuer": null,
+     "vs_issued": "발령 태세 미입력"
+    },
+    "durumi": {
+     "track": "durumi",
+     "day": 0.0,
+     "label": "2026-12-20T18:00:00+00:00",
+     "level": 3,
+     "level_name": "두루미 미발령",
+     "level_label": "평시",
+     "action": "유지",
+     "reasons": [],
+     "note": "",
+     "collect_more": false,
+     "defcon_review": false,
+     "threat": 0.0161,
+     "confidence": "중",
+     "issued_level": null,
+     "issued_name": null,
+     "issuer": null,
+     "vs_issued": "발령 태세 미입력"
+    }
+   },
+   "changes": {
+    "watchcon": [
+     {
+      "track": "watchcon",
+      "day": -28.0,
+      "label": "2026-11-22T18:00:00+00:00",
+      "level": 2,
+      "level_name": "워치콘 2",
+      "level_label": "위협 증가",
+      "action": "상향 조건",
+      "reasons": [
+       "위협 점수 50% ≥ 50% (분석 신뢰도 하)"
+      ],
+      "note": "",
+      "collect_more": false,
+      "defcon_review": false,
+      "threat": 0.5002,
+      "confidence": "하"
+     },
+     {
+      "track": "watchcon",
+      "day": -2.0,
+      "label": "2026-12-18T18:00:00+00:00",
+      "level": 1,
+      "level_name": "워치콘 1",
+      "level_label": "위협 임박",
+      "action": "상향 조건",
+      "reasons": [
+       "위협 점수 100% ≥ 75% (분석 신뢰도 중)"
+      ],
+      "note": "",
+      "collect_more": false,
+      "defcon_review": false,
+      "threat": 0.9994,
+      "confidence": "중"
+     }
+    ],
+    "defcon": [],
+    "jindogae": [],
+    "durumi": []
+   }
+  }
+ },
+ "evaluation": {
+  "truth": "공격 준비",
+  "final_most_probable": "공격 준비",
+  "final_correct": true,
+  "final_grade": "심각",
+  "final_confidence": "중",
+  "max_attack_probability": 0.9994,
+  "first_warning_day": -36,
+  "warning_lead_days": 36,
+  "missed": false,
+  "identification": {
+   "events": 66,
+   "correct": 49,
+   "wrong": 17,
+   "unidentified": 0,
+   "accuracy": 0.742,
+   "errors": [
+    "apc: 정답 제9702가상기계화보병사단 → 제9703가상전차여단",
+    "chem_vehicle: 정답 제9710가상화학대대 → 제9706가상의무대대",
+    "chem_vehicle: 정답 제9710가상화학대대 → 제9709가상방공연대",
+    "decon_vehicle: 정답 제9710가상화학대대 → 제9706가상의무대대",
+    "decon_vehicle: 정답 제9710가상화학대대 → 제9709가상방공연대",
+    "march_column: 정답 제9702가상기계화보병사단 → 제9703가상전차여단",
+    "tank: 정답 제9702가상기계화보병사단 → 제9703가상전차여단",
+    "truck: 정답 제9707가상수송연대 → 제9701가상전방군단"
+   ]
+  },
+  "readiness": {
+   "basis": "예시 조건 (실제 태세 조건 아님) — 태세 판단·건의는 합참·연합사, 결정은 국방부장관·통수권자 재가 사항. 본 결과는 판단 지원 정보",
+   "tracks": {
+    "watchcon": {
+     "name": "워치콘",
+     "final": "워치콘 1",
+     "final_truth": "워치콘 1",
+     "match_rate": 0.869,
+     "over_days": 0,
+     "under_days": 8,
+     "level_changes": 4,
+     "escalation_delays": [
+      {
+       "to": "워치콘 2",
+       "truth_day": -45,
+       "rec_day": -36,
+       "delay_days": 9
+      },
+      {
+       "to": "워치콘 1",
+       "truth_day": -8,
+       "rec_day": -2,
+       "delay_days": 6
+      }
+     ],
+     "defcon_review_days": [],
+     "series": [
+      {
+       "day": -120,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -118,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -116,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -114,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -112,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -110,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -108,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -106,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -104,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -102,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -100,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -98,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -96,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -94,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -92,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -90,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -88,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -86,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -84,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -82,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -80,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -78,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -76,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -74,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -72,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -70,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -68,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -66,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -64,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -62,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -60,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -58,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -56,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -54,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -52,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -50,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -48,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -46,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -44,
+       "rec": 3,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -42,
+       "rec": 3,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -40,
+       "rec": 3,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -38,
+       "rec": 3,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 3",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -36,
+       "rec": 2,
+       "truth": 2,
+       "action": "상향 조건",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 51% ≥ 50% (분석 신뢰도 중)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -34,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [],
+       "note": "하향 조건 0/4일 — 유지",
+       "defcon": false
+      },
+      {
+       "day": -32,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [],
+       "note": "하향 조건 2/4일 — 유지",
+       "defcon": false
+      },
+      {
+       "day": -30,
+       "rec": 3,
+       "truth": 2,
+       "action": "하향 조건",
+       "name": "워치콘 3",
+       "reasons": [
+        "하향 조건 4일 이상 지속"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -28,
+       "rec": 2,
+       "truth": 2,
+       "action": "상향 조건",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 50% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -26,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [],
+       "note": "하향 조건 0/4일 — 유지",
+       "defcon": false
+      },
+      {
+       "day": -24,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 69% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -22,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 60% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -20,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 53% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -18,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 77% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -16,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 87% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -14,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 89% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -12,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 78% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -10,
+       "rec": 2,
+       "truth": 2,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 84% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -8,
+       "rec": 2,
+       "truth": 1,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 97% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -6,
+       "rec": 2,
+       "truth": 1,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 99% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -4,
+       "rec": 2,
+       "truth": 1,
+       "action": "유지",
+       "name": "워치콘 2",
+       "reasons": [
+        "위협 점수 99% ≥ 50% (분석 신뢰도 하)"
+       ],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -2,
+       "rec": 1,
+       "truth": 1,
+       "action": "상향 조건",
+       "name": "워치콘 1",
+       "reasons": [
+        "위협 점수 100% ≥ 75% (분석 신뢰도 중)"
+       ],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": 0,
+       "rec": 1,
+       "truth": 1,
+       "action": "유지",
+       "name": "워치콘 1",
+       "reasons": [
+        "위협 점수 100% ≥ 75% (분석 신뢰도 중)"
+       ],
+       "note": "",
+       "defcon": false
+      }
+     ]
+    },
+    "defcon": {
+     "name": "데프콘",
+     "final": "데프콘 4",
+     "final_truth": "데프콘 2",
+     "match_rate": 0.918,
+     "over_days": 0,
+     "under_days": 5,
+     "level_changes": 0,
+     "escalation_delays": [
+      {
+       "to": "데프콘 3",
+       "truth_day": -8,
+       "rec_day": null,
+       "delay_days": null
+      },
+      {
+       "to": "데프콘 2",
+       "truth_day": -2,
+       "rec_day": null,
+       "delay_days": null
+      }
+     ],
+     "defcon_review_days": [],
+     "series": [
+      {
+       "day": -120,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -118,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -116,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -114,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -112,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -110,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -108,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -106,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -104,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -102,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -100,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -98,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -96,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -94,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -92,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -90,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -88,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -86,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -84,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -82,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -80,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -78,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -76,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -74,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -72,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -70,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -68,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -66,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -64,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -62,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -60,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -58,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -56,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -54,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -52,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -50,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -48,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -46,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -44,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -42,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -40,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -38,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -36,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -34,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -32,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -30,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -28,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -26,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -24,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -22,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -20,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -18,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -16,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -14,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -12,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -10,
+       "rec": 4,
+       "truth": 4,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -8,
+       "rec": 4,
+       "truth": 3,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -6,
+       "rec": 4,
+       "truth": 3,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -4,
+       "rec": 4,
+       "truth": 3,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": -2,
+       "rec": 4,
+       "truth": 2,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      },
+      {
+       "day": 0,
+       "rec": 4,
+       "truth": 2,
+       "action": "유지",
+       "name": "데프콘 4",
+       "reasons": [],
+       "note": "상위 단계 기준 초과이나 분석 신뢰도 부족 → 정보 수집 강화 건의",
+       "defcon": false
+      }
+     ]
+    },
+    "jindogae": {
+     "name": "진돗개",
+     "final": "진돗개 셋",
+     "final_truth": "진돗개 셋",
+     "match_rate": 1.0,
+     "over_days": 0,
+     "under_days": 0,
+     "level_changes": 0,
+     "escalation_delays": [],
+     "defcon_review_days": [],
+     "series": [
+      {
+       "day": -120,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -118,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -116,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -114,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -112,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -110,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -108,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -106,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -104,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -102,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -100,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -98,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -96,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -94,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -92,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -90,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -88,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -86,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -84,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -82,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -80,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -78,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -76,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -74,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -72,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -70,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -68,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -66,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -64,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -62,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -60,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -58,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -56,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -54,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -52,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -50,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -48,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -46,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -44,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -42,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -40,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -38,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -36,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -34,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -32,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -30,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -28,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -26,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -24,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -22,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -20,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -18,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -16,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -14,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -12,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -10,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -8,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -6,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -4,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -2,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": 0,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "진돗개 셋",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      }
+     ]
+    },
+    "durumi": {
+     "name": "두루미",
+     "final": "두루미 미발령",
+     "final_truth": "두루미 미발령",
+     "match_rate": 1.0,
+     "over_days": 0,
+     "under_days": 0,
+     "level_changes": 0,
+     "escalation_delays": [],
+     "defcon_review_days": [],
+     "series": [
+      {
+       "day": -120,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -118,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -116,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -114,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -112,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -110,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -108,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -106,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -104,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -102,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -100,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -98,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -96,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -94,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -92,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -90,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -88,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -86,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -84,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -82,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -80,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -78,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -76,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -74,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -72,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -70,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -68,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -66,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -64,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -62,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -60,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -58,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -56,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -54,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -52,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -50,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -48,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -46,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -44,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -42,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -40,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -38,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -36,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -34,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -32,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -30,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -28,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -26,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -24,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -22,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -20,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -18,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -16,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -14,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -12,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -10,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -8,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -6,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -4,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -2,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": 0,
+       "rec": 3,
+       "truth": 3,
+       "action": "유지",
+       "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      }
+     ]
+    }
+   }
+  }
+ }
+}
