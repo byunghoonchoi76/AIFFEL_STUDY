@@ -36,6 +36,20 @@ st.markdown("""<style>
 </style>""", unsafe_allow_html=True)
 
 
+
+@st.cache_data
+def _ind_names() -> dict:
+    try:
+        import yaml
+        cat = yaml.safe_load((Path(__file__).resolve().parents[1] / "config" / "indicators.yaml").read_text(encoding="utf-8"))
+        return {i["id"]: i["name"] for h in cat["hypotheses"] for i in h["indicators"]}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _ind_ko(i: str) -> str:
+    return _ind_names().get(i, i)
+
 def _fit(text: str, max_px: float, min_px: float = 9.5) -> str:
     """카드 폭(cqi)과 글자 수로 글자 크기를 정해 한 줄에 들어가게 함 (한글 1em, 영문·숫자 약 0.6em으로 추정)."""
     w = sum(1.0 if ord(ch) >= 0x2E80 else 0.6 for ch in str(text)) or 1
@@ -181,8 +195,8 @@ with tabs[0]:
     if A.get("briefing"):
         st.markdown("<div class='why'><b>지휘관 보고 (3줄)</b><br>" + "<br>".join(A["briefing"]) + "</div>", unsafe_allow_html=True)
     if A.get("patterns"):
-        st.dataframe(pd.DataFrame([{"과거 사례": p_["name"], "유사도": f"{p_['similarity']:.0%}", "일치 징후": ", ".join(p_["matched"]) or "-",
-                                    "미식별 징후": ", ".join(p_["missing"]) or "-"} for p_ in A["patterns"]]),
+        st.dataframe(pd.DataFrame([{"과거 사례": p_["name"], "유사도": f"{p_['similarity']:.0%}", "일치 징후": ", ".join(_ind_ko(i) for i in p_["matched"]) or "-",
+                                    "미식별 징후": ", ".join(_ind_ko(i) for i in p_["missing"]) or "-"} for p_ in A["patterns"]]),
                      use_container_width=True, hide_index=True)
         st.caption("과거 사례 유사도 = 사례별 징후 조합(가중치)과 현재 징후 강도의 코사인 유사도 × 일치 비율 (LLM 미사용 계산)")
 
@@ -437,7 +451,7 @@ if IMG:
             with c3:
                 st.markdown(f"**판독** — {ph['reading']}")
                 if ph.get("sar_bright") is not None:
-                    st.markdown(f"**SAR 강반사 비율** — {ph['sar_bright']:.0%} (집결지 내 차량·구조물 군집 지표)")
+                    st.markdown(f"**SAR 강반사 비율** — {int(ph['sar_bright']*100+0.5)}% (집결지 내 차량·구조물 군집 지표)")
                 if ph.get("indicators"):
                     st.markdown("**연결 징후**")
                     for iid in ph["indicators"]:
