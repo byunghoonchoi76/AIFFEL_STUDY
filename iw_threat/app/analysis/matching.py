@@ -180,7 +180,8 @@ def classification_prompt(chunk: ReportChunk, catalog: Catalog) -> tuple[str, st
         "3. quote는 해당 사실이 드러나는 문장 전체(주어·서술어 포함)를 원문에서 그대로 복사한다(글자 하나도 바꾸지 않음, 단어 하나만 인용 금지).\n"
         "4. 부정·반대 사실(모형·가짜 장비, 보급 없음, 통신 평시 수준, 복귀·종료 등)은 C_로 시작하는 반대 징후로 분류하고, "
         "같은 구절을 긍정 징후로 분류하지 않는다. 예) '전차 상당수가 모형' → C_DECOY (I_ARMOR_MASS 아님)\n"
-        "5. 해당 지표가 없으면 hits를 빈 배열로 둔다.\n"
+        "5. 협박·위협 문구 게시, 허위 사실·가짜 공지 유포처럼 공포·혼란을 노린 내용은 사이버 공격과 함께 있더라도 I_PSYOP(심리전)으로도 분류한다. 예) '웹사이트를 변조해 최악을 각오하라는 협박 문구 게시' → I_CYBER_ATTACK과 I_PSYOP 모두\n"
+        "6. 해당 지표가 없으면 hits를 빈 배열로 둔다.\n"
         f"징후 지표 목록:\n{inds}"
     )
     user = f"첩보 원문:\n\"\"\"\n{chunk.text}\n\"\"\"\n\nJSON으로 답하라: {{\"hits\": [{{\"indicator_id\": str, \"quote\": str}}]}}"
