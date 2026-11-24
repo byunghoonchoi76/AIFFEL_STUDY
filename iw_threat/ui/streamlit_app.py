@@ -25,7 +25,7 @@ DEMO_DIR = Path(os.environ.get("DEMO_DIR", Path(__file__).resolve().parents[1] /
 st.set_page_config(page_title="징후·위협도 분석", layout="wide", page_icon="🛰")
 st.markdown("""<style>
 .card{border-radius:10px;padding:12px 14px;color:#fff;margin-bottom:6px}
-.card .t{font-size:13px;opacity:.9}.card .v{font-size:26px;font-weight:700;line-height:1.2}.card .s{font-size:12px;opacity:.9}
+.card{container-type:inline-size}.card .t{font-size:clamp(10px,7.5cqi,13px);opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card .v{font-size:clamp(12px,12.5cqi,26px);font-weight:700;line-height:1.25;white-space:nowrap}.card .s,.card .s1{font-size:12px;opacity:.9;line-height:1.35}.card .s{font-size:clamp(10px,6.6cqi,12px)}
 .lite{background:#F4F6F7;color:#1f2937;border:1px solid #D5D8DC}
 .step{border:1px solid #D5D8DC;border-radius:8px;padding:8px 10px;background:#FBFCFC;color:#1f2937;height:100%}
 .step b{font-size:15px}.step .n{font-size:22px;font-weight:700;color:#1F3A68}
@@ -34,6 +34,12 @@ st.markdown("""<style>
 .step .n{color:#1F3A68}
 .defcon{background:#C0392B;color:#fff;padding:8px 12px;border-radius:6px;font-weight:700}
 </style>""", unsafe_allow_html=True)
+
+
+def _fit(text: str, max_px: float, min_px: float = 9.5) -> str:
+    """카드 폭(cqi)과 글자 수로 글자 크기를 정해 한 줄에 들어가게 함 (한글 1em, 영문·숫자 약 0.6em으로 추정)."""
+    w = sum(1.0 if ord(ch) >= 0x2E80 else 0.6 for ch in str(text)) or 1
+    return f"font-size:clamp({min_px}px,{88 / w:.2f}cqi,{max_px}px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
 
 
 # ───────────────────────── 데이터 불러오기 ─────────────────────────
@@ -190,9 +196,12 @@ with tabs[0]:
             color = "#C0392B" if r["action"] == "상향 조건" else "#1F3A68"
             ip = IP.get(tid) or ({"level_name": r.get("issued_name"), "issuer": r.get("issuer")} if r.get("issued_name") else None)
             issued = f"{ip['level_name']} ({ip['issuer']})" if ip else "미입력"
-            col.markdown(f"<div class='card lite'><div class='t'>{TRACK_KO.get(tid, tid)}</div>"
-                         f"<div class='s'>발령 태세: <b>{issued}</b></div>"
-                         f"<div class='v' style='color:{color}'>{r['level_name']}</div><div class='s'>정보 상황 조건 · {r.get('vs_issued') or ''}</div>"
+            vs = r.get("vs_issued") or ""
+            sub = "정보 상황 조건" + (f" · {vs}" if vs and "미입력" not in vs else "")
+            col.markdown(f"<div class='card lite'><div class='t' style='{_fit(TRACK_KO.get(tid, tid), 13)}'>{TRACK_KO.get(tid, tid)}</div>"
+                         f"<div class='s1' style='{_fit('발령 태세: ' + issued, 12)}'>발령 태세: <b>{issued}</b></div>"
+                         f"<div class='v' style='color:{color};{_fit(r['level_name'], 26)}'>{r['level_name']}</div>"
+                         f"<div class='s1' style='{_fit(sub, 12)}'>{sub}</div>"
                          f"<div class='s'>{'; '.join(r['reasons']) or r.get('note') or '상위 조건 미충족'}</div></div>",
                          unsafe_allow_html=True)
         st.caption("발령 태세는 합참·연합사가 판단·발령한 값을 입력받아 평가의 참고 조건으로 적용(상급 판단 근거). "
