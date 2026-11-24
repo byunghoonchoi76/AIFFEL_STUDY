@@ -110,7 +110,7 @@ imagery:
   - {phase: "② 철수 발표·장비 잔류", rus_date: "2021-04-22 이후", place: "포고노보", approx: [[51.49, 39.16]],
      open_source: "Sentinel-2 (2021-05~06, 차량 집결지 잔존 여부)", reference: "2021.5 이후 장비 잔류 보도"}
   - {phase: "③ 2차 증강·장기 주둔", rus_date: "2021-10~12", place: "스몰렌스크 옐냐", approx: [[54.58, 33.17]],
-     open_source: "Sentinel-2 (2021-09 vs 2021-11), Sentinel-1 SAR(구름 시)", reference: "Maxar 2021.11.1 옐냐 영상 (보도 참고)"}
+     open_source: "확보 — Sentinel-2 옐냐 2021-09-09/10-02/11-01/2022-01-12 (집결지 54.603N 33.155E 부근)", reference: "Maxar 2021.11.1 옐냐 영상 (보도 참고)"}
   - {phase: "④ 연합훈련 명목 전개", rus_date: "2022-01-19 ~ 02-10", place: "벨라루스·크림·서부 러시아 전개지", approx: [],
      open_source: "Sentinel-2·1 (전개지 천막·차량 증가)", reference: "Maxar 1.19·2.1 비교: 2월 초 거의 모든 전개지에 천막 (보도 참고)"}
   - {phase: "⑤ 야전병원", rus_date: "2022-02-16", place: "벨라루스 (우크라이나 접경)", approx: [],
@@ -118,7 +118,7 @@ imagery:
   - {phase: "⑥ 도하 준비", rus_date: "2022-02-15~16", place: "벨라루스 프리퍄티강 (국경 약 6km, 체르노빌 북서 약 22km)", approx: [],
      open_source: "Sentinel-2 (부교 길이 수백 m — 10m에서 선형 구조로 식별 가능 여부 확인)", reference: "Maxar 2.15 부교 (보도 참고), Planet 1월 영상에는 없음"}
   - {phase: "⑧ 집결지 이탈·전투대형", rus_date: "2022-02-20~23", place: "벨고로드·발루이키 일대", approx: [[50.21, 38.10]],
-     open_source: "Sentinel-2·1 (집결지 차량 감소 = 이탈)", reference: "Maxar 2.21~22 보도 (보도 참고)"}
+     open_source: "확보 — Sentinel-2 옐냐 2022-02-24/03-03 (차량 열 소실). 벨고로드·발루이키 위치 미확정", reference: "Maxar 2.21~22 보도 (보도 참고)"}
   - {phase: "⑦ 경보병 전방·갱도 포병", rus_date: "해당 없음", place: "북한 고유 전술 — 러시아 사례 대응 영상 없음", approx: [],
      open_source: "합성 표적 또는 38 North·CSIS 판독 보고서의 시설 묘사 참고", reference: "-"}
 
