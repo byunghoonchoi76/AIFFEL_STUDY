@@ -28,7 +28,7 @@ echo "      언어모델 응답 확인: $(curl -s "$LLM_URL/v1/models" | grep -o
 
 mkdir -p "$OUT"
 START=$(date +%s)
-echo "[3/4] 시나리오 10종 (2일 간격 평가)"
+echo "[3/4] 시나리오 평가 (2일 간격): ${SCENARIOS:-10종 전체}"
 ALL="scenarios/attack_prep.yaml scenarios/large_exercise.yaml scenarios/peacetime.yaml scenarios/deception.yaml scenarios/info_gap.yaml scenarios/infiltration.yaml scenarios/air_provocation.yaml scenarios/local_fire_2015.yaml scenarios/rus_analog_nk.yaml scenarios/rus_analog_nk_ps.yaml"
 # shellcheck disable=SC2086
 python scripts/run_scenario.py ${SCENARIOS:-$ALL} \
