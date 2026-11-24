@@ -19,6 +19,9 @@ from ui import viz
 TRACK_KO = {'watchcon': '워치콘(정보감시태세)', 'defcon': '데프콘(방어준비태세)', 'jindogae': '진돗개(대침투)', 'durumi': '두루미(대공)'}  # noqa: E402
 
 API = os.environ.get("API_URL", "http://localhost:8080")
+# 읽기 전용 공유 모드: 외부 시연용. 합성 결과 파일만 열람, 업로드·API 호출·피드백 저장 없음
+SHARE = os.environ.get("SHARE_MODE", "").strip().lower() in ("1", "true", "yes", "on")
+DEMO_DIR = Path(os.environ.get("DEMO_DIR", Path(__file__).resolve().parents[1] / "demo"))
 st.set_page_config(page_title="징후·위협도 분석", layout="wide", page_icon="🛰")
 st.markdown("""<style>
 .card{border-radius:10px;padding:12px 14px;color:#fff;margin-bottom:6px}
@@ -57,8 +60,25 @@ def load_result_file(raw: bytes, base: Path | None = None) -> dict:
 
 with st.sidebar:
     st.header("🛰 징후·위협도 분석")
-    mode = st.radio("데이터", ["실시간 평가(API)", "결과 파일 열기"], index=1 if os.environ.get("DEMO_RESULT") else 0)
-    if mode == "실시간 평가(API)":
+    if SHARE:
+        st.info("읽기 전용 공유 화면 — 합성 시나리오(가상 부대·좌표) 결과만 표시합니다. 입력·저장 기능은 꺼져 있습니다.")
+        files = sorted(DEMO_DIR.glob("*/result.json"), key=lambda f: (f.parent.name != "rus_analog_nk", f.parent.name))
+        if os.environ.get("DEMO_RESULT"):
+            files = [Path(os.environ["DEMO_RESULT"])] + [f for f in files if f.resolve() != Path(os.environ["DEMO_RESULT"]).resolve()]
+        names = {f: (json.loads(f.read_text(encoding="utf-8")).get("scenario") or {}).get("name", f.parent.name) for f in files}
+        if files:
+            pick = st.selectbox("시나리오", files, format_func=names.get)
+            if st.session_state.get("share_pick") != str(pick):
+                st.session_state["data"] = load_result_file(pick.read_bytes(), pick.parent)
+                st.session_state["share_pick"] = str(pick)
+        else:
+            st.warning(f"시연 결과 파일이 없습니다: {DEMO_DIR}/*/result.json")
+        mode = None
+    else:
+        mode = st.radio("데이터", ["실시간 평가(API)", "결과 파일 열기"], index=1 if os.environ.get("DEMO_RESULT") else 0)
+    if mode is None:
+        pass
+    elif mode == "실시간 평가(API)":
         area = st.text_input("지역 ID", "AREA-01")
         as_of = st.text_input("기준 일시", datetime.now().astimezone().replace(microsecond=0).isoformat())
         explain = st.checkbox("해설 생성(LLM)", True)
@@ -99,7 +119,7 @@ if not rd and data.get("evaluation", {}).get("readiness"):
               "note": v["series"][-1]["note"], "defcon_review": v["series"][-1]["defcon"]}
           for k, v in data["evaluation"]["readiness"]["tracks"].items()}
 
-tabs = st.tabs(["🧭 판단 요약", "🔎 판단 근거", "📈 변화 분석", "🗺 상황도", "📊 추이", "📄 근거 원문", "⚙ 입력·피드백"])
+tabs = st.tabs(["🧭 판단 요약", "🔎 판단 근거", "📈 변화 분석", "🗺 상황도", "📊 추이", "📄 근거 원문"] + ([] if SHARE else ["⚙ 입력·피드백"]))
 
 # ───────────────────────── 1. 판단 요약 ─────────────────────────
 with tabs[0]:
@@ -307,7 +327,7 @@ with tabs[5]:
             st.markdown(f"- {s_['text']}")
 
 # ───────────────────────── 7. 입력·피드백 ─────────────────────────
-with tabs[6]:
+def _input_tab():
     st.caption("API 모드에서 사용")
     c1, c2 = st.columns(2)
     with c1:
@@ -347,3 +367,8 @@ with tabs[6]:
         if analyst and st.button("피드백 저장"):
             st.write(httpx.post(f"{API}/assessments/{int(aid)}/feedback", json={"analyst": analyst, "decision": decision,
                                 "grade_override": override or None, "comment": comment}, timeout=30).json())
+
+
+if not SHARE:
+    with tabs[6]:
+        _input_tab()
