@@ -242,3 +242,17 @@ def template_summary(result: AssessmentResult) -> dict:
             text += f" 다만 반대 징후({', '.join(names)})가 식별되어 기만·오판 가능성을 함께 검토 필요."
     refs = [r for c in pos[:3] for r in c.refs]
     return {"text": text, "citations": refs, "generated": "template"}
+
+
+def add_most_probable(summary: dict | None, result: AssessmentResult) -> dict | None:
+    """종합 판단은 가장 위험한 가설(위협 점수 최고) 기준으로 쓰므로, 가장 유력한 가설(확률 최고)이 다르면 한 문장을 덧붙임.
+    예) 훈련 시나리오에서 '공격 준비 34%'만 보고되어 공격으로 오인되는 것을 막음. 수치는 계산값 그대로."""
+    if not summary or not result.hypotheses:
+        return summary
+    best = max(result.hypotheses, key=lambda h: h.probability)
+    if best.hypothesis_id == result.top.hypothesis_id or best.probability <= result.top.probability:
+        return summary
+    extra = f" 가장 유력한 가설은 '{best.name}'({best.probability:.0%})이며, 위 판단은 가장 위험한 가설 기준임."
+    if extra.strip() in summary.get("text", ""):
+        return summary
+    return {**summary, "text": summary["text"].rstrip() + extra}

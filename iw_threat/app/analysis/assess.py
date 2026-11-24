@@ -13,7 +13,7 @@ from ..embed import embed_query
 from ..stores import pg
 from .catalog import load_catalog, load_grading
 from .change import TargetRow, detect_changes, detect_unit_changes
-from .explain import (build_evidence_map, explanation_prompt, indicator_lines, label_doctrine, template_summary,
+from .explain import (add_most_probable, build_evidence_map, explanation_prompt, indicator_lines, label_doctrine, template_summary,
                       verify_implications, verify_summary)
 from .matching import ReportChunk, classification_prompt, hits_to_evidence, match_imagery, sync_evidence
 from .commander import KeyTarget, target_activity
@@ -328,6 +328,7 @@ def run_assessment(area_id: str, as_of: datetime, *, vector=None, llm=None, expl
         narrative.update({"sentences": lines, "dropped": len(dropped),
                           "template_filled": sum(1 for x in lines if x["generated"] == "template"),
                           "dropped_samples": dropped[:3]})
+    narrative["summary"] = add_most_probable(narrative["summary"], result)
 
     payload = {
         "baseline_mode": baseline_mode,

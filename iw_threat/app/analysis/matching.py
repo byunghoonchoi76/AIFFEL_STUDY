@@ -122,6 +122,20 @@ def quote_in_text(quote: str, text: str) -> bool:
     return len(q) >= 4 and q in _norm(text)
 
 
+_SENT_SPLIT = re.compile(r"(?<=[.!?。])\s+|\n+")
+
+
+def expand_quote(quote: str, text: str, max_len: int = 160) -> str:
+    """LLM 인용이 짧은 구절('공표했다' 등)이면 그 구절이 들어 있는 원문 문장 전체로 넓힘 — 근거 추적성 확보.
+    원문에 그대로 있는 문장만 쓰므로 내용 변경 없음. 문장이 너무 길면 원래 구절 유지."""
+    q = _norm(quote)
+    for sent in _SENT_SPLIT.split(text):
+        s = _norm(sent)
+        if q and q in s:
+            return s if len(s) <= max_len else q
+    return q
+
+
 def _overlap(a: str, b: str) -> bool:
     a, b = _norm(a), _norm(b)
     if not a or not b:
@@ -148,7 +162,7 @@ def hits_to_evidence(chunk: ReportChunk, hits: list[dict], catalog: Catalog) -> 
         out.append(Evidence(
             indicator_id=iid, source_type=chunk.source_type, source_key=chunk.source_key,
             reliability=chunk.reliability, credibility=chunk.credibility,
-            observed_at=chunk.reported_at, ref=f"chunk:{chunk.chunk_id}", quote=_norm(quote),
+            observed_at=chunk.reported_at, ref=f"chunk:{chunk.chunk_id}", quote=expand_quote(quote, chunk.text),
         ))
     return out
 
@@ -163,7 +177,7 @@ def classification_prompt(chunk: ReportChunk, catalog: Catalog) -> tuple[str, st
         "규칙:\n"
         "1. 원문의 각 문장을 빠짐없이 검토하고, 해당하는 지표를 모두 찾는다(한 원문에서 여러 개 가능).\n"
         "2. 원문에 명시된 사실만 사용한다. 추정·확대 해석 금지.\n"
-        "3. quote는 원문에서 그대로 복사한 연속 구절이어야 한다(글자 하나도 바꾸지 않음).\n"
+        "3. quote는 해당 사실이 드러나는 문장 전체(주어·서술어 포함)를 원문에서 그대로 복사한다(글자 하나도 바꾸지 않음, 단어 하나만 인용 금지).\n"
         "4. 부정·반대 사실(모형·가짜 장비, 보급 없음, 통신 평시 수준, 복귀·종료 등)은 C_로 시작하는 반대 징후로 분류하고, "
         "같은 구절을 긍정 징후로 분류하지 않는다. 예) '전차 상당수가 모형' → C_DECOY (I_ARMOR_MASS 아님)\n"
         "5. 해당 지표가 없으면 hits를 빈 배열로 둔다.\n"
