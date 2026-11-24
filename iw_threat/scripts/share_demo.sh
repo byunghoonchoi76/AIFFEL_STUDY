@@ -19,7 +19,7 @@ fi
 [ -z "${SHARE_PASSWORD:-}" ] && echo "주의: SHARE_PASSWORD가 없어 링크만 알면 누구나 볼 수 있습니다."
 SHARE_MODE=1 SHARE_PASSWORD="${SHARE_PASSWORD:-}" DEMO_DIR="${DEMO_DIR:-demo}" streamlit run ui/streamlit_app.py \
   --server.port "$PORT" --server.address 127.0.0.1 --server.headless true \
-  --client.toolbarMode viewer --server.fileWatcherType none --browser.gatherUsageStats false &
+  --client.toolbarMode viewer --theme.base light --server.fileWatcherType none --browser.gatherUsageStats false &
 ST_PID=$!
 trap 'kill "$ST_PID" 2>/dev/null || true' EXIT INT TERM
 

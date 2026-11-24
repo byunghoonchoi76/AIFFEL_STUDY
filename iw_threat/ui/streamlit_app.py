@@ -27,9 +27,11 @@ st.markdown("""<style>
 .card{border-radius:10px;padding:12px 14px;color:#fff;margin-bottom:6px}
 .card .t{font-size:13px;opacity:.9}.card .v{font-size:26px;font-weight:700;line-height:1.2}.card .s{font-size:12px;opacity:.9}
 .lite{background:#F4F6F7;color:#1f2937;border:1px solid #D5D8DC}
-.step{border:1px solid #D5D8DC;border-radius:8px;padding:8px 10px;background:#FBFCFC;height:100%}
+.step{border:1px solid #D5D8DC;border-radius:8px;padding:8px 10px;background:#FBFCFC;color:#1f2937;height:100%}
 .step b{font-size:15px}.step .n{font-size:22px;font-weight:700;color:#1F3A68}
-.why{background:#FEF9E7;border-left:4px solid #D4AC0D;padding:8px 12px;border-radius:4px;margin:6px 0}
+.why{background:#FEF9E7;color:#1f2937;border-left:4px solid #D4AC0D;padding:8px 12px;border-radius:4px;margin:6px 0}
+.why *,.step *,.lite *{color:inherit}
+.step .n{color:#1F3A68}
 .defcon{background:#C0392B;color:#fff;padding:8px 12px;border-radius:6px;font-weight:700}
 </style>""", unsafe_allow_html=True)
 
