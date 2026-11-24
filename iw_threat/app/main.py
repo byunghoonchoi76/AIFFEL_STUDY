@@ -209,7 +209,7 @@ class KeyTargetIn(BaseModel):
 
 class PostureIn(BaseModel):
     area_id: str | None = None
-    track: Literal["watchcon", "defcon", "jindogae", "durumi"]
+    track: Literal["watchcon", "defcon", "jindogae", "durumi", "infocon"]
     level: int
     valid_from: datetime
     issuer: str = "합참·연합사"

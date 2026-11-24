@@ -136,10 +136,13 @@ def readiness_eval(sc: Scenario, series: list[dict], readiness_path: str = "conf
                 delays.append({"to": t.name_of(lv), "truth_day": d0, "rec_day": first_ok,
                                "delay_days": (first_ok - d0) if first_ok is not None else None})
         changes = sum(1 for a, b in zip(rows, rows[1:]) if a["rec"] != b["rec"])
+        no_truth = t.id not in truth_cfg      # 정답 일정이 없는 트랙(예: 사이버 사례가 없는 시나리오의 인포콘)은 채점 제외
         out["tracks"][t.id] = {
-            "name": t.name, "final": rows[-1]["name"], "final_truth": t.name_of(rows[-1]["truth"]),
-            "match_rate": round(sum(r["rec"] == r["truth"] for r in rows) / len(rows), 3),
-            "over_days": sum(r["rec"] < r["truth"] for r in rows), "under_days": sum(r["rec"] > r["truth"] for r in rows),
+            "name": t.name, "final": rows[-1]["name"], "final_truth": None if no_truth else t.name_of(rows[-1]["truth"]),
+            "scored": not no_truth,
+            "match_rate": None if no_truth else round(sum(r["rec"] == r["truth"] for r in rows) / len(rows), 3),
+            "over_days": None if no_truth else sum(r["rec"] < r["truth"] for r in rows),
+            "under_days": None if no_truth else sum(r["rec"] > r["truth"] for r in rows),
             "level_changes": changes, "escalation_delays": delays,
             "defcon_review_days": [r["day"] for r in rows if r["defcon"]], "series": rows}
     return out

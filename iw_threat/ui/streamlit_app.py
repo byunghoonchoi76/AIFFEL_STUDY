@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from app.taxonomy import name_ko  # noqa: E402
 from ui import viz
 
-TRACK_KO = {'watchcon': '워치콘(정보감시태세)', 'defcon': '데프콘(방어준비태세)', 'jindogae': '진돗개(대침투)', 'durumi': '두루미(대공)'}  # noqa: E402
+TRACK_KO = {'watchcon': '워치콘(정보감시태세)', 'defcon': '데프콘(방어준비태세)', 'jindogae': '진돗개(대침투)', 'durumi': '두루미(대공)', 'infocon': '인포콘(정보작전방호)'}  # noqa: E402
 
 API = os.environ.get("API_URL", "http://localhost:8080")
 # 읽기 전용 공유 모드: 외부 시연용. 합성 결과 파일만 열람, 업로드·API 호출·피드백 저장 없음

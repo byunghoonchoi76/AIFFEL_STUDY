@@ -43,6 +43,11 @@ hypotheses:
       - {id: I_HARTS_OCC,    name: 갱도포병진지 점유,          lr: 7.0, tau_days: 10, equipment: [harts@occupied], min_delta: 2, meaning: 화력 운용 준비 정황}
       - {id: I_DECEPTION_ACT, name: 기만체·가짜 진지 조성,     lr: 1.5, tau_days: 10, equipment: [group:deception], min_delta: 3, meaning: 의도 은폐 활동}
       - {id: I_EW_DEPLOY,    name: 전자전·통신 차량 전개,      lr: 3.0, tau_days: 5, equipment: [ew_vehicle], min_delta: 2, meaning: 전자전 공격 준비 정황}
+      # 사이버·정보작전 (2022 러시아-우크라이나 개전 전후 사례 반영, 인포콘 판단 조건 연계) — 예시값
+      - {id: I_CYBER_ATTACK, name: 정부·군·금융 전산망 사이버 공격 급증, lr: 3.0, tau_days: 10, equipment: [], min_delta: 0, meaning: 개전 전 지휘·통신·사회기반 마비 시도 정황}
+      - {id: I_PSYOP,        name: 사이버 심리전·허위정보 대량 유포, lr: 1.5, tau_days: 7, equipment: [], min_delta: 0, meaning: 사회 혼란·저항 의지 약화 시도 정황}
+      - {id: I_GPS_JAMMING,  name: GPS 전파교란 발생,           lr: 2.0, tau_days: 3, equipment: [], min_delta: 0, meaning: 아군 항법·정밀유도 방해 정황}
+      - {id: I_POSTURE_IC,   name: 합참 인포콘 상향 판단,       lr: 1.5, tau_days: 30, equipment: [], min_delta: 0, meaning: 상급 정보작전방호태세 판단 반영 (참고 조건)}
       - {id: I_ASSAULT,      name: 공격대형·화력준비 진지 형성, lr: 12.0, tau_days: 2, equipment: [formation_wedge_v_line, artillery_position], min_delta: 2, meaning: 공격 개시 정황}
       # 반대 징후 (lr < 1: 공격 가능성을 낮춤). discounts: 이 반대 증거가 신뢰를 깎는 대상 지표
       - {id: I_POSTURE_WC,   name: 합참·연합사 워치콘 상향 판단, lr: 2.0, tau_days: 30, equipment: [], min_delta: 0, meaning: 상급 정보판단 반영 (참고 조건)}
@@ -82,6 +87,7 @@ hypotheses:
       - {id: I_KEY_TARGET_LOCAL, name: 핵심·고가치표적 활동(국지도발 관련), lr: 2.5, tau_days: 5, equipment: [], min_delta: 0, meaning: 합참·연합사 표적목록 중 국지도발 관련 표적 활동}
       - {id: I_WX_COVER,     name: 저시정 은밀 침투 유리 여건,     lr: 1.3, tau_days: 2, equipment: [], min_delta: 0, meaning: 감시 곤란 기상 (의도 근거 아님)}
       - {id: I_INFIL_SIGN,   name: 침투 흔적·거동 수상자,        lr: 9.0, tau_days: 3, equipment: [tunnel_exit], min_delta: 1, meaning: 침투 진행 정황}
+      - {id: I_GPS_JAMMING,  name: GPS 전파교란 발생,           lr: 1.5, tau_days: 3, equipment: [], min_delta: 0, meaning: 침투 엄호 전자전 정황}
 
   # 두루미(적 항공기 위협) 트랙용 — 예시값
   - id: H_LOCAL_FIRE
@@ -94,6 +100,8 @@ hypotheses:
       - {id: I_KEY_TARGET_LOCAL, name: 핵심·고가치표적 활동(국지도발 관련), lr: 2.5, tau_days: 5, equipment: [], min_delta: 0, meaning: 합참·연합사 표적목록 중 국지도발 관련 표적 활동}
       - {id: I_ULTIMATUM,    name: 최후통첩·준전시상태 선포,     lr: 8.0, tau_days: 4, equipment: [], min_delta: 0, meaning: 시한부 위협 — 도발 임박 정황}
       - {id: I_COMMS_CUT,    name: 군 통신선 응답 중단·전방 교신량 급증, lr: 4.0, tau_days: 3, equipment: [], min_delta: 0, meaning: 작전 지휘 활성화 정황}
+      - {id: I_GPS_JAMMING,  name: GPS 전파교란 발생,           lr: 2.0, tau_days: 3, equipment: [], min_delta: 0, meaning: 접경 도발과 연계된 전자전 정황}
+      - {id: I_PSYOP,        name: 사이버 심리전·허위정보 대량 유포, lr: 1.5, tau_days: 7, equipment: [], min_delta: 0, meaning: 도발 명분 조성·여론 교란 정황}
       - {id: I_SUB_SORTIE,   name: 잠수함정·공기부양정 기지 이탈, lr: 2.5, tau_days: 3, equipment: [submarine, hovercraft, semi_submersible], min_delta: 1, direction: decrease, min_drop_ratio: 0.4, meaning: 기습·비대칭 전력 동시 전개 정황}
       - {id: I_LOGISTICS,    name: 보급·유류 차량 증가,       lr: 1.5, tau_days: 10, equipment: [truck, fuel_truck, supply_point], min_delta: 20, meaning: 탄약·보급 지원 정황}
       - {id: C_DECOY,        name: 모형·위장 장비 식별,          lr: 0.3,  tau_days: 10, equipment: [], counter: true, discounts: [I_HARTS_OCC, I_ARTY_POS], discount_factor: 0.7, meaning: 기만 전시 가능성}

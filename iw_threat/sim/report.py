@@ -55,8 +55,8 @@ def readiness_chart(rd: dict, path: Path) -> Path:
     if kr:
         plt.rcParams["font.family"] = kr
     plt.rcParams["axes.unicode_minus"] = False
-    tracks = list(rd["tracks"].values())
-    fig, axs = plt.subplots(1, len(tracks), figsize=(7.4, 2.4), dpi=150, sharey=True)
+    tracks = [t for t in rd["tracks"].values() if t.get("match_rate") is not None] or list(rd["tracks"].values())
+    fig, axs = plt.subplots(1, len(tracks), figsize=(1.9 * len(tracks), 2.4), dpi=150, sharey=False)
     for ax, tr in zip(axs if len(tracks) > 1 else [axs], tracks):
         days = [r["day"] for r in tr["series"]]
         ax.step(days, [r["truth"] for r in tr["series"]], where="post", color="#999", lw=2.2, label="정답" if kr else "Truth")
@@ -272,6 +272,8 @@ def build_report(result: dict, out_path: str | Path) -> Path:
         para("태세 판단 조건 vs 정답 태세 일정", 10.5, True, after=2)
         trow = []
         for tid, tr in rd["tracks"].items():
+            if tr.get("match_rate") is None:   # 정답 일정 없는 트랙은 채점표에서 제외
+                continue
             delay = "; ".join(f"{x['to']}: 정답 D{x['truth_day']:+d} / 조건 부합 " + (f"D{x['rec_day']:+d} ({x['delay_days']:+d}일)" if x["rec_day"] is not None else "미부합")
                               for x in tr["escalation_delays"]) or "-"
             trow.append([tr["name"], f"{tr['match_rate']:.0%}", tr["over_days"], tr["under_days"], tr["level_changes"], delay])

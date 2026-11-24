@@ -9,7 +9,7 @@ from pathlib import Path
 def summarize(r: dict) -> dict:
     ev, f = r["evaluation"], r["final"]
     top = max(f["hypotheses"], key=lambda h: h["probability"])
-    rd = {k: round(v.get("match_rate", 0), 3) for k, v in (ev.get("readiness") or {}).get("tracks", {}).items()}
+    rd = {k: round(v["match_rate"], 3) for k, v in (ev.get("readiness") or {}).get("tracks", {}).items() if v.get("match_rate") is not None}
     return {"id": r["scenario"]["id"], "name": r["scenario"]["name"], "truth": r["scenario"]["truth"].get("intent"),
             "final_correct": ev.get("final_correct"), "final_top": top["name"], "final_top_p": round(top["probability"], 4),
             "max_attack_p": round(ev.get("max_attack_probability") or 0, 4), "first_warning_day": ev.get("first_warning_day"),

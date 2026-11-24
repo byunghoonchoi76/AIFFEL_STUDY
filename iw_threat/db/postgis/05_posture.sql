@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS issued_posture (
     id          BIGSERIAL PRIMARY KEY,
     area_id     TEXT,                    -- NULL이면 전 지역 공통
-    track       TEXT NOT NULL,           -- watchcon / defcon / jindogae / durumi
+    track       TEXT NOT NULL,           -- watchcon / defcon / jindogae / durumi / infocon
     level       INT NOT NULL,
     valid_from  TIMESTAMPTZ NOT NULL,
     issuer      TEXT NOT NULL,           -- 합참 / 연합사 / 합참·연합사
