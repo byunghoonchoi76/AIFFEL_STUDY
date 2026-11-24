@@ -74,7 +74,8 @@ def _candidate(track: Track, ob: Observation) -> tuple[int, list[str], bool, flo
                 break
             held = True
     for rule in track.decisive:
-        if set(rule["indicators"]) <= ob.indicators and rule["min_level"] < level:
+        if set(rule["indicators"]) <= ob.indicators and rule["min_level"] < level \
+                and threat >= rule.get("min_threat", 0.0):          # 조합 + 위협 수준을 함께 요구하는 규칙(선택)
             level = rule["min_level"]
             reasons.append(f"결정적 징후: {rule['note']}")
     return level, reasons, held, threat

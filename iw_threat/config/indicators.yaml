@@ -44,7 +44,7 @@ hypotheses:
       - {id: I_DECEPTION_ACT, name: 기만체·가짜 진지 조성,     lr: 1.5, tau_days: 10, equipment: [group:deception], min_delta: 3, meaning: 의도 은폐 활동}
       - {id: I_EW_DEPLOY,    name: 전자전·통신 차량 전개,      lr: 3.0, tau_days: 5, equipment: [ew_vehicle], min_delta: 2, meaning: 전자전 공격 준비 정황}
       # 사이버·정보작전 (2022 러시아-우크라이나 개전 전후 사례 반영, 인포콘 판단 조건 연계) — 예시값
-      - {id: I_CYBER_ATTACK, name: 정부·군·금융 전산망 사이버 공격 급증, lr: 3.0, tau_days: 10, equipment: [], min_delta: 0, meaning: 개전 전 지휘·통신·사회기반 마비 시도 정황}
+      - {id: I_CYBER_ATTACK, name: 정부·군·금융 전산망 사이버 공격 급증, lr: 3.0, tau_days: 21, equipment: [], min_delta: 0, meaning: 개전 전 지휘·통신·사회기반 마비 시도 정황}
       - {id: I_PSYOP,        name: 사이버 심리전·허위정보 대량 유포, lr: 1.5, tau_days: 7, equipment: [], min_delta: 0, meaning: 사회 혼란·저항 의지 약화 시도 정황}
       - {id: I_GPS_JAMMING,  name: GPS 전파교란 발생,           lr: 2.0, tau_days: 3, equipment: [], min_delta: 0, meaning: 아군 항법·정밀유도 방해 정황}
       - {id: I_POSTURE_IC,   name: 합참 인포콘 상향 판단,       lr: 1.5, tau_days: 30, equipment: [], min_delta: 0, meaning: 상급 정보작전방호태세 판단 반영 (참고 조건)}

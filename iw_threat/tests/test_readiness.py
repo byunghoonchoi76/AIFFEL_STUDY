@@ -49,8 +49,8 @@ def test_tracks_follow_their_own_hypotheses():
 
 
 def test_infocon_cyber_indicators_raise_condition():
-    """인포콘: 사이버 공격 단독 → 4, 사이버 공격 + 심리전(또는 GPS 교란) → 3, 위협 점수 0.75 이상·신뢰도 중 → 2."""
-    s = recommend_all(TRACKS, [ob(0, 0.05), ob(2, 0.05, inds=["I_CYBER_ATTACK"]), ob(4, 0.05, inds=["I_CYBER_ATTACK", "I_PSYOP"]),
-                               ob(6, 0.80, inds=["I_CYBER_ATTACK", "I_PSYOP"])])["infocon"]
+    """인포콘: 재래식 위협만으로는 유지, 사이버 공격 → 4, + 심리전 → 3, + GPS 교란·공격 위협 90% 이상 → 2."""
+    s = recommend_all(TRACKS, [ob(0, 0.95), ob(2, 0.05, inds=["I_CYBER_ATTACK"]), ob(4, 0.05, inds=["I_CYBER_ATTACK", "I_PSYOP"]),
+                               ob(6, 0.95, inds=["I_CYBER_ATTACK", "I_GPS_JAMMING"])])["infocon"]
     assert levels(s) == [5, 4, 3, 2]
     assert s[0]["level_name"] == "인포콘 5" and s[3]["level_name"] == "인포콘 2"
