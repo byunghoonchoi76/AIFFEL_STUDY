@@ -58,6 +58,21 @@ def load_result_file(raw: bytes, base: Path | None = None) -> dict:
     return data
 
 
+# 공유 모드 비밀번호 (SHARE_PASSWORD 설정 시): 링크를 알아도 비밀번호 없이는 내용이 보이지 않음
+if SHARE and os.environ.get("SHARE_PASSWORD"):
+    import hmac
+    if not st.session_state.get("share_ok"):
+        st.title("🛰 징후·위협도 분석 — 공유 화면")
+        pw = st.text_input("비밀번호", type="password", key="share_pw")
+        if pw:
+            if hmac.compare_digest(pw.encode(), os.environ["SHARE_PASSWORD"].encode()):
+                st.session_state["share_ok"] = True
+                st.rerun()
+            else:
+                st.error("비밀번호가 맞지 않습니다.")
+        st.stop()
+
+
 with st.sidebar:
     st.header("🛰 징후·위협도 분석")
     if SHARE:

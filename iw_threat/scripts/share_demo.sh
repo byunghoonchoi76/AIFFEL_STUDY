@@ -6,6 +6,7 @@
 # 사용: bash scripts/share_demo.sh            (기본 포트 8502 — 8501은 docker compose ui가 사용)
 #       PORT=8600 bash scripts/share_demo.sh
 #       NO_TUNNEL=1 bash scripts/share_demo.sh  (터널 없이 이 장비에서만 확인)
+#       SHARE_PASSWORD='비밀번호' bash scripts/share_demo.sh  (접속 시 비밀번호 요구 — 외부 공유 시 권장)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PORT="${PORT:-8502}"
@@ -15,7 +16,8 @@ if ss -ltn 2>/dev/null | grep -q ":${PORT} "; then
   exit 1
 fi
 
-SHARE_MODE=1 DEMO_DIR="${DEMO_DIR:-demo}" streamlit run ui/streamlit_app.py \
+[ -z "${SHARE_PASSWORD:-}" ] && echo "주의: SHARE_PASSWORD가 없어 링크만 알면 누구나 볼 수 있습니다."
+SHARE_MODE=1 SHARE_PASSWORD="${SHARE_PASSWORD:-}" DEMO_DIR="${DEMO_DIR:-demo}" streamlit run ui/streamlit_app.py \
   --server.port "$PORT" --server.address 127.0.0.1 --server.headless true \
   --client.toolbarMode viewer --server.fileWatcherType none --browser.gatherUsageStats false &
 ST_PID=$!
