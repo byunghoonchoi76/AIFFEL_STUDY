@@ -153,7 +153,7 @@ def build_report(result: dict, out_path: str | Path) -> Path:
             why = "; ".join(last["reasons"]) or (last["note"] or "상위 단계 조건 미충족")
             rows.append([tr["name"], f"{last['name']} {'(' + last['action'] + ')' if last['action'] != '유지' else ''}".strip(), why, hist])
         table(["태세", "조건 부합 단계", "근거", "조건 변동 이력"], rows, [2.0, 3.2, 6.8, 5.0])
-        para(f"※ {rd['basis']} · 상향 조건은 즉시 / 하향 조건은 낮은 조건 지속 시 반영 · 신뢰도 부족 시 "추가 확인 필요" 표시", 8.5,
+        para(f"※ {rd['basis']} · 상향 조건은 즉시 / 하향 조건은 낮은 조건 지속 시 반영 · 신뢰도 부족 시 ‘추가 확인 필요’ 표시", 8.5,
              after=4, color=(0x66, 0x66, 0x66))
         table(["분석관 검토", "□ 조건 판단 동의  □ 수정(          )  □ 추가 확인 필요"], [["검토자 / 일시", ""]], [4.0, 13.0])
 
