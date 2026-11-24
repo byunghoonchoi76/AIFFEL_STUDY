@@ -9,7 +9,12 @@ OUT="${OUT:-data/sim_llm}"
 D_DAY="2026-12-20"          # 기준 결과와 같은 D일·seed로 맞춤
 
 echo "[1/4] API 상태 확인: $API"
-curl -sf "$API/health" >/dev/null || { echo "API가 응답하지 않습니다. docker compose up -d 후 다시 실행하세요." >&2; exit 1; }
+for i in $(seq 1 36); do                     # API 재기동 직후를 고려해 최대 3분 대기
+  curl -sf "$API/health" >/dev/null && break
+  [ "$i" = 36 ] && { echo "API가 3분 동안 응답하지 않습니다. docker compose logs --tail 50 api 로 오류를 확인하세요." >&2; exit 1; }
+  sleep 5
+done
+echo "      API 응답 확인"
 
 echo "[2/4] 언어모델 응답 확인"
 docker compose ps llm 2>/dev/null | tail -n +2 || true
