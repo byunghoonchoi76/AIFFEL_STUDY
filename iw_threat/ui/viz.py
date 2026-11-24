@@ -174,3 +174,14 @@ def evidence_flow(hyp: dict) -> go.Figure:
     fig.update_layout(font=FONT, height=max(360, 30 * len(labels)), margin=dict(l=10, r=10, t=40, b=10),
                       title="근거 흐름 — 출처(등급) → 징후 → 가설 (띠 굵기: 근거 가중치 / 확률 기여)")
     return fig
+
+
+def sar_activity(phases: list[dict]) -> go.Figure:
+    """위성영상 단계별 SAR 강반사 비율(집결지 활성도) 막대."""
+    xs = [p["phase"] for p in phases]
+    ys = [p["sar_bright"] * 100 for p in phases]
+    fig = go.Figure(go.Bar(x=xs, y=ys, text=[f"{y:.0f}%" for y in ys], textposition="outside",
+                           marker_color=["#C0392B" if y >= 10 else "#7F8C8D" for y in ys]))
+    fig.update_layout(font=FONT, height=260, margin=dict(l=10, r=10, t=40, b=10), title="집결지 SAR 강반사 비율 (차량·구조물 군집 지표)",
+                      yaxis=dict(title="%", range=[0, max(ys) * 1.3 if ys else 1]), plot_bgcolor="white")
+    return fig

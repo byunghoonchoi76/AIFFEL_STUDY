@@ -1,0 +1,22 @@
+{
+ "title": "공개 위성영상 판독 예시 — 2021~22 러시아군 옐냐(스몰렌스크) 집결지",
+ "note": "Contains modified Copernicus Sentinel data 2021–2022 (Sentinel-2 광학 10m, Sentinel-1 SAR VV 10m, 동일 궤도). 노란 점선 = 집결지 판독 구역. 시스템 입력은 영상 자체가 아니라 판독 결과(표적 종류·수량·위치)이며, 아래 영상은 러시아 사례 기반 시나리오의 단계를 실제 영상으로 보여주는 판독 예시. 판독 구역과 설명은 공개 보도 기반 분석관 판독(공식 좌표·평가 아님).",
+ "scenarios": ["rus_analog_nk", "rus_analog_nk_ps"],
+ "d_day": "2022-02-24",
+ "phases": [
+  {"phase": "평시 기준", "scenario_phase": "평시", "optical": "yelnya/s2_20210909.jpg", "sar": "yelnya/s1_20210913.jpg",
+   "reading": "초지, 집결 흔적 없음", "sar_bright": 0.025, "indicators": []},
+  {"phase": "집결지 조성", "scenario_phase": "③ 2차 증강 착수", "optical": "yelnya/s2_20211002.jpg", "sar": null,
+   "reading": "신규 진입로·지면 정리 — 집결지 준비 정황", "sar_bright": null, "indicators": ["I_PATTERN_DEV"]},
+  {"phase": "2차 증강", "scenario_phase": "③ 2차 증강", "optical": "yelnya/s2_20211101.jpg", "sar": "yelnya/s1_20211112.jpg",
+   "reading": "차량 열 다수 집결(회색 격자), SAR 강반사 급증", "sar_bright": 0.159, "indicators": ["I_ARMOR_MASS", "I_LOGISTICS"]},
+  {"phase": "장기 주둔", "scenario_phase": "④ 훈련 명목 전개", "optical": "yelnya/s2_20220112.jpg", "sar": "yelnya/s1_20220111.jpg",
+   "reading": "적설 위 차량 열 유지 — 장기 주둔", "sar_bright": 0.108, "indicators": ["I_ARMOR_MASS"]},
+  {"phase": "기만 철수 발표 시기", "scenario_phase": "⑦ 기만 철수 발표", "optical": null, "sar": "yelnya/s1_20220216.jpg",
+   "reading": "같은 날 광학 구름 100% — SAR만 관측, 강반사 약화(전방 이동 추정)", "sar_bright": 0.088, "indicators": ["I_DISPERSAL"]},
+  {"phase": "개전·집결지 이탈", "scenario_phase": "⑨ 이탈·공격대형", "optical": "yelnya/s2_20220224.jpg", "sar": "yelnya/s1_20220228.jpg",
+   "reading": "차량 열 형태 약화·이동 흔적, SAR 강반사 소실", "sar_bright": 0.036, "indicators": ["I_DISPERSAL", "I_ASSAULT"]},
+  {"phase": "이탈 후", "scenario_phase": "개전 이후", "optical": "yelnya/s2_20220303.jpg", "sar": "yelnya/s1_20220312.jpg",
+   "reading": "주차 흔적(다져진 눈·노출 지면)만 잔존", "sar_bright": 0.023, "indicators": []}
+ ]
+}

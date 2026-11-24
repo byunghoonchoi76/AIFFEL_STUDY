@@ -136,7 +136,21 @@ if not rd and data.get("evaluation", {}).get("readiness"):
               "note": v["series"][-1]["note"], "defcon_review": v["series"][-1]["defcon"]}
           for k, v in data["evaluation"]["readiness"]["tracks"].items()}
 
-tabs = st.tabs(["🧭 판단 요약", "🔎 판단 근거", "📈 변화 분석", "🗺 상황도", "📊 추이", "📄 근거 원문"] + ([] if SHARE else ["⚙ 입력·피드백"]))
+# 위성영상 판독 예시 (시나리오에 연결된 공개 영상이 있으면 탭 추가)
+IMG_DIR = Path(os.environ.get("IMAGERY_DIR", Path(__file__).resolve().parents[1] / "demo" / "imagery"))
+IMG = None
+try:
+    _img = json.loads((IMG_DIR / "imagery.json").read_text(encoding="utf-8"))
+    if (data.get("scenario") or {}).get("id") in _img.get("scenarios", []):
+        IMG = _img
+except Exception:  # noqa: BLE001
+    IMG = None
+_names = ["🧭 판단 요약", "🛰 위성영상", "🔎 판단 근거", "📈 변화 분석", "🗺 상황도", "📊 추이", "📄 근거 원문"]
+if not IMG:
+    _names.remove("🛰 위성영상")
+_names += [] if SHARE else ["⚙ 입력·피드백"]
+TAB = dict(zip(_names, st.tabs(_names)))
+tabs = [TAB[n] for n in _names if n != "🛰 위성영상"]
 
 # ───────────────────────── 1. 판단 요약 ─────────────────────────
 with tabs[0]:
@@ -385,6 +399,43 @@ def _input_tab():
             st.write(httpx.post(f"{API}/assessments/{int(aid)}/feedback", json={"analyst": analyst, "decision": decision,
                                 "grade_override": override or None, "comment": comment}, timeout=30).json())
 
+
+
+# ───────────────────────── 위성영상 (공개 영상 판독 예시) ─────────────────────────
+if IMG:
+    with TAB["🛰 위성영상"]:
+        st.subheader(IMG.get("title", "위성영상 판독 예시"))
+        st.caption("영상 → 판독(표적 종류·수량·위치) → 징후 → 위협도: 시스템은 판독 결과를 입력받아 판단하며, 아래는 각 단계를 실제 공개 영상으로 보여주는 예시")
+        ev_ids = {e["indicator_id"] for e in evidence}
+        try:
+            import yaml
+            _cat = yaml.safe_load((Path(__file__).resolve().parents[1] / "config" / "indicators.yaml").read_text(encoding="utf-8"))
+            names = {i["id"]: i["name"] for h in _cat["hypotheses"] for i in h["indicators"]}
+        except Exception:  # noqa: BLE001
+            names = {}
+        rows = [p for p in IMG["phases"] if p.get("sar_bright") is not None]
+        if rows:
+            st.plotly_chart(viz.sar_activity(rows), use_container_width=True)
+        for ph in IMG["phases"]:
+            st.markdown(f"#### {ph['phase']}  ·  시나리오 단계: {ph['scenario_phase']}")
+            c1, c2, c3 = st.columns([1, 1, 1.1])
+            for col, key, label in [(c1, "optical", "광학 (Sentinel-2)"), (c2, "sar", "SAR (Sentinel-1)")]:
+                with col:
+                    if ph.get(key) and (IMG_DIR / ph[key]).exists():
+                        st.image(str(IMG_DIR / ph[key]), use_container_width=True)
+                    else:
+                        st.info(f"{label}: 해당 시기 영상 없음" + (" (구름)" if key == "optical" else ""))
+            with c3:
+                st.markdown(f"**판독** — {ph['reading']}")
+                if ph.get("sar_bright") is not None:
+                    st.markdown(f"**SAR 강반사 비율** — {ph['sar_bright']:.0%} (집결지 내 차량·구조물 군집 지표)")
+                if ph.get("indicators"):
+                    st.markdown("**연결 징후**")
+                    for iid in ph["indicators"]:
+                        mark = "✔ 현재 평가 근거에 반영" if iid in ev_ids else "— 현재(최종일) 평가에는 미반영: 시간 경과·해당 단계 아님"
+                        st.markdown(f"- {names.get(iid, iid)} ({mark})")
+            st.divider()
+        st.caption(IMG.get("note", ""))
 
 if not SHARE:
     with tabs[6]:

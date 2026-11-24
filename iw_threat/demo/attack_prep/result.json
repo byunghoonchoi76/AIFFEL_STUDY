@@ -145,7 +145,7 @@
     "I_CHEM_DELIVERY"
    ],
    "n_indicators": 0,
-   "elapsed_s": 5.19
+   "elapsed_s": 3.78
   },
   {
    "day": -28,
@@ -178,7 +178,7 @@
     "I_CHEM_DELIVERY"
    ],
    "n_indicators": 0,
-   "elapsed_s": 5.53
+   "elapsed_s": 4.17
   },
   {
    "day": -26,
@@ -211,7 +211,7 @@
     "I_CHEM_DELIVERY"
    ],
    "n_indicators": 0,
-   "elapsed_s": 5.92
+   "elapsed_s": 4.02
   },
   {
    "day": -24,
@@ -244,7 +244,7 @@
     "I_CHEM_DELIVERY"
    ],
    "n_indicators": 0,
-   "elapsed_s": 6.31
+   "elapsed_s": 4.38
   },
   {
    "day": -22,
@@ -277,7 +277,7 @@
     "I_CHEM_DELIVERY"
    ],
    "n_indicators": 0,
-   "elapsed_s": 6.0
+   "elapsed_s": 4.4
   },
   {
    "day": -20,
@@ -310,7 +310,7 @@
     "I_CHEM_DELIVERY"
    ],
    "n_indicators": 0,
-   "elapsed_s": 5.71
+   "elapsed_s": 4.09
   },
   {
    "day": -18,
@@ -349,7 +349,7 @@
     "I_KEY_TARGET"
    ],
    "n_indicators": 4,
-   "elapsed_s": 6.04
+   "elapsed_s": 3.96
   },
   {
    "day": -16,
@@ -389,7 +389,7 @@
     "I_KEY_TARGET"
    ],
    "n_indicators": 5,
-   "elapsed_s": 5.39
+   "elapsed_s": 3.88
   },
   {
    "day": -14,
@@ -430,7 +430,7 @@
     "I_KEY_TARGET"
    ],
    "n_indicators": 5,
-   "elapsed_s": 5.53
+   "elapsed_s": 4.01
   },
   {
    "day": -12,
@@ -472,7 +472,7 @@
     "I_LOGISTICS"
    ],
    "n_indicators": 5,
-   "elapsed_s": 5.41
+   "elapsed_s": 3.71
   },
   {
    "day": -10,
@@ -514,7 +514,7 @@
     "I_LOGISTICS"
    ],
    "n_indicators": 5,
-   "elapsed_s": 5.85
+   "elapsed_s": 4.51
   },
   {
    "day": -8,
@@ -558,7 +558,7 @@
     "I_LOGISTICS"
    ],
    "n_indicators": 5,
-   "elapsed_s": 5.75
+   "elapsed_s": 4.6
   },
   {
    "day": -6,
@@ -603,7 +603,7 @@
     "I_LOGISTICS"
    ],
    "n_indicators": 6,
-   "elapsed_s": 5.77
+   "elapsed_s": 4.16
   },
   {
    "day": -4,
@@ -653,7 +653,7 @@
     "I_MEDICAL"
    ],
    "n_indicators": 8,
-   "elapsed_s": 5.97
+   "elapsed_s": 4.51
   },
   {
    "day": -2,
@@ -705,7 +705,7 @@
     "I_PATTERN_DEV"
    ],
    "n_indicators": 9,
-   "elapsed_s": 5.7
+   "elapsed_s": 4.58
   },
   {
    "day": 0,
@@ -757,11 +757,11 @@
     "I_PATTERN_DEV"
    ],
    "n_indicators": 9,
-   "elapsed_s": 6.45
+   "elapsed_s": 4.47
   }
  ],
  "final": {
-  "assessment_id": 2107,
+  "assessment_id": 2883,
   "area_id": "SIM-ATK",
   "as_of": "2026-12-20T18:00:00+00:00",
   "top_hypothesis": "공격 준비",
@@ -773,12 +773,12 @@
    "summary": {
     "text": "4개 출처 유형(HUMINT/IMINT/OSINT/SIGINT)에서 야전 의무시설 전개, 도하·공병 장비 전방 이동, 기갑·기계화 장비 전방 집결 등 9개 징후가 식별되어 '공격 준비' 가능성 100%(등급 심각, 분석 신뢰도 상)로 판단됨.",
     "citations": [
-     "targets:field_hospital:50266,50273,50279,50287,50295",
-     "chunk:d354:0",
-     "targets:bridging:50251,50257,50263,50270,50278,50284,50292",
-     "targets:tank:50249,50255,50261,50268,50276,50282,50290",
-     "targets:apc:50248,50275,50281,50289",
-     "chunk:d352:0"
+     "targets:field_hospital:69524,69531,69537,69545,69553",
+     "chunk:d494:0",
+     "targets:bridging:69509,69515,69521,69528,69536,69542,69550",
+     "targets:tank:69507,69513,69519,69526,69534,69540,69548",
+     "targets:apc:69506,69533,69539,69547",
+     "chunk:d492:0"
     ],
     "generated": "template"
    },
@@ -788,8 +788,8 @@
      "counter": false,
      "text": "야전 의무시설 전개 징후 강하게 식별됨 — 영상: 야전병원 0→2대 (제9106가상의무대대(대대) 0.25km, 평시 대비 신규 출현); OSINT(C3): “현지 보도에 따르면 마을 외곽 공터에 야전병원으로 보이는 대형 천막 2동이 설치되…” → 대규모 사상자 대비 의무지원 준비 정황",
      "citations": [
-      "targets:field_hospital:50266,50273,50279,50287,50295",
-      "chunk:d354:0"
+      "targets:field_hospital:69524,69531,69537,69545,69553",
+      "chunk:d494:0"
      ],
      "generated": "template"
     },
@@ -798,7 +798,7 @@
      "counter": false,
      "text": "도하·공병 장비 전방 이동 징후 강하게 식별됨 — 영상: 도하장비 0→4대 (제9104가상공병대대(대대) 0.44km, 평시 대비 신규 출현) → 하천 도하 공격 대비 정황",
      "citations": [
-      "targets:bridging:50251,50257,50263,50270,50278,50284,50292"
+      "targets:bridging:69509,69515,69521,69528,69536,69542,69550"
      ],
      "generated": "template"
     },
@@ -807,9 +807,9 @@
      "counter": false,
      "text": "기갑·기계화 장비 전방 집결 징후 강하게 식별됨 — 영상: 전차 13.5→44대 (제9102가상전차여단(여단) 2.62km, 평시 대비 3.3배); 영상: 장갑차 9→26대 (제9102가상전차여단(여단) 2.44km, 평시 대비 2.9배); HUMINT(C2): “협조자에 따르면 제9102가상전차여단 소속 전차 수십 대가 주둔지를 떠나 북동쪽 …” → 공격 제대 집결 정황",
      "citations": [
-      "targets:tank:50249,50255,50261,50268,50276,50282,50290",
-      "targets:apc:50248,50275,50281,50289",
-      "chunk:d352:0"
+      "targets:tank:69507,69513,69519,69526,69534,69540,69548",
+      "targets:apc:69506,69533,69539,69547",
+      "chunk:d492:0"
      ],
      "generated": "template"
     },
@@ -818,8 +818,8 @@
      "counter": false,
      "text": "포병 진지 점령·증강 징후 강하게 식별됨 — 영상: 야포 6→17대 (제9103가상포병연대(연대) 0.62km, 평시 대비 2.8배); HUMINT(B2): “협조자는 포병 차량들이 기존 진지 북쪽 능선 뒤편에 새로 진지를 구축하고 있다고 …” → 공격준비사격 대비 정황",
      "citations": [
-      "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
-      "chunk:d355:0"
+      "targets:artillery:69508,69514,69520,69527,69535,69541,69549",
+      "chunk:d495:0"
      ],
      "generated": "template"
     },
@@ -828,8 +828,8 @@
      "counter": false,
      "text": "전방 지휘소 전개 징후 강하게 식별됨 — 영상: 지휘차량 2→7대 (제9101가상보병사단(사단) 0.06km, 평시 대비 3.5배); SIGINT(B2): “평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동…” → 전방 작전 지휘체계 구축 정황",
      "citations": [
-      "targets:command_vehicle:50247,50254,50260,50267,50274,50280,50288",
-      "chunk:d356:0"
+      "targets:command_vehicle:69505,69512,69518,69525,69532,69538,69546",
+      "chunk:d496:0"
      ],
      "generated": "template"
     },
@@ -838,7 +838,7 @@
      "counter": false,
      "text": "핵심표적 활동(합참·연합사 표적목록) 징후 다수 식별됨 — IMINT(B2): “합참 핵심표적 '제9103가상포병연대 장사정포' 활동 — artillery 6→1…” → 지휘관 우선 표적의 활동 — 위협 평가 핵심 기준",
      "citations": [
-      "keytarget:KT-91-1:50250,50256,50262,50269,50277,50283,50291"
+      "keytarget:KT-91-1:69508,69514,69520,69527,69535,69541,69549"
      ],
      "generated": "template"
     },
@@ -847,9 +847,9 @@
      "counter": false,
      "text": "보급·유류 차량 증가 징후 강하게 식별됨 — 영상: 트럭 28→70대 (제9105가상수송대대(대대) 0.33km, 평시 대비 2.5배); 영상: 유류차 4→13대 (제9105가상수송대대(대대) 0.5km, 평시 대비 3.2배); OSINT(C3): “인근 주민들에 따르면 최근 일주일 사이 야간에 대형 트럭과 유조차 행렬이 평소보다…” → 작전 지속지원 준비 정황",
      "citations": [
-      "targets:truck:50253,50259,50265,50272,50286,50294",
-      "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
-      "chunk:d351:0"
+      "targets:truck:69511,69517,69523,69530,69544,69552",
+      "targets:fuel_truck:69510,69516,69522,69529,69543,69551",
+      "chunk:d491:0"
      ],
      "generated": "template"
     },
@@ -858,7 +858,7 @@
      "counter": false,
      "text": "평시 훈련 패턴과 상이한 활동 징후 다수 식별됨 — SIGINT(B2): “평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동…” → 평시 활동과 다른 이상 활동",
      "citations": [
-      "chunk:d356:0"
+      "chunk:d496:0"
      ],
      "generated": "template"
     },
@@ -867,8 +867,8 @@
      "counter": false,
      "text": "고가치표적 활동(합참·연합사 표적목록) 징후 다수 식별됨 — IMINT(B2): “연합사 고가치표적 '제9102가상전차여단 기갑' 활동 — tank 13.5→44대…”; IMINT(B2): “공동 고가치표적 '제9101가상보병사단 지휘부' 활동 — command_vehic…” → 고가치 표적의 활동",
      "citations": [
-      "keytarget:KT-91-2:50249,50255,50261,50268,50276,50282,50290",
-      "keytarget:KT-91-3:50247,50254,50260,50267,50274,50280,50288"
+      "keytarget:KT-91-2:69507,69513,69519,69526,69534,69540,69548",
+      "keytarget:KT-91-3:69505,69512,69518,69525,69532,69538,69546"
      ],
      "generated": "template"
     }
@@ -886,12 +886,12 @@
     "delta": 42.0,
     "latest_at": "2026-12-20T10:00:00+00:00",
     "refs": [
-     50253,
-     50259,
-     50265,
-     50272,
-     50286,
-     50294
+     69511,
+     69517,
+     69523,
+     69530,
+     69544,
+     69552
     ],
     "unit_key": "9105가상수송대대",
     "unit_name": "제9105가상수송대대",
@@ -911,13 +911,13 @@
     "delta": 30.5,
     "latest_at": "2026-12-20T10:00:00+00:00",
     "refs": [
-     50249,
-     50255,
-     50261,
-     50268,
-     50276,
-     50282,
-     50290
+     69507,
+     69513,
+     69519,
+     69526,
+     69534,
+     69540,
+     69548
     ],
     "unit_key": "9102가상전차여단",
     "unit_name": "제9102가상전차여단",
@@ -937,10 +937,10 @@
     "delta": 17,
     "latest_at": "2026-12-20T10:00:00+00:00",
     "refs": [
-     50248,
-     50275,
-     50281,
-     50289
+     69506,
+     69533,
+     69539,
+     69547
     ],
     "unit_key": "9102가상전차여단",
     "unit_name": "제9102가상전차여단",
@@ -960,13 +960,13 @@
     "delta": 11.0,
     "latest_at": "2026-12-20T10:00:00+00:00",
     "refs": [
-     50250,
-     50256,
-     50262,
-     50269,
-     50277,
-     50283,
-     50291
+     69508,
+     69514,
+     69520,
+     69527,
+     69535,
+     69541,
+     69549
     ],
     "unit_key": "9103가상포병연대",
     "unit_name": "제9103가상포병연대",
@@ -986,12 +986,12 @@
     "delta": 9,
     "latest_at": "2026-12-20T10:00:00+00:00",
     "refs": [
-     50252,
-     50258,
-     50264,
-     50271,
-     50285,
-     50293
+     69510,
+     69516,
+     69522,
+     69529,
+     69543,
+     69551
     ],
     "unit_key": "9105가상수송대대",
     "unit_name": "제9105가상수송대대",
@@ -1011,13 +1011,13 @@
     "delta": 5,
     "latest_at": "2026-12-20T10:00:00+00:00",
     "refs": [
-     50247,
-     50254,
-     50260,
-     50267,
-     50274,
-     50280,
-     50288
+     69505,
+     69512,
+     69518,
+     69525,
+     69532,
+     69538,
+     69546
     ],
     "unit_key": "9101가상보병사단",
     "unit_name": "제9101가상보병사단",
@@ -1037,13 +1037,13 @@
     "delta": 4.0,
     "latest_at": "2026-12-20T10:00:00+00:00",
     "refs": [
-     50251,
-     50257,
-     50263,
-     50270,
-     50278,
-     50284,
-     50292
+     69509,
+     69515,
+     69521,
+     69528,
+     69536,
+     69542,
+     69550
     ],
     "unit_key": "9104가상공병대대",
     "unit_name": "제9104가상공병대대",
@@ -1063,11 +1063,11 @@
     "delta": 2.0,
     "latest_at": "2026-12-20T10:00:00+00:00",
     "refs": [
-     50266,
-     50273,
-     50279,
-     50287,
-     50295
+     69524,
+     69531,
+     69537,
+     69545,
+     69553
     ],
     "unit_key": "9106가상의무대대",
     "unit_name": "제9106가상의무대대",
@@ -1093,10 +1093,10 @@
     "affinity": true,
     "max_count": 26,
     "event_ids": [
-     50248,
-     50275,
-     50281,
-     50289
+     69506,
+     69533,
+     69539,
+     69547
     ]
    },
    {
@@ -1110,13 +1110,13 @@
     "affinity": true,
     "max_count": 17,
     "event_ids": [
-     50250,
-     50256,
-     50262,
-     50269,
-     50277,
-     50283,
-     50291
+     69508,
+     69514,
+     69520,
+     69527,
+     69535,
+     69541,
+     69549
     ]
    },
    {
@@ -1130,13 +1130,13 @@
     "affinity": true,
     "max_count": 4,
     "event_ids": [
-     50251,
-     50257,
-     50263,
-     50270,
-     50278,
-     50284,
-     50292
+     69509,
+     69515,
+     69521,
+     69528,
+     69536,
+     69542,
+     69550
     ]
    },
    {
@@ -1150,13 +1150,13 @@
     "affinity": false,
     "max_count": 7,
     "event_ids": [
-     50247,
-     50254,
-     50260,
-     50267,
-     50274,
-     50280,
-     50288
+     69505,
+     69512,
+     69518,
+     69525,
+     69532,
+     69538,
+     69546
     ]
    },
    {
@@ -1170,11 +1170,11 @@
     "affinity": true,
     "max_count": 2,
     "event_ids": [
-     50266,
-     50273,
-     50279,
-     50287,
-     50295
+     69524,
+     69531,
+     69537,
+     69545,
+     69553
     ]
    },
    {
@@ -1188,12 +1188,12 @@
     "affinity": true,
     "max_count": 13,
     "event_ids": [
-     50252,
-     50258,
-     50264,
-     50271,
-     50285,
-     50293
+     69510,
+     69516,
+     69522,
+     69529,
+     69543,
+     69551
     ]
    },
    {
@@ -1207,13 +1207,13 @@
     "affinity": true,
     "max_count": 44,
     "event_ids": [
-     50249,
-     50255,
-     50261,
-     50268,
-     50276,
-     50282,
-     50290
+     69507,
+     69513,
+     69519,
+     69526,
+     69534,
+     69540,
+     69548
     ]
    },
    {
@@ -1227,12 +1227,12 @@
     "affinity": true,
     "max_count": 70,
     "event_ids": [
-     50253,
-     50259,
-     50265,
-     50272,
-     50286,
-     50294
+     69511,
+     69517,
+     69523,
+     69530,
+     69544,
+     69552
     ]
    }
   ],
@@ -1245,7 +1245,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+    "ref": "targets:tank:69507,69513,69519,69526,69534,69540,69548",
     "quote": "영상 판독 전차 평시(중앙값) 13.5대 → 최근 44대 (+30.5대) [식별 부대: 제9102가상전차여단(여단) 2.62km, 평시 대비 3.3배] (기준 여단 +6대 또는 2배)",
     "scale": 1.0,
     "unit_key": "9102가상전차여단",
@@ -1258,7 +1258,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "targets:apc:50248,50275,50281,50289",
+    "ref": "targets:apc:69506,69533,69539,69547",
     "quote": "영상 판독 장갑차 평시(중앙값) 9대 → 최근 26대 (+17대) [식별 부대: 제9102가상전차여단(여단) 2.44km, 평시 대비 2.9배] (기준 여단 +6대 또는 2배)",
     "scale": 1.0,
     "unit_key": "9102가상전차여단",
@@ -1271,7 +1271,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "targets:bridging:50251,50257,50263,50270,50278,50284,50292",
+    "ref": "targets:bridging:69509,69515,69521,69528,69536,69542,69550",
     "quote": "영상 판독 도하장비 평시(중앙값) 0대 → 최근 4대 (+4대) [식별 부대: 제9104가상공병대대(대대) 0.44km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
     "scale": 1.0,
     "unit_key": "9104가상공병대대",
@@ -1284,7 +1284,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
+    "ref": "targets:artillery:69508,69514,69520,69527,69535,69541,69549",
     "quote": "영상 판독 야포 평시(중앙값) 6대 → 최근 17대 (+11대) [식별 부대: 제9103가상포병연대(연대) 0.62km, 평시 대비 2.8배] (기준 연대 +2대 또는 2배)",
     "scale": 1.0,
     "unit_key": "9103가상포병연대",
@@ -1297,7 +1297,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "targets:truck:50253,50259,50265,50272,50286,50294",
+    "ref": "targets:truck:69511,69517,69523,69530,69544,69552",
     "quote": "영상 판독 트럭 평시(중앙값) 28대 → 최근 70대 (+42대) [식별 부대: 제9105가상수송대대(대대) 0.33km, 평시 대비 2.5배] (기준 대대 +4대 또는 2배)",
     "scale": 1.0,
     "unit_key": "9105가상수송대대",
@@ -1310,7 +1310,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+    "ref": "targets:fuel_truck:69510,69516,69522,69529,69543,69551",
     "quote": "영상 판독 유류차 평시(중앙값) 4대 → 최근 13대 (+9대) [식별 부대: 제9105가상수송대대(대대) 0.5km, 평시 대비 3.2배] (기준 대대 +4대 또는 2배)",
     "scale": 1.0,
     "unit_key": "9105가상수송대대",
@@ -1323,7 +1323,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "targets:field_hospital:50266,50273,50279,50287,50295",
+    "ref": "targets:field_hospital:69524,69531,69537,69545,69553",
     "quote": "영상 판독 야전병원 평시(중앙값) 0대 → 최근 2대 (+2대) [식별 부대: 제9106가상의무대대(대대) 0.25km, 평시 대비 신규 출현] (기준 대대 +1대 또는 2배)",
     "scale": 1.0,
     "unit_key": "9106가상의무대대",
@@ -1336,7 +1336,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "targets:command_vehicle:50247,50254,50260,50267,50274,50280,50288",
+    "ref": "targets:command_vehicle:69505,69512,69518,69525,69532,69538,69546",
     "quote": "영상 판독 지휘차량 평시(중앙값) 2대 → 최근 7대 (+5대) [식별 부대: 제9101가상보병사단(사단) 0.06km, 평시 대비 3.5배] (기준 사단 +2대 또는 2배)",
     "scale": 1.0,
     "unit_key": "9101가상보병사단",
@@ -1349,7 +1349,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "keytarget:KT-91-1:50250,50256,50262,50269,50277,50283,50291",
+    "ref": "keytarget:KT-91-1:69508,69514,69520,69527,69535,69541,69549",
     "quote": "합참 핵심표적 '제9103가상포병연대 장사정포' 활동 — artillery 6→17대(부대 매칭)",
     "scale": 1.0,
     "unit_key": null,
@@ -1362,7 +1362,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "keytarget:KT-91-2:50249,50255,50261,50268,50276,50282,50290",
+    "ref": "keytarget:KT-91-2:69507,69513,69519,69526,69534,69540,69548",
     "quote": "연합사 고가치표적 '제9102가상전차여단 기갑' 활동 — tank 13.5→44대(부대 매칭); apc 9→26대(부대 매칭)",
     "scale": 1.0,
     "unit_key": null,
@@ -1375,7 +1375,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-20T10:00:00+00:00",
-    "ref": "keytarget:KT-91-3:50247,50254,50260,50267,50274,50280,50288",
+    "ref": "keytarget:KT-91-3:69505,69512,69518,69525,69532,69538,69546",
     "quote": "공동 고가치표적 '제9101가상보병사단 지휘부' 활동 — command_vehicle 2→7대(부대 매칭)",
     "scale": 1.0,
     "unit_key": null,
@@ -1401,7 +1401,7 @@
     "reliability": "C",
     "credibility": 3,
     "observed_at": "2026-12-04T15:00:00+00:00",
-    "ref": "chunk:d351:0",
+    "ref": "chunk:d491:0",
     "quote": "인근 주민들에 따르면 최근 일주일 사이 야간에 대형 트럭과 유조차 행렬이 평소보다 눈에 띄게 늘었다.",
     "scale": 1.0,
     "unit_key": null,
@@ -1414,7 +1414,7 @@
     "reliability": "C",
     "credibility": 2,
     "observed_at": "2026-12-09T15:00:00+00:00",
-    "ref": "chunk:d352:0",
+    "ref": "chunk:d492:0",
     "quote": "협조자에 따르면 제9102가상전차여단 소속 전차 수십 대가 주둔지를 떠나 북동쪽 개활지로 이동해 머무르고 있다.",
     "scale": 1.0,
     "unit_key": null,
@@ -1427,7 +1427,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-17T15:00:00+00:00",
-    "ref": "chunk:d356:0",
+    "ref": "chunk:d496:0",
     "quote": "평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동한 정황이 관측되었다.",
     "scale": 1.0,
     "unit_key": null,
@@ -1440,7 +1440,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-17T15:00:00+00:00",
-    "ref": "chunk:d356:0",
+    "ref": "chunk:d496:0",
     "quote": "평소 훈련 기간과 달리 야간 무선 통신이 크게 늘고 지휘 차량이 전방 고지로 이동한 정황이 관측되었다.",
     "scale": 1.0,
     "unit_key": null,
@@ -1453,7 +1453,7 @@
     "reliability": "B",
     "credibility": 2,
     "observed_at": "2026-12-16T15:00:00+00:00",
-    "ref": "chunk:d355:0",
+    "ref": "chunk:d495:0",
     "quote": "협조자는 포병 차량들이 기존 진지 북쪽 능선 뒤편에 새로 진지를 구축하고 있다고 전했다.",
     "scale": 1.0,
     "unit_key": null,
@@ -1466,7 +1466,7 @@
     "reliability": "C",
     "credibility": 3,
     "observed_at": "2026-12-15T15:00:00+00:00",
-    "ref": "chunk:d354:0",
+    "ref": "chunk:d494:0",
     "quote": "현지 보도에 따르면 마을 외곽 공터에 야전병원으로 보이는 대형 천막 2동이 설치되었다.",
     "scale": 1.0,
     "unit_key": null,
@@ -1479,7 +1479,7 @@
     "reliability": "D",
     "credibility": 4,
     "observed_at": "2026-12-12T15:00:00+00:00",
-    "ref": "chunk:d353:0",
+    "ref": "chunk:d493:0",
     "quote": "선전매체는 해당 지역의 부대 이동이 통상적인 계절 훈련이라고 주장했다.",
     "scale": 1.0,
     "unit_key": null,
@@ -1506,13 +1506,13 @@
        "OSINT"
       ],
       "refs": [
-       "targets:field_hospital:50266,50273,50279,50287,50295",
-       "chunk:d354:0"
+       "targets:field_hospital:69524,69531,69537,69545,69553",
+       "chunk:d494:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:field_hospital:50266,50273,50279,50287,50295",
+        "ref": "targets:field_hospital:69524,69531,69537,69545,69553",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1526,7 +1526,7 @@
         "unit_key": "9106가상의무대대"
        },
        {
-        "ref": "chunk:d354:0",
+        "ref": "chunk:d494:0",
         "source_type": "OSINT",
         "grade": "C3",
         "grade_weight": 0.455,
@@ -1551,12 +1551,12 @@
        "IMINT"
       ],
       "refs": [
-       "targets:bridging:50251,50257,50263,50270,50278,50284,50292"
+       "targets:bridging:69509,69515,69521,69528,69536,69542,69550"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:bridging:50251,50257,50263,50270,50278,50284,50292",
+        "ref": "targets:bridging:69509,69515,69521,69528,69536,69542,69550",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1582,14 +1582,14 @@
        "IMINT"
       ],
       "refs": [
-       "targets:tank:50249,50255,50261,50268,50276,50282,50290",
-       "targets:apc:50248,50275,50281,50289",
-       "chunk:d352:0"
+       "targets:tank:69507,69513,69519,69526,69534,69540,69548",
+       "targets:apc:69506,69533,69539,69547",
+       "chunk:d492:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+        "ref": "targets:tank:69507,69513,69519,69526,69534,69540,69548",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1603,7 +1603,7 @@
         "unit_key": "9102가상전차여단"
        },
        {
-        "ref": "targets:apc:50248,50275,50281,50289",
+        "ref": "targets:apc:69506,69533,69539,69547",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1617,7 +1617,7 @@
         "unit_key": "9102가상전차여단"
        },
        {
-        "ref": "chunk:d352:0",
+        "ref": "chunk:d492:0",
         "source_type": "HUMINT",
         "grade": "C2",
         "grade_weight": 0.595,
@@ -1643,13 +1643,13 @@
        "IMINT"
       ],
       "refs": [
-       "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
-       "chunk:d355:0"
+       "targets:artillery:69508,69514,69520,69527,69535,69541,69549",
+       "chunk:d495:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
+        "ref": "targets:artillery:69508,69514,69520,69527,69535,69541,69549",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1663,7 +1663,7 @@
         "unit_key": "9103가상포병연대"
        },
        {
-        "ref": "chunk:d355:0",
+        "ref": "chunk:d495:0",
         "source_type": "HUMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1689,13 +1689,13 @@
        "SIGINT"
       ],
       "refs": [
-       "targets:command_vehicle:50247,50254,50260,50267,50274,50280,50288",
-       "chunk:d356:0"
+       "targets:command_vehicle:69505,69512,69518,69525,69532,69538,69546",
+       "chunk:d496:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:command_vehicle:50247,50254,50260,50267,50274,50280,50288",
+        "ref": "targets:command_vehicle:69505,69512,69518,69525,69532,69538,69546",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1709,7 +1709,7 @@
         "unit_key": "9101가상보병사단"
        },
        {
-        "ref": "chunk:d356:0",
+        "ref": "chunk:d496:0",
         "source_type": "SIGINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1734,12 +1734,12 @@
        "IMINT"
       ],
       "refs": [
-       "keytarget:KT-91-1:50250,50256,50262,50269,50277,50283,50291"
+       "keytarget:KT-91-1:69508,69514,69520,69527,69535,69541,69549"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "keytarget:KT-91-1:50250,50256,50262,50269,50277,50283,50291",
+        "ref": "keytarget:KT-91-1:69508,69514,69520,69527,69535,69541,69549",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1765,14 +1765,14 @@
        "OSINT"
       ],
       "refs": [
-       "targets:truck:50253,50259,50265,50272,50286,50294",
-       "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
-       "chunk:d351:0"
+       "targets:truck:69511,69517,69523,69530,69544,69552",
+       "targets:fuel_truck:69510,69516,69522,69529,69543,69551",
+       "chunk:d491:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:truck:50253,50259,50265,50272,50286,50294",
+        "ref": "targets:truck:69511,69517,69523,69530,69544,69552",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1786,7 +1786,7 @@
         "unit_key": "9105가상수송대대"
        },
        {
-        "ref": "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+        "ref": "targets:fuel_truck:69510,69516,69522,69529,69543,69551",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1800,7 +1800,7 @@
         "unit_key": "9105가상수송대대"
        },
        {
-        "ref": "chunk:d351:0",
+        "ref": "chunk:d491:0",
         "source_type": "OSINT",
         "grade": "C3",
         "grade_weight": 0.455,
@@ -1825,12 +1825,12 @@
        "SIGINT"
       ],
       "refs": [
-       "chunk:d356:0"
+       "chunk:d496:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "chunk:d356:0",
+        "ref": "chunk:d496:0",
         "source_type": "SIGINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1855,13 +1855,13 @@
        "IMINT"
       ],
       "refs": [
-       "keytarget:KT-91-2:50249,50255,50261,50268,50276,50282,50290",
-       "keytarget:KT-91-3:50247,50254,50260,50267,50274,50280,50288"
+       "keytarget:KT-91-2:69507,69513,69519,69526,69534,69540,69548",
+       "keytarget:KT-91-3:69505,69512,69518,69525,69532,69538,69546"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "keytarget:KT-91-2:50249,50255,50261,50268,50276,50282,50290",
+        "ref": "keytarget:KT-91-2:69507,69513,69519,69526,69534,69540,69548",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1875,7 +1875,7 @@
         "unit_key": null
        },
        {
-        "ref": "keytarget:KT-91-3:50247,50254,50260,50267,50274,50280,50288",
+        "ref": "keytarget:KT-91-3:69505,69512,69518,69525,69532,69538,69546",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1911,14 +1911,14 @@
        "IMINT"
       ],
       "refs": [
-       "targets:tank:50249,50255,50261,50268,50276,50282,50290",
-       "targets:apc:50248,50275,50281,50289",
-       "chunk:d352:0"
+       "targets:tank:69507,69513,69519,69526,69534,69540,69548",
+       "targets:apc:69506,69533,69539,69547",
+       "chunk:d492:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:tank:50249,50255,50261,50268,50276,50282,50290",
+        "ref": "targets:tank:69507,69513,69519,69526,69534,69540,69548",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1932,7 +1932,7 @@
         "unit_key": "9102가상전차여단"
        },
        {
-        "ref": "targets:apc:50248,50275,50281,50289",
+        "ref": "targets:apc:69506,69533,69539,69547",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1946,7 +1946,7 @@
         "unit_key": "9102가상전차여단"
        },
        {
-        "ref": "chunk:d352:0",
+        "ref": "chunk:d492:0",
         "source_type": "HUMINT",
         "grade": "C2",
         "grade_weight": 0.595,
@@ -1972,14 +1972,14 @@
        "OSINT"
       ],
       "refs": [
-       "targets:truck:50253,50259,50265,50272,50286,50294",
-       "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
-       "chunk:d351:0"
+       "targets:truck:69511,69517,69523,69530,69544,69552",
+       "targets:fuel_truck:69510,69516,69522,69529,69543,69551",
+       "chunk:d491:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:truck:50253,50259,50265,50272,50286,50294",
+        "ref": "targets:truck:69511,69517,69523,69530,69544,69552",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -1993,7 +1993,7 @@
         "unit_key": "9105가상수송대대"
        },
        {
-        "ref": "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+        "ref": "targets:fuel_truck:69510,69516,69522,69529,69543,69551",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -2007,7 +2007,7 @@
         "unit_key": "9105가상수송대대"
        },
        {
-        "ref": "chunk:d351:0",
+        "ref": "chunk:d491:0",
         "source_type": "OSINT",
         "grade": "C3",
         "grade_weight": 0.455,
@@ -2032,12 +2032,12 @@
        "OSINT"
       ],
       "refs": [
-       "chunk:d353:0"
+       "chunk:d493:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "chunk:d353:0",
+        "ref": "chunk:d493:0",
         "source_type": "OSINT",
         "grade": "D4",
         "grade_weight": 0.18,
@@ -2073,13 +2073,13 @@
        "IMINT"
       ],
       "refs": [
-       "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
-       "chunk:d355:0"
+       "targets:artillery:69508,69514,69520,69527,69535,69541,69549",
+       "chunk:d495:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:artillery:50250,50256,50262,50269,50277,50283,50291",
+        "ref": "targets:artillery:69508,69514,69520,69527,69535,69541,69549",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -2093,7 +2093,7 @@
         "unit_key": "9103가상포병연대"
        },
        {
-        "ref": "chunk:d355:0",
+        "ref": "chunk:d495:0",
         "source_type": "HUMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -2119,14 +2119,14 @@
        "OSINT"
       ],
       "refs": [
-       "targets:truck:50253,50259,50265,50272,50286,50294",
-       "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
-       "chunk:d351:0"
+       "targets:truck:69511,69517,69523,69530,69544,69552",
+       "targets:fuel_truck:69510,69516,69522,69529,69543,69551",
+       "chunk:d491:0"
       ],
       "discount": 1.0,
       "details": [
        {
-        "ref": "targets:truck:50253,50259,50265,50272,50286,50294",
+        "ref": "targets:truck:69511,69517,69523,69530,69544,69552",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -2140,7 +2140,7 @@
         "unit_key": "9105가상수송대대"
        },
        {
-        "ref": "targets:fuel_truck:50252,50258,50264,50271,50285,50293",
+        "ref": "targets:fuel_truck:69510,69516,69522,69529,69543,69551",
         "source_type": "IMINT",
         "grade": "B2",
         "grade_weight": 0.722,
@@ -2154,7 +2154,7 @@
         "unit_key": "9105가상수송대대"
        },
        {
-        "ref": "chunk:d351:0",
+        "ref": "chunk:d491:0",
         "source_type": "OSINT",
         "grade": "C3",
         "grade_weight": 0.455,
@@ -2638,13 +2638,13 @@
        "recent": 17,
        "latest_at": "2026-12-20T10:00:00+00:00",
        "refs": [
-        50250,
-        50256,
-        50262,
-        50269,
-        50277,
-        50283,
-        50291
+        69508,
+        69514,
+        69520,
+        69527,
+        69535,
+        69541,
+        69549
        ],
        "basis": "부대"
       }
@@ -2667,13 +2667,13 @@
        "recent": 44,
        "latest_at": "2026-12-20T10:00:00+00:00",
        "refs": [
-        50249,
-        50255,
-        50261,
-        50268,
-        50276,
-        50282,
-        50290
+        69507,
+        69513,
+        69519,
+        69526,
+        69534,
+        69540,
+        69548
        ],
        "basis": "부대"
       },
@@ -2683,10 +2683,10 @@
        "recent": 26,
        "latest_at": "2026-12-20T10:00:00+00:00",
        "refs": [
-        50248,
-        50275,
-        50281,
-        50289
+        69506,
+        69533,
+        69539,
+        69547
        ],
        "basis": "부대"
       }
@@ -2709,13 +2709,13 @@
        "recent": 7,
        "latest_at": "2026-12-20T10:00:00+00:00",
        "refs": [
-        50247,
-        50254,
-        50260,
-        50267,
-        50274,
-        50280,
-        50288
+        69505,
+        69512,
+        69518,
+        69525,
+        69532,
+        69538,
+        69546
        ],
        "basis": "부대"
       }
@@ -2727,7 +2727,7 @@
   "rejected_llm_hits": 0,
   "catalog_version": "0.1-sample",
   "report_chunks_checked": 6,
-  "elapsed_s": 6.45,
+  "elapsed_s": 4.47,
   "patterns": [
    {
     "id": "CASE-2022-RU",
@@ -2869,6 +2869,25 @@
      "issued_name": null,
      "issuer": null,
      "vs_issued": "발령 태세 미입력"
+    },
+    "infocon": {
+     "track": "infocon",
+     "day": 0.0,
+     "label": "2026-12-20T18:00:00+00:00",
+     "level": 5,
+     "level_name": "인포콘 5",
+     "level_label": "평시",
+     "action": "유지",
+     "reasons": [],
+     "note": "",
+     "collect_more": false,
+     "defcon_review": false,
+     "threat": 0.9956,
+     "confidence": "상",
+     "issued_level": null,
+     "issued_name": null,
+     "issuer": null,
+     "vs_issued": "발령 태세 미입력"
     }
    },
    "changes": {
@@ -2945,7 +2964,8 @@
      }
     ],
     "jindogae": [],
-    "durumi": []
+    "durumi": [],
+    "infocon": []
    }
   }
  },
@@ -2974,6 +2994,7 @@
      "name": "워치콘",
      "final": "워치콘 1",
      "final_truth": "워치콘 1",
+     "scored": true,
      "match_rate": 0.75,
      "over_days": 4,
      "under_days": 0,
@@ -3172,6 +3193,7 @@
      "name": "데프콘",
      "final": "데프콘 2",
      "final_truth": "데프콘 3",
+     "scored": true,
      "match_rate": 0.75,
      "over_days": 4,
      "under_days": 0,
@@ -3360,6 +3382,7 @@
      "name": "진돗개",
      "final": "진돗개 셋",
      "final_truth": "진돗개 셋",
+     "scored": true,
      "match_rate": 1.0,
      "over_days": 0,
      "under_days": 0,
@@ -3533,6 +3556,7 @@
      "name": "두루미",
      "final": "두루미 미발령",
      "final_truth": "두루미 미발령",
+     "scored": true,
      "match_rate": 1.0,
      "over_days": 0,
      "under_days": 0,
@@ -3696,6 +3720,180 @@
        "truth": 3,
        "action": "유지",
        "name": "두루미 미발령",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      }
+     ]
+    },
+    "infocon": {
+     "name": "인포콘",
+     "final": "인포콘 5",
+     "final_truth": null,
+     "scored": false,
+     "match_rate": null,
+     "over_days": null,
+     "under_days": null,
+     "level_changes": 0,
+     "escalation_delays": [],
+     "defcon_review_days": [],
+     "series": [
+      {
+       "day": -30,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -28,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -26,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -24,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -22,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -20,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -18,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -16,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -14,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -12,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -10,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -8,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -6,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -4,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": -2,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
+       "reasons": [],
+       "note": "",
+       "defcon": false
+      },
+      {
+       "day": 0,
+       "rec": 5,
+       "truth": 5,
+       "action": "유지",
+       "name": "인포콘 5",
        "reasons": [],
        "note": "",
        "defcon": false
