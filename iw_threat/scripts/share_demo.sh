@@ -7,6 +7,7 @@
 #       PORT=8600 bash scripts/share_demo.sh
 #       NO_TUNNEL=1 bash scripts/share_demo.sh  (터널 없이 이 장비에서만 확인)
 #       SHARE_PASSWORD='비밀번호' bash scripts/share_demo.sh  (접속 시 비밀번호 요구 — 외부 공유 시 권장)
+#       NGROK_DOMAIN=xxxx.ngrok-free.app SHARE_PASSWORD='비밀번호' bash scripts/share_demo.sh  (ngrok 고정 주소로 공유)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PORT="${PORT:-8502}"
@@ -31,6 +32,10 @@ echo "화면: http://localhost:${PORT} (읽기 전용 공유 모드)"
 
 if [ -n "${NO_TUNNEL:-}" ]; then
   wait "$ST_PID"
+elif [ -n "${NGROK_DOMAIN:-}" ]; then        # ngrok 고정 주소 (무료 계정 고정 도메인 1개, 매번 같은 링크)
+  command -v ngrok >/dev/null || { echo "ngrok이 없습니다. 설치·토큰 등록 후 다시 실행하세요." >&2; exit 1; }
+  echo "공유 링크: https://${NGROK_DOMAIN}  (비밀번호 화면이 먼저 나옴 · 시연 후 Ctrl+C로 종료)"
+  ngrok http --url="${NGROK_DOMAIN}" "${PORT}" --log=stdout --log-level=warn
 else
   command -v cloudflared >/dev/null || { echo "cloudflared가 없습니다. 설치 후 다시 실행하세요." >&2; exit 1; }
   echo "아래에 나오는 https://...trycloudflare.com 주소가 공유 링크입니다. 링크를 아는 사람은 누구나 열 수 있으니 시연 후 Ctrl+C로 종료하세요."
