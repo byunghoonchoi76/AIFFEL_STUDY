@@ -1,0 +1,192 @@
+{
+ "note": "MS-C931 폐쇄망 장비, vLLM + gpt-oss-20b 첩보 분류 실측 — 2026.11.24, 코드 077fc9a, D일 2026-12-20, seed 7, 11종 약 120분",
+ "scenarios": {
+  "air_provocation": {
+   "id": "air_provocation",
+   "name": "항공 도발",
+   "truth": "항공기 남하 위협",
+   "final_correct": true,
+   "final_top": "항공 도발 준비",
+   "final_top_p": 0.1646,
+   "max_attack_p": 0.0614,
+   "first_warning_day": null,
+   "false_alarms": 0,
+   "readiness_match": {
+    "watchcon": 1.0,
+    "defcon": 1.0,
+    "jindogae": 1.0,
+    "durumi": 0.938
+   }
+  },
+  "attack_prep": {
+   "id": "attack_prep",
+   "name": "공격 준비",
+   "truth": "공격",
+   "final_correct": true,
+   "final_top": "공격 준비",
+   "final_top_p": 0.9961,
+   "max_attack_p": 0.9961,
+   "first_warning_day": -10,
+   "false_alarms": null,
+   "readiness_match": {
+    "watchcon": 0.75,
+    "defcon": 0.75,
+    "jindogae": 1.0,
+    "durumi": 1.0
+   }
+  },
+  "deception": {
+   "id": "deception",
+   "name": "기만(위장 집결)",
+   "truth": "기만(공격 의도 없음)",
+   "final_correct": true,
+   "final_top": "대규모 훈련",
+   "final_top_p": 0.1355,
+   "max_attack_p": 0.0689,
+   "first_warning_day": null,
+   "false_alarms": 0,
+   "readiness_match": {
+    "watchcon": 1.0,
+    "defcon": 1.0,
+    "jindogae": 1.0,
+    "durumi": 1.0
+   }
+  },
+  "infiltration": {
+   "id": "infiltration",
+   "name": "침투 도발",
+   "truth": "해상·지상 침투",
+   "final_correct": true,
+   "final_top": "침투·국지도발 준비",
+   "final_top_p": 0.4455,
+   "max_attack_p": 0.0512,
+   "first_warning_day": null,
+   "false_alarms": 0,
+   "readiness_match": {
+    "watchcon": 1.0,
+    "defcon": 1.0,
+    "jindogae": 0.938,
+    "durumi": 1.0
+   }
+  },
+  "info_gap": {
+   "id": "info_gap",
+   "name": "정보 공백(공격 준비)",
+   "truth": "공격",
+   "final_correct": true,
+   "final_top": "공격 준비",
+   "final_top_p": 0.425,
+   "max_attack_p": 0.6509,
+   "first_warning_day": -2,
+   "false_alarms": null,
+   "readiness_match": {
+    "watchcon": 0.75,
+    "defcon": 0.875,
+    "jindogae": 1.0,
+    "durumi": 1.0
+   }
+  },
+  "large_exercise": {
+   "id": "large_exercise",
+   "name": "대규모 훈련",
+   "truth": "훈련",
+   "final_correct": true,
+   "final_top": "대규모 훈련",
+   "final_top_p": 0.4594,
+   "max_attack_p": 0.4214,
+   "first_warning_day": null,
+   "false_alarms": 0,
+   "readiness_match": {
+    "watchcon": 1.0,
+    "defcon": 1.0,
+    "jindogae": 1.0,
+    "durumi": 1.0
+   }
+  },
+  "local_fire_2015": {
+   "id": "local_fire_2015",
+   "name": "국지 포격 도발 (2015.8 패턴)",
+   "truth": "국지 포격 도발",
+   "final_correct": true,
+   "final_top": "국지 포격 도발 준비",
+   "final_top_p": 0.7911,
+   "max_attack_p": 0.4327,
+   "first_warning_day": null,
+   "false_alarms": 0,
+   "readiness_match": {
+    "watchcon": 0.818,
+    "defcon": 1.0,
+    "jindogae": 1.0,
+    "durumi": 1.0
+   }
+  },
+  "opfor_corps": {
+   "id": "opfor_corps",
+   "name": "대항군 군단 연속 시나리오",
+   "truth": "공격(개전) + 전술핵 위협 분기",
+   "final_correct": true,
+   "final_top": "공격 준비",
+   "final_top_p": 0.9995,
+   "max_attack_p": 0.9995,
+   "first_warning_day": -11,
+   "false_alarms": null,
+   "readiness_match": {
+    "watchcon": 0.706,
+    "defcon": 0.882,
+    "jindogae": 0.706,
+    "durumi": 0.618
+   }
+  },
+  "peacetime": {
+   "id": "peacetime",
+   "name": "평시",
+   "truth": "평시(변화 없음)",
+   "final_correct": true,
+   "final_top": "대규모 훈련",
+   "final_top_p": 0.1,
+   "max_attack_p": 0.1026,
+   "first_warning_day": null,
+   "false_alarms": 0,
+   "readiness_match": {
+    "watchcon": 1.0,
+    "defcon": 1.0,
+    "jindogae": 1.0,
+    "durumi": 1.0
+   }
+  },
+  "rus_analog_nk": {
+   "id": "rus_analog_nk",
+   "name": "러시아 사례 기반 북한군 공격 준비",
+   "truth": "공격",
+   "final_correct": true,
+   "final_top": "공격 준비",
+   "final_top_p": 0.9986,
+   "max_attack_p": 0.9986,
+   "first_warning_day": -36,
+   "false_alarms": null,
+   "readiness_match": {
+    "watchcon": 0.918,
+    "defcon": 0.934,
+    "jindogae": 0.967,
+    "durumi": 1.0
+   }
+  },
+  "rus_analog_nk_ps": {
+   "id": "rus_analog_nk_ps",
+   "name": "러시아 사례 기반 북한군 공격 준비 (합참·연합사 발령 태세 반영)",
+   "truth": "공격",
+   "final_correct": true,
+   "final_top": "공격 준비",
+   "final_top_p": 0.9997,
+   "max_attack_p": 0.9998,
+   "first_warning_day": -36,
+   "false_alarms": null,
+   "readiness_match": {
+    "watchcon": 0.918,
+    "defcon": 0.951,
+    "jindogae": 0.967,
+    "durumi": 1.0
+   }
+  }
+ }
+}
