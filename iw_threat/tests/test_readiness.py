@@ -26,7 +26,7 @@ def test_escalate_immediately_downgrade_after_hold():
 
 def test_low_confidence_holds_escalation_and_requests_collection():
     s = recommend_all(TRACKS, [ob(0, 0.9, conf="하")])["watchcon"]
-    assert s[0]["level"] == 2 and s[0]["collect_more"] and "정보 수집 강화" in s[0]["note"]   # 1단계는 신뢰도 '중' 필요
+    assert s[0]["level"] == 2 and s[0]["collect_more"] and "추가 첩보·관측 확인 필요" in s[0]["note"]   # 1단계는 신뢰도 '중' 필요
 
 
 def test_decisive_indicators_and_defcon_condition_track():

@@ -40,7 +40,7 @@ def case_similarity(hypotheses: list[dict], cases: list[dict]) -> list[dict]:
 
 
 def commander_briefing(res: dict) -> list[str]:
-    """지휘관 보고용 3줄: ① 결론 ② 핵심 근거·유사 사례 ③ 정보요구·수집 조치. 수치는 계산값 그대로."""
+    """지휘관 보고용 3줄: ① 결론 ② 핵심 근거·유사 사례 ③ 지휘관 정보요구(CCIR)·관측 제한. 수치는 계산값 그대로."""
     top = max(res["hypotheses"], key=lambda h: h["threat"])
     pos = sorted((c for c in top["contributions"] if c["delta_logit"] > 0), key=lambda c: -c["delta_logit"])[:3]
     l1 = f"① {top['name']} 가능성 {top['probability']:.0%}, 위협 등급 {res['grade']}, 분석 신뢰도 {res['confidence']}."
@@ -53,5 +53,5 @@ def commander_briefing(res: dict) -> list[str]:
     alerts = cr.get("ccir_alerts", [])
     l3 = "③ " + ("CCIR 보고 조건 충족: " + "; ".join(f"{a['commander']} {a['id']}" for a in alerts) if alerts else "CCIR 보고 조건 미충족")
     lim = (res.get("weather") or {}).get("collection_limits") or []
-    l3 += (", " + lim[0].split("→")[-1].strip() if lim else "") + "."
+    l3 += (", 광학 관측 제한(관측 공백 반영)" if lim else "") + "."
     return [l1, l2, l3]

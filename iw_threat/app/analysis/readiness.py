@@ -23,7 +23,7 @@ class Track:
     downgrade_hold_days: int
     decisive: list[dict] = field(default_factory=list)
     defcon_review: dict = field(default_factory=dict)
-    low_confidence_action: str = "정보 수집 강화"
+    low_confidence_action: str = "추가 첩보·관측 확인 필요"
     posture_evidence: dict = field(default_factory=dict)
 
     def name_of(self, level: int) -> str:
@@ -41,7 +41,7 @@ def load_readiness(path: str | Path) -> tuple[list[Track], str]:
             t["id"], t["name"], t.get("scope", ""), t.get("hypotheses", "all"), int(t["baseline"]),
             {int(k): v for k, v in (t.get("level_names") or {}).items()},
             sorted(t["levels"], key=lambda l: l["level"]), int(t.get("downgrade_hold_days", 0)),
-            t.get("decisive", []), t.get("defcon_review", {}), raw.get("low_confidence_action", "정보 수집 강화"),
+            t.get("decisive", []), t.get("defcon_review", {}), raw.get("low_confidence_action", "추가 첩보·관측 확인 필요"),
             t.get("posture_evidence", {})))
     return tracks, raw.get("basis", "")
 
@@ -97,8 +97,8 @@ def recommend_series(track: Track, obs: list[Observation]) -> list[dict]:
                 note = f"하향 조건 {ob.day - lower_since:g}/{track.downgrade_hold_days}일 — 유지"
         else:
             lower_since = None
-        if held:   # 더 높은 단계 점수는 넘었지만 신뢰도 부족 — 그 단계 대신 정보 수집 강화(정보 분야 건의)
-            note = (note + " · " if note else "") + f"상위 단계 기준 초과이나 분석 신뢰도 부족 → {track.low_confidence_action} 건의"
+        if held:   # 더 높은 단계 점수는 넘었지만 신뢰도 부족 — 분석 결과로 "추가 확인 필요" 표시 (수집 지시는 합참 수집 부서 소관)
+            note = (note + " · " if note else "") + f"상위 단계 기준 초과이나 분석 신뢰도 부족 → {track.low_confidence_action}"
         dr = track.defcon_review   # 구버전 설정 호환 (현재는 데프콘을 별도 조건 트랙으로 산출)
         defcon = bool(dr) and current <= dr.get("at_level", 0) and \
             CONF_ORDER.get(ob.confidence, 0) >= CONF_ORDER.get(dr.get("min_confidence", "상"), 2)

@@ -228,7 +228,7 @@ with tabs[0]:
         for f in WX.get("findings", []):
             st.markdown(f"<div class='why'><b>적 작전 여건</b> — {f['text']}</div>", unsafe_allow_html=True)
         for c_ in WX.get("collection_limits", []):
-            st.warning(f"아군 수집 제한: {c_}")
+            st.warning(f"아군 관측 제한(분석 반영): {c_}")
         if WX.get("outlook"):
             st.dataframe(pd.DataFrame([{"시각": o["valid_at"][:10], **{e["name"]: e["level"] for e in o["effects"]}}
                                        for o in WX["outlook"]]), use_container_width=True, hide_index=True)

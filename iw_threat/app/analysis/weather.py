@@ -70,5 +70,5 @@ def interpret(current: list[Effect], outlook: list[list[Effect]], rules: dict) -
         findings.append({"key": "infiltration_cover", "text": cov["text"]})
     collection = []
     if cur.get("eo_imaging") and cur["eo_imaging"].level != "양호":
-        collection.append(f"광학 관측 {cur['eo_imaging'].level}: {cur['eo_imaging'].reason} → SAR 촬영 요청 건의")
+        collection.append(f"광학 관측 {cur['eo_imaging'].level}: {cur['eo_imaging'].reason} → 관측 공백 구간으로 분석에 반영(SAR 판독 결과 입력 시 보완)")
     return {"findings": findings, "collection_limits": collection}
