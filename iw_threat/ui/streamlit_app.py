@@ -186,8 +186,9 @@ with tabs[0]:
                   unsafe_allow_html=True)
     n_pos = sum(cc["delta_logit"] > 0 for cc in top["contributions"])
     n_neg = sum(cc["delta_logit"] < 0 for cc in top["contributions"])
+    n_counter = len({cc["name"] for h_ in A["hypotheses"] for cc in h_["contributions"] if cc["delta_logit"] < 0})
     c[3].markdown(f"<div class='card lite'><div class='t'>식별 징후</div><div class='v'>{n_pos}개</div>"
-                  f"<div class='s'>반대 징후 {n_neg}개 · 출처 간 모순 {len(A.get('conflicts', []))}건</div></div>", unsafe_allow_html=True)
+                  f"<div class='s'>반대 징후 {n_counter}개 · 출처 간 모순 {len(A.get('conflicts', []))}건</div></div>", unsafe_allow_html=True)
 
     if N.get("summary"):
         st.markdown(f"<div class='why'><b>종합 판단</b> — {N['summary']['text']}</div>", unsafe_allow_html=True)

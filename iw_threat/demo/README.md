@@ -7,6 +7,7 @@ DEMO_RESULT=demo/rus_analog_nk/result.json streamlit run ui/streamlit_app.py --s
 - rus_analog_nk: 러시아 사례 기반 공격 준비 (D일 평가)
 - local_fire_2015: 2015.8 국지 포격 패턴
 - attack_prep: 공격 준비 기본 시나리오
+- deception: 기만(위장 집결) — 모형·위장 장비 등 반대 증거로 공격 가능성 하향 (판단 근거 탭에서 가설 "공격 준비" 선택 시 파란 띠)
 
 ## 읽기 전용 공유 (외부 시연)
 

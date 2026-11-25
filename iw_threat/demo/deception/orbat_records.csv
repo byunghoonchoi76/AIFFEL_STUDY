@@ -1,0 +1,5 @@
+﻿doc,page,source,unit_raw,unit_key,echelon,echelon_from,parent_raw,parent_key,mgrs,lat,lon,mgrs_precision_m,location_type,equipment,count,as_of,remark,quote,bbox,images,issues
+sim_deception,1,table,제9401가상보병사단,9401가상보병사단,사단,name,,,52SCH1599124541,38.15,126.9,1,사령부,,,,,합성 시나리오,,,
+sim_deception,1,table,제9402가상전차여단,9402가상전차여단,여단,name,제9401가상보병사단,9401가상보병사단,52SCH1942321133,38.12,126.94,1,주둔지,,,,,합성 시나리오,,,
+sim_deception,1,table,제9404가상공병대대,9404가상공병대대,대대,name,제9401가상보병사단,9401가상보병사단,52SCH1155822422,38.13,126.85,1,주둔지,,,,,합성 시나리오,,,
+sim_deception,1,table,제9405가상수송대대,9405가상수송대대,대대,name,제9401가상보병사단,9401가상보병사단,52SCH1762018953,38.1,126.92,1,주둔지,,,,,합성 시나리오,,,
