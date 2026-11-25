@@ -4,6 +4,15 @@ from __future__ import annotations
 import math
 
 import plotly.graph_objects as go
+import plotly.io as pio
+
+# 화면 공통 스타일: 흰 바탕·옅은 격자·제목 없음(화면의 구역 제목이 대신함)
+pio.templates["iw"] = go.layout.Template(layout=dict(
+    paper_bgcolor="white", plot_bgcolor="white", colorway=["#1f3a68", "#c0392b", "#2e86c1", "#d68910", "#7d3c98", "#16a085", "#7f8c8d"],
+    xaxis=dict(gridcolor="#eef0f3", zerolinecolor="#d5d9df", linecolor="#d5d9df"),
+    yaxis=dict(gridcolor="#eef0f3", zerolinecolor="#d5d9df", linecolor="#d5d9df"),
+    hoverlabel=dict(bgcolor="white", font_size=13)))
+pio.templates.default = "plotly_white+iw"
 
 GRADE_COLOR = {"관심": "#2E86C1", "주의": "#D4AC0D", "경계": "#E67E22", "심각": "#C0392B"}
 GRADE_LINES = [(0.25, "주의"), (0.50, "경계"), (0.75, "심각")]
@@ -20,29 +29,27 @@ def _logit(p: float) -> float:
 
 
 def waterfall(hyp: dict) -> go.Figure:
-    """사전확률에서 출발해 징후 하나하나가 확률을 얼마나 올리고(빨강) 내렸는지(파랑) 보여주는 폭포 그래프.
-    막대 길이는 로그오즈 기여(강도 × ln 우도비), 막대 위 숫자는 그 징후까지 반영한 누적 확률."""
-    contribs = sorted(hyp["contributions"], key=lambda c: -c["delta_logit"])
-    x = ["사전 확률"] + [c["name"] for c in contribs] + ["최종 확률"]
+    """사전확률에서 출발해 징후 하나하나가 확률을 올리고(빨강) 내린(파랑) 과정을 위에서 아래로 쌓는 가로 폭포 그래프.
+    막대 길이 = 로그오즈 기여(강도 × ln 우도비), 오른쪽 숫자 = 그 징후까지 반영한 누적 확률."""
+    contribs = sorted(hyp["contributions"], key=lambda c: -abs(c["delta_logit"]))
+    y = ["사전 확률"] + [c["name"] for c in contribs] + ["최종 확률"]
     lo = _logit(hyp["prior"])
-    y = [lo] + [c["delta_logit"] for c in contribs] + [0]
-    cum, texts = lo, [f"{hyp['prior']:.0%}"]
+    x = [lo] + [c["delta_logit"] for c in contribs] + [0]
+    cum, texts, lv = lo, [f"{hyp['prior']:.0%}"], [lo]
     for c in contribs:
         cum += c["delta_logit"]
+        lv.append(cum)
         texts.append(f"{c['delta_logit']:+.2f} → {_sig(cum):.0%}")
     texts.append(f"{hyp['probability']:.0%}")
     fig = go.Figure(go.Waterfall(
-        x=x, y=y, measure=["absolute"] + ["relative"] * len(contribs) + ["total"], text=texts, textposition="outside",
+        orientation="h", y=y, x=x, measure=["absolute"] + ["relative"] * len(contribs) + ["total"], text=texts,
+        textposition="outside", cliponaxis=False,
         increasing={"marker": {"color": "#C0392B"}}, decreasing={"marker": {"color": "#2E86C1"}},
-        totals={"marker": {"color": "#34495E"}}, connector={"line": {"color": "#bbb", "width": 1}}))
-    lv = [lo]
-    for c in contribs:
-        lv.append(lv[-1] + c["delta_logit"])
-    pad = (max(lv + [0]) - min(lv + [0])) * 0.12 + 0.3
-    fig.update_yaxes(range=[min(lv + [0]) - pad, max(lv + [0]) + pad])
-    fig.update_layout(font=FONT, height=440, margin=dict(l=10, r=10, t=50, b=10), showlegend=False,
-                      title=f"‘{hyp['name']}’ 확률이 만들어진 과정 (빨강: 높임 · 파랑: 낮춤, 세로축: 로그오즈)",
-                      yaxis_title="로그오즈")
+        totals={"marker": {"color": "#34495E"}}, connector={"line": {"color": "#ccd", "width": 1}}))
+    pad = (max(lv + [0]) - min(lv + [0])) * 0.18 + 0.5
+    fig.update_xaxes(range=[min(lv + [0]) - pad, max(lv + [0]) + pad], title="로그오즈 (오른쪽일수록 가능성 큼)")
+    fig.update_yaxes(autorange="reversed")
+    fig.update_layout(font=FONT, height=90 + 26 * len(y), margin=dict(l=10, r=30, t=10, b=10), showlegend=False)
     return fig
 
 
@@ -55,7 +62,7 @@ def lr_heatmap(lr_matrix: dict, hypotheses: list[dict]) -> go.Figure:
     fig = go.Figure(go.Heatmap(z=z, x=names, y=[r["name"] for r in rows], text=text, texttemplate="%{text}",
                                colorscale=[[0, "#2E86C1"], [0.5, "#FFFFFF"], [1, "#C0392B"]], zmid=0, showscale=False))
     fig.update_layout(font=FONT, height=max(260, 34 * len(rows) + 90), margin=dict(l=10, r=10, t=40, b=10),
-                      title="경쟁가설 비교표 — 칸의 숫자는 우도비(1보다 크면 지지, 작으면 반박, 1이면 무관)")
+                      title=dict(text="경쟁가설 비교표 — 칸의 숫자는 우도비(1보다 크면 지지, 작으면 반박)", font=dict(size=12, color="#5b6575")))
     fig.update_yaxes(autorange="reversed")
     return fig
 
@@ -64,10 +71,10 @@ def probability_bars(hypotheses: list[dict]) -> go.Figure:
     hs = sorted(hypotheses, key=lambda h: h["probability"])
     fig = go.Figure(go.Bar(x=[h["probability"] for h in hs], y=[h["name"] for h in hs], orientation="h",
                            text=[f"{h['probability']:.0%} (사전 {h['prior']:.0%})" for h in hs], textposition="auto",
-                           marker_color=["#C0392B" if h["probability"] >= 0.5 else "#95A5A6" for h in hs]))
-    fig.add_vline(x=0.5, line_dash="dot", line_color="#888")
-    fig.update_layout(font=FONT, height=60 + 42 * len(hs), margin=dict(l=10, r=10, t=30, b=10),
-                      xaxis=dict(range=[0, 1], tickformat=".0%"), title="가설별 확률")
+                           marker_color=["#C0392B" if h["probability"] >= 0.5 else "#1f3a68" if h is hs[-1] else "#c5cbd3" for h in hs]))
+    fig.add_vline(x=0.5, line_dash="dot", line_color="#aab")
+    fig.update_layout(font=FONT, height=40 + 34 * len(hs), margin=dict(l=10, r=10, t=10, b=10), bargap=0.35,
+                      xaxis=dict(range=[0, 1], tickformat=".0%"))
     return fig
 
 
@@ -84,7 +91,7 @@ def change_chart(changes: list[dict], judged: dict[str, str]) -> go.Figure:
                 text=[(f"{c['ratio']}배" if c.get("ratio") else "신규") + (f" · z {c['zscore']}" if c.get("zscore") is not None else "")
                       for c in rows], textposition="outside")
     fig.update_layout(font=FONT, barmode="group", height=80 + 46 * len(rows), margin=dict(l=10, r=40, t=40, b=10),
-                      title="부대별 평시 대비 변화 (빨강: 징후 충족 · 주황: 약한 신호 · 회색: 미충족, 오차막대: 판독 잡음)",
+                      title=dict(text="빨강: 징후 충족 · 주황: 약한 신호 · 회색: 미충족 · 오차막대: 판독 잡음", font=dict(size=12, color="#5b6575")),
                       legend=dict(orientation="h", y=1.02, x=0))
     fig.update_yaxes(autorange="reversed")
     return fig
@@ -100,7 +107,7 @@ def trend_chart(history: list[dict]) -> go.Figure:
     for y, g in GRADE_LINES:
         fig.add_hline(y=y, line_dash="dot", line_color=GRADE_COLOR[g], annotation_text=g, annotation_position="left")
     fig.update_layout(font=FONT, height=380, margin=dict(l=10, r=10, t=40, b=10), yaxis=dict(range=[0, 1], tickformat=".0%"),
-                      title="가설 확률 추이 (점선: 등급 경계 — 위협 점수 = 확률 × 영향도)", legend=dict(orientation="h", y=-0.2))
+                      title=dict(text="점선: 등급 경계 (위협 점수 = 확률 × 영향도)", font=dict(size=12, color="#5b6575")), legend=dict(orientation="h", y=-0.2))
     return fig
 
 
@@ -128,7 +135,7 @@ def situation_map(points: list[dict], garrisons: list[dict], estimates: list[dic
         fig.add_scatter(x=[e["lon"] for e in estimates], y=[e["lat"] for e in estimates], mode="markers+text",
                         marker=dict(symbol="star", size=18, color="#E67E22"), name="미식별 군집 추정",
                         text=[f"{e['type_ko']} 추정" for e in estimates], textposition="bottom center")
-    fig.update_layout(font=FONT, height=560, margin=dict(l=10, r=10, t=40, b=10), title="상황도 — 표적·주둔지·부대 식별",
+    fig.update_layout(font=FONT, height=560, margin=dict(l=10, r=10, t=10, b=10), 
                       xaxis_title="경도", yaxis_title="위도", legend=dict(orientation="h", y=-0.12))
     fig.update_yaxes(scaleanchor="x", scaleratio=1.27)
     return fig
@@ -171,8 +178,8 @@ def evidence_flow(hyp: dict) -> go.Figure:
         node=dict(label=labels, color=color, pad=14, thickness=16, line=dict(width=0)),
         link=dict(source=src, target=dst, value=val, color=lc, customdata=hover,
                   hovertemplate="%{customdata}<extra></extra>")))
-    fig.update_layout(font=FONT, height=max(360, 30 * len(labels)), margin=dict(l=10, r=10, t=40, b=10),
-                      title="근거 흐름 — 출처(등급) → 징후 → 가설 (띠 굵기: 근거 가중치 / 확률 기여)")
+    fig.update_layout(font=FONT, height=max(340, 28 * len(labels)), margin=dict(l=10, r=10, t=10, b=10)
+                      )
     return fig
 
 
